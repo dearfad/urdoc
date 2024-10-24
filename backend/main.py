@@ -20,5 +20,9 @@ app.add_middleware(
 
 
 @app.get("/")
-async def read_root():
+async def main():
     return {"message": "Hello World"}
+
+@app.get("/chat/")
+async def chat(module: str, model: str, messages: list[dict]|None):
+    return {"messages": messages}
