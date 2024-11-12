@@ -1,6 +1,7 @@
 <template>
   <div>
     <NuxtRouteAnnouncer />
-    <NuxtWelcome />
+    <!-- <NuxtWelcome /> -->
+     <h1>This is Urdoc Site.</h1>
   </div>
 </template>
