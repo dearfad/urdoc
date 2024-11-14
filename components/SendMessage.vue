@@ -1,20 +1,30 @@
 <template>
   <v-container class="flex-0-0 pb-0">
-    <v-text-field clearable :loading="isReceiving" :disabled="isReceiving" variant="solo" label="请输入" v-model="prompt"
-      @keyup.enter="getResponse" ref="inputPrompt" :append-inner-icon="appendIconInputPrompt"
-      @click:append-inner="setMsgWatcher" @focus="handleFocus" @blur="handleBlur"
-      :prepend-inner-icon="isBackendApiReadyIcon"></v-text-field>
+    <v-text-field
+      ref="inputPrompt"
+      v-model="prompt"
+      clearable
+      :loading="isReceiving"
+      :disabled="isReceiving"
+      variant="solo"
+      label="请输入"
+      :append-inner-icon="appendIconInputPrompt"
+      :prepend-inner-icon="isBackendApiReadyIcon"
+      @keyup.enter="getResponse"
+      @click:append-inner="setMsgWatcher"
+      @focus="handleFocus"
+      @blur="handleBlur"
+    />
   </v-container>
 </template>
 
 <script setup>
-// import axios from "axios"
 const isReceiving = ref(false)
 const useSimModel = useState('simModel')
-const prompt = ref("")
-const inputPrompt = useTemplateRef("inputPrompt")
+const prompt = ref('')
+const inputPrompt = useTemplateRef('inputPrompt')
 const appendIconInputPrompt = ref('mdi-focus-auto')
-const isBackendApiReadyIcon = ref("$warning")
+const isBackendApiReadyIcon = ref('$warning')
 const keepInputFocus = ref(true)
 const useChatMessages = useState('chatMessages')
 const useInputFocused = useState('inputFocused')
@@ -22,7 +32,6 @@ const useInputFocused = useState('inputFocused')
 onMounted(() => {
   testBackendApi()
 })
-
 
 const chatMsgWatcher = watch(useChatMessages, () => {
   nextTick(() => {
@@ -47,26 +56,24 @@ function handleBlur() {
 }
 
 async function getResponse() {
-
   isReceiving.value = true
-  useChatMessages.value.push({ "role": "user", "content": prompt.value })
-  // prompt.value = ""
-  // const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
-  // let message = { role: "assistant", content: "" }
-  // let response = await axios({
-  //   method: "post",
-  //   url: "https://open.bigmodel.cn/api/paas/v4/chat/completions",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: "Bearer " + apiKey,
-  //   },
-  //   data: {
-  //     model: simModel.value,
-  //     messages: chatMessages.value,
-  //   },
-  // })
-  // message.content = response.data.choices[0].message.content
-  // addMessage(message)
+  useChatMessages.value.push({ role: 'user', content: prompt.value })
+  prompt.value = ''
+  const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
+  const message = { role: 'assistant', content: '' }
+  const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + apiKey,
+    },
+    body: {
+      model: useSimModel.value,
+      messages: useChatMessages.value,
+    },
+  })
+  message.content = response.choices[0].message.content
+  useChatMessages.value.push(message)
   isReceiving.value = false
 }
 
@@ -79,5 +86,4 @@ async function testBackendApi() {
   //   isBackendApiReadyIcon.value = '$warning'
   // }
 }
-
 </script>
