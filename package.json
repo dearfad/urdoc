@@ -15,5 +15,8 @@
     "vue": "latest",
     "vue-router": "latest",
     "vuetify-nuxt-module": "^0.18.3"
+  },
+  "devDependencies": {
+    "@mdi/font": "^7.4.47"
   }
 }
