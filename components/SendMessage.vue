@@ -14,7 +14,7 @@
       @click:append-inner="setMsgWatcher"
     />
   </v-container>
-  <v-btn @click="testCase">test</v-btn>
+  <v-btn @click="genCase">test</v-btn>
 </template>
 
 <script setup>
@@ -24,9 +24,8 @@ const prompt = ref('')
 const appendIconInputPrompt = ref('mdi-focus-auto')
 const keepInputFocus = ref(true)
 const inputPrompt = useTemplateRef('inputPrompt')
-const useSimModel = useState('simModel')
 const useChatMessages = useState('chatMessages')
-const {msg, getMessage} = useBigModel()
+const {resMessage, getMessage} = useBigModel()
 
 // Keep input Focused
 const chatMsgWatcher = watch(useChatMessages.value, () => {
@@ -50,19 +49,17 @@ async function getResponse() {
   useChatMessages.value.push({ role: 'user', content: prompt.value })
   prompt.value = ''
   const message = { role: 'assistant', content: '' }
-
   await getMessage(useChatMessages.value)
-  message.content = msg
+  message.content = resMessage.value
   useChatMessages.value.push(message)
   isReceiving.value = false
 }
 
 const useCasePrompt = useState('casePrompt')
-async function testCase(){
-
+async function genCase(){
   const caseMessages = [{'role':'system','content': useCasePrompt.value},{'role':'user','content':'颈部疾病'}]
   await getMessage(caseMessages)
-  console.log(msg)
+  console.log(resMessage)
 }
 
 </script>

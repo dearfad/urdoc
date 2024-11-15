@@ -2,7 +2,7 @@
   <v-container class="flex-fill bg-blue-lighten-4 overflow-auto">
     <v-list class="chatMsgContainer h-100 font-weight-bold">
       <v-list-item
-        v-for="(message, index) in useChatMessages.slice(1)"
+        v-for="(message, index) in useChatMessages"
         :key="index"
         :title="message.role + ':'"
       >
