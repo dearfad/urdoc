@@ -1,8 +1,9 @@
 <template>
-    <v-container class="flex-0-0 pb-0">
+    <v-sheet>
         <v-text-field
             ref="inputPrompt"
             v-model="prompt"
+            hide-details
             autofocus
             clearable
             :loading="isReceiving"
@@ -13,7 +14,7 @@
             @keyup.enter="sendPrompt"
             @click:append-inner="setMsgWatcher"
         />
-    </v-container>
+    </v-sheet>
 </template>
 
 <script setup>
