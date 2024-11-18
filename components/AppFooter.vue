@@ -1,5 +1,5 @@
 <template>
     <v-footer app color="secondary">
-        <v-row justify="center" no-gutters>2024</v-row>
+        <div class="mx-auto">2024 - 虚拟病例研究所</div>
     </v-footer>
 </template>

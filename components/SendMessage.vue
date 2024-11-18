@@ -4,7 +4,6 @@
             ref="inputPrompt"
             v-model="prompt"
             hide-details
-            autofocus
             clearable
             :loading="isReceiving"
             :disabled="isReceiving"
@@ -21,7 +20,7 @@
 const inputPrompt = useTemplateRef('inputPrompt')
 const prompt = ref('')
 const isReceiving = ref(false)
-const appendIconInputPrompt = ref('mdi-focus-auto')
+const appendIconInputPrompt = ref('mdi-cellphone-text')
 const messageStore = useMessageStore()
 const { messages } = storeToRefs(messageStore)
 const { addMessage } = messageStore
@@ -30,7 +29,7 @@ const bigModel = useBigModel()
 const { message: response } = storeToRefs(bigModel)
 const { getResponse } = bigModel
 
-const keepInputFocus = ref(true)
+const keepInputFocus = ref(false)
 
 // Keep input Focused
 const chatMsgWatcher = watch(messages.value, () => {
@@ -39,6 +38,9 @@ const chatMsgWatcher = watch(messages.value, () => {
     })
 })
 
+onMounted(() => {
+    chatMsgWatcher.pause()
+})
 function setMsgWatcher() {
     keepInputFocus.value = !keepInputFocus.value
     appendIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
