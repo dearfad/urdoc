@@ -1,6 +1,15 @@
 <template>
     <v-sheet>
+        <v-btn
+            v-if="isFirst"
+            block
+            size="x-large"
+            class="font-weight-bold"
+            text="开始问诊"
+            @click="firstChat"
+        />
         <v-text-field
+            v-if="!isFirst"
             ref="inputPrompt"
             v-model="prompt"
             hide-details
@@ -17,6 +26,7 @@
 </template>
 
 <script setup>
+const isFirst = ref(true)
 const inputPrompt = useTemplateRef('inputPrompt')
 const prompt = ref('')
 const isReceiving = ref(false)
@@ -60,5 +70,11 @@ async function sendPrompt() {
     message.content = response.value
     addMessage(message)
     isReceiving.value = false
+}
+
+function firstChat() {
+    isFirst.value = false
+    prompt.value = '哪里不舒服？'
+    sendPrompt()
 }
 </script>
