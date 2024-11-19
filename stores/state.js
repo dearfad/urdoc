@@ -1,4 +1,5 @@
 export const useStateStore = defineStore('state', () => {
     const currentContent = ref('')
-    return { currentContent }
+    const isInputFocused = ref(false)
+    return { currentContent, isInputFocused }
 })

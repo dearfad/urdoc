@@ -7,7 +7,6 @@
         >
             <span class="font-weight-bold">{{ message.content }}</span>
         </v-list-item>
-        <v-list-item>{{ resized }}</v-list-item>
         <v-list-item class="chatMsgBottom" />
     </v-list>
 </template>
@@ -25,25 +24,11 @@ messageStore.$subscribe(() => {
     })
 })
 
-const originalHeight = ref(window.innerHeight)
-const resized = ref('false')
-
-onMounted(() => {
-    window.addEventListener('resize', handleResize)
+const stateStore = useStateStore()
+const { isInputFocused } = storeToRefs(stateStore)
+stateStore.$subscribe(() => {
+    setTimeout(() => {
+        goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
+    }, 300)
 })
-onUnmounted(() => {
-    window.removeEventListener('resize', handleResize)
-})
-
-function handleResize() {
-    const currentHeight = window.innerHeight
-    if (originalHeight.value > currentHeight) {
-        resized.value = true
-        // nextTick(() => {
-        //     goTo(originalHeight.value, { container: '.chatMsgContainer' })
-        // })
-    } else {
-        resized.value = false
-    }
-}
 </script>

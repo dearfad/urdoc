@@ -21,6 +21,8 @@
             :append-inner-icon="appendIconInputPrompt"
             @keyup.enter="sendPrompt"
             @click:append-inner="setMsgWatcher"
+            @focus="handleFocus"
+            @blur="handleBlur"
         />
     </v-sheet>
 </template>
@@ -76,5 +78,16 @@ function firstChat() {
     isFirst.value = false
     prompt.value = '哪里不舒服？'
     sendPrompt()
+}
+
+//
+const stateStore = useStateStore()
+const { isInputFocused } = storeToRefs(stateStore)
+function handleFocus() {
+    isInputFocused.value = true
+}
+
+function handleBlur() {
+    isInputFocused.value = false
 }
 </script>
