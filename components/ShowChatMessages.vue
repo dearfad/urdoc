@@ -5,7 +5,7 @@
             :key="index"
             :title="message.role == 'user' ? '医生' : simCaseJson['姓名'] + ':'"
         >
-            {{ message.content }}
+            <span class="font-weight-bold">{{ message.content }}</span>
         </v-list-item>
         <v-list-item class="chatMsgBottom" />
     </v-list>
