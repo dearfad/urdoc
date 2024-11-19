@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
-    "@nuxt/eslint": "^0.6.1",
+    "@nuxt/eslint": "^0.7.1",
     "@nuxthub/core": "^0.8.7",
     "@pinia/nuxt": "^0.7.0",
     "nuxt": "^3.14.159",

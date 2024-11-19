@@ -7,6 +7,7 @@
         >
             <span class="font-weight-bold">{{ message.content }}</span>
         </v-list-item>
+        <v-list-item>{{ resized }}</v-list-item>
         <v-list-item class="chatMsgBottom" />
     </v-list>
 </template>
@@ -23,4 +24,26 @@ messageStore.$subscribe(() => {
         goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
     })
 })
+
+const originalHeight = ref(window.innerHeight)
+const resized = ref('false')
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize)
+})
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+})
+
+function handleResize() {
+    const currentHeight = window.innerHeight
+    if (originalHeight.value > currentHeight) {
+        resized.value = true
+        // nextTick(() => {
+        //     goTo(originalHeight.value, { container: '.chatMsgContainer' })
+        // })
+    } else {
+        resized.value = false
+    }
+}
 </script>
