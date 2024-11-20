@@ -23,8 +23,7 @@
             @blur="handleBlur"
         />
         <v-spacer />
-        <v-btn size="x-large" class="font-weight-bold" text="生成病例" />
-        <v-sheet class="generateCaseBottom" />
+        <v-btn size="x-large" class="generateCaseBottom font-weight-bold mb-auto" text="生成病例" />
     </v-sheet>
 </template>
 
