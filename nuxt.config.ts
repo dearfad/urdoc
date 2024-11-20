@@ -9,6 +9,5 @@ export default defineNuxtConfig({
         '@nuxtjs/eslint-module',
         '@nuxthub/core',
         '@nuxt/content',
-        '@nuxthq/studio',
     ],
 })

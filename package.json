@@ -25,7 +25,6 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@nuxthq/studio": "^2.2.1",
     "@nuxtjs/eslint-module": "^4.1.0",
     "wrangler": "^3.88.0"
   }
