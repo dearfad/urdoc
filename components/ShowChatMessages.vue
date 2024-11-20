@@ -18,17 +18,21 @@ const caseStore = useCaseStore()
 const { simCaseJson } = storeToRefs(caseStore)
 const goTo = useGoTo()
 
+// 聊天信息更新后自动滚动
 messageStore.$subscribe(() => {
     nextTick(() => {
         goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
     })
 })
 
+// 手机输入法遮挡滚动
 const stateStore = useStateStore()
-const { isInputFocused } = storeToRefs(stateStore)
-stateStore.$subscribe(() => {
-    setTimeout(() => {
-        goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
-    }, 300)
-})
+watch(
+    () => stateStore.isInputFocused,
+    () => {
+        setTimeout(() => {
+            goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
+        }, 300)
+    }
+)
 </script>
