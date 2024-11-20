@@ -3,11 +3,12 @@ export default defineNuxtConfig({
     compatibilityDate: '2024-04-03',
     devtools: { enabled: false },
     modules: [
-      'vuetify-nuxt-module',
-      '@nuxt/eslint',
-      '@pinia/nuxt',
-      '@nuxtjs/eslint-module',
-      '@nuxthub/core',
-      '@nuxt/content',
+        'vuetify-nuxt-module',
+        '@nuxt/eslint',
+        '@pinia/nuxt',
+        '@nuxtjs/eslint-module',
+        '@nuxthub/core',
+        '@nuxt/content',
+        '@nuxthq/studio',
     ],
 })
