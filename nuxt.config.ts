@@ -9,5 +9,9 @@ export default defineNuxtConfig({
         '@nuxtjs/eslint-module',
         '@nuxthub/core',
         '@nuxt/content',
+        'nuxt-cloudflare-analytics',
     ],
+    cloudflareAnalytics: {
+        token: '97db8550f18d4cdda844ff8ab2199b36',
+    },
 })

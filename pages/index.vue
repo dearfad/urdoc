@@ -1,7 +1,9 @@
 <template>
     <v-card class="text-center mx-auto pa-2" variant="flat">
-        <v-card-item>
-            <v-card-title class="text-h2 font-weight-bold text-blue">URDOC</v-card-title>
+        <v-card-item style="font-family: 方正舒体">
+            <v-card-title class="text-h1 font-weight-bold text-blue" style="font-family: 方正舒体">
+                URDOC
+            </v-card-title>
             <v-card-subtitle class="text-h4 font-weight-bold">虚拟病例研究所</v-card-subtitle>
         </v-card-item>
         <v-card-text class="text-h6">

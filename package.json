@@ -16,6 +16,7 @@
     "@nuxthub/core": "^0.8.7",
     "@pinia/nuxt": "^0.7.0",
     "nuxt": "^3.14.1592",
+    "nuxt-cloudflare-analytics": "^1.0.8",
     "pinia": "^2.2.6",
     "vue": "latest",
     "vue-router": "latest",
