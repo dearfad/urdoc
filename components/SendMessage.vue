@@ -13,14 +13,15 @@
             ref="inputPrompt"
             v-model="prompt"
             hide-details
-            clearable
             :loading="isReceiving"
             :disabled="isReceiving"
             variant="solo"
             label="请输入"
-            :append-inner-icon="appendIconInputPrompt"
+            :prepend-inner-icon="prependIconInputPrompt"
+            append-inner-icon="mdi-send"
             @keyup.enter="sendPrompt"
-            @click:append-inner="setMsgWatcher"
+            @click:prepend-inner="setMsgWatcher"
+            @click:append-inner="sendPrompt"
             @focus="handleFocus"
             @blur="handleBlur"
         />
@@ -32,7 +33,7 @@ const isFirst = ref(true)
 const inputPrompt = useTemplateRef('inputPrompt')
 const prompt = ref('')
 const isReceiving = ref(false)
-const appendIconInputPrompt = ref('mdi-cellphone-text')
+const prependIconInputPrompt = ref('mdi-cellphone-text')
 const messageStore = useMessageStore()
 const { messages } = storeToRefs(messageStore)
 const { addMessage } = messageStore
@@ -55,7 +56,7 @@ onMounted(() => {
 })
 function setMsgWatcher() {
     keepInputFocus.value = !keepInputFocus.value
-    appendIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
+    prependIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
     if (keepInputFocus.value) {
         chatMsgWatcher.resume()
     } else {
@@ -64,6 +65,9 @@ function setMsgWatcher() {
 }
 
 async function sendPrompt() {
+    if (prompt.value == '') {
+        return
+    }
     isReceiving.value = true
     addMessage({ role: 'user', content: prompt.value })
     prompt.value = ''
