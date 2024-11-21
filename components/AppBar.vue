@@ -7,21 +7,24 @@
             URDOC
         </v-app-bar-title>
         <v-spacer />
-        <v-btn icon>
-            <v-icon @click="routeToAbout">mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon>
-            <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
+        <v-btn @click="routeToGenCase">生成</v-btn>
+        <v-btn @click="routeToSimPatient">问诊</v-btn>
+        <v-btn>背景</v-btn>
+        <v-btn>问题</v-btn>
+        <v-btn>评估</v-btn>
     </v-app-bar>
 </template>
 
 <script setup>
 const router = useRouter()
-function routeToAbout() {
-    router.push('/about')
-}
+
 function routeToIndex() {
     router.push('/')
+}
+function routeToGenCase() {
+    router.push('/gencase')
+}
+function routeToSimPatient() {
+    router.push('/simpatient')
 }
 </script>

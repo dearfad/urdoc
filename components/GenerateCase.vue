@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="generateCaseContainer d-flex flex-column pa-10 overflow-auto">
+    <v-sheet class="generateCaseContainer d-flex flex-column overflow-auto bg-red top-0 pa-10">
         <v-select
             v-model="selectedBook"
             label="教科书"
