@@ -1,46 +1,57 @@
 <template>
-    <v-sheet class="generateCaseContainer d-flex flex-column overflow-auto bg-red top-0 pa-10">
+    <v-sheet class="generateCaseContainer pa-8">
         <v-select
             v-model="selectedBook"
             label="教科书"
-            :items="book"
-            class="flex-grow-0"
+            :items="['任意', ...books]"
             variant="outlined"
         />
         <v-select
             v-model="selectedChapter"
             label="章节"
-            :items="chapter"
-            class="flex-grow-0"
+            :items="bookChatpers[selectedBook]"
             variant="outlined"
         />
         <v-text-field
             v-model="keyPoint"
             label="要点"
-            class="flex-grow-0"
             variant="outlined"
             @focus="handleFocus"
             @blur="handleBlur"
         />
-        <v-spacer />
-        <v-btn size="x-large" class="generateCaseBottom font-weight-bold mb-auto" text="生成病例" />
+        <v-btn
+            size="x-large"
+            block
+            class="generateCaseBottom font-weight-bold"
+            text="生成病例"
+            :loading="isLoading"
+            @click="genCase"
+        />
     </v-sheet>
 </template>
 
 <script setup>
-const book = reactive(['外科学', '内科学', '妇科学', '儿科学', '神经病学'])
-const chapter = reactive([
-    '乳房疾病',
-    '颈部疾病',
-    '胃肠疾病',
-    '麻醉',
-    '水电解质紊乱',
-    '肿瘤',
-    '骨折',
-])
-const selectedBook = ref('')
-const selectedChapter = ref('')
+const selectedBook = ref('任意')
+const selectedChapter = ref('任意')
 const keyPoint = ref('')
+const books = reactive(['外科学', '内科学', '妇科学', '儿科学', '神经病学'])
+
+const constStore = useConstStore()
+const { bookChatpers } = constStore
+
+const isLoading = ref(false)
+
+const bigModel = useBigModel()
+const { message } = storeToRefs(bigModel)
+const { getResponse } = bigModel
+
+// 全局病例
+const caseStore = useCaseStore()
+const { updateSimCaseJson } = caseStore
+
+const promptStore = usePromptStore()
+const { casePrompt } = storeToRefs(promptStore)
+
 // 手机输入法遮挡滚动
 const stateStore = useStateStore()
 const { isInputFocused } = storeToRefs(stateStore)
@@ -55,11 +66,31 @@ watch(
     }
 )
 
+watch(selectedBook, () => {
+    selectedChapter.value = '任意'
+})
+
 function handleFocus() {
     isInputFocused.value = true
 }
 
 function handleBlur() {
     isInputFocused.value = false
+}
+
+async function genCase() {
+    isLoading.value = true
+    const messages = [
+        { role: 'system', content: casePrompt.value },
+        {
+            role: 'user',
+            content: selectedBook.value + ',' + selectedChapter.value + ',' + keyPoint.value,
+        },
+    ]
+
+    await getResponse(messages)
+    message.value = message.value.split('\n').slice(1, -1).join('\n')
+    updateSimCaseJson(message.value)
+    isLoading.value = false
 }
 </script>

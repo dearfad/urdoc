@@ -13,7 +13,7 @@ export const useCaseStore = defineStore('case', () => {
   **病理**：ER(-)，PR(-)，HER-2(-)，Ki67 20%。
   `)
 
-    const simCaseJson = reactive({
+    const simCaseJson = ref({
         姓名: '张晓红',
         性别: '女',
         年龄: 48,
@@ -46,5 +46,9 @@ export const useCaseStore = defineStore('case', () => {
             Ki67: '20%',
         },
     })
-    return { simCase, simCaseJson }
+
+    function updateSimCaseJson(caseJson) {
+        simCaseJson.value = JSON.parse(caseJson)
+    }
+    return { simCase, simCaseJson, updateSimCaseJson }
 })

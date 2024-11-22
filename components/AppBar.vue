@@ -6,7 +6,7 @@
         </v-app-bar-title>
         <v-spacer />
         <v-btn @click="routeToIndex">首页</v-btn>
-        <v-btn @click="routeToGuide">开始</v-btn>
+        <v-btn class="font-weight-bold" @click="routeToGuide">开诊</v-btn>
     </v-app-bar>
     <!-- <v-navigation-drawer
         v-model="isLeftNavDrawerShow"

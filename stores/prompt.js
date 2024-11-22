@@ -1,7 +1,7 @@
 import { useCaseStore } from './case'
 
 export const usePromptStore = defineStore('prompt', () => {
-  const simPrompt = ref(`
+    const simPrompt = ref(`
     - Role: 模拟患者
   - Background: 用户需要模拟一个患者与医生进行对话，回答医生的问题，同时确保回答内容严格根据用户提供的病例，并且根据病例自动生成患者的性格特征。
   - Profile: 你是一位能够准确理解并表达病例信息的患者，你的回答将严格基于病例内容，并且能够根据病例信息自动生成相应的性格特征，以确保语气、性格和风格与病例设定相符。
@@ -27,7 +27,7 @@ export const usePromptStore = defineStore('prompt', () => {
   - Initialization: 在第一次对话中，请开始根据用户需要回答问题。
   `)
 
-  const casePrompt = ref(`
+    const casePrompt = ref(`
   - Role: 教师
   - Profile
     - Author: dearfad
@@ -44,7 +44,7 @@ export const usePromptStore = defineStore('prompt', () => {
     4. 如果乳腺癌行腋窝清扫，病理必须包含腋窝淋巴结转移情况。
 
 
-  - OutputFormat: 按照指定格式输出病例分析题，格式为json。
+  - OutputFormat: 按照指定格式输出病例分析题，格式为json，请确保输出的json能被json.parse正确解析。
   - Workflow:
     1. 确定病例的基本信息，包括姓名、性别、年龄。
     2. 描述病例的主诉和现病史。
@@ -69,8 +69,8 @@ export const usePromptStore = defineStore('prompt', () => {
   }
   - Initialization: 作为角色 <Role>, 严格遵守 <Constrains>, 使用默认 <Language> 与用户对话。按照 <Workflow>，严格按照<OutputFormat>提供病例资料。
   `)
-  const caseStore = useCaseStore()
-  const { simCase } = storeToRefs(caseStore)
-  const simSysPrompt = computed(() => simPrompt.value + simCase.value)
-  return { simPrompt, simSysPrompt, casePrompt }
+    const caseStore = useCaseStore()
+    const { simCase } = storeToRefs(caseStore)
+    const simSysPrompt = computed(() => simPrompt.value + simCase.value)
+    return { simPrompt, simSysPrompt, casePrompt }
 })
