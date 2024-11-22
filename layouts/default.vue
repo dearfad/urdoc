@@ -2,7 +2,7 @@
     <v-app>
         <AppBar />
         <AppFooter />
-        <v-main class="position-relative">
+        <v-main>
             <slot />
         </v-main>
     </v-app>
