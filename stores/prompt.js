@@ -44,7 +44,7 @@ export const usePromptStore = defineStore('prompt', () => {
     4. 如果乳腺癌行腋窝清扫，病理必须包含腋窝淋巴结转移情况。
 
 
-  - OutputFormat: 按照指定格式输出病例分析题，格式为json，请确保输出的json能被json.parse正确解析。
+  - OutputFormat: 按照指定格式输出病例分析题，格式为纯json格式。
   - Workflow:
     1. 确定病例的基本信息，包括姓名、性别、年龄。
     2. 描述病例的主诉和现病史。

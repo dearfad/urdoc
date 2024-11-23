@@ -1,28 +1,25 @@
 <template>
     <v-app-bar color="primary" density="compact">
         <v-app-bar-nav-icon @click="isLeftNavDrawerShow = !isLeftNavDrawerShow" />
-        <v-app-bar-title class="font-weight-bold cursor-pointer" @click="routeToIndex">
-            URDOC
-        </v-app-bar-title>
+        <v-app-bar-title class="font-weight-bold cursor-pointer"> URDOC </v-app-bar-title>
         <v-spacer />
-        <v-btn @click="routeToIndex">首页</v-btn>
-        <v-btn class="font-weight-bold" @click="routeToGuide">开诊</v-btn>
+        <v-btn to="/">首页</v-btn>
+        <v-btn to="/blog">博客</v-btn>
+        <v-btn class="font-weight-bold" to="/guide" size="x-large">开诊</v-btn>
     </v-app-bar>
+    <!-- 手机模式底部弹出 -->
     <!-- <v-navigation-drawer
         v-model="isLeftNavDrawerShow"
         :location="$vuetify.display.mobile ? 'bottom' : undefined"
     > -->
     <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4">
-        <v-list-item
-            prepend-icon="mdi-wrench-outline"
-            class="font-weight-bold"
-            @click="routeToGenCase"
+        <v-list-item prepend-icon="mdi-wrench-outline" class="font-weight-bold" to="/gencase"
             >生成病例</v-list-item
         >
         <v-list-item
             prepend-icon="mdi-account-injury-outline"
             class="font-weight-bold"
-            @click="routeToSimPatient"
+            to="/simpatient"
         >
             模拟问诊
         </v-list-item>
@@ -38,19 +35,4 @@
 
 <script setup>
 const isLeftNavDrawerShow = ref(false)
-const router = useRouter()
-
-function routeToIndex() {
-    router.push('/')
-}
-function routeToGenCase() {
-    router.push('/gencase')
-}
-function routeToSimPatient() {
-    router.push('/simpatient')
-}
-
-function routeToGuide() {
-    router.push('/guide')
-}
 </script>

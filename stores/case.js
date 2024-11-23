@@ -48,7 +48,11 @@ export const useCaseStore = defineStore('case', () => {
     })
 
     function updateSimCaseJson(caseJson) {
-        simCaseJson.value = JSON.parse(caseJson)
+        if (caseJson.includes('```json')) {
+            simCaseJson.value = JSON.parse(caseJson.replace(/^```json\s*(.*?)\s*```$/, '$1'))
+        } else {
+            simCaseJson.value = JSON.parse(caseJson)
+        }
     }
     return { simCase, simCaseJson, updateSimCaseJson }
 })
