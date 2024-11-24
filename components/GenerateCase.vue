@@ -89,7 +89,6 @@ async function genCase() {
     ]
 
     await getResponse(messages)
-    message.value = message.value.split('\n').slice(1, -1).join('\n')
     updateSimCaseJson(message.value)
     isLoading.value = false
 }

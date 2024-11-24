@@ -1,3 +1,4 @@
+import { jsonrepair } from 'jsonrepair'
 export const useCaseStore = defineStore('case', () => {
     const simCase = ref(`
   **姓名**：张晓红
@@ -48,11 +49,11 @@ export const useCaseStore = defineStore('case', () => {
     })
 
     function updateSimCaseJson(caseJson) {
-        if (caseJson.includes('```json')) {
-            simCaseJson.value = JSON.parse(caseJson.replace(/^```json\s*(.*?)\s*```$/, '$1'))
-        } else {
-            simCaseJson.value = JSON.parse(caseJson)
-        }
+        console.log(caseJson)
+        const fixedCaseJson = caseJson.includes('```json') ? caseJson.slice(7, -3) : caseJson
+        console.log(fixedCaseJson)
+        const repairedCaseJson = jsonrepair(fixedCaseJson)
+        simCaseJson.value = JSON.parse(repairedCaseJson)
     }
     return { simCase, simCaseJson, updateSimCaseJson }
 })
