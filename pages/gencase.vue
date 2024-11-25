@@ -1,8 +1,6 @@
 <template>
-    <v-container>
-        <v-row>
-            <v-col> <ShowInfo /></v-col>
-            <v-col> <GenerateCase /></v-col>
-        </v-row>
-    </v-container>
+    <v-sheet class="d-sm-flex">
+        <CaseShowDetail />
+        <CaseGenerateInterface />
+    </v-sheet>
 </template>

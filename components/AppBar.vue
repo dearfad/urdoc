@@ -4,7 +4,6 @@
         <v-app-bar-title class="font-weight-bold cursor-pointer"> URDOC </v-app-bar-title>
         <v-spacer />
         <v-btn to="/">首页</v-btn>
-        <v-btn to="/blog">博客</v-btn>
         <v-btn class="font-weight-bold" to="/guide" size="x-large">开诊</v-btn>
     </v-app-bar>
     <!-- 手机模式底部弹出 -->
