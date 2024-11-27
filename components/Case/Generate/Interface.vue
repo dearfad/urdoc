@@ -99,7 +99,4 @@ async function genCase() {
 }
 
 const { currentGenCaseField } = storeToRefs(stateStore)
-watch(currentGenCaseField, () => {
-    console.log(currentGenCaseField.value)
-})
 </script>

@@ -15,7 +15,7 @@
         <v-list-item prepend-icon="mdi-wrench-outline" class="font-weight-bold" to="/gencase"
             >生成病例</v-list-item
         >
-        <v-list-item prepend-icon="mdi-book-open-outline" class="font-weight-bold"
+        <v-list-item prepend-icon="mdi-book-open-outline" class="font-weight-bold" to="/genstory"
             >编写故事</v-list-item
         >
         <v-list-item prepend-icon="mdi-ab-testing" class="font-weight-bold">设计问题</v-list-item>
