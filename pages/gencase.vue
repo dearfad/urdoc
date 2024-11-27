@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="d-sm-flex">
+    <v-sheet class="d-flex flex-column">
         <CaseShowDetail />
         <CaseGenerateInterface />
     </v-sheet>

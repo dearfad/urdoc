@@ -15,6 +15,10 @@
         <v-list-item prepend-icon="mdi-wrench-outline" class="font-weight-bold" to="/gencase"
             >生成病例</v-list-item
         >
+        <v-list-item prepend-icon="mdi-book-open-outline" class="font-weight-bold"
+            >编写故事</v-list-item
+        >
+        <v-list-item prepend-icon="mdi-ab-testing" class="font-weight-bold">设计问题</v-list-item>
         <v-list-item
             prepend-icon="mdi-account-injury-outline"
             class="font-weight-bold"
@@ -22,10 +26,6 @@
         >
             模拟问诊
         </v-list-item>
-        <v-list-item prepend-icon="mdi-book-open-outline" class="font-weight-bold"
-            >编写故事</v-list-item
-        >
-        <v-list-item prepend-icon="mdi-ab-testing" class="font-weight-bold">设计问题</v-list-item>
         <v-list-item prepend-icon="mdi-shield-star-outline" class="font-weight-bold"
             >评估能力</v-list-item
         >
