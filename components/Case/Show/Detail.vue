@@ -10,97 +10,109 @@
         <v-sheet class="ma-2 pa-2">
             <v-text-field
                 v-model="simCaseJson.姓名"
-                prefix="姓名："
+                class="my-4"
+                label="姓名"
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-text-field
                 v-model="simCaseJson.性别"
-                prefix="性别："
+                class="my-4"
+                label="性别"
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-text-field
                 v-model="simCaseJson.年龄"
-                prefix="年龄："
+                class="my-4"
+                label="年龄"
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-text-field
                 v-model="simCaseJson.主诉"
-                prefix="主诉："
+                label="主诉"
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.现病史"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="现病史："
+                label="现病史"
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.既往史"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="既往史："
+                label="既往史"
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.查体"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="查体："
+                label="查体："
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.专科查体"
                 rows="1"
+                class="my-4"
                 auto-grow
-                prefix="专科查体："
+                label="专科查体："
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.辅助检查"
                 rows="1"
+                class="my-4"
                 auto-grow
-                prefix="辅助检查："
+                label="辅助检查："
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.诊断"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="诊断："
+                label="诊断："
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.治疗"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="治疗："
+                label="治疗："
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.手术"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="手术："
+                label="手术："
                 :variant="varTextField"
                 hide-details="auto"
             />
             <v-textarea
                 v-model="simCaseJson.病理"
+                class="my-4"
                 rows="1"
                 auto-grow
-                prefix="病理："
+                label="病理："
                 :variant="varTextField"
                 hide-details="auto"
             />
