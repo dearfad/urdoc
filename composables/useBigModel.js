@@ -2,6 +2,10 @@ export default function () {
     const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
     const modelStore = useModelStore()
     const { simModel } = storeToRefs(modelStore)
+
+    const stateStore = useStateStore()
+    const { currentGenCaseField } = storeToRefs(stateStore)
+
     const message = ref('')
     async function getResponse(messages) {
         message.value = ''
@@ -20,6 +24,8 @@ export default function () {
             responseType: 'stream',
         })
 
+        let n = 0
+        currentGenCaseField.value = ''
         //
         // // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
         const reader = response.pipeThrough(new TextDecoderStream()).getReader()
@@ -38,6 +44,29 @@ export default function () {
                         const jsonData = JSON.parse(jsonDataStr)
                         const content = jsonData.choices[0].delta.content
                         message.value = message.value + content
+
+                        // 更新病例生成状态
+                        const genCaseField = [
+                            '姓名',
+                            '性别',
+                            '年龄',
+                            '主诉',
+                            '现病史',
+                            '既往史',
+                            '查体',
+                            '专科查体',
+                            '辅助检查',
+                            '诊断',
+                            '治疗',
+                            '手术',
+                            '病理',
+                        ]
+
+                        if (message.value.includes(genCaseField[n])) {
+                            currentGenCaseField.value = genCaseField[n]
+                            n++
+                        }
+                        //
                     } catch (err) {
                         console.log(err)
                     }

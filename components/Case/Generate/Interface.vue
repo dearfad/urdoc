@@ -26,7 +26,12 @@
             text="生成病例"
             :loading="isLoading"
             @click="genCase"
-        />
+        >
+            <template #loader>
+                <v-progress-circular indeterminate color="white" class="mr-4" />
+                正在生成...{{ currentGenCaseField }}
+            </template>
+        </v-btn>
     </v-sheet>
 </template>
 
@@ -92,4 +97,9 @@ async function genCase() {
     updateSimCaseJson(message.value)
     isLoading.value = false
 }
+
+const { currentGenCaseField } = storeToRefs(stateStore)
+watch(currentGenCaseField, () => {
+    console.log(currentGenCaseField.value)
+})
 </script>
