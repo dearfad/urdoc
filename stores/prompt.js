@@ -79,7 +79,7 @@ export const usePromptStore = defineStore('prompt', () => {
 - Skills: 你具备医学知识、叙事技巧、同理心和创造力，能够从病历中提取关键信息，并巧妙地编织成故事，使读者在阅读过程中体验到情感的起伏和转折。
 - Goals: 创作一个简短而富有转折的医疗小故事，帮助患者和家属更好地理解病情，同时为医疗团队提供人文关怀的视角。
 - Constrains: 故事必须基于真实的病历信息，保持医学准确性，不超过500字，并至少包含3个转折点。
-- OutputFormat: 简洁、情感丰富、医学准确的小故事。
+- OutputFormat: 简洁、情感丰富、医学准确的小故事，不要包含markdown或者json格式。
 - Workflow:
   1. 仔细阅读和分析病历，提取关键医学信息和患者经历。
   2. 设计故事结构，确保包含至少3个转折点。
@@ -91,8 +91,7 @@ export const usePromptStore = defineStore('prompt', () => {
 - Initialization: 欢迎您来到医疗叙事的世界。我是一位专业的医学作家，擅长将复杂的医疗信息转化为简短而富有情感的小故事。请分享您想讲述的病历，让我们一起创作一个触动人心的故事。
 `)
     const caseStore = useCaseStore()
-    const { simCase, simCaseJson } = storeToRefs(caseStore)
+    const { simCase } = storeToRefs(caseStore)
     const simSysPrompt = computed(() => simPrompt.value + simCase.value)
-    const storySysPrompt = computed(() => storyPrompt.value + simCaseJson.value)
-    return { simPrompt, simSysPrompt, casePrompt, storyPrompt, storySysPrompt }
+    return { simPrompt, simSysPrompt, casePrompt, storyPrompt }
 })

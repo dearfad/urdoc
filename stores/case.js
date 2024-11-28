@@ -34,9 +34,9 @@ export const useCaseStore = defineStore('case', () => {
     })
 
     function updateSimCaseJson(caseJson) {
-        console.log(caseJson)
+        // console.log(caseJson)
         const fixedCaseJson = caseJson.includes('```json') ? caseJson.slice(7, -3) : caseJson
-        console.log(fixedCaseJson)
+        // console.log(fixedCaseJson)
         const repairedCaseJson = jsonrepair(fixedCaseJson)
         simCaseJson.value = JSON.parse(repairedCaseJson)
     }

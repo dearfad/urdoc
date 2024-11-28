@@ -7,18 +7,26 @@
 const keyPoint = ref('真实')
 const isLoading = ref(false)
 const promptStore = usePromptStore()
-const { storySysPrompt } = storeToRefs(promptStore)
+const { storyPrompt } = storeToRefs(promptStore)
+const caseStore = useCaseStore()
+const { simCaseJson } = storeToRefs(caseStore)
 
 const bigModel = useBigModel()
 const { getStory } = bigModel
 
 async function genStory() {
     isLoading.value = true
+
+    let markdown = ''
+    for (const key in simCaseJson.value) {
+        const value = simCaseJson.value[key]
+        markdown += `**${key}**: ${value}\n`
+    }
     const messages = [
-        { role: 'system', content: storySysPrompt.value },
+        { role: 'system', content: storyPrompt.value },
         {
             role: 'user',
-            content: keyPoint.value,
+            content: markdown + keyPoint.value,
         },
     ]
 

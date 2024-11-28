@@ -18,7 +18,7 @@
     "jsonrepair": "^3.11.0",
     "nuxt": "^3.14.1592",
     "nuxt-cloudflare-analytics": "^1.0.8",
-    "pinia": "^2.2.6",
+    "pinia": "^2.2.7",
     "vue": "latest",
     "vue-router": "latest",
     "vuetify-nuxt-module": "^0.18.3"

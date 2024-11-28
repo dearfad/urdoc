@@ -86,8 +86,6 @@ export default function () {
     async function getStory(messages) {
         story.value = ''
 
-        console.log(messages)
-
         const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
             method: 'POST',
             headers: {
