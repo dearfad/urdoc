@@ -1,5 +1,7 @@
 <template>
-    <v-footer app color="secondary">
-        <div class="mx-auto text-caption">2024 - 虚拟病例研究所</div>
+    <v-footer app>
+        <div class="mx-auto text-caption">
+            {{ new Date().getFullYear() }} - 虚拟病例研究所 - Ver 0.0.1
+        </div>
     </v-footer>
 </template>

@@ -1,39 +1,36 @@
 <template>
-    <v-app-bar color="primary" density="compact">
+    <v-app-bar elevation="0" density="compact">
         <v-app-bar-nav-icon @click="isLeftNavDrawerShow = !isLeftNavDrawerShow" />
-        <v-app-bar-title class="font-weight-bold cursor-pointer"> URDOC </v-app-bar-title>
+        <v-app-bar-title class="font-weight-bold"> URDOC </v-app-bar-title>
         <v-spacer />
-        <v-btn to="/">首页</v-btn>
-        <v-btn class="font-weight-bold" to="/guide" size="x-large">开诊</v-btn>
+        <template #append>
+            <v-btn icon="mdi-dots-vertical" @click="isRightNavDrawerShow = !isRightNavDrawerShow" />
+        </template>
     </v-app-bar>
-    <!-- 手机模式底部弹出 -->
-    <!-- <v-navigation-drawer
-        v-model="isLeftNavDrawerShow"
-        :location="$vuetify.display.mobile ? 'bottom' : undefined"
-    > -->
     <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4">
-        <v-list-item prepend-icon="mdi-wrench-outline" class="font-weight-bold" to="/gencase"
-            >生成病例</v-list-item
-        >
-        <v-list-item prepend-icon="mdi-book-open-outline" class="font-weight-bold" to="/genstory"
-            >编写故事</v-list-item
-        >
-        <v-list-item prepend-icon="mdi-ab-testing" class="font-weight-bold" to="/gentest"
-            >设计问题</v-list-item
-        >
-        <v-list-item
-            prepend-icon="mdi-account-injury-outline"
-            class="font-weight-bold"
-            to="/simpatient"
-        >
-            模拟问诊
-        </v-list-item>
-        <v-list-item prepend-icon="mdi-shield-star-outline" class="font-weight-bold" to="/simask"
-            >评估能力</v-list-item
-        >
+        <v-list>
+            <v-divider />
+            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
+                专题研究
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-wrench-outline" to="/gencase" title="生成病例" />
+            <v-list-item prepend-icon="mdi-book-open-outline" to="/genstory" title="编写故事" />
+            <v-list-item prepend-icon="mdi-ab-testing" to="/gentest" title="设计问题" />
+            <v-list-item prepend-icon="mdi-account-outline" to="/simpatient" title="模拟问诊" />
+            <v-list-item prepend-icon="mdi-shield-star-outline" to="/simask" title="评估能力" />
+            <v-divider />
+            <v-list-item prepend-icon="mdi-account-details" class="font-weight-bold">
+                个人中心
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+    <v-navigation-drawer v-model="isRightNavDrawerShow" location="end" class="pa-4" rail>
+        <v-btn to="/" icon="mdi-home" variant="plain" :ripple="false" />
+        <!-- <v-btn class="font-weight-bold" to="/guide" size="x-large">开诊</v-btn> -->
     </v-navigation-drawer>
 </template>
 
 <script setup>
 const isLeftNavDrawerShow = ref(false)
+const isRightNavDrawerShow = ref(false)
 </script>
