@@ -48,7 +48,7 @@ const isLoading = ref(false)
 
 const bigModel = useBigModel()
 const { message } = storeToRefs(bigModel)
-const { getResponse } = bigModel
+const { getCase } = bigModel
 
 // 全局病例
 const caseStore = useCaseStore()
@@ -93,7 +93,7 @@ async function genCase() {
         },
     ]
 
-    await getResponse(messages)
+    await getCase(messages)
     updateSimCaseJson(message.value)
     isLoading.value = false
 }

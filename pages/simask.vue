@@ -1,7 +1,6 @@
 <template>
     <v-sheet class="d-flex flex-column overflow-auto">
-        <SimShowCaseInfo />
-        <SimShowChatMessages />
-        <SimSendMessage />
+        <AskShowChatMessages />
+        <AskSendInterface />
     </v-sheet>
 </template>

@@ -39,8 +39,14 @@ const { messages } = storeToRefs(messageStore)
 const { addMessage } = messageStore
 
 const bigModel = useBigModel()
-const { message: response } = storeToRefs(bigModel)
+const { message } = storeToRefs(bigModel)
 const { getResponse } = bigModel
+
+const promptStore = usePromptStore()
+const { simPrompt } = storeToRefs(promptStore)
+
+const caseStore = useCaseStore()
+const { simCaseJson } = storeToRefs(caseStore)
 
 const keepInputFocus = ref(false)
 
@@ -71,15 +77,23 @@ async function sendPrompt() {
     isReceiving.value = true
     addMessage({ role: 'user', content: prompt.value })
     prompt.value = ''
-    const message = { role: 'assistant', content: '' }
+    const msg = { role: 'assistant', content: '' }
     await getResponse(messages.value)
-    message.content = response.value
-    addMessage(message)
+    msg.content = message.value
+    addMessage(msg)
     isReceiving.value = false
 }
 
 function firstChat() {
     isFirst.value = false
+
+    let markdown = ''
+    for (const key in simCaseJson.value) {
+        const value = simCaseJson.value[key]
+        markdown += `**${key}**: ${value}\n`
+    }
+
+    addMessage({ role: 'system', content: simPrompt.value + markdown })
     prompt.value = '哪里不舒服？'
     sendPrompt()
 }

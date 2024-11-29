@@ -6,7 +6,7 @@
         </v-card-item>
         <v-card-text class="text-h6">
             是通过大语言模型<span class="font-weight-bold"
-                >生成病例、模拟问诊、编写故事、设计问题和评估能力</span
+                >生成病例、编写故事、设计问题、模拟问诊和评估能力</span
             >为一体的虚拟病例研究平台。
         </v-card-text>
         <v-img max-width="250" class="mx-auto" src="/heroimage.jpg" />
