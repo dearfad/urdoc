@@ -1,21 +1,27 @@
 <template>
-    <v-sheet class="generateCaseContainer pa-8">
+    <v-sheet class="generateCaseContainer">
         <v-select
             v-model="selectedBook"
             label="教科书"
             :items="['任意', ...books]"
             variant="outlined"
+            class="my-4"
+            hide-details="auto"
         />
         <v-select
             v-model="selectedChapter"
             label="章节"
             :items="bookChatpers[selectedBook]"
             variant="outlined"
+            class="my-4"
+            hide-details="auto"
         />
         <v-text-field
             v-model="keyPoint"
             label="要点"
             variant="outlined"
+            class="my-4"
+            hide-details="auto"
             @focus="handleFocus"
             @blur="handleBlur"
         />

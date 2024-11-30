@@ -11,13 +11,7 @@
         </v-card-text>
         <v-img max-width="250" class="mx-auto" src="/heroimage.jpg" />
         <v-card-actions>
-            <v-btn
-                class="mx-auto font-weight-bold"
-                size="x-large"
-                variant="outlined"
-                block
-                @click="routeToGenCase"
-            >
+            <v-btn class="mx-auto font-weight-bold" size="x-large" @click="routeToGenCase">
                 开始
             </v-btn>
         </v-card-actions>
