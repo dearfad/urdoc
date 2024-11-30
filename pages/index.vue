@@ -11,16 +11,7 @@
         </v-card-text>
         <v-img max-width="250" class="mx-auto" src="/heroimage.jpg" />
         <v-card-actions>
-            <v-btn class="mx-auto font-weight-bold" size="x-large" @click="routeToGenCase">
-                开始
-            </v-btn>
+            <v-btn class="mx-auto font-weight-bold" size="x-large" to="/guide"> 开始 </v-btn>
         </v-card-actions>
     </v-card>
 </template>
-
-<script setup>
-const router = useRouter()
-function routeToGenCase() {
-    router.push('/guide')
-}
-</script>

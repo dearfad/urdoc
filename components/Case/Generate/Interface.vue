@@ -3,15 +3,34 @@
         <v-select
             v-model="selectedBook"
             label="教科书"
-            :items="['任意', ...books]"
+            :items="books"
             variant="outlined"
             class="my-4"
             hide-details="auto"
+            @update:model-value="handleBookChange"
         />
         <v-select
             v-model="selectedChapter"
             label="章节"
-            :items="bookChatpers[selectedBook]"
+            :items="chapters"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            @update:model-value="handleChapterChange"
+        />
+        <v-select
+            v-model="selectedSection"
+            label="节次"
+            :items="sections"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            @update:model-value="handleSectionChange"
+        />
+        <v-select
+            v-model="selectedSubsection"
+            label="子节"
+            :items="subsections"
             variant="outlined"
             class="my-4"
             hide-details="auto"
@@ -44,11 +63,51 @@
 <script setup>
 const selectedBook = ref('任意')
 const selectedChapter = ref('任意')
+const selectedSection = ref('任意')
+const selectedSubsection = ref('任意')
 const keyPoint = ref('')
-const books = reactive(['外科学', '内科学', '妇科学', '儿科学', '神经病学'])
 
-const constStore = useConstStore()
-const { bookChatpers } = constStore
+const chapterStore = useChapterStore()
+const { chapter } = storeToRefs(chapterStore)
+const books = computed(() => {
+    return ['任意', ...Object.keys(chapter.value)]
+})
+
+function handleBookChange() {
+    selectedChapter.value = '任意'
+    selectedSection.value = '任意'
+    selectedSubsection.value = '任意'
+}
+
+const chapters = computed(() => {
+    return selectedBook.value == '任意'
+        ? ['任意']
+        : ['任意', ...Object.keys(chapter.value[selectedBook.value])]
+})
+function handleChapterChange() {
+    selectedSection.value = '任意'
+    selectedSubsection.value = '任意'
+}
+const sections = computed(() => {
+    return selectedChapter.value == '任意' ||
+        chapter.value[selectedBook.value][selectedChapter.value] == {}
+        ? ['任意']
+        : ['任意', ...Object.keys(chapter.value[selectedBook.value][selectedChapter.value])]
+})
+
+function handleSectionChange() {
+    selectedSubsection.value = '任意'
+}
+
+const subsections = computed(() => {
+    return selectedSection.value == '任意' ||
+        chapter.value[selectedBook.value][selectedChapter.value][selectedSection.value] == []
+        ? ['任意']
+        : [
+              '任意',
+              ...chapter.value[selectedBook.value][selectedChapter.value][selectedSection.value],
+          ]
+})
 
 const isLoading = ref(false)
 
@@ -95,7 +154,16 @@ async function genCase() {
         { role: 'system', content: casePrompt.value },
         {
             role: 'user',
-            content: selectedBook.value + ',' + selectedChapter.value + ',' + keyPoint.value,
+            content:
+                selectedBook.value +
+                ',' +
+                selectedChapter.value +
+                ',' +
+                selectedSection.value +
+                ',' +
+                selectedSubsection.value +
+                ',' +
+                keyPoint.value,
         },
     ]
 
