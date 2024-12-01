@@ -1,8 +1,9 @@
 <template>
     <v-card
+        v-if="simCaseJson"
         :title="simCaseJson['姓名']"
         :subtitle="simCaseJson['主诉']"
-        :prepend-icon="simCaseJson ? 'mdi-human-female' : ''"
+        prepend-icon="mdi-human-female"
     >
         <v-timeline direction="horizontal" side="end" density="compact">
             <v-timeline-item
@@ -20,7 +21,7 @@
             <v-timeline-item
                 icon="mdi-ab-testing"
                 class="cursor-pointer"
-                dot-color="grey"
+                :dot-color="test ? 'green' : 'grey'"
                 @click="router.push('/gentest')"
             />
             <v-timeline-item
@@ -44,5 +45,7 @@ const caseStore = useCaseStore()
 const { simCaseJson } = storeToRefs(caseStore)
 const storyStore = useStoryStore()
 const { story } = storeToRefs(storyStore)
+const testStore = useTestStore()
+const { test } = storeToRefs(testStore)
 const router = useRouter()
 </script>

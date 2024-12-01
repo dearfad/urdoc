@@ -1,6 +1,6 @@
 <template>
     <v-text-field v-model="keyPoint" label="设定" />
-    <v-btn :loading="isLoading" @click="genTest">生成问题</v-btn>
+    <v-btn :loading="isLoading" block @click="genTest">生成问题</v-btn>
 </template>
 
 <script setup>

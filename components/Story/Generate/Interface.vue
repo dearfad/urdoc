@@ -1,6 +1,6 @@
 <template>
     <v-text-field v-model="keyPoint" label="设定" placeholder="真实" />
-    <v-btn :loading="isLoading" @click="genStory">生成故事</v-btn>
+    <v-btn :loading="isLoading" block @click="genStory">生成故事</v-btn>
 </template>
 
 <script setup>

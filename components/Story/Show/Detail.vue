@@ -1,5 +1,5 @@
 <template>
-    <v-textarea v-model="story" readonly auto-grow />
+    <v-textarea v-model="story" readonly auto-grow variant="solo" />
 </template>
 
 <script setup>

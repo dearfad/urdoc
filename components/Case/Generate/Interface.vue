@@ -1,63 +1,69 @@
 <template>
-    <v-sheet class="generateCaseContainer">
-        <v-select
-            v-model="selectedBook"
-            label="教科书"
-            :items="books"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @update:model-value="handleBookChange"
-        />
-        <v-select
-            v-model="selectedChapter"
-            label="章节"
-            :items="chapters"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @update:model-value="handleChapterChange"
-        />
-        <v-select
-            v-model="selectedSection"
-            label="节次"
-            :items="sections"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @update:model-value="handleSectionChange"
-        />
-        <v-select
-            v-model="selectedSubsection"
-            label="子节"
-            :items="subsections"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-        />
-        <v-text-field
-            v-model="keyPoint"
-            label="要点"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @focus="handleFocus"
-            @blur="handleBlur"
-        />
-        <v-btn
-            size="x-large"
-            block
-            class="generateCaseBottom font-weight-bold"
-            text="生成病例"
-            :loading="isLoading"
-            @click="genCase"
-        >
-            <template #loader>
-                <v-progress-circular indeterminate color="white" class="mr-4" />
-                正在生成...{{ currentGenCaseField }}
-            </template>
-        </v-btn>
-    </v-sheet>
+    <v-expansion-panels class="pt-4">
+        <v-expansion-panel title="生成病例">
+            <v-expansion-panel-text>
+                <v-sheet class="generateCaseContainer">
+                    <v-select
+                        v-model="selectedBook"
+                        label="教科书"
+                        :items="books"
+                        variant="outlined"
+                        class="my-4"
+                        hide-details="auto"
+                        @update:model-value="handleBookChange"
+                    />
+                    <v-select
+                        v-model="selectedChapter"
+                        label="章节"
+                        :items="chapters"
+                        variant="outlined"
+                        class="my-4"
+                        hide-details="auto"
+                        @update:model-value="handleChapterChange"
+                    />
+                    <v-select
+                        v-model="selectedSection"
+                        label="节次"
+                        :items="sections"
+                        variant="outlined"
+                        class="my-4"
+                        hide-details="auto"
+                        @update:model-value="handleSectionChange"
+                    />
+                    <v-select
+                        v-model="selectedSubsection"
+                        label="子节"
+                        :items="subsections"
+                        variant="outlined"
+                        class="my-4"
+                        hide-details="auto"
+                    />
+                    <v-text-field
+                        v-model="keyPoint"
+                        label="要点"
+                        variant="outlined"
+                        class="my-4"
+                        hide-details="auto"
+                        @focus="handleFocus"
+                        @blur="handleBlur"
+                    />
+                    <v-btn
+                        size="x-large"
+                        block
+                        class="generateCaseBottom font-weight-bold"
+                        text="生成病例"
+                        :loading="isLoading"
+                        @click="genCase"
+                    >
+                        <template #loader>
+                            <v-progress-circular indeterminate color="white" class="mr-4" />
+                            正在生成...{{ currentGenCaseField }}
+                        </template>
+                    </v-btn>
+                </v-sheet>
+            </v-expansion-panel-text>
+        </v-expansion-panel>
+    </v-expansion-panels>
 </template>
 
 <script setup>
