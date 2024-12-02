@@ -1,7 +1,9 @@
 <template>
     <v-app-bar elevation="0" density="compact">
         <v-app-bar-nav-icon @click="isLeftNavDrawerShow = !isLeftNavDrawerShow" />
-        <v-app-bar-title class="font-weight-bold"> URDOC </v-app-bar-title>
+        <v-app-bar-title class="font-weight-bold cursor-pointer" @click="router.push('/')">
+            URDOC
+        </v-app-bar-title>
         <v-spacer />
         <v-btn to="/guide">帮助</v-btn>
         <template #append>
@@ -10,6 +12,14 @@
     </v-app-bar>
     <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4">
         <v-list>
+            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
+                介绍
+            </v-list-item>
+            <v-list-item
+                prepend-icon="mdi-timeline-question-outline"
+                to="/guide"
+                title="使用流程"
+            />
             <v-divider />
             <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
                 专题研究
@@ -34,4 +44,5 @@
 <script setup>
 const isLeftNavDrawerShow = ref(false)
 const isRightNavDrawerShow = ref(false)
+const router = useRouter()
 </script>
