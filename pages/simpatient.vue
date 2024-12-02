@@ -2,7 +2,8 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <CommonCurPatient />
+                <CommonCurrentPatient />
+                <CommonCurrentPatientNotExist />
             </v-col>
         </v-row>
         <v-row>
@@ -12,9 +13,4 @@
             </v-col>
         </v-row>
     </v-container>
-    <!-- <v-sheet class="d-flex flex-column overflow-auto">
-        <SimShowCaseInfo />
-
-
-    </v-sheet> -->
 </template>
