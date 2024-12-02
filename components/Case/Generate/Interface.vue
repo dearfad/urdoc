@@ -1,6 +1,6 @@
 <template>
-    <v-expansion-panels v-model="expanel" class="pt-4">
-        <v-expansion-panel title="生成病例" value="gcase">
+    <v-expansion-panels v-model="panelExpandState" class="pt-4">
+        <v-expansion-panel title="生成病例" value="genCasePanel">
             <v-expansion-panel-text>
                 <v-sheet class="generateCaseContainer">
                     <v-select
@@ -72,7 +72,9 @@ const selectedChapter = ref('任意')
 const selectedSection = ref('任意')
 const selectedSubsection = ref('任意')
 const keyPoint = ref('')
-const expanel = ref('gcase')
+const panelExpandState = ref(['genCasePanel'])
+
+const { mdAndUp } = useDisplay()
 
 const chapterStore = useChapterStore()
 const { chapter } = storeToRefs(chapterStore)
@@ -177,6 +179,10 @@ async function genCase() {
     await getCase(messages)
     updateSimCaseJson(message.value)
     isLoading.value = false
+    if (!mdAndUp.value) {
+        console.log(mdAndUp.value)
+        panelExpandState.value = ['']
+    }
 }
 
 const { currentGenCaseField } = storeToRefs(stateStore)

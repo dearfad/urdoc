@@ -3,6 +3,7 @@
         <v-app-bar-nav-icon @click="isLeftNavDrawerShow = !isLeftNavDrawerShow" />
         <v-app-bar-title class="font-weight-bold"> URDOC </v-app-bar-title>
         <v-spacer />
+        <v-btn to="/guide">帮助</v-btn>
         <template #append>
             <v-btn icon="mdi-dots-vertical" @click="isRightNavDrawerShow = !isRightNavDrawerShow" />
         </template>
