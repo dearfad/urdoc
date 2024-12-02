@@ -1,6 +1,6 @@
 <template>
-    <v-expansion-panels class="pt-4">
-        <v-expansion-panel title="生成病例">
+    <v-expansion-panels v-model="expanel" class="pt-4">
+        <v-expansion-panel title="生成病例" value="gcase">
             <v-expansion-panel-text>
                 <v-sheet class="generateCaseContainer">
                     <v-select
@@ -72,6 +72,7 @@ const selectedChapter = ref('任意')
 const selectedSection = ref('任意')
 const selectedSubsection = ref('任意')
 const keyPoint = ref('')
+const expanel = ref('gcase')
 
 const chapterStore = useChapterStore()
 const { chapter } = storeToRefs(chapterStore)
