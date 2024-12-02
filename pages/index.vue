@@ -10,10 +10,16 @@
                 >生成病例、编写故事、设计问题、模拟问诊和评估能力</span
             >为一体的虚拟病例研究平台。
         </v-card-text>
-        <v-card-actions>
-            <v-btn class="mx-auto font-weight-bold w-25" size="x-large" to="/gencase" rounded="lg">
-                开始
+        <template #actions>
+            <v-btn
+                class="mx-auto font-weight-bold px-16"
+                size="x-large"
+                to="/gencase"
+                rounded="lg"
+                variant="outlined"
+            >
+                开始生成
             </v-btn>
-        </v-card-actions>
+        </template>
     </v-card>
 </template>
