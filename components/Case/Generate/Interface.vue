@@ -39,7 +39,7 @@
                         hide-details="auto"
                     />
                     <v-text-field
-                        v-model="keyPoint"
+                        v-model="genCaseKeyPoint"
                         label="要点"
                         variant="outlined"
                         class="my-4"
@@ -67,11 +67,10 @@
 </template>
 
 <script setup>
-const selectedBook = ref('任意')
-const selectedChapter = ref('任意')
-const selectedSection = ref('任意')
-const selectedSubsection = ref('任意')
-const keyPoint = ref('')
+const stateStore = useStateStore()
+const { selectedBook, selectedChapter, selectedSection, selectedSubsection, genCaseKeyPoint } =
+    storeToRefs(stateStore)
+
 const panelExpandState = ref(['genCasePanel'])
 
 const { mdAndUp } = useDisplay()
@@ -132,7 +131,7 @@ const promptStore = usePromptStore()
 const { casePrompt } = storeToRefs(promptStore)
 
 // 手机输入法遮挡滚动
-const stateStore = useStateStore()
+
 const { isInputFocused } = storeToRefs(stateStore)
 const goTo = useGoTo()
 
@@ -172,7 +171,7 @@ async function genCase() {
                 ',' +
                 selectedSubsection.value +
                 ',' +
-                keyPoint.value,
+                genCaseKeyPoint.value,
         },
     ]
 

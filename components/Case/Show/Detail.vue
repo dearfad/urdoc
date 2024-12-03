@@ -109,11 +109,31 @@
             hide-details="auto"
         />
     </v-sheet>
+    <v-sheet class="my-2">
+        <v-chip variant="text" class="px-1">标签:</v-chip>
+        <v-chip v-if="selectedBook != '任意'" variant="outlined" class="ma-1">
+            {{ selectedBook }}
+        </v-chip>
+        <v-chip v-if="selectedChapter != '任意'" variant="outlined" class="ma-1">
+            {{ selectedChapter }}
+        </v-chip>
+        <v-chip v-if="selectedSection != '任意'" variant="outlined" class="ma-1">
+            {{ selectedSection }}
+        </v-chip>
+        <v-chip v-if="selectedSubsection != '任意'" variant="outlined" class="ma-1">
+            {{ selectedSubsection }}
+        </v-chip>
+        <v-chip v-if="genCaseKeyPoint != ''" variant="outlined" class="ma-1">
+            {{ genCaseKeyPoint }}
+        </v-chip>
+    </v-sheet>
 </template>
 
 <script setup>
 const caseStore = useCaseStore()
 const { simCaseJson } = storeToRefs(caseStore)
-
+const stateStore = useStateStore()
+const { selectedBook, selectedChapter, selectedSection, selectedSubsection, genCaseKeyPoint } =
+    storeToRefs(stateStore)
 const varTextField = ref('outlined')
 </script>
