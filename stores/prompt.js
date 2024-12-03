@@ -14,6 +14,7 @@ export const usePromptStore = defineStore('prompt', () => {
           2. 只提供病例资料，不要有其他文字。
           3. 如果是乳房疾病手术了，病理结果必须包含ER、PR、HER-2、Ki67这四项结果。
           4. 如果乳腺癌行腋窝清扫，病理必须包含腋窝淋巴结转移情况。
+          5. 每次只输出一个病例资料，不要输出多个病例资料。
         - OutputFormat: 您应该始终输出一个有效的JSON对象，请严格按照<Example>并使用指定的JSON对象结构，不要输出Python代码或其他信息，第一个字符必须是'{'，不要使用markdown代码块。
         - Workflow:
           1. 确定病例的基本信息，包括姓名、性别、年龄。

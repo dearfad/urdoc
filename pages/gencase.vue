@@ -3,7 +3,6 @@
         <v-row>
             <v-col cols="12">
                 <CommonCurrentPatient />
-                <CommonCurrentPatientNotExist />
             </v-col>
         </v-row>
         <v-row>

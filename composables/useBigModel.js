@@ -61,7 +61,7 @@ export default function () {
                         const jsonData = JSON.parse(jsonDataStr)
                         const content = jsonData.choices[0].delta.content
                         message.value = message.value + content
-
+                        // console.log(message.value)
                         // 更新病例生成状态
                         const genCaseField = [
                             '姓名',
