@@ -37,12 +37,25 @@
     </v-navigation-drawer>
     <v-navigation-drawer v-model="isRightNavDrawerShow" location="end" class="pa-4" rail>
         <v-btn to="/" icon="mdi-home" variant="plain" :ripple="false" />
-        <!-- <v-btn class="font-weight-bold" to="/guide" size="x-large">开诊</v-btn> -->
+        <v-btn
+            icon="mdi-theme-light-dark"
+            variant="plain"
+            :ripple="false"
+            @click="theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'"
+        />
+        <v-btn
+            href="https://github.com/dearfad/urdoc"
+            target="_blank"
+            icon="mdi-github"
+            variant="plain"
+            :ripple="false"
+        />
     </v-navigation-drawer>
 </template>
 
 <script setup>
 const isLeftNavDrawerShow = ref(false)
 const isRightNavDrawerShow = ref(false)
+const theme = useTheme()
 const router = useRouter()
 </script>

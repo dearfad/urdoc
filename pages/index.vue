@@ -1,5 +1,5 @@
 <template>
-    <v-card class="text-center mx-auto" variant="flat">
+    <v-card class="text-center mx-auto h-100" variant="flat">
         <v-card-item>
             <v-card-title class="text-h2 font-weight-bold text-blue">URDOC</v-card-title>
             <v-card-subtitle class="text-h4 font-weight-bold">虚拟病例研究所</v-card-subtitle>
