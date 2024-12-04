@@ -4,7 +4,7 @@
             <v-card-title class="text-h2 font-weight-bold text-blue">URDOC</v-card-title>
             <v-card-subtitle class="text-h4 font-weight-bold">虚拟病例研究所</v-card-subtitle>
         </v-card-item>
-        <v-img max-width="640" class="mx-auto" src="/heroimage.jpg" />
+        <v-img max-width="640" class="mx-auto" src="/heroimage.png" />
         <v-card-text class="text-h6">
             是通过大语言模型<span class="font-weight-bold"
                 >生成病例、编写故事、设计问题、模拟问诊和评估能力</span
