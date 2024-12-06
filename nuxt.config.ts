@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: '2024-04-03',
-    devtools: { enabled: true },
+    devtools: { enabled: false },
     modules: [
         'vuetify-nuxt-module',
         '@nuxt/eslint',
@@ -17,5 +17,8 @@ export default defineNuxtConfig({
     },
     supabase: {
         redirect: false,
+    },
+    app: {
+        pageTransition: { name: 'page', mode: 'out-in' },
     },
 })

@@ -10,7 +10,12 @@
             <v-btn icon="mdi-dots-vertical" @click="isRightNavDrawerShow = !isRightNavDrawerShow" />
         </template>
     </v-app-bar>
-    <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4">
+    <v-navigation-drawer
+        v-model="isLeftNavDrawerShow"
+        class="pa-4"
+        :disable-resize-watcher="true"
+        :disable-route-watcher="true"
+    >
         <v-list>
             <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
                 介绍
@@ -36,7 +41,14 @@
             <v-list-item prepend-icon="mdi-email-lock-outline" title="账号登录" to="/login" />
         </v-list>
     </v-navigation-drawer>
-    <v-navigation-drawer v-model="isRightNavDrawerShow" location="end" class="pa-4" rail>
+    <v-navigation-drawer
+        v-model="isRightNavDrawerShow"
+        location="end"
+        class="pa-4"
+        rail
+        :disable-resize-watcher="true"
+        :disable-route-watcher="true"
+    >
         <v-btn to="/" icon="mdi-home" variant="plain" :ripple="false" />
         <v-btn
             icon="mdi-theme-light-dark"
