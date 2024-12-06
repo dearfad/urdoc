@@ -1,14 +1,52 @@
 <template>
-    <v-sheet class="d-flex flex-column">
-        <v-text-field v-model="email" label="邮箱" variant="outlined" class="w-50 mx-auto" />
-        <v-text-field v-model="password" label="密码" variant="outlined" class="w-50 mx-auto" />
-        <v-btn class="w-25 mx-auto" size="large" @click="signInWithPassword">登录</v-btn>
-        <v-btn class="w-25 mx-auto" size="large" @click="signUpNewUser">注册</v-btn>
-        <v-btn class="w-25 mx-auto" size="large" @click="signOut">退出</v-btn>
-        <v-btn class="w-25 mx-auto" size="large" @click="signInAnonymously">匿名登录</v-btn>
-        <v-snackbar v-model="snackBar" timeout="2000">{{ snackBarText }}</v-snackbar>
-        <v-sheet>{{ user }}</v-sheet>
-    </v-sheet>
+    <v-container>
+        <v-row>
+            <v-col cols="12" md="6" class="mx-auto">
+                <v-text-field
+                    v-model="email"
+                    label="邮箱"
+                    variant="outlined"
+                    :disabled="user ? true : false"
+            /></v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="6" class="mx-auto">
+                <v-text-field
+                    v-model="password"
+                    label="密码"
+                    type="password"
+                    variant="outlined"
+                    :disabled="user ? true : false"
+                />
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="3" class="mx-auto">
+                <v-btn
+                    size="large"
+                    block
+                    :disabled="user ? true : false"
+                    @click="signInWithPassword"
+                    >登录</v-btn
+                >
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="3" class="mx-auto">
+                <v-btn size="large" block :disabled="user ? false : true" @click="signOut"
+                    >退出</v-btn
+                >
+            </v-col>
+        </v-row>
+        <v-row v-if="user">
+            <v-col cols="12" md="3" class="mx-auto text-center"> 当前登录：{{ user.email }} </v-col>
+        </v-row>
+        <!-- <v-btn class="w-25 mx-auto" size="large" @click="signUpNewUser">注册</v-btn> -->
+        <!-- <v-btn class="w-25 mx-auto" size="large" @click="signInAnonymously">匿名登录</v-btn> -->
+        <v-snackbar v-model="snackBar" timeout="2000"
+            ><div class="text-center">{{ snackBarText }}</div></v-snackbar
+        >
+    </v-container>
 </template>
 
 <script setup>
@@ -21,48 +59,50 @@ const snackBarText = ref('')
 const user = useSupabaseUser()
 
 const signInWithPassword = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value,
     })
-    console.log(data, error)
     if (error) {
-        snackBarText.value = error
+        switch (error.code) {
+            case 'invalid_credentials':
+                snackBarText.value = '认证失败：登录凭证无效'
+                break
+            default:
+                snackBarText.value = error
+        }
         snackBar.value = true
-        console.log(error)
-    }
-}
-
-const signUpNewUser = async () => {
-    const { data, error } = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value,
-    })
-    console.log(data, error)
-    if (error) {
-        snackBarText.value = error
-        snackBar.value = true
-        console.log(error)
     }
 }
 
 const signOut = async () => {
     const { error } = await supabase.auth.signOut()
-    console.log(error)
     if (error) {
         snackBarText.value = error
         snackBar.value = true
-        console.log(error)
     }
 }
 
-const signInAnonymously = async () => {
-    const { data, error } = await supabase.auth.signInAnonymously()
-    console.log(data, error)
-    if (error) {
-        snackBarText.value = error
-        snackBar.value = true
-        console.log(error)
-    }
-}
+// const signUpNewUser = async () => {
+//     const { data, error } = await supabase.auth.signUp({
+//         email: email.value,
+//         password: password.value,
+//     })
+//     console.log(data, error)
+//     if (error) {
+//         snackBarText.value = error
+//         snackBar.value = true
+//         console.log(error)
+//     }
+// }
+
+// const signInAnonymously = async () => {
+//     const { data, error } = await supabase.auth.signInAnonymously()
+//     console.log(data, error)
+//     if (error) {
+//         snackBarText.value = error
+//         snackBar.value = true
+//         console.log(error)
+//     }
+// }
 </script>

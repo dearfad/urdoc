@@ -33,7 +33,7 @@
             <v-list-item prepend-icon="mdi-account-details" class="font-weight-bold">
                 个人中心
             </v-list-item>
-            <v-list-item prepend-icon="mdi-account-outline" title="邮箱登录" to="/login" />
+            <v-list-item prepend-icon="mdi-email-lock-outline" title="账号登录" to="/login" />
         </v-list>
     </v-navigation-drawer>
     <v-navigation-drawer v-model="isRightNavDrawerShow" location="end" class="pa-4" rail>
