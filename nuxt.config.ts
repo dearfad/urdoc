@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     seo: {
         meta: {
             description:
-                'URDOC, Virtual Case Research Institute, is an integrated virtual case study platform that utilizes large language models to generate medical cases, compose stories, design questions, simulate consultations, and assess capabilities.',
+                'URDOC Virtual Case Research Institute: Pioneering in AI-generated medical cases, storytelling, question formulation, and consultation simulation for comprehensive capability assessment in healthcare education and research.',
         },
     },
     modules: [
