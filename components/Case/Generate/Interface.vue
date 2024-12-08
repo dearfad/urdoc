@@ -156,8 +156,11 @@ function handleBlur() {
     isInputFocused.value = false
 }
 
+const newCase = useNewCase()
+const { clearAll } = newCase
 async function genCase() {
     isLoading.value = true
+    clearAll()
     const messages = [
         { role: 'system', content: casePrompt.value },
         {

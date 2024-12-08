@@ -123,9 +123,16 @@
         <v-chip v-if="selectedSubsection != '任意'" variant="outlined" class="ma-1">
             {{ selectedSubsection }}
         </v-chip>
-        <v-chip v-if="genCaseKeyPoint != ''" variant="outlined" class="ma-1">
-            {{ genCaseKeyPoint }}
-        </v-chip>
+        <span v-if="genCaseKeyPoint != ''">
+            <v-chip
+                v-for="keyPoint in genCaseKeyPoint.split(' ')"
+                :key="keyPoint"
+                variant="outlined"
+                class="ma-1"
+            >
+                {{ keyPoint }}
+            </v-chip>
+        </span>
     </v-sheet>
 </template>
 

@@ -1,15 +1,16 @@
 <template>
-    <v-text-field v-model="keyPoint" label="设定" placeholder="真实" />
+    <v-text-field v-model="genStoryKeyPoint" label="设定" placeholder="真实" />
     <v-btn :loading="isLoading" block @click="genStory">生成故事</v-btn>
 </template>
 
 <script setup>
-const keyPoint = ref('真实')
 const isLoading = ref(false)
 const promptStore = usePromptStore()
 const { storyPrompt } = storeToRefs(promptStore)
 const caseStore = useCaseStore()
 const { simCaseJson } = storeToRefs(caseStore)
+const stateStore = useStateStore()
+const { genStoryKeyPoint } = storeToRefs(stateStore)
 
 const bigModel = useBigModel()
 const { getStory } = bigModel
@@ -26,7 +27,7 @@ async function genStory() {
         { role: 'system', content: storyPrompt.value },
         {
             role: 'user',
-            content: markdown + keyPoint.value,
+            content: markdown + genStoryKeyPoint.value,
         },
     ]
 

@@ -4,7 +4,7 @@ export default function () {
     const { simModel } = storeToRefs(modelStore)
 
     const stateStore = useStateStore()
-    const { currentGenCaseField } = storeToRefs(stateStore)
+    const { currentGenCaseField, currentGenTestField } = storeToRefs(stateStore)
 
     const message = ref('')
 
@@ -166,6 +166,9 @@ export default function () {
             responseType: 'stream',
         })
 
+        let n = 0
+        currentGenTestField.value = ''
+
         // // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
         const reader = response.pipeThrough(new TextDecoderStream()).getReader()
 
@@ -182,6 +185,12 @@ export default function () {
                         const jsonData = JSON.parse(jsonDataStr)
                         const content = jsonData.choices[0].delta.content
                         test.value = test.value + content
+
+                        const genTestField = ['题目1', '题目2', '题目3']
+                        if (test.value.includes(genTestField[n])) {
+                            currentGenTestField.value = genTestField[n]
+                            n++
+                        }
                     } catch (err) {
                         console.log(err)
                     }

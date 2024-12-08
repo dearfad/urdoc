@@ -42,5 +42,9 @@ export const useCaseStore = defineStore('case', () => {
         const repairedCaseJson = jsonrepair(fixedCaseJson)
         simCaseJson.value = JSON.parse(repairedCaseJson)
     }
-    return { simCase, simCaseJson, updateSimCaseJson }
+
+    function clearSimCaseJson() {
+        simCaseJson.value = ''
+    }
+    return { simCase, simCaseJson, updateSimCaseJson, clearSimCaseJson }
 })

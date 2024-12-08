@@ -1,4 +1,7 @@
 export const useStoryStore = defineStore('story', () => {
     const story = ref('')
-    return { story }
+    function clearStory() {
+        story.value = ''
+    }
+    return { story, clearStory }
 })
