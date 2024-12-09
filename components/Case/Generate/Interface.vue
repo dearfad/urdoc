@@ -40,12 +40,11 @@
                     />
                     <v-text-field
                         v-model="genCaseKeyPoint"
-                        label="要点"
+                        label="设定"
                         variant="outlined"
                         class="my-4"
                         hide-details="auto"
-                        @focus="handleFocus"
-                        @blur="handleBlur"
+                        placeholder="多个要点请用空格隔开"
                     />
                     <v-btn
                         size="x-large"
@@ -68,44 +67,40 @@
 
 <script setup>
 const stateStore = useStateStore()
-const { selectedBook, selectedChapter, selectedSection, selectedSubsection, genCaseKeyPoint } =
-    storeToRefs(stateStore)
+const {
+    selectedBook,
+    selectedChapter,
+    selectedSection,
+    selectedSubsection,
+    genCaseKeyPoint,
+    currentGenCaseField,
+} = storeToRefs(stateStore)
 
+// 扩展面板打开状态，病例生成完毕改变状态
+// 手机模式关闭面板，桌面模式保持不变
 const panelExpandState = ref(['genCasePanel'])
-
 const { mdAndUp } = useDisplay()
 
+// 处理教科书、章节、节次、子节的匹配
 const chapterStore = useChapterStore()
 const { chapter } = storeToRefs(chapterStore)
+
 const books = computed(() => {
     return ['任意', ...Object.keys(chapter.value)]
 })
-
-function handleBookChange() {
-    selectedChapter.value = '任意'
-    selectedSection.value = '任意'
-    selectedSubsection.value = '任意'
-}
 
 const chapters = computed(() => {
     return selectedBook.value == '任意'
         ? ['任意']
         : ['任意', ...Object.keys(chapter.value[selectedBook.value])]
 })
-function handleChapterChange() {
-    selectedSection.value = '任意'
-    selectedSubsection.value = '任意'
-}
+
 const sections = computed(() => {
     return selectedChapter.value == '任意' ||
         chapter.value[selectedBook.value][selectedChapter.value] == {}
         ? ['任意']
         : ['任意', ...Object.keys(chapter.value[selectedBook.value][selectedChapter.value])]
 })
-
-function handleSectionChange() {
-    selectedSubsection.value = '任意'
-}
 
 const subsections = computed(() => {
     return selectedSection.value == '任意' ||
@@ -117,75 +112,63 @@ const subsections = computed(() => {
           ]
 })
 
+function handleBookChange() {
+    selectedChapter.value = '任意'
+    selectedSection.value = '任意'
+    selectedSubsection.value = '任意'
+}
+
+function handleChapterChange() {
+    selectedSection.value = '任意'
+    selectedSubsection.value = '任意'
+}
+
+function handleSectionChange() {
+    selectedSubsection.value = '任意'
+}
+
+// 生成新病例，清空病例、故事、测试
+const newCase = useNewCase()
+// 生成状态提示
 const isLoading = ref(false)
 
 const bigModel = useBigModel()
-const { message } = storeToRefs(bigModel)
-const { getCase } = bigModel
-
-// 全局病例
 const caseStore = useCaseStore()
-const { updateSimCaseJson } = caseStore
-
 const promptStore = usePromptStore()
-const { casePrompt } = storeToRefs(promptStore)
 
-// 手机输入法遮挡滚动
-
-const { isInputFocused } = storeToRefs(stateStore)
-const goTo = useGoTo()
-
-watch(
-    () => stateStore.isInputFocused,
-    () => {
-        setTimeout(() => {
-            goTo('.generateCaseBottom', { container: '.generateCaseContainer' })
-        }, 300)
-    }
-)
-
-watch(selectedBook, () => {
-    selectedChapter.value = '任意'
-})
-
-function handleFocus() {
-    isInputFocused.value = true
-}
-
-function handleBlur() {
-    isInputFocused.value = false
-}
-
-const newCase = useNewCase()
-const { clearAll } = newCase
 async function genCase() {
+    newCase.clearAll()
+    stateStore.resetCurrentGenCaseField()
     isLoading.value = true
-    clearAll()
     const messages = [
-        { role: 'system', content: casePrompt.value },
+        { role: 'system', content: promptStore.casePrompt },
         {
             role: 'user',
             content:
+                '病例要点设定：\n' +
+                '教科书：' +
                 selectedBook.value +
-                ',' +
+                '\n' +
+                '章节：' +
                 selectedChapter.value +
-                ',' +
+                '\n' +
+                '节次：' +
                 selectedSection.value +
-                ',' +
+                '\n' +
+                '字节：' +
                 selectedSubsection.value +
-                ',' +
+                '\n' +
+                '设定：' +
                 genCaseKeyPoint.value,
         },
     ]
 
-    await getCase(messages)
-    updateSimCaseJson(message.value)
+    caseStore.updateCase(await bigModel.getCase(messages))
     isLoading.value = false
+
+    // 扩展面板，手机模式关闭，桌面模式不变
     if (!mdAndUp.value) {
-        console.log(mdAndUp.value)
         panelExpandState.value = ['']
     }
 }
-
-const { currentGenCaseField } = storeToRefs(stateStore)
 </script>

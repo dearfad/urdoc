@@ -10,13 +10,8 @@
             <v-btn icon="mdi-dots-vertical" @click="isRightNavDrawerShow = !isRightNavDrawerShow" />
         </template>
     </v-app-bar>
-    <v-navigation-drawer
-        v-model="isLeftNavDrawerShow"
-        class="pa-4"
-        :disable-resize-watcher="true"
-        :disable-route-watcher="true"
-    >
-        <v-list>
+    <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4" :disable-resize-watcher="true">
+        <v-list nav>
             <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
                 介绍
             </v-list-item>
@@ -27,7 +22,7 @@
             />
             <v-divider />
             <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
-                专题研究
+                单项研究
             </v-list-item>
             <v-list-item prepend-icon="mdi-wrench-outline" to="/gencase" title="生成病例" />
             <v-list-item prepend-icon="mdi-book-open-outline" to="/genstory" title="编写故事" />
@@ -35,7 +30,7 @@
             <v-list-item prepend-icon="mdi-account-outline" to="/simpatient" title="模拟问诊" />
             <v-list-item prepend-icon="mdi-shield-star-outline" to="/simask" title="评估能力" />
             <v-divider />
-            <v-list-item prepend-icon="mdi-account-details" class="font-weight-bold">
+            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
                 个人中心
             </v-list-item>
             <v-list-item prepend-icon="mdi-email-lock-outline" title="账号登录" to="/login" />
@@ -47,7 +42,6 @@
         class="pa-4"
         rail
         :disable-resize-watcher="true"
-        :disable-route-watcher="true"
     >
         <v-btn to="/" icon="mdi-home" variant="plain" :ripple="false" />
         <v-btn

@@ -1,5 +1,5 @@
 export const useChapterStore = defineStore('chapter', () => {
-    const chapter = reactive({
+    const chapter = ref({
         外科学: {
             绪论: { 外科疾病: [], 外科专业分科: [], 怎样学习外科学: [], 外科学发展简史: [] },
             无菌术: {

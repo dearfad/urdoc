@@ -1,34 +1,34 @@
 <template>
     <v-sheet>
         <v-text-field
-            v-model="simCaseJson.姓名"
+            v-model="simCase.姓名"
             class="my-4"
             label="姓名"
             :variant="varTextField"
             hide-details="auto"
         />
         <v-text-field
-            v-model="simCaseJson.性别"
+            v-model="simCase.性别"
             class="my-4"
             label="性别"
             :variant="varTextField"
             hide-details="auto"
         />
         <v-text-field
-            v-model="simCaseJson.年龄"
+            v-model="simCase.年龄"
             class="my-4"
             label="年龄"
             :variant="varTextField"
             hide-details="auto"
         />
         <v-text-field
-            v-model="simCaseJson.主诉"
+            v-model="simCase.主诉"
             label="主诉"
             :variant="varTextField"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.现病史"
+            v-model="simCase.现病史"
             class="my-4"
             rows="1"
             auto-grow
@@ -37,7 +37,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.既往史"
+            v-model="simCase.既往史"
             class="my-4"
             rows="1"
             auto-grow
@@ -46,7 +46,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.查体"
+            v-model="simCase.查体"
             class="my-4"
             rows="1"
             auto-grow
@@ -55,7 +55,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.专科查体"
+            v-model="simCase.专科查体"
             rows="1"
             class="my-4"
             auto-grow
@@ -64,7 +64,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.辅助检查"
+            v-model="simCase.辅助检查"
             rows="1"
             class="my-4"
             auto-grow
@@ -73,7 +73,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.诊断"
+            v-model="simCase.诊断"
             class="my-4"
             rows="1"
             auto-grow
@@ -82,7 +82,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.治疗"
+            v-model="simCase.治疗"
             class="my-4"
             rows="1"
             auto-grow
@@ -91,7 +91,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.手术"
+            v-model="simCase.手术"
             class="my-4"
             rows="1"
             auto-grow
@@ -100,7 +100,7 @@
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCaseJson.病理"
+            v-model="simCase.病理"
             class="my-4"
             rows="1"
             auto-grow
@@ -138,7 +138,7 @@
 
 <script setup>
 const caseStore = useCaseStore()
-const { simCaseJson } = storeToRefs(caseStore)
+const { simCase } = storeToRefs(caseStore)
 const stateStore = useStateStore()
 const { selectedBook, selectedChapter, selectedSection, selectedSubsection, genCaseKeyPoint } =
     storeToRefs(stateStore)

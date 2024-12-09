@@ -1,6 +1,6 @@
 <template>
-    <v-sheet class="d-flex flex-column h-100">
-        <v-sheet class="text-h2 font-weight-bold text-blue text-center my-4">URDOC</v-sheet>
+    <v-sheet class="d-flex flex-column">
+        <v-sheet class="text-h2 font-weight-bold text-blue text-center my-8">URDOC</v-sheet>
         <v-sheet class="text-h4 font-weight-bold text-center">虚拟病例研究所</v-sheet>
         <v-sheet>
             <v-img max-width="640" class="mx-auto" src="/heroimage.png" />
@@ -18,7 +18,7 @@
                 rounded="lg"
                 variant="outlined"
             >
-                开始生成
+                开始研究
             </v-btn>
         </v-sheet>
     </v-sheet>

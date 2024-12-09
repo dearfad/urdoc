@@ -108,4 +108,26 @@ function handleFocus() {
 function handleBlur() {
     isInputFocused.value = false
 }
+
+// 手机输入法遮挡滚动
+
+// const { isInputFocused } = storeToRefs(stateStore)
+// const goTo = useGoTo()
+
+// watch(
+//     () => stateStore.isInputFocused,
+//     () => {
+//         setTimeout(() => {
+//             goTo('.generateCaseBottom', { container: '.generateCaseContainer' })
+//         }, 300)
+//     }
+// )
+
+// function handleFocus() {
+//     isInputFocused.value = true
+// }
+
+// function handleBlur() {
+//     isInputFocused.value = false
+// }
 </script>
