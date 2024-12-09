@@ -14,14 +14,20 @@ export const useCaseStore = defineStore('case', () => {
         '手术',
         '病理',
     ]
-    // const stateStore = useStateStore()
-    // const { globalInfo } = storeToRefs(stateStore)
     const simCase = ref('')
+    const simCaseMarkdown = computed(() => {
+        let markdown = ''
+        for (const key in simCase.value) {
+            const value = simCase.value[key]
+            markdown += `**${key}**: ${value}\n`
+        }
+        return markdown
+    })
     function clearSimCase() {
         simCase.value = ''
     }
     function updateCase(newCase) {
         simCase.value = newCase
     }
-    return { simCase, clearSimCase, caseFields, updateCase }
+    return { simCase, clearSimCase, caseFields, updateCase, simCaseMarkdown }
 })

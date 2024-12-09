@@ -3,13 +3,24 @@ export default function () {
     const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
     const modelStore = useModelStore()
     const stateStore = useStateStore()
+    const storyStore = useStoryStore()
+    const testStore = useTestStore()
 
     async function getCase(messages) {
         const caseStore = useCaseStore()
-        return await getResponse(messages, caseStore.caseFields)
+        return await getResponse(messages, caseStore.caseFields, 'case', 'json')
     }
 
-    async function getResponse(messages, caseFields) {
+    async function getStory(messages) {
+        return await getResponse(messages, [], 'story', '')
+    }
+
+    async function getTest(messages) {
+        const testStore = useTestStore()
+        return await getResponse(messages, testStore.testFields, 'test', 'json')
+    }
+
+    async function getResponse(messages, watchFields = [], genType = '', format = 'json') {
         let message = ''
         const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
             method: 'POST',
@@ -37,138 +48,60 @@ export default function () {
                     try {
                         const jsonData = JSON.parse(jsonDataStr)
                         message += jsonData.choices[0].delta.content
-                        // 更新当前病例生成字段
-                        if (message.includes(caseFields[currentFieldPointer])) {
-                            stateStore.updateState(
-                                'currentGenCaseField',
-                                caseFields[currentFieldPointer]
-                            )
-                            currentFieldPointer++
+
+                        // 即时显示内容
+                        switch (genType) {
+                            case 'story':
+                                storyStore.updateStory(message)
+                                break
+                            case 'test':
+                                testStore.updateTest(message)
+                                break
+                            default:
+                                break
                         }
-                    } catch (err) {
-                        console.log(err)
+                        // 更新当前生成字段
+                        if (watchFields.length > 0) {
+                            if (message.includes(watchFields[currentFieldPointer])) {
+                                switch (genType) {
+                                    case 'case':
+                                        stateStore.updateState(
+                                            'currentGenCaseField',
+                                            watchFields[currentFieldPointer]
+                                        )
+                                        break
+                                    case 'test':
+                                        stateStore.updateState(
+                                            'currentGenTestField',
+                                            watchFields[currentFieldPointer]
+                                        )
+                                        break
+                                    default:
+                                        break
+                                }
+                                currentFieldPointer++
+                            }
+                        }
+                    } catch (error) {
+                        console.log('Failed to parse stream: ', error)
                     }
                 }
             })
         }
-        try {
-            message = message.includes('```json') ? message.slice(7, -3) : message
-            message = jsonrepair(message)
-            message = JSON.parse(message)
-        } catch (error) {
-            console.error('Failed to parse message:', error)
-            // globalInfo.value = 'Failed to parse simCase' + error
-            message = ''
+
+        // 解析message的json问题
+        if (format == 'json') {
+            try {
+                message = message.includes('```json') ? message.slice(7, -3) : message
+                message = jsonrepair(message)
+                message = JSON.parse(message)
+            } catch (error) {
+                console.error('Failed to parse message:', error)
+                message = ''
+            }
         }
         // console.log(message)
         return message
-    }
-
-    const storyStore = useStoryStore()
-    const { story } = storeToRefs(storyStore)
-
-    async function getStory(messages) {
-        story.value = ''
-
-        const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + apiKey,
-            },
-            body: {
-                model: modelStore.model,
-                messages: messages,
-                // 流式输出
-                stream: true,
-            },
-            responseType: 'stream',
-        })
-
-        // // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
-        const reader = response.pipeThrough(new TextDecoderStream()).getReader()
-
-        // // Read the chunk of data as we get it
-        while (true) {
-            const { value, done } = await reader.read()
-            if (done) break
-            const lines = value.split('\n\n')
-            lines.forEach((line) => {
-                // console.log(line)
-                if (line != '' && line != 'data: [DONE]') {
-                    const jsonDataStr = line.split('data: ')[1].trim()
-                    try {
-                        const jsonData = JSON.parse(jsonDataStr)
-                        const content = jsonData.choices[0].delta.content
-                        story.value = story.value + content
-                    } catch (err) {
-                        console.log(err)
-                    }
-                    // console.log(content)
-                }
-            })
-        }
-        // console.log(message.value)
-        //
-        // message.value = response.choices[0].message.content
-    }
-
-    const testStore = useTestStore()
-    const { test } = storeToRefs(testStore)
-
-    async function getTest(messages) {
-        test.value = ''
-
-        const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + apiKey,
-            },
-            body: {
-                model: modelStore.model,
-                messages: messages,
-                // 流式输出
-                stream: true,
-            },
-            responseType: 'stream',
-        })
-
-        let n = 0
-        stateStore.resetCurrentGenTestField()
-
-        // // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
-        const reader = response.pipeThrough(new TextDecoderStream()).getReader()
-
-        // // Read the chunk of data as we get it
-        while (true) {
-            const { value, done } = await reader.read()
-            if (done) break
-            const lines = value.split('\n\n')
-            lines.forEach((line) => {
-                // console.log(line)
-                if (line != '' && line != 'data: [DONE]') {
-                    const jsonDataStr = line.split('data: ')[1].trim()
-                    try {
-                        const jsonData = JSON.parse(jsonDataStr)
-                        const content = jsonData.choices[0].delta.content
-                        test.value = test.value + content
-
-                        const genTestField = ['题目1', '题目2', '题目3']
-                        if (test.value.includes(genTestField[n])) {
-                            stateStore.currentGenTestField = genTestField[n]
-                            n++
-                        }
-                    } catch (err) {
-                        console.log(err)
-                    }
-                    // console.log(test.value)
-                }
-            })
-        }
-        // console.log(message.value)
-        //
-        // message.value = response.choices[0].message.content
     }
 
     return {

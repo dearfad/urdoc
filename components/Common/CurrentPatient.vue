@@ -1,15 +1,15 @@
 <template>
     <v-card
-        v-if="simCaseJson"
-        :title="simCaseJson['姓名']"
-        :subtitle="simCaseJson['主诉']"
+        v-if="simCase"
+        :title="simCase['姓名']"
+        :subtitle="simCase['主诉']"
         prepend-icon="mdi-human-female"
     >
         <v-timeline direction="horizontal" side="end" density="compact">
             <v-timeline-item
                 icon="mdi-wrench-outline"
                 class="cursor-pointer"
-                :dot-color="simCaseJson ? 'green' : 'grey'"
+                :dot-color="simCase ? 'green' : 'grey'"
                 @click="router.push('/gencase')"
             />
             <v-timeline-item
@@ -42,7 +42,7 @@
 
 <script setup>
 const caseStore = useCaseStore()
-const { simCaseJson } = storeToRefs(caseStore)
+const { simCase } = storeToRefs(caseStore)
 const storyStore = useStoryStore()
 const { story } = storeToRefs(storyStore)
 const testStore = useTestStore()

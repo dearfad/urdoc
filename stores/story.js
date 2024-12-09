@@ -3,5 +3,8 @@ export const useStoryStore = defineStore('story', () => {
     function clearStory() {
         story.value = ''
     }
-    return { story, clearStory }
+    function updateStory(newCase) {
+        story.value = newCase
+    }
+    return { story, clearStory, updateStory }
 })

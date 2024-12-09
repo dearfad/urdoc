@@ -1,37 +1,26 @@
 <template>
-    <v-text-field v-model="genStoryKeyPoint" label="设定" placeholder="真实" />
+    <v-text-field v-model="stateStore.genStoryKeyPoint" label="设定" placeholder="真实" />
     <v-btn :loading="isLoading" block @click="genStory">生成故事</v-btn>
 </template>
 
 <script setup>
 const isLoading = ref(false)
-const promptStore = usePromptStore()
-const { storyPrompt } = storeToRefs(promptStore)
-const caseStore = useCaseStore()
-const { simCaseJson } = storeToRefs(caseStore)
-const stateStore = useStateStore()
-const { genStoryKeyPoint } = storeToRefs(stateStore)
-
 const bigModel = useBigModel()
-const { getStory } = bigModel
+const promptStore = usePromptStore()
+const stateStore = useStateStore()
+const caseStore = useCaseStore()
+const storyStore = useStoryStore()
 
 async function genStory() {
     isLoading.value = true
-
-    let markdown = ''
-    for (const key in simCaseJson.value) {
-        const value = simCaseJson.value[key]
-        markdown += `**${key}**: ${value}\n`
-    }
     const messages = [
-        { role: 'system', content: storyPrompt.value },
+        { role: 'system', content: promptStore.storyPrompt },
         {
             role: 'user',
-            content: markdown + genStoryKeyPoint.value,
+            content: caseStore.simCaseMarkdown + stateStore.genStoryKeyPoint,
         },
     ]
-
-    await getStory(messages)
+    storyStore.updateStory(await bigModel.getStory(messages))
     isLoading.value = false
 }
 </script>

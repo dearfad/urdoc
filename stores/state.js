@@ -3,7 +3,6 @@ export const useStateStore = defineStore('state', () => {
     const isInputFocused = ref(false)
     const currentGenCaseField = ref('')
     const currentGenTestField = ref('')
-    const globalInfo = ref('')
 
     const selectedBook = ref('任意')
     const selectedChapter = ref('任意')
@@ -26,6 +25,9 @@ export const useStateStore = defineStore('state', () => {
             case 'currentGenCaseField':
                 currentGenCaseField.value = value
                 break
+            case 'currentGenTestField':
+                currentGenTestField.value = value
+                break
             default:
                 break
         }
@@ -39,7 +41,6 @@ export const useStateStore = defineStore('state', () => {
         resetCurrentGenCaseField,
         resetCurrentGenTestField,
         updateState,
-        globalInfo,
         selectedBook,
         selectedChapter,
         selectedSection,

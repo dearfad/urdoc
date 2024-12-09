@@ -1,5 +1,6 @@
 <template>
     <v-textarea v-model="test" readonly auto-grow variant="solo" />
+    {{ test }}
 </template>
 
 <script setup>
