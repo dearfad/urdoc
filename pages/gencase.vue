@@ -15,6 +15,6 @@
 </template>
 
 <script setup>
-const caseStore = useCaseStore()
-const { simCase } = storeToRefs(caseStore)
+const simCaseStore = useSimCaseStore()
+const { simCase } = storeToRefs(simCaseStore)
 </script>

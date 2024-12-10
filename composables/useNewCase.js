@@ -1,11 +1,11 @@
 export default function () {
-    const caseStore = useCaseStore()
-    const storyStore = useStoryStore()
-    const testStore = useTestStore()
+    const simCaseStore = useSimCaseStore()
+    const simStoryStore = useSimStoryStore()
+    const simTestStore = useSimTestStore()
     function clearAll() {
-        caseStore.clearSimCase()
-        storyStore.clearStory()
-        testStore.clearTest()
+        simCaseStore.deleteSimCase()
+        simStoryStore.deleteSimStory()
+        simTestStore.deleteSimTest()
     }
     return {
         clearAll,

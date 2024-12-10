@@ -56,7 +56,7 @@
                     >
                         <template #loader>
                             <v-progress-circular indeterminate color="white" class="mr-4" />
-                            正在生成...{{ currentGenCaseField }}
+                            正在生成...{{ currentGenField }}
                         </template>
                     </v-btn>
                 </v-sheet>
@@ -73,7 +73,7 @@ const {
     selectedSection,
     selectedSubsection,
     genCaseKeyPoint,
-    currentGenCaseField,
+    currentGenField,
 } = storeToRefs(stateStore)
 
 // 扩展面板打开状态，病例生成完毕改变状态
@@ -138,7 +138,7 @@ const promptStore = usePromptStore()
 
 async function genCase() {
     newCase.clearAll()
-    stateStore.resetCurrentGenCaseField()
+    stateStore.resetCurrentGenField()
     isLoading.value = true
     const messages = [
         { role: 'system', content: promptStore.casePrompt },

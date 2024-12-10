@@ -3,21 +3,21 @@ export default function () {
     const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
     const modelStore = useModelStore()
     const stateStore = useStateStore()
-    const storyStore = useStoryStore()
-    const testStore = useTestStore()
+    const simStoryStore = useSimStoryStore()
+    const simTestStore = useSimTestStore()
 
     async function getCase(messages) {
-        const caseStore = useCaseStore()
-        return await getResponse(messages, caseStore.caseFields, 'case', 'json')
+        const simCaseStore = useSimCaseStore()
+        return await getResponse(messages, simCaseStore.caseFields, 'case', 'json')
     }
 
     async function getStory(messages) {
-        return await getResponse(messages, [], 'story', '')
+        return await getResponse(messages, [], 'story', 'text')
     }
 
     async function getTest(messages) {
-        const testStore = useTestStore()
-        return await getResponse(messages, testStore.testFields, 'test', 'json')
+        const simTestStore = useSimTestStore()
+        return await getResponse(messages, simTestStore.testFields, 'test', 'json')
     }
 
     async function getResponse(messages, watchFields = [], genType = '', format = 'json') {
@@ -52,10 +52,10 @@ export default function () {
                         // 即时显示内容
                         switch (genType) {
                             case 'story':
-                                storyStore.updateStory(message)
+                                simStoryStore.updateSimStory(message)
                                 break
                             case 'test':
-                                testStore.updateTest(message)
+                                simTestStore.updateSimTest(message)
                                 break
                             default:
                                 break
@@ -90,15 +90,19 @@ export default function () {
         }
 
         // 解析message的json问题
-        if (format == 'json') {
-            try {
-                message = message.includes('```json') ? message.slice(7, -3) : message
-                message = jsonrepair(message)
-                message = JSON.parse(message)
-            } catch (error) {
-                console.error('Failed to parse message:', error)
-                message = ''
-            }
+        switch (format) {
+            case 'json':
+                try {
+                    message = message.includes('```json') ? message.slice(7, -3) : message
+                    message = jsonrepair(message)
+                    message = JSON.parse(message)
+                } catch (error) {
+                    console.error('Failed to parse message:', error)
+                    message = ''
+                }
+                break
+            default:
+                break
         }
         // console.log(message)
         return message
