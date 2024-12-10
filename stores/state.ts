@@ -15,7 +15,7 @@ export const useStateStore = defineStore('state', () => {
         currentGenField.value = ''
     }
 
-    function updateCurrentGenField(value) {
+    function updateCurrentGenField(value: string) {
         currentGenField.value = value
     }
 

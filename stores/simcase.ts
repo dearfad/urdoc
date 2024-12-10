@@ -1,5 +1,5 @@
 export const useSimCaseStore = defineStore('simcase', () => {
-    const simCase = ref('')
+    const simCase = ref({})
     const simCaseFields = ref([
         '姓名',
         '性别',
@@ -22,7 +22,7 @@ export const useSimCaseStore = defineStore('simcase', () => {
             .join('\n')
     })
 
-    function updateSimCase(value) {
+    function updateSimCase(value: { [key: string]: string }) {
         simCase.value = value
     }
 

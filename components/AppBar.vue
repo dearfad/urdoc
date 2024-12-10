@@ -60,7 +60,7 @@
     </v-navigation-drawer>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const isLeftNavDrawerShow = ref(false)
 const isRightNavDrawerShow = ref(false)
 const theme = useTheme()
