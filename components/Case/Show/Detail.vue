@@ -1,5 +1,14 @@
 <template>
     <v-sheet>
+        <v-textarea
+            v-model="responseDataStream"
+            class="my-4"
+            rows="1"
+            auto-grow
+            label="原始数据"
+            :variant="varTextField"
+            hide-details="auto"
+        />
         <v-text-field
             v-model="simCase.姓名"
             class="my-4"
@@ -136,11 +145,17 @@
     </v-sheet>
 </template>
 
-<script setup>
-const caseStore = useCaseStore()
-const { simCase } = storeToRefs(caseStore)
+<script setup lang="ts">
+const simCaseStore = useSimCaseStore()
+const { simCase } = storeToRefs(simCaseStore)
 const stateStore = useStateStore()
-const { selectedBook, selectedChapter, selectedSection, selectedSubsection, genCaseKeyPoint } =
-    storeToRefs(stateStore)
+const {
+    selectedBook,
+    selectedChapter,
+    selectedSection,
+    selectedSubsection,
+    genCaseKeyPoint,
+    responseDataStream,
+} = storeToRefs(stateStore)
 const varTextField = ref('outlined')
 </script>

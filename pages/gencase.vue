@@ -6,7 +6,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col v-if="simCase" cols="12" order="2" md="9" order-md="1"><CaseShowDetail /></v-col>
+            <v-col cols="12" order="2" md="9" order-md="1"><CaseShowDetail /></v-col>
             <v-col cols="12" order="1" md="3" order-md="2" class="mx-auto">
                 <CaseGenerateInterface />
             </v-col>
@@ -14,7 +14,7 @@
     </v-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const simCaseStore = useSimCaseStore()
 const { simCase } = storeToRefs(simCaseStore)
 </script>

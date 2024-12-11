@@ -56,7 +56,7 @@
                     >
                         <template #loader>
                             <v-progress-circular indeterminate color="white" class="mr-4" />
-                            正在生成...{{ currentGenField }}
+                            正在生成...{{ responseDataField }}
                         </template>
                     </v-btn>
                 </v-sheet>
@@ -65,7 +65,7 @@
     </v-expansion-panels>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const stateStore = useStateStore()
 const {
     selectedBook,
@@ -73,7 +73,7 @@ const {
     selectedSection,
     selectedSubsection,
     genCaseKeyPoint,
-    currentGenField,
+    responseDataField,
 } = storeToRefs(stateStore)
 
 // 扩展面板打开状态，病例生成完毕改变状态
@@ -133,12 +133,11 @@ const newCase = useNewCase()
 const isLoading = ref(false)
 
 const bigModel = useBigModel()
-const caseStore = useCaseStore()
+const simCaseStore = useSimCaseStore()
 const promptStore = usePromptStore()
 
 async function genCase() {
-    newCase.clearAll()
-    stateStore.resetCurrentGenField()
+    newCase.deleteAll()
     isLoading.value = true
     const messages = [
         { role: 'system', content: promptStore.casePrompt },
@@ -146,24 +145,19 @@ async function genCase() {
             role: 'user',
             content:
                 '病例要点设定：\n' +
-                '教科书：' +
                 selectedBook.value +
                 '\n' +
-                '章节：' +
                 selectedChapter.value +
                 '\n' +
-                '节次：' +
                 selectedSection.value +
                 '\n' +
-                '字节：' +
                 selectedSubsection.value +
                 '\n' +
-                '设定：' +
                 genCaseKeyPoint.value,
         },
     ]
 
-    caseStore.updateCase(await bigModel.getCase(messages))
+    simCaseStore.updateSimCase(await bigModel.getCase(messages))
     isLoading.value = false
 
     // 扩展面板，手机模式关闭，桌面模式不变

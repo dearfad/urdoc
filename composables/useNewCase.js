@@ -2,12 +2,12 @@ export default function () {
     const simCaseStore = useSimCaseStore()
     const simStoryStore = useSimStoryStore()
     const simTestStore = useSimTestStore()
-    function clearAll() {
+    function deleteAll() {
         simCaseStore.deleteSimCase()
         simStoryStore.deleteSimStory()
         simTestStore.deleteSimTest()
     }
     return {
-        clearAll,
+        deleteAll,
     }
 }

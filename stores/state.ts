@@ -1,7 +1,9 @@
 export const useStateStore = defineStore('state', () => {
     const currentContent = ref('')
     const isInputFocused = ref(false)
-    const currentGenField = ref('')
+    const responseDataStream = ref('')
+    const responseDataField = ref('')
+    const responseData = ref()
 
     const selectedBook = ref('任意')
     const selectedChapter = ref('任意')
@@ -11,20 +13,38 @@ export const useStateStore = defineStore('state', () => {
     const genStoryKeyPoint = ref('真实')
     const genTestKeyPoint = ref('执业医师考试')
 
-    function resetCurrentGenField() {
-        currentGenField.value = ''
+    function updateResponseData(value: string | JSON) {
+        responseData.value = value
     }
 
-    function updateCurrentGenField(value: string) {
-        currentGenField.value = value
+    function updateResponseDataStream(value: string) {
+        responseDataStream.value = value
+    }
+    function insertResponseDataStream(value: string) {
+        responseDataStream.value += value
+    }
+    function resetResponseDataStream() {
+        responseDataStream.value = ''
+    }
+    function updateResponseDataField(value: string) {
+        responseDataField.value = value
+    }
+    function resetResponseDataField() {
+        responseDataField.value = ''
     }
 
     return {
         currentContent,
         isInputFocused,
-        currentGenField,
-        resetCurrentGenField,
-        updateCurrentGenField,
+        responseDataStream,
+        responseDataField,
+        responseData,
+        updateResponseData,
+        updateResponseDataStream,
+        insertResponseDataStream,
+        resetResponseDataStream,
+        updateResponseDataField,
+        resetResponseDataField,
         selectedBook,
         selectedChapter,
         selectedSection,
