@@ -6,7 +6,7 @@ export default function () {
     const simStoryStore = useSimStoryStore()
     const simTestStore = useSimTestStore()
 
-    async function getCase(messages: Array<{ role: string; content: string }>) {
+    async function getCase(messages: MessagesArray) {
         const simCaseStore = useSimCaseStore()
         return await getResponse(messages, simCaseStore.simCaseFields, 'case', 'json')
     }
