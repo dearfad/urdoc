@@ -139,7 +139,7 @@ const promptStore = usePromptStore()
 async function genCase() {
     newCase.deleteAll()
     isLoading.value = true
-    const messages = [
+    const messages: MessagesArray = [
         { role: 'system', content: promptStore.casePrompt },
         {
             role: 'user',

@@ -1,9 +1,10 @@
 export const useStateStore = defineStore('state', () => {
     const currentContent = ref('')
     const isInputFocused = ref(false)
+
+    const responseData = ref()
     const responseDataStream = ref('')
     const responseDataField = ref('')
-    const responseData = ref()
 
     const selectedBook = ref('任意')
     const selectedChapter = ref('任意')

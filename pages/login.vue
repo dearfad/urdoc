@@ -46,10 +46,12 @@
         <v-snackbar v-model="snackBar" timeout="2000"
             ><div class="text-center">{{ snackBarText }}</div></v-snackbar
         >
+
+        <v-sheet>{{ simcases }}</v-sheet>
     </v-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const supabase = useSupabaseClient()
 const email = ref('')
 const password = ref('')
@@ -57,6 +59,11 @@ const snackBar = ref(false)
 const snackBarText = ref('')
 
 const user = useSupabaseUser()
+
+const { data: simcases } = await useAsyncData('simcases', async () => {
+    const { data } = await supabase.from('simcases').select('*')
+    return data
+})
 
 const signInWithPassword = async () => {
     const { error } = await supabase.auth.signInWithPassword({
