@@ -1,9 +1,9 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-    const runtimeConfig = useRuntimeConfig()
-    const apiKey = runtimeConfig.bigmodelApiKey
+    const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
     const modelStore = useModelStore()
     const stateStore = useStateStore()
+    //
     const { responseDataStream, responseData } = storeToRefs(stateStore)
     const {
         updateResponseData,
@@ -12,28 +12,33 @@ export default function () {
         resetResponseDataStream,
         resetResponseDataField,
     } = stateStore
-
+    //
     async function getCase(messages: MessagesArray) {
         const simCaseStore = useSimCaseStore()
-        return await getResponse(messages, simCaseStore.simCaseFields, 'json')
+        return await getResponse(messages, simCaseStore.simCaseFields)
     }
 
     async function getStory(messages: MessagesArray) {
         const simStoryStore = useSimStoryStore()
-        return await getResponse(messages, simStoryStore.simStoryFields, 'text')
+        return await getResponse(messages, simStoryStore.simStoryFields, { type: 'text' })
     }
 
     async function getTest(messages: MessagesArray) {
         const simTestStore = useSimTestStore()
-        return await getResponse(messages, simTestStore.simTestFields, 'json')
+        return await getResponse(messages, simTestStore.simTestFields)
     }
 
-    async function getResponse(messages: MessagesArray, watchFields: string[], format = 'json') {
-        // stateStore.updateAppInfo(apiKey as string)
-        console.log(apiKey)
+    async function getResponse(
+        messages: MessagesArray,
+        watchFields: string[],
+        responseFormat: ResponseFormatType = { type: 'json_object' }
+    ) {
         let dataFieldPointer = 0
+        stateStore.resetResponseDataStream()
+        //
         resetResponseDataStream()
         resetResponseDataField()
+        //
         const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
             method: 'POST',
             headers: {
@@ -44,10 +49,13 @@ export default function () {
                 model: modelStore.model,
                 messages: messages,
                 stream: true,
+                temperature: 0.95,
+                top_p: 0.7,
+                max_tokens: 1024,
+                response_format: responseFormat,
             },
             responseType: 'stream',
         })
-        stateStore.updateAppInfo('Response End')
         if (!response) {
             return stateStore.updateAppInfo('Response body is null')
         }
@@ -56,6 +64,9 @@ export default function () {
         while (true) {
             const { value, done } = await reader.read()
             if (done) break
+
+            stateStore.updateModelResponseStream(value)
+
             const lines = value.split('\n\n')
             lines.forEach((line: string) => {
                 if (line != '' && line != 'data: [DONE]') {
@@ -78,8 +89,8 @@ export default function () {
         }
 
         // 解析responseDataStream的json问题
-        switch (format) {
-            case 'json':
+        switch (responseFormat) {
+            case { type: 'json_object' }:
                 try {
                     let responseDataStreamString = responseDataStream.value
                     responseDataStreamString = responseDataStreamString.includes('```json')
@@ -92,7 +103,7 @@ export default function () {
                     console.error('Failed to parse message:', error)
                 }
                 break
-            case 'text':
+            case { type: 'text' }:
                 updateResponseData(responseDataStream.value)
                 break
             default:

@@ -1,5 +1,7 @@
 export const useStateStore = defineStore('state', () => {
     const appInfo = ref('')
+    const debug = ref(false)
+    const modelResponseStream = ref('')
 
     const currentContent = ref('')
     const isInputFocused = ref(false)
@@ -19,6 +21,16 @@ export const useStateStore = defineStore('state', () => {
     function updateAppInfo(value: string) {
         appInfo.value = value
     }
+    function updateDebug(value: boolean) {
+        debug.value = value
+    }
+    function updateModelResponseStream(value: string) {
+        modelResponseStream.value += value
+    }
+    function resetModelResponseStream() {
+        modelResponseStream.value = ''
+    }
+
     function updateResponseData(value: string | JSON) {
         responseData.value = value
     }
@@ -42,6 +54,11 @@ export const useStateStore = defineStore('state', () => {
     return {
         appInfo,
         updateAppInfo,
+        debug,
+        updateDebug,
+        modelResponseStream,
+        updateModelResponseStream,
+        resetModelResponseStream,
         currentContent,
         isInputFocused,
         responseDataStream,

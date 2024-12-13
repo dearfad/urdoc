@@ -6,6 +6,11 @@
             </v-col>
         </v-row>
         <v-row>
+            <v-col cols="12">
+                <CommonModelResponseStream />
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="12" order="2" md="9" order-md="1"><CaseShowDetail /></v-col>
             <v-col cols="12" order="1" md="3" order-md="2" class="mx-auto">
                 <CaseGenerateInterface />

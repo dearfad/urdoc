@@ -57,6 +57,12 @@
             variant="plain"
             :ripple="false"
         />
+        <v-btn
+            icon="mdi-bug-play-outline"
+            variant="plain"
+            :ripple="false"
+            @click="stateStore.debug = !stateStore.debug"
+        />
     </v-navigation-drawer>
 </template>
 
@@ -65,4 +71,5 @@ const isLeftNavDrawerShow = ref(false)
 const isRightNavDrawerShow = ref(false)
 const theme = useTheme()
 const router = useRouter()
+const stateStore = useStateStore()
 </script>

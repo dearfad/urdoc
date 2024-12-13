@@ -2,7 +2,7 @@
     <v-expansion-panels v-model="panelExpandState" class="pt-4">
         <v-expansion-panel title="生成病例" value="genCasePanel">
             <v-expansion-panel-text>
-                <v-sheet class="generateCaseContainer">
+                <v-sheet>
                     <v-select
                         v-model="selectedBook"
                         label="教科书"
@@ -49,7 +49,7 @@
                     <v-btn
                         size="x-large"
                         block
-                        class="generateCaseBottom font-weight-bold"
+                        class="font-weight-bold"
                         text="生成病例"
                         :loading="isLoading"
                         @click="genCase"
