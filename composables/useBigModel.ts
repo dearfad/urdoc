@@ -1,6 +1,6 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-    const apiKey = import.meta.env.BIGMODEL_API_KEY
+    const apiKey = process.env.BIGMODEL_API_KEY
     const modelStore = useModelStore()
     const stateStore = useStateStore()
     const { responseDataStream, responseData } = storeToRefs(stateStore)
