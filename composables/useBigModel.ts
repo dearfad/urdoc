@@ -28,6 +28,8 @@ export default function () {
     }
 
     async function getResponse(messages: MessagesArray, watchFields: string[], format = 'json') {
+        // stateStore.updateAppInfo(apiKey as string)
+        console.log(apiKey)
         let dataFieldPointer = 0
         resetResponseDataStream()
         resetResponseDataField()
@@ -44,9 +46,9 @@ export default function () {
             },
             responseType: 'stream',
         })
-
+        stateStore.updateAppInfo('Response End')
         if (!response) {
-            return console.error('Response body is null')
+            return stateStore.updateAppInfo('Response body is null')
         }
 
         const reader = (response as ReadableStream).pipeThrough(new TextDecoderStream()).getReader()

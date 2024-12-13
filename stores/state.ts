@@ -1,4 +1,6 @@
 export const useStateStore = defineStore('state', () => {
+    const appInfo = ref('')
+
     const currentContent = ref('')
     const isInputFocused = ref(false)
 
@@ -14,6 +16,9 @@ export const useStateStore = defineStore('state', () => {
     const genStoryKeyPoint = ref('真实')
     const genTestKeyPoint = ref('执业医师考试')
 
+    function updateAppInfo(value: string) {
+        appInfo.value = value
+    }
     function updateResponseData(value: string | JSON) {
         responseData.value = value
     }
@@ -35,6 +40,8 @@ export const useStateStore = defineStore('state', () => {
     }
 
     return {
+        appInfo,
+        updateAppInfo,
         currentContent,
         isInputFocused,
         responseDataStream,

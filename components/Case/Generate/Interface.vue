@@ -76,6 +76,15 @@ const {
     responseDataField,
 } = storeToRefs(stateStore)
 
+// 生成新病例，清空病例、故事、测试
+const newCase = useNewCase()
+// 生成状态提示
+const isLoading = ref(false)
+
+const modelRouter = useModelRouter()
+const simCaseStore = useSimCaseStore()
+const promptStore = usePromptStore()
+
 // 扩展面板打开状态，病例生成完毕改变状态
 // 手机模式关闭面板，桌面模式保持不变
 const panelExpandState = ref(['genCasePanel'])
@@ -127,15 +136,6 @@ function handleSectionChange() {
     selectedSubsection.value = '任意'
 }
 
-// 生成新病例，清空病例、故事、测试
-const newCase = useNewCase()
-// 生成状态提示
-const isLoading = ref(false)
-
-const bigModel = useBigModel()
-const simCaseStore = useSimCaseStore()
-const promptStore = usePromptStore()
-
 async function genCase() {
     newCase.deleteAll()
     isLoading.value = true
@@ -157,7 +157,7 @@ async function genCase() {
         },
     ]
 
-    simCaseStore.updateSimCase(await bigModel.getCase(messages))
+    simCaseStore.updateSimCase(await modelRouter.getCase(messages))
     isLoading.value = false
 
     // 扩展面板，手机模式关闭，桌面模式不变
