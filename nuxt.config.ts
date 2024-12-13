@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
     compatibilityDate: '2024-04-03',
     devtools: { enabled: false },
+    runtimeConfig: {
+        bigmodelApiKey: '',
+    },
     site: {
         url: 'https://urdoc.dearfad.com',
         name: 'URDOC',
