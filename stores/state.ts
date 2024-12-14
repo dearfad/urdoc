@@ -1,14 +1,47 @@
 export const useStateStore = defineStore('state', () => {
-    const appInfo = ref('')
+    //
     const debug = ref(false)
+    function updateDebug(value: boolean) {
+        debug.value = value
+    }
+    //
+    const appInfo = ref('')
+    function updateAppInfo(value: string) {
+        appInfo.value = value
+    }
+    //
     const modelResponseStream = ref('')
+    function resetModelResponseStream() {
+        modelResponseStream.value = ''
+    }
+    function insertModelResponseStream(value: string) {
+        modelResponseStream.value += value
+    }
+    //
+    const modelResponseString = ref('')
+    function resetModelResponseString() {
+        modelResponseString.value = ''
+    }
+    function updateModelResponseString(value: string) {
+        modelResponseString.value = value
+    }
+    function insertModelResponseString(value: string) {
+        modelResponseString.value += value
+    }
+    //
+    const modelResponseField = ref('')
+    function resetModelResponseField() {
+        modelResponseField.value = ''
+    }
+    function updateModelResponseField(value: string) {
+        modelResponseField.value = value
+    }
+    //
 
     const currentContent = ref('')
     const isInputFocused = ref(false)
 
     const responseData = ref()
-    const responseDataStream = ref('')
-    const responseDataField = ref('')
 
     const selectedBook = ref('任意')
     const selectedChapter = ref('任意')
@@ -18,58 +51,34 @@ export const useStateStore = defineStore('state', () => {
     const genStoryKeyPoint = ref('真实')
     const genTestKeyPoint = ref('执业医师考试')
 
-    function updateAppInfo(value: string) {
-        appInfo.value = value
-    }
-    function updateDebug(value: boolean) {
-        debug.value = value
-    }
-    function updateModelResponseStream(value: string) {
-        modelResponseStream.value += value
-    }
-    function resetModelResponseStream() {
-        modelResponseStream.value = ''
-    }
-
     function updateResponseData(value: string | JSON) {
         responseData.value = value
     }
 
-    function updateResponseDataStream(value: string) {
-        responseDataStream.value = value
-    }
-    function insertResponseDataStream(value: string) {
-        responseDataStream.value += value
-    }
-    function resetResponseDataStream() {
-        responseDataStream.value = ''
-    }
-    function updateResponseDataField(value: string) {
-        responseDataField.value = value
-    }
-    function resetResponseDataField() {
-        responseDataField.value = ''
-    }
-
     return {
-        appInfo,
-        updateAppInfo,
         debug,
         updateDebug,
+
+        appInfo,
+        updateAppInfo,
+
         modelResponseStream,
-        updateModelResponseStream,
         resetModelResponseStream,
+        insertModelResponseStream,
+
+        modelResponseString,
+        resetModelResponseString,
+        updateModelResponseString,
+        insertModelResponseString,
+
+        modelResponseField,
+        resetModelResponseField,
+        updateModelResponseField,
+
         currentContent,
         isInputFocused,
-        responseDataStream,
-        responseDataField,
         responseData,
         updateResponseData,
-        updateResponseDataStream,
-        insertResponseDataStream,
-        resetResponseDataStream,
-        updateResponseDataField,
-        resetResponseDataField,
         selectedBook,
         selectedChapter,
         selectedSection,

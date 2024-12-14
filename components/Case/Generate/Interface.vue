@@ -56,7 +56,7 @@
                     >
                         <template #loader>
                             <v-progress-circular indeterminate color="white" class="mr-4" />
-                            正在生成...{{ responseDataField }}
+                            正在生成...{{ modelResponseField }}
                         </template>
                     </v-btn>
                 </v-sheet>
@@ -73,7 +73,7 @@ const {
     selectedSection,
     selectedSubsection,
     genCaseKeyPoint,
-    responseDataField,
+    modelResponseField,
 } = storeToRefs(stateStore)
 
 // 生成新病例，清空病例、故事、测试
@@ -157,7 +157,8 @@ async function genCase() {
         },
     ]
 
-    simCaseStore.updateSimCase(await modelRouter.getCase(messages))
+    simCaseStore.updateSimCase(JSON.parse(await modelRouter.getCase(messages)))
+    // localStorage.setItem('simCase', JSON.stringify(simCaseStore.simCase))
     isLoading.value = false
 
     // 扩展面板，手机模式关闭，桌面模式不变

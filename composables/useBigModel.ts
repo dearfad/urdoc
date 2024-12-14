@@ -4,15 +4,6 @@ export default function () {
     const modelStore = useModelStore()
     const stateStore = useStateStore()
     //
-    const { responseDataStream, responseData } = storeToRefs(stateStore)
-    const {
-        updateResponseData,
-        insertResponseDataStream,
-        updateResponseDataField,
-        resetResponseDataStream,
-        resetResponseDataField,
-    } = stateStore
-    //
     async function getCase(messages: MessagesArray) {
         const simCaseStore = useSimCaseStore()
         return await getResponse(messages, simCaseStore.simCaseFields)
@@ -27,17 +18,17 @@ export default function () {
         const simTestStore = useSimTestStore()
         return await getResponse(messages, simTestStore.simTestFields)
     }
-
+    //
     async function getResponse(
         messages: MessagesArray,
         watchFields: string[],
         responseFormat: ResponseFormatType = { type: 'json_object' }
     ) {
-        let dataFieldPointer = 0
-        stateStore.resetResponseDataStream()
         //
-        resetResponseDataStream()
-        resetResponseDataField()
+        let dataFieldPointer = 0
+        stateStore.resetModelResponseStream()
+        stateStore.resetModelResponseString()
+        stateStore.resetModelResponseField()
         //
         const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
             method: 'POST',
@@ -57,64 +48,57 @@ export default function () {
             responseType: 'stream',
         })
         if (!response) {
-            return stateStore.updateAppInfo('Response body is null')
+            return stateStore.updateAppInfo('获取模型响应数据为空！')
         }
 
         const reader = (response as ReadableStream).pipeThrough(new TextDecoderStream()).getReader()
         while (true) {
             const { value, done } = await reader.read()
             if (done) break
+            stateStore.insertModelResponseStream(value)
 
-            stateStore.updateModelResponseStream(value)
-
+            // 解析模型响应数据流
             const lines = value.split('\n\n')
             lines.forEach((line: string) => {
                 if (line != '' && line != 'data: [DONE]') {
                     const jsonDataStr = line.split('data: ')[1].trim()
                     try {
                         const jsonData = JSON.parse(jsonDataStr)
-                        insertResponseDataStream(jsonData.choices[0].delta.content)
+                        stateStore.insertModelResponseString(jsonData.choices[0].delta.content)
                         // 更新当前生成字段
                         if (watchFields.length > 0) {
-                            if (responseDataStream.value.includes(watchFields[dataFieldPointer])) {
-                                updateResponseDataField(watchFields[dataFieldPointer])
+                            if (
+                                stateStore.modelResponseString.includes(
+                                    watchFields[dataFieldPointer]
+                                )
+                            ) {
+                                stateStore.updateModelResponseField(watchFields[dataFieldPointer])
                                 dataFieldPointer++
                             }
                         }
                     } catch (error) {
-                        console.log('Failed to parse stream: ', error)
+                        return stateStore.updateAppInfo(`解析模型相应数据失败：${error}`)
                     }
                 }
             })
         }
 
-        // 解析responseDataStream的json问题
-        switch (responseFormat) {
-            case { type: 'json_object' }:
-                try {
-                    let responseDataStreamString = responseDataStream.value
-                    responseDataStreamString = responseDataStreamString.includes('```json')
-                        ? responseDataStreamString.slice(7, -3)
-                        : responseDataStreamString
-                    responseDataStreamString = jsonrepair(responseDataStreamString)
-                    const responseDataStreamJson = JSON.parse(responseDataStreamString)
-                    updateResponseData(responseDataStreamJson)
-                } catch (error) {
-                    console.error('Failed to parse message:', error)
-                }
-                break
-            case { type: 'text' }:
-                updateResponseData(responseDataStream.value)
-                break
-            default:
-                break
+        // 解析modelResponseString的json问题
+        if (responseFormat == ({ type: 'json_object' } as ResponseFormatType)) {
+            try {
+                let dataString = stateStore.modelResponseString
+                dataString = dataString.includes('```json') ? dataString.slice(7, -3) : dataString
+                dataString = jsonrepair(dataString)
+                stateStore.updateModelResponseString(dataString)
+            } catch (error) {
+                stateStore.updateAppInfo(`Failed to parse message: ${error}`)
+            }
         }
         // console.log(responseDataStream.value)
-        return responseData.value
+        return stateStore.modelResponseString
     }
 
     return {
-        getResponse,
         getCase,
         getStory,
         getTest,
