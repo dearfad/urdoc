@@ -1,9 +1,7 @@
 export const useSimCaseStore = defineStore(
     'simcase',
     () => {
-        const simCaseCookie = useCookie('simcase')
-        const simCase = ref(simCaseCookie.simCase || '')
-
+        const simCase = ref('')
         const simCaseFields = ref([
             '姓名',
             '性别',
