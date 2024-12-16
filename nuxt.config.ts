@@ -31,7 +31,9 @@ export default defineNuxtConfig({
         redirect: false,
     },
     app: {
-        pageTransition: { name: 'page', mode: 'out-in' },
+        // pageTransition: { name: 'page', mode: 'out-in' },
+        pageTransition: false,
+        layoutTransition: false,
     },
     piniaPluginPersistedstate: {
         storage: 'localStorage',
