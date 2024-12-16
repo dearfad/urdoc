@@ -46,8 +46,12 @@
         <v-snackbar v-model="snackBar" timeout="2000"
             ><div class="text-center">{{ snackBarText }}</div></v-snackbar
         >
-
-        <v-sheet>{{ simcases }}</v-sheet>
+        <ClientOnly fallback-tag="span">
+            <v-sheet>{{ simcases }}</v-sheet>
+            <template #fallback>
+                <p>Loading simcases...</p>
+            </template>
+        </ClientOnly>
     </v-container>
 </template>
 

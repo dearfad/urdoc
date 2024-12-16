@@ -13,17 +13,7 @@ export default defineNuxtConfig({
                 'URDOC Virtual Case Research Institute: Pioneering in AI-generated medical cases, storytelling, question formulation, and consultation simulation for comprehensive capability assessment in healthcare education and research.',
         },
     },
-    modules: [
-        'vuetify-nuxt-module',
-        '@nuxt/eslint',
-        '@pinia/nuxt',
-        'pinia-plugin-persistedstate/nuxt',
-        '@nuxtjs/eslint-module',
-        '@nuxthub/core',
-        'nuxt-cloudflare-analytics',
-        '@nuxtjs/supabase',
-        '@nuxtjs/seo',
-    ],
+    modules: ['vuetify-nuxt-module', '@nuxt/eslint', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@nuxtjs/eslint-module', '@nuxthub/core', 'nuxt-cloudflare-analytics', '@nuxtjs/supabase', '@nuxtjs/seo', '@nuxtjs/mdc'],
     cloudflareAnalytics: {
         token: '97db8550f18d4cdda844ff8ab2199b36',
     },

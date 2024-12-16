@@ -1,27 +1,8 @@
 <template>
-    <v-sheet>
-        <v-sheet>
-            <v-tabs v-model="tab">
-                <v-tab value="1">原始数据</v-tab>
-                <v-tab value="2">文本格式</v-tab>
-                <v-tab value="3">JSON格式</v-tab>
-                <v-tab value="4">MARKDOWN格式</v-tab>
-            </v-tabs>
-            <v-tabs-window v-model="tab">
-                <v-tabs-window-item value="1">
-                    <v-textarea
-                        v-model="modelResponseString"
-                        class="my-4"
-                        rows="1"
-                        auto-grow
-                        :variant="varTextField"
-                        hide-details="auto"
-                    />
-                </v-tabs-window-item>
-                <v-tabs-window-item value="2">
-                    <v-textarea v-model="simCaseText" :variant="varTextField" rows="1" auto-grow />
-                </v-tabs-window-item>
-                <v-tabs-window-item value="3">
+    <v-expansion-panels v-model="panelExpandState" class="pt-4">
+        <v-expansion-panel title="更改病例" value="updateCasePanel">
+            <v-expansion-panel-text>
+                <v-sheet>
                     <v-text-field
                         v-model="simCase.姓名"
                         class="my-4"
@@ -130,57 +111,43 @@
                         :variant="varTextField"
                         hide-details="auto"
                     />
-                </v-tabs-window-item>
-                <v-tabs-window-item value="4">
-                    <v-textarea
-                        v-model="simCaseMarkdown"
-                        :variant="varTextField"
-                        rows="1"
-                        auto-grow
-                    />
-                </v-tabs-window-item>
-            </v-tabs-window>
-        </v-sheet>
-        <v-sheet class="my-2">
-            <v-chip variant="text" class="px-1">标签:</v-chip>
-            <v-chip v-if="selectedBook != '任意'" variant="outlined" class="ma-1">
-                {{ selectedBook }}
-            </v-chip>
-            <v-chip v-if="selectedChapter != '任意'" variant="outlined" class="ma-1">
-                {{ selectedChapter }}
-            </v-chip>
-            <v-chip v-if="selectedSection != '任意'" variant="outlined" class="ma-1">
-                {{ selectedSection }}
-            </v-chip>
-            <v-chip v-if="selectedSubsection != '任意'" variant="outlined" class="ma-1">
-                {{ selectedSubsection }}
-            </v-chip>
-            <span v-if="genCaseKeyPoint != ''">
-                <v-chip
-                    v-for="keyPoint in genCaseKeyPoint.split(' ')"
-                    :key="keyPoint"
-                    variant="outlined"
-                    class="ma-1"
-                >
-                    {{ keyPoint }}
-                </v-chip>
-            </span>
-        </v-sheet>
-    </v-sheet>
+                </v-sheet>
+                <v-sheet class="my-2">
+                    <v-chip variant="text" class="px-1">标签:</v-chip>
+                    <v-chip v-if="selectedBook != '任意'" variant="outlined" class="ma-1">
+                        {{ selectedBook }}
+                    </v-chip>
+                    <v-chip v-if="selectedChapter != '任意'" variant="outlined" class="ma-1">
+                        {{ selectedChapter }}
+                    </v-chip>
+                    <v-chip v-if="selectedSection != '任意'" variant="outlined" class="ma-1">
+                        {{ selectedSection }}
+                    </v-chip>
+                    <v-chip v-if="selectedSubsection != '任意'" variant="outlined" class="ma-1">
+                        {{ selectedSubsection }}
+                    </v-chip>
+                    <span v-if="genCaseKeyPoint != ''">
+                        <v-chip
+                            v-for="keyPoint in genCaseKeyPoint.split(' ')"
+                            :key="keyPoint"
+                            variant="outlined"
+                            class="ma-1"
+                        >
+                            {{ keyPoint }}
+                        </v-chip>
+                    </span>
+                </v-sheet>
+            </v-expansion-panel-text>
+        </v-expansion-panel>
+    </v-expansion-panels>
 </template>
 
 <script setup lang="ts">
 const simCaseStore = useSimCaseStore()
-const { simCase, simCaseText, simCaseMarkdown } = storeToRefs(simCaseStore)
+const { simCase } = storeToRefs(simCaseStore)
 const stateStore = useStateStore()
-const {
-    selectedBook,
-    selectedChapter,
-    selectedSection,
-    selectedSubsection,
-    genCaseKeyPoint,
-    modelResponseString,
-} = storeToRefs(stateStore)
+const { selectedBook, selectedChapter, selectedSection, selectedSubsection, genCaseKeyPoint } =
+    storeToRefs(stateStore)
 const varTextField = ref('outlined')
-const tab = ref()
+const panelExpandState = ref([])
 </script>
