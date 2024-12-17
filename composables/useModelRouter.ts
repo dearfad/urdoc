@@ -15,5 +15,15 @@ export default function () {
         return platform.getCase(messages)
     }
 
-    return { getCase }
+    function getStory(messages: MessagesArray) {
+        const platform = getPlatform()
+        return platform.getStory(messages)
+    }
+
+    function getTest(messages: MessagesArray) {
+        const platform = getPlatform()
+        return platform.getTest(messages)
+    }
+
+    return { getCase, getStory, getTest }
 }
