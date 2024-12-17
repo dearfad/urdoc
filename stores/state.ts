@@ -37,7 +37,9 @@ export const useStateStore = defineStore('state', () => {
         modelResponseField.value = value
     }
     //
+    const currentPatientTab = ref('')
 
+    //
     const currentContent = ref('')
     const isInputFocused = ref(false)
 
@@ -74,6 +76,8 @@ export const useStateStore = defineStore('state', () => {
         modelResponseField,
         resetModelResponseField,
         updateModelResponseField,
+
+        currentPatientTab,
 
         currentContent,
         isInputFocused,

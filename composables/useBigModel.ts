@@ -61,8 +61,8 @@ export default function () {
             const lines = value.split('\n\n')
             lines.forEach((line: string) => {
                 if (line != '' && line != 'data: [DONE]') {
-                    const jsonDataStr = line.split('data: ')[1].trim()
                     try {
+                        const jsonDataStr = line.split('data: ')[1].trim()
                         const jsonData = JSON.parse(jsonDataStr)
                         stateStore.insertModelResponseString(jsonData.choices[0].delta.content)
                         // 更新当前生成字段

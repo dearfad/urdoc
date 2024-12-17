@@ -1,68 +1,62 @@
 <template>
-    <v-expansion-panels v-model="panelExpandState" class="pt-4">
-        <v-expansion-panel title="生成病例" value="genCasePanel">
-            <v-expansion-panel-text>
-                <v-sheet>
-                    <v-select
-                        v-model="selectedBook"
-                        label="教科书"
-                        :items="books"
-                        variant="outlined"
-                        class="my-4"
-                        hide-details="auto"
-                        @update:model-value="handleBookChange"
-                    />
-                    <v-select
-                        v-model="selectedChapter"
-                        label="章节"
-                        :items="chapters"
-                        variant="outlined"
-                        class="my-4"
-                        hide-details="auto"
-                        @update:model-value="handleChapterChange"
-                    />
-                    <v-select
-                        v-model="selectedSection"
-                        label="节次"
-                        :items="sections"
-                        variant="outlined"
-                        class="my-4"
-                        hide-details="auto"
-                        @update:model-value="handleSectionChange"
-                    />
-                    <v-select
-                        v-model="selectedSubsection"
-                        label="子节"
-                        :items="subsections"
-                        variant="outlined"
-                        class="my-4"
-                        hide-details="auto"
-                    />
-                    <v-text-field
-                        v-model="genCaseKeyPoint"
-                        label="设定"
-                        variant="outlined"
-                        class="my-4"
-                        hide-details="auto"
-                        placeholder="多个要点请用空格隔开"
-                    />
-                    <v-btn
-                        size="x-large"
-                        block
-                        class="font-weight-bold"
-                        text="生成病例"
-                        :loading="isLoading"
-                        @click="genCase"
-                    >
-                        <template #loader>
-                            <v-progress-circular indeterminate color="white" class="mr-4" />
-                            正在生成...{{ modelResponseField }}
-                        </template>
-                    </v-btn>
-                </v-sheet>
-            </v-expansion-panel-text>
-        </v-expansion-panel>
-    </v-expansion-panels>
+    <v-sheet>
+        <v-select
+            v-model="selectedBook"
+            label="教科书"
+            :items="books"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            @update:model-value="handleBookChange"
+        />
+        <v-select
+            v-model="selectedChapter"
+            label="章节"
+            :items="chapters"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            @update:model-value="handleChapterChange"
+        />
+        <v-select
+            v-model="selectedSection"
+            label="节次"
+            :items="sections"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            @update:model-value="handleSectionChange"
+        />
+        <v-select
+            v-model="selectedSubsection"
+            label="子节"
+            :items="subsections"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+        />
+        <v-text-field
+            v-model="genCaseKeyPoint"
+            label="设定"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            placeholder="多个要点请用空格隔开"
+        />
+        <v-btn
+            size="x-large"
+            block
+            class="font-weight-bold"
+            text="生成病例"
+            :loading="isLoading"
+            @click="genCase"
+        >
+            <template #loader>
+                <v-progress-circular indeterminate color="white" class="mr-4" />
+                正在生成...{{ modelResponseField }}
+            </template>
+        </v-btn>
+    </v-sheet>
 </template>
 
 <script setup lang="ts">

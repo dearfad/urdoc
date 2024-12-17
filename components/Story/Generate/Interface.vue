@@ -8,8 +8,8 @@ const isLoading = ref(false)
 const bigModel = useBigModel()
 const promptStore = usePromptStore()
 const stateStore = useStateStore()
-const caseStore = useCaseStore()
-const storyStore = useStoryStore()
+const simCaseStore = useSimCaseStore()
+const simStoryStore = useSimStoryStore()
 
 async function genStory() {
     isLoading.value = true
@@ -17,10 +17,10 @@ async function genStory() {
         { role: 'system', content: promptStore.storyPrompt },
         {
             role: 'user',
-            content: caseStore.simCaseMarkdown + stateStore.genStoryKeyPoint,
+            content: simCaseStore.simCaseMarkdown + stateStore.genStoryKeyPoint,
         },
     ]
-    storyStore.updateStory(await bigModel.getStory(messages))
+    simStoryStore.updateSimStory(await bigModel.getStory(messages))
     isLoading.value = false
 }
 </script>

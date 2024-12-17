@@ -1,10 +1,10 @@
 <template>
-    <v-textarea v-model="story" readonly auto-grow variant="solo" />
+    <v-textarea v-model="simStoryStore.simStory" auto-grow variant="outlined" />
     <v-sheet class="my-2">
         <v-chip variant="text" class="px-1">标签:</v-chip>
-        <span v-if="genStoryKeyPoint != ''">
+        <span v-if="stateStore.genStoryKeyPoint != ''">
             <v-chip
-                v-for="keyPoint in genStoryKeyPoint.split(' ')"
+                v-for="keyPoint in stateStore.genStoryKeyPoint.split(' ')"
                 :key="keyPoint"
                 variant="outlined"
                 class="ma-1"
@@ -16,8 +16,6 @@
 </template>
 
 <script setup>
-const storyStore = useStoryStore()
-const { story } = storeToRefs(storyStore)
+const simStoryStore = useSimStoryStore()
 const stateStore = useStateStore()
-const { genStoryKeyPoint } = storeToRefs(stateStore)
 </script>

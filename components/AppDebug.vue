@@ -17,6 +17,6 @@
     />
 </template>
 
-<script setup lang="ts">
+<script setup>
 const stateStore = useStateStore()
 </script>
