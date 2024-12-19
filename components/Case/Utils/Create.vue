@@ -45,7 +45,7 @@
         />
         <v-container>
             <v-row>
-                <v-col cols="6">
+                <v-col cols="12">
                     <v-btn
                         size="x-large"
                         block
@@ -60,28 +60,12 @@
                         </template>
                     </v-btn>
                 </v-col>
-                <v-col cols="6">
-                    <v-btn
-                        block
-                        size="x-large"
-                        class="font-weight-bold"
-                        text="读取病例"
-                        :loading="isLoading"
-                        @click="loadCase"
-                    />
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12">
-                    <v-data-table :items="items" />
-                </v-col>
             </v-row>
         </v-container>
     </v-sheet>
 </template>
 
 <script setup>
-const items = ref([])
 const stateStore = useStateStore()
 const {
     selectedBook,
@@ -91,7 +75,7 @@ const {
     genCaseKeyPoint,
     modelResponseField,
 } = storeToRefs(stateStore)
-const supabase = useSupabaseClient()
+
 // 生成新病例，清空病例、故事、测试
 const newCase = useNewCase()
 // 生成状态提示
@@ -170,13 +154,5 @@ async function genCase() {
 
     simCaseStore.updateSimCase(JSON.parse(await modelRouter.getCase(messages)))
     isLoading.value = false
-}
-
-async function loadCase() {
-    const { data, error } = await supabase.from('simcases').select('*')
-    if (error) {
-        console.log(error)
-    }
-    items.value = data
 }
 </script>

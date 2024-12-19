@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="pa-12">
         <v-row>
             <v-col cols="12" md="6" class="mx-auto">
                 <v-text-field
@@ -46,12 +46,6 @@
         <v-snackbar v-model="snackBar" timeout="2000"
             ><div class="text-center">{{ snackBarText }}</div></v-snackbar
         >
-        <ClientOnly fallback-tag="span">
-            <v-sheet>{{ simcases }}</v-sheet>
-            <template #fallback>
-                <p>Loading simcases...</p>
-            </template>
-        </ClientOnly>
     </v-container>
 </template>
 
@@ -64,20 +58,19 @@ const snackBarText = ref('')
 
 const user = useSupabaseUser()
 
-const { data: simcases } = await useAsyncData('simcases', async () => {
-    const { data } = await supabase.from('simcases').select('*')
-    return data
-})
-
 const signInWithPassword = async () => {
     const { error } = await supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value,
     })
     if (error) {
+        console.log(error.code)
         switch (error.code) {
             case 'invalid_credentials':
                 snackBarText.value = '认证失败：登录凭证无效'
+                break
+            case 'validation_failed':
+                snackBarText.value = '认证失败：请填写邮箱和密码'
                 break
             default:
                 snackBarText.value = error

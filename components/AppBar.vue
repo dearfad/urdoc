@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar density="compact">
+    <v-app-bar density="compact" flat elevation="1">
         <v-app-bar-nav-icon @click="isLeftNavDrawerShow = !isLeftNavDrawerShow" />
         <v-app-bar-title class="font-weight-bold cursor-pointer" @click="router.push('/')">
             URDOC
@@ -21,6 +21,14 @@
                 title="使用流程"
             />
             <v-divider />
+            <v-list-item
+                prepend-icon="mdi-timeline-question-outline"
+                class="font-weight-bold"
+                to="/caselist"
+            >
+                浏览病例
+            </v-list-item>
+            <v-divider />
             <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
                 单项研究
             </v-list-item>
@@ -40,8 +48,8 @@
         v-model="isRightNavDrawerShow"
         location="end"
         class="pa-4"
-        rail
         :disable-resize-watcher="true"
+        rail
     >
         <v-btn to="/" icon="mdi-home" variant="plain" :ripple="false" />
         <v-btn
