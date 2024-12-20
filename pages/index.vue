@@ -14,7 +14,7 @@
             <v-btn
                 class="font-weight-bold px-16 mb-auto mt-4"
                 size="x-large"
-                to="/gencase"
+                to="/case"
                 rounded="lg"
                 variant="outlined"
             >

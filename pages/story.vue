@@ -1,13 +1,13 @@
 <template>
     <v-sheet class="d-flex flex-column">
-        <CommonCurrentPatient />
-        <CaseContentShow />
-        <CaseUtilsTabs />
+        <CommonCaseNavCard />
+        <StoryContentShow />
+        <StoryUtilsTabs />
     </v-sheet>
 </template>
 
 <script setup>
 definePageMeta({
-    title: '生成病例',
+    title: '编写故事',
 })
 </script>

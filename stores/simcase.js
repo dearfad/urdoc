@@ -63,8 +63,6 @@ export const useSimCaseStore = defineStore(
         }
     },
     {
-        persist: {
-            pick: ['simCase'],
-        },
+        persist: true,
     }
 )

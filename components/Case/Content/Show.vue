@@ -3,6 +3,7 @@
         <ClientOnly>
             <div v-if="!simCaseStore.simCaseMarkdown" class="pa-4">请生成病例！</div>
             <MDC :value="simCaseStore.simCaseMarkdown" />
+            <CommonCaseTag />
         </ClientOnly>
     </v-sheet>
 </template>

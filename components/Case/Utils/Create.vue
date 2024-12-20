@@ -1,67 +1,19 @@
 <template>
-    <v-sheet>
-        <v-select
-            v-model="selectedBook"
-            label="教科书"
-            :items="books"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @update:model-value="handleBookChange"
-        />
-        <v-select
-            v-model="selectedChapter"
-            label="章节"
-            :items="chapters"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @update:model-value="handleChapterChange"
-        />
-        <v-select
-            v-model="selectedSection"
-            label="节次"
-            :items="sections"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            @update:model-value="handleSectionChange"
-        />
-        <v-select
-            v-model="selectedSubsection"
-            label="子节"
-            :items="subsections"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-        />
-        <v-text-field
-            v-model="genCaseKeyPoint"
-            label="设定"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            placeholder="多个要点请用空格隔开"
-        />
-        <v-container>
-            <v-row>
-                <v-col cols="12">
-                    <v-btn
-                        size="x-large"
-                        block
-                        class="font-weight-bold"
-                        text="生成病例"
-                        :loading="isLoading"
-                        @click="genCase"
-                    >
-                        <template #loader>
-                            <v-progress-circular indeterminate color="white" class="mr-4" />
-                            {{ modelResponseField }}
-                        </template>
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
+    <v-sheet class="d-flex flex-column">
+        <CommonChapterSelector />
+        <v-btn
+            size="x-large"
+            block
+            class="font-weight-bold"
+            text="生成病例"
+            :loading="isLoading"
+            @click="genCase"
+        >
+            <template #loader>
+                <v-progress-circular indeterminate color="white" class="mr-4" />
+                {{ modelResponseField }}
+            </template>
+        </v-btn>
     </v-sheet>
 </template>
 
@@ -72,7 +24,7 @@ const {
     selectedChapter,
     selectedSection,
     selectedSubsection,
-    genCaseKeyPoint,
+    caseTag,
     modelResponseField,
 } = storeToRefs(stateStore)
 
@@ -84,52 +36,6 @@ const isLoading = ref(false)
 const modelRouter = useModelRouter()
 const simCaseStore = useSimCaseStore()
 const promptStore = usePromptStore()
-
-// 处理教科书、章节、节次、子节的匹配
-const chapterStore = useChapterStore()
-const { chapter } = storeToRefs(chapterStore)
-
-const books = computed(() => {
-    return ['任意', ...Object.keys(chapter.value)]
-})
-
-const chapters = computed(() => {
-    return selectedBook.value == '任意'
-        ? ['任意']
-        : ['任意', ...Object.keys(chapter.value[selectedBook.value])]
-})
-
-const sections = computed(() => {
-    return selectedChapter.value == '任意' ||
-        chapter.value[selectedBook.value][selectedChapter.value] == {}
-        ? ['任意']
-        : ['任意', ...Object.keys(chapter.value[selectedBook.value][selectedChapter.value])]
-})
-
-const subsections = computed(() => {
-    return selectedSection.value == '任意' ||
-        chapter.value[selectedBook.value][selectedChapter.value][selectedSection.value] == []
-        ? ['任意']
-        : [
-              '任意',
-              ...chapter.value[selectedBook.value][selectedChapter.value][selectedSection.value],
-          ]
-})
-
-function handleBookChange() {
-    selectedChapter.value = '任意'
-    selectedSection.value = '任意'
-    selectedSubsection.value = '任意'
-}
-
-function handleChapterChange() {
-    selectedSection.value = '任意'
-    selectedSubsection.value = '任意'
-}
-
-function handleSectionChange() {
-    selectedSubsection.value = '任意'
-}
 
 async function genCase() {
     newCase.deleteAll()
@@ -148,7 +54,7 @@ async function genCase() {
                 '\n' +
                 selectedSubsection.value +
                 '\n' +
-                genCaseKeyPoint.value,
+                caseTag.value,
         },
     ]
 

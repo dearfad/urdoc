@@ -22,7 +22,7 @@
             />
             <v-divider />
             <v-list-item
-                prepend-icon="mdi-timeline-question-outline"
+                prepend-icon="mdi-arrow-down-circle"
                 class="font-weight-bold"
                 to="/caselist"
             >
@@ -32,9 +32,9 @@
             <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
                 单项研究
             </v-list-item>
-            <v-list-item prepend-icon="mdi-wrench-outline" to="/gencase" title="生成病例" />
-            <v-list-item prepend-icon="mdi-book-open-outline" to="/genstory" title="编写故事" />
-            <v-list-item prepend-icon="mdi-ab-testing" to="/gentest" title="设计问题" />
+            <v-list-item prepend-icon="mdi-wrench-outline" to="/case" title="生成病例" />
+            <v-list-item prepend-icon="mdi-book-open-outline" to="/story" title="编写故事" />
+            <v-list-item prepend-icon="mdi-ab-testing" to="/test" title="设计问题" />
             <v-list-item prepend-icon="mdi-account-outline" to="/simpatient" title="模拟问诊" />
             <v-list-item prepend-icon="mdi-shield-star-outline" to="/simask" title="评估能力" />
             <v-divider />
