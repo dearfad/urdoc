@@ -11,25 +11,17 @@
 const snackbar = ref(false)
 const timeout = ref(-1)
 const stateStore = useStateStore()
-let isWatching = true
 watch(
     () => stateStore.appInfo,
     () => {
-        if (isWatching) {
-            console.log(isWatching)
-            console.log('appInfo changed')
+        if (stateStore.appInfo) {
             snackbar.value = true
         }
-    },
-    { immediate: false }
+    }
 )
 
 function snackbarClose() {
     snackbar.value = false
-    isWatching = false
-    console.log(isWatching)
     stateStore.appInfo = ''
-    console.log(isWatching)
-    isWatching = true
 }
 </script>

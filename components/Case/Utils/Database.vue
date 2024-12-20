@@ -28,15 +28,26 @@ async function saveCase() {
     if (error) {
         switch (error.code) {
             case '42501':
-                stateStore.updateAppInfo('用户未登录，请登录后保存！....')
-                console.log(error)
+                stateStore.updateAppInfo('用户未登录，请登录后保存！')
                 break
             default:
                 stateStore.updateAppInfo(error)
-                console.log(error)
+                break
         }
     }
 }
 
-async function deleteCase() {}
+async function deleteCase() {
+    // 待完善 caseId
+    const caseId = 0
+    const { data, error } = await supabase.from('simcases').delete().eq('id', caseId).select()
+    if (data.length > 0) {
+        stateStore.updateAppInfo('删除成功！')
+    } else {
+        stateStore.updateAppInfo('没找到记录！')
+    }
+    if (error) {
+        stateStore.updateAppInfo(error)
+    }
+}
 </script>
