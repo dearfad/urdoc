@@ -8,7 +8,14 @@
                     :subtitle="simCaseStore.simCase.主诉"
                     prepend-icon="mdi-human-female"
                     variant="text"
-                />
+                >
+                    <template #append>
+                        <v-chip v-if="stateStore.id" variant="elevated" size="small">病例库</v-chip>
+                    </template>
+                    <v-card-text class="pb-0">
+                        <CommonCaseTag />
+                    </v-card-text>
+                </v-card>
             </ClientOnly>
             <v-sheet class="pa-2">
                 <v-btn text="病历" to="/case" variant="text" />
@@ -23,4 +30,5 @@
 
 <script setup>
 const simCaseStore = useSimCaseStore()
+const stateStore = useStateStore()
 </script>

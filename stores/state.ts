@@ -49,6 +49,7 @@ export const useStateStore = defineStore(
         const storyTag = ref('真实')
         const testTag = ref('执业医师考试')
         //
+        const id = ref(0)
 
         const currentContent = ref('')
         const isInputFocused = ref(false)
@@ -86,6 +87,8 @@ export const useStateStore = defineStore(
             caseTag,
             storyTag,
             testTag,
+
+            id,
 
             currentPatientTab,
 

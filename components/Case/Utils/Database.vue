@@ -12,42 +12,89 @@ const stateStore = useStateStore()
 const supabase = useSupabaseClient()
 
 async function saveCase() {
-    const { error } = await supabase.from('simcases').insert([
-        {
-            book: stateStore.selectedBook,
-            chapter: stateStore.selectedChapter,
-            section: stateStore.selectedSection,
-            subsection: stateStore.selectedSubsection,
-            casetag: stateStore.caseTag,
-            content: simCaseStore.simCase,
-            platform: modelStore.platform,
-            model: modelStore.model,
-            public: true,
-        },
-    ])
-    if (error) {
-        switch (error.code) {
-            case '42501':
-                stateStore.updateAppInfo('用户未登录，请登录后保存！')
-                break
-            default:
-                stateStore.updateAppInfo(error)
-                break
+    if (stateStore.id) {
+        const { data, error } = await supabase
+            .from('simcases')
+            .update([
+                {
+                    book: stateStore.selectedBook,
+                    chapter: stateStore.selectedChapter,
+                    section: stateStore.selectedSection,
+                    subsection: stateStore.selectedSubsection,
+                    casetag: stateStore.caseTag,
+                    content: simCaseStore.simCase,
+                    platform: modelStore.platform,
+                    model: modelStore.model,
+                    public: true,
+                },
+            ])
+            .eq('id', stateStore.id)
+            .select()
+        if (data.length > 0) {
+            stateStore.updateAppInfo('更新记录成功！')
+        }
+        if (error) {
+            switch (error.code) {
+                case '42501':
+                    stateStore.updateAppInfo('用户未登录，请登录后保存！')
+                    break
+                default:
+                    stateStore.updateAppInfo(error)
+                    break
+            }
+        }
+    } else {
+        const { data, error } = await supabase
+            .from('simcases')
+            .insert([
+                {
+                    book: stateStore.selectedBook,
+                    chapter: stateStore.selectedChapter,
+                    section: stateStore.selectedSection,
+                    subsection: stateStore.selectedSubsection,
+                    casetag: stateStore.caseTag,
+                    content: simCaseStore.simCase,
+                    platform: modelStore.platform,
+                    model: modelStore.model,
+                    public: true,
+                },
+            ])
+            .select()
+        if (data.length > 0) {
+            stateStore.id = data[0].id
+            stateStore.updateAppInfo('添加记录成功！')
+        }
+        if (error) {
+            switch (error.code) {
+                case '42501':
+                    stateStore.updateAppInfo('用户未登录，请登录后保存！')
+                    break
+                default:
+                    stateStore.updateAppInfo(error)
+                    break
+            }
         }
     }
 }
 
 async function deleteCase() {
-    // 待完善 caseId
-    const caseId = 0
-    const { data, error } = await supabase.from('simcases').delete().eq('id', caseId).select()
-    if (data.length > 0) {
-        stateStore.updateAppInfo('删除成功！')
+    if (stateStore.id) {
+        const { data, error } = await supabase
+            .from('simcases')
+            .delete()
+            .eq('id', stateStore.id)
+            .select()
+        if (data.length > 0) {
+            stateStore.updateAppInfo('删除成功！')
+            stateStore.id = null
+        } else {
+            stateStore.updateAppInfo('没找到记录！')
+        }
+        if (error) {
+            stateStore.updateAppInfo(error)
+        }
     } else {
-        stateStore.updateAppInfo('没找到记录！')
-    }
-    if (error) {
-        stateStore.updateAppInfo(error)
+        stateStore.updateAppInfo('当前记录未在数据库中！')
     }
 }
 </script>

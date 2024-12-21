@@ -1,5 +1,6 @@
 <template>
-    <v-sheet class="my-4">
+    <v-sheet>
+        <v-chip v-if="id" variant="text" size="small"> ID：{{ id }} </v-chip>
         <v-chip v-if="selectedBook" variant="text" size="small">
             教科书：{{ selectedBook }}
         </v-chip>
@@ -18,6 +19,6 @@
 
 <script setup>
 const stateStore = useStateStore()
-const { selectedBook, selectedChapter, selectedSection, selectedSubsection, caseTag } =
+const { selectedBook, selectedChapter, selectedSection, selectedSubsection, caseTag, id } =
     storeToRefs(stateStore)
 </script>
