@@ -19,10 +19,10 @@
             </ClientOnly>
             <v-sheet class="pa-2">
                 <v-btn text="病历" to="/case" variant="text" />
-                <v-btn text="故事" to="/story" variant="text" />
-                <v-btn text="问题" to="/test" variant="text" />
-                <v-btn text="问诊" to="/simpatient" variant="text" />
-                <v-btn text="评估" to="/simask" variant="text" />
+                <v-btn text="故事" variant="text" />
+                <v-btn text="问题" variant="text" />
+                <v-btn text="问诊" variant="text" />
+                <v-btn text="评估" variant="text" />
             </v-sheet>
         </v-sheet>
     </v-sheet>
