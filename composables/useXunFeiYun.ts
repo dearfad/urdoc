@@ -1,6 +1,6 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-    const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
+    const apiKey = import.meta.env.VITE_XFYUN_API_KEY
     const stateStore = useStateStore()
     //
     async function getCase(messages: MessagesArray) {
@@ -29,7 +29,7 @@ export default function () {
         stateStore.resetModelResponseString()
         stateStore.resetModelResponseField()
         //
-        const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+        const response = await $fetch('/api/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,6 +87,7 @@ export default function () {
             try {
                 let dataString = stateStore.modelResponseString
                 dataString = dataString.includes('```json') ? dataString.slice(7, -3) : dataString
+                dataString = dataString.replace(/”，/g, '",')
                 dataString = jsonrepair(dataString)
                 stateStore.updateModelResponseString(dataString)
             } catch (error) {

@@ -11,6 +11,13 @@
                 >
                     <template #append>
                         <v-chip v-if="stateStore.id" variant="elevated" size="small">病例库</v-chip>
+                        <v-chip
+                            v-if="!stateStore.validated"
+                            variant="elevated"
+                            size="small"
+                            color="green"
+                            >已校验</v-chip
+                        >
                     </template>
                     <v-card-text class="pb-0">
                         <CommonCaseTag />

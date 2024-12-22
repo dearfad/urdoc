@@ -30,10 +30,9 @@ async function saveCase() {
             ])
             .eq('id', stateStore.id)
             .select()
-        if (data.length > 0) {
+        if (data != null && data.length > 0) {
             stateStore.updateAppInfo('更新记录成功！')
-        }
-        if (error) {
+        } else {
             switch (error.code) {
                 case '42501':
                     stateStore.updateAppInfo('用户未登录，请登录后保存！')
@@ -54,17 +53,16 @@ async function saveCase() {
                     subsection: stateStore.selectedSubsection,
                     casetag: stateStore.caseTag,
                     content: simCaseStore.simCase,
-                    platform: modelStore.platform,
-                    model: modelStore.model,
+                    platform: stateStore.selectedPlatform,
+                    model: stateStore.selectedModel,
                     public: true,
                 },
             ])
             .select()
-        if (data.length > 0) {
+        if (data != null && data.length > 0) {
             stateStore.id = data[0].id
             stateStore.updateAppInfo('添加记录成功！')
-        }
-        if (error) {
+        } else {
             switch (error.code) {
                 case '42501':
                     stateStore.updateAppInfo('用户未登录，请登录后保存！')

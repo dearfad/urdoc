@@ -1,6 +1,7 @@
 <template>
     <v-sheet class="d-flex flex-column">
         <CommonChapterSelector />
+        <CommonModelSelector />
         <v-btn
             size="x-large"
             block

@@ -1,10 +1,14 @@
 export default function () {
-    const modelStore = useModelStore()
+    const stateStore = useStateStore()
 
     function getPlatform() {
-        switch (modelStore.platform) {
+        switch (stateStore.selectedPlatform) {
             case 'bigModel':
+                // BigModel 智谱AI大模型开放平台 https://bigmodel.cn
                 return useBigModel()
+            case 'xfyun':
+                // 讯飞开放平台 星火大模型 https://www.xfyun.cn/
+                return useXunFeiYun()
             default:
                 return useBigModel()
         }

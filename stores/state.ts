@@ -50,6 +50,10 @@ export const useStateStore = defineStore(
         const testTag = ref('执业医师考试')
         //
         const id = ref(0)
+        const validated = ref(false)
+        //
+        const selectedPlatform = ref('bigmodel')
+        const selectedModel = ref('glm-4-flash')
 
         const currentContent = ref('')
         const isInputFocused = ref(false)
@@ -89,6 +93,10 @@ export const useStateStore = defineStore(
             testTag,
 
             id,
+            validated,
+
+            selectedPlatform,
+            selectedModel,
 
             currentPatientTab,
 

@@ -40,6 +40,8 @@ const headers = ref([
     { title: '小节', key: 'subsection' },
     { title: '标签', key: 'casetag' },
     { title: '主诉', key: 'content.主诉' },
+    { title: '公开', key: 'public' },
+    { title: '已校验', key: 'validated' },
 ])
 const selected = ref()
 watch(selected, () => {
