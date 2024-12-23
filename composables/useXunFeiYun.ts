@@ -59,6 +59,7 @@ export default function () {
         const reader = (response as ReadableStream).pipeThrough(new TextDecoderStream()).getReader()
         while (true) {
             const { value, done } = await reader.read()
+            console.log(value)
             if (done) break
             stateStore.insertModelResponseStream(value)
 
