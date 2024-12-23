@@ -51,6 +51,7 @@ export default defineNuxtConfig({
         '/api/**': {
             proxy: 'https://spark-api-open.xf-yun.com/**',
             cors: true,
+            headers: { 'Access-Control-Allow-Origin': '*' },
         },
     },
 })
