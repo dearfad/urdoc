@@ -9,6 +9,9 @@ export default function () {
             case 'xfyun':
                 // 讯飞开放平台 星火大模型 https://www.xfyun.cn/
                 return useXunFeiYun()
+            case 'doubao':
+                // 火山引擎豆包大模型 lite 4k https://www.volcengine.com/
+                return useDouBao()
             default:
                 return useBigModel()
         }

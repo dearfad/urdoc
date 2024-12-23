@@ -1,6 +1,6 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-    const apiKey = import.meta.env.VITE_XFYUN_API_KEY
+    const apiKey = import.meta.env.VITE_DOUBAO_API_KEY
     const stateStore = useStateStore()
     //
     async function getCase(messages: MessagesArray) {
@@ -29,12 +29,7 @@ export default function () {
         stateStore.resetModelResponseString()
         stateStore.resetModelResponseField()
         //
-        let xfyunUrl = 'https://spark-api-open.xf-yun.com/v1/chat/completions'
-        if (process.env.NODE_ENV === 'development') {
-            // 开发环境的代码
-            xfyunUrl = '/api/v1/chat/completions'
-        }
-        const response = await $fetch(xfyunUrl, {
+        const response = await $fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +53,6 @@ export default function () {
         const reader = (response as ReadableStream).pipeThrough(new TextDecoderStream()).getReader()
         while (true) {
             const { value, done } = await reader.read()
-            console.log(value)
             if (done) break
             stateStore.insertModelResponseStream(value)
 
@@ -93,7 +87,6 @@ export default function () {
             try {
                 let dataString = stateStore.modelResponseString
                 dataString = dataString.includes('```json') ? dataString.slice(7, -3) : dataString
-                dataString = dataString.replace(/”，/g, '",')
                 dataString = jsonrepair(dataString)
                 stateStore.updateModelResponseString(dataString)
             } catch (error) {
