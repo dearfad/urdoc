@@ -39,6 +39,7 @@ export default function () {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + apiKey,
+                'Access-Control-Allow-Origin': '*',
             },
             body: {
                 model: stateStore.selectedModel,
