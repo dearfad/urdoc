@@ -29,7 +29,12 @@ export default function () {
         stateStore.resetModelResponseString()
         stateStore.resetModelResponseField()
         //
-        const response = await $fetch('/api/v1/chat/completions', {
+        let xfyunUrl = 'https://spark-api-open.xf-yun.com/v1/chat/completions'
+        if (process.env.NODE_ENV === 'development') {
+            // 开发环境的代码
+            xfyunUrl = '/api/v1/chat/completions'
+        }
+        const response = await $fetch(xfyunUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
