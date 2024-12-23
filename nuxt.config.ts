@@ -44,13 +44,12 @@ export default defineNuxtConfig({
             '/api': {
                 target: 'https://spark-api-open.xf-yun.com',
                 changeOrigin: true,
-                prependPath: true,
             },
         },
-        // routeRules: {
-        //     '/api/**': {
-        //         proxy: 'https://spark-api-open.xf-yun.com/**',
-        //     },
-        // },
+    },
+    routeRules: {
+        '/api/**': {
+            proxy: 'https://spark-api-open.xf-yun.com/**',
+        },
     },
 })
