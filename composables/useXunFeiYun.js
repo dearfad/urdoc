@@ -30,7 +30,7 @@ export default function () {
         //     // 开发环境的代码
         //     xfyunUrl = '/api/v1/chat/completions'
         // }
-        const xfyunUrl = '/api/v1/chat/completions'
+        const xfyunUrl = '/api/xfyun/v1/chat/completions'
         const response = await $fetch(xfyunUrl, {
             method: 'POST',
             headers: {
