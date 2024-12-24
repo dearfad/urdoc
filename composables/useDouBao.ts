@@ -29,7 +29,8 @@ export default function () {
         stateStore.resetModelResponseString()
         stateStore.resetModelResponseField()
         //
-        const response = await $fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
+        const doubaoUrl = '/api/doubao/api/v3/chat/completions'
+        const response = await $fetch(doubaoUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

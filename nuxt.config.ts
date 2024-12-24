@@ -53,5 +53,10 @@ export default defineNuxtConfig({
             // cors: true,
             // headers: { 'Access-Control-Allow-Origin': '*' },
         },
+        '/api/doubao/**': {
+            proxy: 'https://ark.cn-beijing.volces.com/**',
+            // cors: true,
+            // headers: { 'Access-Control-Allow-Origin': '*' },
+        },
     },
 })
