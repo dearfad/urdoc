@@ -8,6 +8,7 @@ export default function () {
         simStoryStore.deleteSimStory()
         simTestStore.deleteSimTest()
         stateStore.id = null
+        stateStore.validated = null
     }
     return {
         deleteAll,
