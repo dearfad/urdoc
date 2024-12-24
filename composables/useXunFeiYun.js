@@ -31,25 +31,24 @@ export default function () {
         //     xfyunUrl = '/api/v1/chat/completions'
         // }
         const xfyunUrl = '/api/v1/chat/completions'
-        const { data: response } = await useAsyncData('xfyun', () =>
-            $fetch(xfyunUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + apiKey,
-                },
-                body: {
-                    model: stateStore.selectedModel,
-                    messages: messages,
-                    stream: true,
-                    temperature: 0.95,
-                    top_p: 0.7,
-                    max_tokens: 1024,
-                    response_format: responseFormat,
-                },
-                responseType: 'stream',
-            })
-        )
+        const response = await $fetch(xfyunUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + apiKey,
+            },
+            body: {
+                model: stateStore.selectedModel,
+                messages: messages,
+                stream: true,
+                temperature: 0.95,
+                top_p: 0.7,
+                max_tokens: 1024,
+                response_format: responseFormat,
+            },
+            responseType: 'stream',
+        })
+
         if (!response) {
             return stateStore.updateAppInfo('获取模型响应数据为空！')
         }
