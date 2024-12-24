@@ -35,7 +35,7 @@ export default function () {
         //     xfyunUrl = '/api/v1/chat/completions'
         // }
         const xfyunUrl = '/api/v1/chat/completions'
-        const response = await $fetch(xfyunUrl, {
+        const response = await useFetch(xfyunUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
