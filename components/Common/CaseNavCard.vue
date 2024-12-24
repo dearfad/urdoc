@@ -12,7 +12,7 @@
                     <template #append>
                         <v-chip v-if="stateStore.id" variant="elevated" size="small">病例库</v-chip>
                         <v-chip
-                            v-if="!stateStore.validated"
+                            v-if="stateStore.validated"
                             variant="elevated"
                             size="small"
                             color="green"
