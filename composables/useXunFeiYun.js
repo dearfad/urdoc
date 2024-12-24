@@ -3,26 +3,22 @@ export default function () {
     const apiKey = import.meta.env.VITE_XFYUN_API_KEY
     const stateStore = useStateStore()
     //
-    async function getCase(messages: MessagesArray) {
+    async function getCase(messages) {
         const simCaseStore = useSimCaseStore()
         return await getResponse(messages, simCaseStore.simCaseFields)
     }
 
-    async function getStory(messages: MessagesArray) {
+    async function getStory(messages) {
         const simStoryStore = useSimStoryStore()
         return await getResponse(messages, simStoryStore.simStoryFields, { type: 'text' })
     }
 
-    async function getTest(messages: MessagesArray) {
+    async function getTest(messages) {
         const simTestStore = useSimTestStore()
         return await getResponse(messages, simTestStore.simTestFields)
     }
     //
-    async function getResponse(
-        messages: MessagesArray,
-        watchFields: string[],
-        responseFormat: ResponseFormatType = { type: 'json_object' }
-    ) {
+    async function getResponse(messages, watchFields, responseFormat = { type: 'json_object' }) {
         //
         let dataFieldPointer = 0
         stateStore.resetModelResponseStream()
@@ -35,7 +31,7 @@ export default function () {
         //     xfyunUrl = '/api/v1/chat/completions'
         // }
         const xfyunUrl = '/api/v1/chat/completions'
-        const response = await useFetch(xfyunUrl, {
+        const { data: response } = await useFetch(xfyunUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,7 +52,7 @@ export default function () {
             return stateStore.updateAppInfo('获取模型响应数据为空！')
         }
 
-        const reader = (response as ReadableStream).pipeThrough(new TextDecoderStream()).getReader()
+        const reader = response.pipeThrough(new TextDecoderStream()).getReader()
         while (true) {
             const { value, done } = await reader.read()
             console.log(value)
@@ -65,7 +61,7 @@ export default function () {
 
             // 解析模型响应数据流
             const lines = value.split('\n\n')
-            lines.forEach((line: string) => {
+            lines.forEach((line) => {
                 if (line != '' && line != 'data: [DONE]') {
                     try {
                         const jsonDataStr = line.split('data: ')[1].trim()
