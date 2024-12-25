@@ -51,12 +51,26 @@ export default defineNuxtConfig({
             },
         },
     },
-    routeRules: {
-        '/api/xfyun/**': {
-            proxy: 'https://spark-api-open.xf-yun.com/**',
-        },
-        '/api/doubao/**': {
-            proxy: 'https://ark.cn-beijing.volces.com/**',
+    // routeRules: {
+    //     '/api/xfyun/**': {
+    //         proxy: 'https://spark-api-open.xf-yun.com/**',
+    //     },
+    //     '/api/doubao/**': {
+    //         proxy: 'https://ark.cn-beijing.volces.com/**',
+    //     },
+    // },
+    vite: {
+        server: {
+            proxy: {
+                '/api/xfyun': {
+                    target: 'https://spark-api-open.xf-yun.com',
+                    changeOrigin: true,
+                },
+                '/api/doubao': {
+                    target: 'https://ark.cn-beijing.volces.com',
+                    changeOrigin: true,
+                },
+            },
         },
     },
 })
