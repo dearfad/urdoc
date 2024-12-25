@@ -1,55 +1,33 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-    const apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
-    const stateStore = useStateStore()
-    //
-    async function getCase(messages: MessagesArray) {
-        const simCaseStore = useSimCaseStore()
-        return await getResponse(messages, simCaseStore.simCaseFields)
-    }
-
-    async function getStory(messages: MessagesArray) {
-        const simStoryStore = useSimStoryStore()
-        return await getResponse(messages, simStoryStore.simStoryFields, { type: 'text' })
-    }
-
-    async function getTest(messages: MessagesArray) {
-        const simTestStore = useSimTestStore()
-        return await getResponse(messages, simTestStore.simTestFields)
-    }
-    //
-    async function getResponse(
-        messages: MessagesArray,
-        watchFields: string[],
-        responseFormat: ResponseFormatType = { type: 'json_object' }
-    ) {
-        //
+    async function getResponse(params: ModelParamsType) {
+        const stateStore = useStateStore()
+        stateStore.resetModelResponse()
         let dataFieldPointer = 0
-        stateStore.resetModelResponseStream()
-        stateStore.resetModelResponseString()
-        stateStore.resetModelResponseField()
         //
-        const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+        const response = await $fetch(params.url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + apiKey,
+                Authorization: 'Bearer ' + params.apiKey,
             },
             body: {
-                model: stateStore.selectedModel,
-                messages: messages,
+                model: params.model,
+                messages: params.messages,
                 stream: true,
                 temperature: 0.95,
                 top_p: 0.7,
                 max_tokens: 1024,
-                response_format: responseFormat,
+                response_format: params.responseFormat,
             },
             responseType: 'stream',
         })
         if (!response) {
-            return stateStore.updateAppInfo('获取模型响应数据为空！')
+            return (stateStore.appInfo = '获取模型响应数据为空！')
         }
 
+        // Consuming SSE (Server Sent Events) via POST request
+        // https://nuxt.com/docs/getting-started/data-fetching
         const reader = (response as ReadableStream).pipeThrough(new TextDecoderStream()).getReader()
         while (true) {
             const { value, done } = await reader.read()
@@ -65,32 +43,34 @@ export default function () {
                         const jsonData = JSON.parse(jsonDataStr)
                         stateStore.insertModelResponseString(jsonData.choices[0].delta.content)
                         // 更新当前生成字段
-                        if (watchFields.length > 0) {
+                        if (params.watchFields.length > 0) {
                             if (
                                 stateStore.modelResponseString.includes(
-                                    watchFields[dataFieldPointer]
+                                    params.watchFields[dataFieldPointer]
                                 )
                             ) {
-                                stateStore.updateModelResponseField(watchFields[dataFieldPointer])
+                                stateStore.updateModelResponseField(
+                                    params.watchFields[dataFieldPointer]
+                                )
                                 dataFieldPointer++
                             }
                         }
                     } catch (error) {
-                        return stateStore.updateAppInfo(`解析模型相应数据失败：${error}`)
+                        return (stateStore.appInfo = `解析模型相应数据失败：${error}`)
                     }
                 }
             })
         }
 
         // 解析modelResponseString的json问题
-        if (responseFormat.type === 'json_object') {
+        if (params.responseFormat.type === 'json_object') {
             try {
                 let dataString = stateStore.modelResponseString
                 dataString = dataString.includes('```json') ? dataString.slice(7, -3) : dataString
                 dataString = jsonrepair(dataString)
                 stateStore.updateModelResponseString(dataString)
             } catch (error) {
-                stateStore.updateAppInfo(`Failed to parse message: ${error}`)
+                stateStore.appInfo = `Failed to parse message: ${error}`
             }
         }
         // console.log(responseDataStream.value)
@@ -98,8 +78,6 @@ export default function () {
     }
 
     return {
-        getCase,
-        getStory,
-        getTest,
+        getResponse,
     }
 }

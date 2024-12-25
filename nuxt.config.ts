@@ -41,8 +41,12 @@ export default defineNuxtConfig({
     },
     nitro: {
         devProxy: {
-            '/api': {
+            '/api/xfyun': {
                 target: 'https://spark-api-open.xf-yun.com',
+                changeOrigin: true,
+            },
+            '/api/doubao': {
+                target: 'https://ark.cn-beijing.volces.com',
                 changeOrigin: true,
             },
         },
@@ -50,13 +54,9 @@ export default defineNuxtConfig({
     routeRules: {
         '/api/xfyun/**': {
             proxy: 'https://spark-api-open.xf-yun.com/**',
-            // cors: true,
-            // headers: { 'Access-Control-Allow-Origin': '*' },
         },
         '/api/doubao/**': {
             proxy: 'https://ark.cn-beijing.volces.com/**',
-            // cors: true,
-            // headers: { 'Access-Control-Allow-Origin': '*' },
         },
     },
 })

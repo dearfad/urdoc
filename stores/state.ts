@@ -8,22 +8,20 @@ export const useStateStore = defineStore(
         }
         //
         const appInfo = ref('')
-        function updateAppInfo(value: string) {
-            appInfo.value = value
-        }
         //
         const modelResponseStream = ref('')
-        function resetModelResponseStream() {
+        const modelResponseString = ref('')
+        const modelResponseField = ref('')
+        function resetModelResponse() {
             modelResponseStream.value = ''
+            modelResponseString.value = ''
+            modelResponseField.value = ''
         }
         function insertModelResponseStream(value: string) {
             modelResponseStream.value += value
         }
         //
-        const modelResponseString = ref('')
-        function resetModelResponseString() {
-            modelResponseString.value = ''
-        }
+
         function updateModelResponseString(value: string) {
             modelResponseString.value = value
         }
@@ -31,10 +29,7 @@ export const useStateStore = defineStore(
             modelResponseString.value += value
         }
         //
-        const modelResponseField = ref('')
-        function resetModelResponseField() {
-            modelResponseField.value = ''
-        }
+
         function updateModelResponseField(value: string) {
             modelResponseField.value = value
         }
@@ -69,19 +64,17 @@ export const useStateStore = defineStore(
             updateDebug,
 
             appInfo,
-            updateAppInfo,
 
             modelResponseStream,
-            resetModelResponseStream,
+            modelResponseString,
+            modelResponseField,
+            resetModelResponse,
+
             insertModelResponseStream,
 
-            modelResponseString,
-            resetModelResponseString,
             updateModelResponseString,
             insertModelResponseString,
 
-            modelResponseField,
-            resetModelResponseField,
             updateModelResponseField,
 
             selectedBook,
