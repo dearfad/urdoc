@@ -62,12 +62,12 @@ export default defineNuxtConfig({
     vite: {
         server: {
             proxy: {
-                '/api/xfyun': {
-                    target: 'https://spark-api-open.xf-yun.com',
+                '/api/xfyun/**': {
+                    target: 'https://spark-api-open.xf-yun.com/**',
                     changeOrigin: true,
                 },
-                '/api/doubao': {
-                    target: 'https://ark.cn-beijing.volces.com',
+                '/api/doubao/**': {
+                    target: 'https://ark.cn-beijing.volces.com/**',
                     changeOrigin: true,
                 },
             },
