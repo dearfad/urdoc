@@ -42,6 +42,9 @@ const headers = ref([
     { title: '主诉', key: 'content.主诉' },
     { title: '公开', key: 'public' },
     { title: '已校验', key: 'validated' },
+    { title: '平台', key: 'platform' },
+    { title: '模型', key: 'model_name' },
+    { title: '模型ID', key: 'model_id' },
 ])
 const selected = ref()
 watch(selected, () => {
@@ -51,8 +54,10 @@ watch(selected, () => {
 async function loadCase() {
     isLoading.value = true
     const { data, error } = await supabase
-        .from('simcases')
-        .select('id, book, chapter, section, subsection, casetag, content')
+        .from('cases')
+        .select(
+            'id, book, chapter, section, subsection, casetag, content, public, validated, platform, model_name, model_id'
+        )
         .order('id')
     if (error) {
         console.log(error)

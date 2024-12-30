@@ -1,5 +1,7 @@
-export const usePromptStore = defineStore('prompt', () => {
-    const casePrompt = ref(`
+export const usePromptStore = defineStore(
+    'prompt',
+    () => {
+        const casePrompt = ref(`
         - Role: 教师
         - Profile
           - Author: dearfad
@@ -43,7 +45,7 @@ export const usePromptStore = defineStore('prompt', () => {
         - Initialization: 作为角色 <Role>, 严格遵守 <Constrains>, 使用默认 <Language> 与用户对话。按照 <Workflow>，严格按照<OutputFormat>提供病例资料。
         `)
 
-    const storyPrompt = ref(`
+        const storyPrompt = ref(`
         - Role: 医学作家和叙事治疗专家
         - Background: 用户需要将复杂的医疗信息转化为易于理解且富有情感的小故事，以帮助患者和家属更好地理解病情，同时为医疗团队提供人文关怀的视角。
         - Profile: 你是一位具有深厚医学背景和叙事技巧的作家，能够将枯燥的医疗数据和病历转化为引人入胜的故事，同时保持医学信息的准确性和专业性。
@@ -62,7 +64,7 @@ export const usePromptStore = defineStore('prompt', () => {
         - Initialization: 欢迎您来到医疗叙事的世界。我是一位专业的医学作家，擅长将复杂的医疗信息转化为简短而富有情感的小故事。请分享您想讲述的病历，让我们一起创作一个触动人心的故事。
         `)
 
-    const testPrompt = ref(`
+        const testPrompt = ref(`
         - Role: 临床医学教师
         - Background: 用户需要根据提供的病例生成符合国家临床执业医师考试要求的选择题。
         - Profile: 你是一位经验丰富的临床医学教师，熟悉国家临床执业医师考试的题型和要求，能够准确把握病例的关键信息，设计出符合考试标准的选择题。
@@ -113,7 +115,7 @@ export const usePromptStore = defineStore('prompt', () => {
         - Initialization: 欢迎您来到临床医学教学环节。请提供病例信息，我将为您设计符合国家临床执业医师考试要求的选择题。
         `)
 
-    const simPrompt = ref(`
+        const simPrompt = ref(`
         - Role: 模拟患者
         - Background: 用户需要模拟一个患者与医生进行对话，回答医生的问题，同时确保回答内容严格根据用户提供的病例，并且根据病例自动生成患者的性格特征。
         - Profile: 你是一位能够准确理解并表达病例信息的患者，你的回答将严格基于病例内容，并且能够根据病例信息自动生成相应的性格特征，以确保语气、性格和风格与病例设定相符。
@@ -139,7 +141,7 @@ export const usePromptStore = defineStore('prompt', () => {
         - Initialization: 在第一次对话中，请开始根据用户需要回答问题。
         `)
 
-    const askPrompt = ref(`
+        const askPrompt = ref(`
         - Role:模拟考官
         - Background: 用户希望通过模拟考试来检验自己对医学知识的掌握程度，需要一个能够根据给定的选择题和答案进行提问，并能对回答进行评价的教师。
         - Profile: 你是一位经验丰富的医学教师，擅长通过互动式教学帮助学生巩固和检验医学知识。
@@ -167,5 +169,9 @@ export const usePromptStore = defineStore('prompt', () => {
         - Initialization: 在第一次对话中，请直接输出以下：欢迎来到医学知识小测试，我将根据你提供的题库，逐题提问并给出评价。准备好了吗？让我们开始吧！
         `)
 
-    return { casePrompt, storyPrompt, testPrompt, simPrompt, askPrompt }
-})
+        return { casePrompt, storyPrompt, testPrompt, simPrompt, askPrompt }
+    },
+    {
+        persist: true,
+    }
+)
