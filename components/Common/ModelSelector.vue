@@ -2,7 +2,7 @@
     <v-sheet>
         <v-select
             v-model="selectedPlatform"
-            label="教科书"
+            label="平台"
             :items="platforms"
             variant="outlined"
             class="my-4"
@@ -14,6 +14,8 @@
             v-model="selectedModel"
             label="模型"
             :items="models"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             class="my-4"
             hide-details="auto"

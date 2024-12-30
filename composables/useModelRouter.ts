@@ -9,7 +9,7 @@ export default function () {
     ) {
         const modelParams: ModelParamsType = {
             apiKey: '',
-            model: stateStore.selectedModel,
+            model: stateStore.selectedModel.id,
             url: '',
             messages: messages,
             watchFields: watchFields,
@@ -26,23 +26,19 @@ export default function () {
             //         proxy: 'https://ark.cn-beijing.volces.com/**',
             //     },
             // },
-            case 'bigmodel':
-                // BigModel 智谱AI大模型开放平台 https://bigmodel.cn
+            case '智谱':
                 modelParams.apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
                 modelParams.url = 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
                 break
-            case 'xfyun':
-                // 讯飞开放平台 星火大模型 https://www.xfyun.cn/
+            case '讯飞':
                 modelParams.apiKey = import.meta.env.VITE_XFYUN_API_KEY
                 modelParams.url = '/api/xfyun/v1/chat/completions'
                 break
-            case 'doubao':
-                // 火山引擎豆包大模型 lite 4k https://www.volcengine.com/
+            case '火山方舟':
                 modelParams.apiKey = import.meta.env.VITE_DOUBAO_API_KEY
                 modelParams.url = '/api/doubao/api/v3/chat/completions'
                 break
-            case 'aliyun':
-                // 火山引擎豆包大模型 lite 4k https://www.volcengine.com/
+            case '阿里云百炼':
                 modelParams.apiKey = import.meta.env.VITE_ALIYUN_API_KEY
                 modelParams.url =
                     'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions'
