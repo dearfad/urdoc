@@ -12,32 +12,63 @@
     </v-app-bar>
     <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4" :disable-resize-watcher="true">
         <v-list nav>
-            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
-                介绍
+            <v-list-item
+                prepend-icon="mdi-account-injury-outline"
+                class="font-weight-bold text-subtitle-2"
+                to="/clinic"
+            >
+                开诊
             </v-list-item>
             <v-list-item
-                prepend-icon="mdi-timeline-question-outline"
-                to="/guide"
-                title="使用流程"
-            />
-            <v-divider />
-            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold" to="/list">
+                prepend-icon="mdi-format-list-checkbox"
+                class="font-weight-bold text-subtitle-2"
+                to="/list"
+            >
                 浏览病例
             </v-list-item>
-            <v-divider />
-            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
-                单项研究
-            </v-list-item>
-            <v-list-item prepend-icon="mdi-wrench-outline" to="/case" title="生成病例" />
-            <v-list-item prepend-icon="mdi-book-open-outline" title="编写故事" />
-            <v-list-item prepend-icon="mdi-ab-testing" title="设计问题" />
-            <v-list-item prepend-icon="mdi-account-outline" title="模拟问诊" />
-            <v-list-item prepend-icon="mdi-shield-star-outline" title="评估能力" />
-            <v-divider />
-            <v-list-item prepend-icon="mdi-arrow-down-circle" class="font-weight-bold">
-                个人中心
-            </v-list-item>
-            <v-list-item prepend-icon="mdi-email-lock-outline" title="账号登录" to="/login" />
+            <v-list-group>
+                <template #activator="{ props }">
+                    <v-list-item v-bind="props" prepend-icon="mdi-ballot-outline" density="compact">
+                        <v-list-item-title class="font-weight-bold text-subtitle-2">
+                            介绍
+                        </v-list-item-title>
+                    </v-list-item>
+                </template>
+                <v-list-item to="/guide" title="使用流程" density="compact" />
+            </v-list-group>
+
+            <v-list-group>
+                <template #activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-flask-empty-outline"
+                        density="compact"
+                    >
+                        <v-list-item-title class="font-weight-bold text-subtitle-2">
+                            单项研究
+                        </v-list-item-title>
+                    </v-list-item>
+                </template>
+                <v-list-item to="/case" title="生成病例" />
+                <v-list-item title="编写故事" />
+                <v-list-item title="设计问题" />
+                <v-list-item title="模拟问诊" />
+                <v-list-item title="评估能力" />
+            </v-list-group>
+            <v-list-group>
+                <template #activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-account-outline"
+                        density="compact"
+                    >
+                        <v-list-item-title class="font-weight-bold text-subtitle-2">
+                            个人中心
+                        </v-list-item-title>
+                    </v-list-item>
+                </template>
+                <v-list-item title="账号登录" to="/login" />
+            </v-list-group>
         </v-list>
     </v-navigation-drawer>
     <v-navigation-drawer
