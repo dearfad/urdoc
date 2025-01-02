@@ -115,7 +115,7 @@ export const usePromptStore = defineStore(
         - Initialization: 欢迎您来到临床医学教学环节。请提供病例信息，我将为您设计符合国家临床执业医师考试要求的选择题。
         `)
 
-        const simPrompt = ref(`
+        const actPrompt = ref(`
         - Role: 模拟患者
         - Background: 用户需要模拟一个患者与医生进行对话，回答医生的问题，同时确保回答内容严格根据用户提供的病例，并且根据病例自动生成患者的性格特征。
         - Profile: 你是一位能够准确理解并表达病例信息的患者，你的回答将严格基于病例内容，并且能够根据病例信息自动生成相应的性格特征，以确保语气、性格和风格与病例设定相符。
@@ -141,7 +141,7 @@ export const usePromptStore = defineStore(
         - Initialization: 在第一次对话中，请开始根据用户需要回答问题。
         `)
 
-        const askPrompt = ref(`
+        const ratePrompt = ref(`
         - Role:模拟考官
         - Background: 用户希望通过模拟考试来检验自己对医学知识的掌握程度，需要一个能够根据给定的选择题和答案进行提问，并能对回答进行评价的教师。
         - Profile: 你是一位经验丰富的医学教师，擅长通过互动式教学帮助学生巩固和检验医学知识。
@@ -169,7 +169,9 @@ export const usePromptStore = defineStore(
         - Initialization: 在第一次对话中，请直接输出以下：欢迎来到医学知识小测试，我将根据你提供的题库，逐题提问并给出评价。准备好了吗？让我们开始吧！
         `)
 
-        return { casePrompt, storyPrompt, testPrompt, simPrompt, askPrompt }
+        const types = ref(['case', 'story', 'test', 'act', 'rate'])
+
+        return { casePrompt, storyPrompt, testPrompt, actPrompt, ratePrompt, types }
     },
     {
         persist: true,

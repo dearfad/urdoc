@@ -47,8 +47,8 @@ export const useStateStore = defineStore(
         const id = ref(0)
         const validated = ref(false)
         //
-        const selectedPlatform = ref()
-        const selectedModel = ref()
+        const selectedPlatform = ref('智谱')
+        const selectedModel = ref({ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' })
 
         const currentContent = ref('')
         const isInputFocused = ref(false)

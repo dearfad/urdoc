@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar density="compact" flat elevation="1">
+    <v-app-bar density="compact" flat elevation="0">
         <v-app-bar-nav-icon @click="isLeftNavDrawerShow = !isLeftNavDrawerShow" />
         <v-app-bar-title class="font-weight-bold cursor-pointer" @click="router.push('/')">
             URDOC
