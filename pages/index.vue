@@ -32,7 +32,7 @@
                 <v-btn
                     class="font-weight-bold my-4"
                     size="x-large"
-                    to="/case"
+                    to="/clinic"
                     rounded="lg"
                     variant="outlined"
                 >

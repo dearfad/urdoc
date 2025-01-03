@@ -1,5 +1,9 @@
 <template>
-    <v-navigation-drawer v-model="isLeftNavDrawerShow" class="pa-4" :disable-resize-watcher="true">
+    <v-navigation-drawer
+        v-model="stateStore.isNavDrawerLeftShow"
+        class="pa-4"
+        :disable-resize-watcher="true"
+    >
         <v-list nav>
             <v-list-item
                 prepend-icon="mdi-account-injury-outline"
@@ -43,6 +47,9 @@
                 <v-list-item title="设计问题" />
                 <v-list-item title="模拟问诊" />
                 <v-list-item title="评估能力" />
+                <v-list-item to="/face" title="头像生成" />
+                <v-list-item title="视频生成" />
+                <v-list-item title="语音合成" />
             </v-list-group>
             <v-list-group>
                 <template #activator="{ props }">
@@ -62,4 +69,6 @@
     </v-navigation-drawer>
 </template>
 
-<script setup></script>
+<script setup>
+const stateStore = useStateStore()
+</script>

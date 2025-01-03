@@ -1,6 +1,10 @@
 <template>
     <v-app>
-        <AppBar />
+        <ClientOnly>
+            <AppBar />
+            <NavDrawerLeft />
+            <NavDrawerRight />
+        </ClientOnly>
         <AppFooter />
         <AppInfo />
         <v-main class="pt-12 pb-9">

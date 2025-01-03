@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer
-        v-model="isRightNavDrawerShow"
+        v-model="stateStore.isNavDrawerRightShow"
         location="end"
         class="pa-4"
         :disable-resize-watcher="true"
@@ -31,4 +31,5 @@
 
 <script setup>
 const theme = useTheme()
+const stateStore = useStateStore()
 </script>
