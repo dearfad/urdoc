@@ -30,7 +30,7 @@
         <v-row>
             <v-col cols="12">
                 <v-btn
-                    class="font-weight-bold"
+                    class="font-weight-bold my-4"
                     size="x-large"
                     to="/case"
                     rounded="lg"

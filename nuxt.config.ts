@@ -59,20 +59,4 @@ export default defineNuxtConfig({
             proxy: 'https://ark.cn-beijing.volces.com/**',
         },
     },
-    // vite: {
-    //     server: {
-    //         proxy: {
-    //             '/api/xfyun': {
-    //                 target: 'https://spark-api-open.xf-yun.com',
-    //                 changeOrigin: true,
-    //                 rewrite: (path) => path.replace(/^\/api\/xfyun/, ''),
-    //             },
-    //             '/api/doubao/**': {
-    //                 target: 'https://ark.cn-beijing.volces.com',
-    //                 changeOrigin: true,
-    //                 rewrite: (path) => path.replace(/^\/api\/doubao/, ''),
-    //             },
-    //         },
-    //     },
-    // },
 })
