@@ -49,7 +49,10 @@ export const useStateStore = defineStore(
         //
         const selectedPlatform = ref('智谱')
         const selectedModel = ref({ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' })
-
+        //
+        const isNavDrawerLeftShow = ref(false)
+        const isNavDrawerRightShow = ref(false)
+        //
         const currentContent = ref('')
         const isInputFocused = ref(false)
 
@@ -91,6 +94,9 @@ export const useStateStore = defineStore(
             selectedPlatform,
             selectedModel,
 
+            isNavDrawerLeftShow,
+            isNavDrawerRightShow,
+            //
             currentPatientTab,
 
             currentContent,
