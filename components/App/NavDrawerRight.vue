@@ -24,7 +24,7 @@
             icon="mdi-bug-play-outline"
             variant="plain"
             :ripple="false"
-            @click="stateStore.debug = !stateStore.debug"
+            @click="stateStore.isDebug = !stateStore.isDebug"
         />
     </v-navigation-drawer>
 </template>

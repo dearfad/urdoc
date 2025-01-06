@@ -2,7 +2,7 @@
     <v-sheet>
         <ClientOnly>
             <v-textarea
-                v-if="stateStore.debug"
+                v-if="stateStore.isDebug"
                 v-model="stateStore.modelResponseString"
                 label="模型响应解析"
                 rows="1"
@@ -10,7 +10,7 @@
                 variant="outlined"
             />
             <v-textarea
-                v-if="stateStore.debug"
+                v-if="stateStore.isDebug"
                 v-model="stateStore.modelResponseStream"
                 label="模型响应流"
                 rows="1"

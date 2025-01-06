@@ -34,14 +34,14 @@ const items = [
         title: '第四步：模拟问诊 ( Act )',
         text: '模拟门诊问诊过程以获得患者资料',
         icon: 'mdi-account-outline',
-        // link: '/simpatient',
+        // link: '/act',
     },
     {
         id: useId(),
         title: '第五步：评估能力 ( Rate )',
         text: '模拟问答过程进而了解诊疗能力',
         icon: 'mdi-shield-star-outline',
-        // link: '/simask',
+        // link: '/rate',
     },
 ]
 </script>

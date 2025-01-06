@@ -1,16 +1,24 @@
 export const useStateStore = defineStore(
     'state',
     () => {
-        //
-        const debug = ref(false)
-        function updateDebug(value: boolean) {
-            debug.value = value
-        }
-        //
-        const appInfo = ref('')
-        //
+        // AppBar
+        // 左右侧边栏显示切换
+        const isNavDrawerLeftShow = ref(false)
+        const isNavDrawerRightShow = ref(false)
+
+        // AppDebug
+        // 是否开启调试模式以显示原始数据
+        const isDebug = ref(false)
+        // 模型返回数据流
         const modelResponseStream = ref('')
+        // 模型返回数据内容
         const modelResponseString = ref('')
+
+        // AppInfo
+        // 全局信息显示
+        const appInfo = ref('')
+
+        //
         const modelResponseField = ref('')
         function resetModelResponse() {
             modelResponseStream.value = ''
@@ -43,15 +51,15 @@ export const useStateStore = defineStore(
         const caseTag = ref('')
         const storyTag = ref('真实')
         const testTag = ref('执业医师考试')
-        //
+
+        // 病例id判断是否在数据库内
         const id = ref(0)
+        // 是否通过验证
         const validated = ref(false)
         //
         const selectedPlatform = ref('智谱')
         const selectedModel = ref({ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' })
-        //
-        const isNavDrawerLeftShow = ref(false)
-        const isNavDrawerRightShow = ref(false)
+
         //
         const currentContent = ref('')
         const isInputFocused = ref(false)
@@ -63,13 +71,13 @@ export const useStateStore = defineStore(
         }
 
         return {
-            debug,
-            updateDebug,
-
-            appInfo,
-
+            isNavDrawerLeftShow,
+            isNavDrawerRightShow,
+            isDebug,
             modelResponseStream,
             modelResponseString,
+            appInfo,
+
             modelResponseField,
             resetModelResponse,
 
@@ -94,8 +102,6 @@ export const useStateStore = defineStore(
             selectedPlatform,
             selectedModel,
 
-            isNavDrawerLeftShow,
-            isNavDrawerRightShow,
             //
             currentPatientTab,
 

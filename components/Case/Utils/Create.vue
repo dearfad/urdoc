@@ -59,7 +59,7 @@ async function genCase() {
         },
     ]
 
-    simCaseStore.updateSimCase(JSON.parse(await modelRouter.getCase(messages)))
+    simCaseStore.simCase = JSON.parse(await modelRouter.getCase(messages))
     isLoading.value = false
 }
 </script>

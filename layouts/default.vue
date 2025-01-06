@@ -2,8 +2,8 @@
     <v-app>
         <ClientOnly>
             <AppBar />
-            <NavDrawerLeft />
-            <NavDrawerRight />
+            <AppNavDrawerLeft />
+            <AppNavDrawerRight />
         </ClientOnly>
         <AppFooter />
         <AppInfo />

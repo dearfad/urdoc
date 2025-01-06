@@ -32,6 +32,7 @@ export default defineNuxtConfig({
         redirect: false,
     },
     app: {
+        // 页面切换动画，同时更新app.vue中的transition属性
         // pageTransition: { name: 'page', mode: 'out-in' },
         pageTransition: false,
         layoutTransition: false,
