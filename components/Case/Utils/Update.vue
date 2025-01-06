@@ -1,119 +1,116 @@
 <template>
     <v-sheet>
         <v-text-field
-            v-model="simCase.姓名"
+            v-model="caseStore.caseContent.姓名"
             class="my-4"
             label="姓名"
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-text-field
-            v-model="simCase.性别"
+            v-model="caseStore.caseContent.性别"
             class="my-4"
             label="性别"
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-text-field
-            v-model="simCase.年龄"
+            v-model="caseStore.caseContent.年龄"
             class="my-4"
             label="年龄"
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-text-field
-            v-model="simCase.主诉"
+            v-model="caseStore.caseContent.主诉"
             label="主诉"
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.现病史"
+            v-model="caseStore.caseContent.现病史"
             class="my-4"
             rows="1"
             auto-grow
             label="现病史"
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.既往史"
+            v-model="caseStore.caseContent.既往史"
             class="my-4"
             rows="1"
             auto-grow
             label="既往史"
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.查体"
+            v-model="caseStore.caseContent.查体"
             class="my-4"
             rows="1"
             auto-grow
             label="查体："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.专科查体"
+            v-model="caseStore.caseContent.专科查体"
             rows="1"
             class="my-4"
             auto-grow
             label="专科查体："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.辅助检查"
+            v-model="caseStore.caseContent.辅助检查"
             rows="1"
             class="my-4"
             auto-grow
             label="辅助检查："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.诊断"
+            v-model="caseStore.caseContent.诊断"
             class="my-4"
             rows="1"
             auto-grow
             label="诊断："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.治疗"
+            v-model="caseStore.caseContent.治疗"
             class="my-4"
             rows="1"
             auto-grow
             label="治疗："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.手术"
+            v-model="caseStore.caseContent.手术"
             class="my-4"
             rows="1"
             auto-grow
             label="手术："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
         <v-textarea
-            v-model="simCase.病理"
+            v-model="caseStore.caseContent.病理"
             class="my-4"
             rows="1"
             auto-grow
             label="病理："
-            :variant="varTextField"
+            variant="outlined"
             hide-details="auto"
         />
     </v-sheet>
 </template>
 
-<script setup lang="ts">
-const simCaseStore = useSimCaseStore()
-const { simCase } = storeToRefs(simCaseStore)
-
-const varTextField = ref('outlined')
+<script setup>
+const caseStore = useCaseStore()
 </script>

@@ -1,6 +1,7 @@
 export default function () {
     const stateStore = useStateStore()
-    const model = useUrdocModel()
+    const modelResponse = useModelResponse()
+    const caseStore = useCaseStore()
 
     function getModelParams(
         messages: MessagesArray,
@@ -51,21 +52,18 @@ export default function () {
     }
 
     async function getCase(messages: MessagesArray) {
-        const simCaseStore = useSimCaseStore()
-        const params = getModelParams(messages, simCaseStore.simCaseFields)
-        return await model.getResponse(params)
+        const params = getModelParams(messages, caseStore.caseContentFields)
+        return await modelResponse.getResponse(params)
     }
 
     async function getStory(messages: MessagesArray) {
-        const simStoryStore = useSimStoryStore()
-        const params = getModelParams(messages, simStoryStore.simStoryFields, { type: 'text' })
-        return await model.getResponse(params)
+        const params = getModelParams(messages, caseStore.caseStoryFields, { type: 'text' })
+        return await modelResponse.getResponse(params)
     }
 
     async function getTest(messages: MessagesArray) {
-        const simTestStore = useSimTestStore()
-        const params = getModelParams(messages, simTestStore.simTestFields)
-        return await model.getResponse(params)
+        const params = getModelParams(messages, caseStore.caseTestFields)
+        return await modelResponse.getResponse(params)
     }
 
     return { getCase, getStory, getTest }

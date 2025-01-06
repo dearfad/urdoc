@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-const simCaseStore = useSimCaseStore()
+const caseStore = useCaseStore()
 const stateStore = useStateStore()
 const supabase = useSupabaseClient()
 
@@ -21,7 +21,7 @@ async function saveCase() {
                     section: stateStore.selectedSection,
                     subsection: stateStore.selectedSubsection,
                     casetag: stateStore.caseTag,
-                    content: simCaseStore.simCase,
+                    content: caseStore.caseContent,
                     platform: stateStore.selectedPlatform,
                     model_name: stateStore.selectedModel.name,
                     model_id: stateStore.selectedModel.id,
@@ -52,7 +52,7 @@ async function saveCase() {
                     section: stateStore.selectedSection,
                     subsection: stateStore.selectedSubsection,
                     casetag: stateStore.caseTag,
-                    content: simCaseStore.simCase,
+                    content: caseStore.caseContent,
                     platform: stateStore.selectedPlatform,
                     model_name: stateStore.selectedModel.name,
                     model_id: stateStore.selectedModel.id,

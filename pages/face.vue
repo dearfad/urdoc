@@ -12,12 +12,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-img width="320" min-height="320" class="mx-auto" :src="imgUrl">
-                    <template #placeholder
-                        ><div v-if="imgUrl" class="d-flex align-center justify-center fill-height">
-                            <v-progress-circular color="grey-lighten-4" indeterminate /></div
-                    ></template>
-                </v-img>
+                <FaceShow />
             </v-col>
         </v-row>
         <v-row>
@@ -29,9 +24,9 @@
 </template>
 
 <script setup>
-const imgUrl = ref('')
 const isLoading = ref(false)
-const simCaseStore = useSimCaseStore()
+const stateStore = useStateStore()
+const caseStore = useCaseStore()
 
 async function getFace() {
     isLoading.value = true
@@ -43,14 +38,14 @@ async function getFace() {
         },
         body: {
             model: 'cogview-3-flash',
-            prompt: `${simCaseStore.simCase.年龄}${simCaseStore.simCase.性别}性，中国人，半身近照，在医院门诊拍摄。`,
+            prompt: `${caseStore.caseContent.年龄}${caseStore.caseContent.性别}性，中国人，半身近照，在医院门诊拍摄。`,
         },
     })
     if (!response) {
         return (stateStore.appInfo = '获取模型响应数据为空！')
     } else {
         if (response.data[0].url) {
-            imgUrl.value = response.data[0].url
+            caseStore.caseFace = response.data[0].url
         }
     }
     isLoading.value = false

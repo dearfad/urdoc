@@ -29,18 +29,19 @@ const {
     modelResponseField,
 } = storeToRefs(stateStore)
 
-// 生成新病例，清空病例、故事、测试
-const newCase = useNewCase()
 // 生成状态提示
 const isLoading = ref(false)
 
 const modelRouter = useModelRouter()
-const simCaseStore = useSimCaseStore()
+const caseStore = useCaseStore()
 const promptStore = usePromptStore()
 
 async function genCase() {
-    newCase.deleteAll()
+    // 重置状态
+    caseStore.$reset()
+    // 提示生成中
     isLoading.value = true
+    // 构造prompt
     const messages = [
         { role: 'system', content: promptStore.casePrompt },
         {
@@ -59,7 +60,7 @@ async function genCase() {
         },
     ]
 
-    simCaseStore.simCase = JSON.parse(await modelRouter.getCase(messages))
+    caseStore.caseContent = JSON.parse(await modelRouter.getCase(messages))
     isLoading.value = false
 }
 </script>

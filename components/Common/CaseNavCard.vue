@@ -3,9 +3,9 @@
         <v-sheet>
             <ClientOnly>
                 <v-card
-                    v-if="simCaseStore.simCase"
-                    :title="simCaseStore.simCase.姓名"
-                    :subtitle="simCaseStore.simCase.主诉"
+                    v-if="caseStore.caseContent"
+                    :title="caseStore.caseContent.姓名"
+                    :subtitle="caseStore.caseContent.主诉"
                     prepend-icon="mdi-human-female"
                     variant="text"
                 >
@@ -36,6 +36,6 @@
 </template>
 
 <script setup>
-const simCaseStore = useSimCaseStore()
+const caseStore = useCaseStore()
 const stateStore = useStateStore()
 </script>
