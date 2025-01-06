@@ -36,7 +36,7 @@
                     rounded="lg"
                     variant="outlined"
                 >
-                    开始研究
+                    开始出诊
                 </v-btn>
             </v-col>
         </v-row>
