@@ -2,11 +2,6 @@
     <v-container>
         <v-row>
             <v-col />
-            <v-col cols="12" md="8"> <CommonCaseNavCard /></v-col>
-            <v-col />
-        </v-row>
-        <v-row>
-            <v-col />
             <v-col cols="12" md="8"> <FaceShow /></v-col>
             <v-col />
         </v-row>
