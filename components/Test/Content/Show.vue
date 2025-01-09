@@ -1,9 +1,12 @@
 <template>
-    <v-textarea v-model="test" readonly auto-grow variant="solo" />
-    {{ test }}
+    <v-sheet class="border-thin text-body-1 pa-4 mx-2">
+        <ClientOnly>
+            <div v-if="!caseStore.caseTestMarkdown" class="pa-4">请生成问题！</div>
+            <MDC :value="caseStore.caseTestMarkdown" />
+        </ClientOnly>
+    </v-sheet>
 </template>
 
 <script setup>
-const testStore = useTestStore()
-const { test } = storeToRefs(testStore)
+const caseStore = useCaseStore()
 </script>

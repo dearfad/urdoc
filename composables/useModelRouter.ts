@@ -3,6 +3,11 @@ export default function () {
     const modelResponse = useModelResponse()
     const caseStore = useCaseStore()
 
+    interface CaseContent {
+        年龄: string
+        性别: string
+    }
+
     function getModelParams(
         messages: MessagesArray,
         watchFields: string[],
@@ -66,5 +71,24 @@ export default function () {
         return await modelResponse.getResponse(params)
     }
 
-    return { getCase, getStory, getTest }
+    async function getFace() {
+        stateStore.modelResponseField = '头像'
+        const response: BigmodelCogviewResponse = await $fetch(
+            'https://open.bigmodel.cn/api/paas/v4/images/generations',
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer ' + import.meta.env.VITE_BIGMODEL_API_KEY,
+                },
+                body: {
+                    model: 'cogview-3-flash',
+                    prompt: `${(caseStore.caseContent as CaseContent).年龄}${
+                        (caseStore.caseContent as CaseContent).性别
+                    }性，中国人，半身近照，在医院门诊拍摄。`,
+                },
+            }
+        )
+        return response.data[0].url
+    }
+    return { getCase, getStory, getTest, getFace }
 }

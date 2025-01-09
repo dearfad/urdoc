@@ -32,7 +32,7 @@ export default function () {
         while (true) {
             const { value, done } = await reader.read()
             if (done) break
-            stateStore.insertModelResponseStream(value)
+            stateStore.modelResponseStream += value
 
             // 解析模型响应数据流
             const lines = value.split('\n\n')
@@ -41,7 +41,7 @@ export default function () {
                     try {
                         const jsonDataStr = line.split('data: ')[1].trim()
                         const jsonData = JSON.parse(jsonDataStr)
-                        stateStore.insertModelResponseString(jsonData.choices[0].delta.content)
+                        stateStore.modelResponseString += jsonData.choices[0].delta.content
                         // 更新当前生成字段
                         if (params.watchFields.length > 0) {
                             if (
@@ -49,9 +49,7 @@ export default function () {
                                     params.watchFields[dataFieldPointer]
                                 )
                             ) {
-                                stateStore.updateModelResponseField(
-                                    params.watchFields[dataFieldPointer]
-                                )
+                                stateStore.modelResponseField = params.watchFields[dataFieldPointer]
                                 dataFieldPointer++
                             }
                         }
@@ -68,7 +66,7 @@ export default function () {
                 let dataString = stateStore.modelResponseString
                 dataString = dataString.includes('```json') ? dataString.slice(7, -3) : dataString
                 dataString = jsonrepair(dataString)
-                stateStore.updateModelResponseString(dataString)
+                stateStore.modelResponseString = dataString
             } catch (error) {
                 stateStore.appInfo = `Failed to parse message: ${error}`
             }

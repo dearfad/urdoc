@@ -18,45 +18,28 @@ export const useStateStore = defineStore(
         // 全局信息显示
         const appInfo = ref('')
 
-        //
+        // 当前模型生成字段
         const modelResponseField = ref('')
+
         function resetModelResponse() {
             modelResponseStream.value = ''
             modelResponseString.value = ''
             modelResponseField.value = ''
         }
-        function insertModelResponseStream(value: string) {
-            modelResponseStream.value += value
-        }
         //
 
-        function updateModelResponseString(value: string) {
-            modelResponseString.value = value
-        }
-        function insertModelResponseString(value: string) {
-            modelResponseString.value += value
-        }
-        //
-
-        function updateModelResponseField(value: string) {
-            modelResponseField.value = value
-        }
-        //
         const currentPatientTab = ref('')
         //
         const selectedBook = ref('')
         const selectedChapter = ref('')
         const selectedSection = ref('')
         const selectedSubsection = ref('')
-        const caseTag = ref('')
-        const storyTag = ref('真实')
-        const testTag = ref('执业医师考试')
 
         // 病例id判断是否在数据库内
         const id = ref(0)
         // 是否通过验证
         const validated = ref(false)
-        //
+        // 默认平台和模型
         const selectedPlatform = ref('智谱')
         const selectedModel = ref({ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' })
 
@@ -81,20 +64,10 @@ export const useStateStore = defineStore(
             modelResponseField,
             resetModelResponse,
 
-            insertModelResponseStream,
-
-            updateModelResponseString,
-            insertModelResponseString,
-
-            updateModelResponseField,
-
             selectedBook,
             selectedChapter,
             selectedSection,
             selectedSubsection,
-            caseTag,
-            storyTag,
-            testTag,
 
             id,
             validated,

@@ -1,9 +1,9 @@
 <template>
-    <v-text-field v-model="stateStore.genTestKeyPoint" label="设定" />
-    <v-btn :loading="isLoading" block text="生成问题" @click="genTest">
+    <v-text-field v-model="caseStore.testTag" label="设定" />
+    <v-btn :loading="isLoading" block text="生成问题" @click="getTest">
         <template #loader>
             <v-progress-circular indeterminate color="white" class="mr-4" />
-            正在生成...{{ stateStore.currentGenTestField }}
+            正在生成...{{ stateStore.modelResponseField }}
         </template>
     </v-btn>
 </template>
@@ -11,24 +11,20 @@
 <script setup>
 const isLoading = ref(false)
 const stateStore = useStateStore()
-
 const promptStore = usePromptStore()
 const caseStore = useCaseStore()
-const bigModel = useBigModel()
+const modelRouter = useModelRouter()
 
-const testStore = useTestStore()
-
-async function genTest() {
+async function getTest() {
     isLoading.value = true
     const messages = [
         { role: 'system', content: promptStore.testPrompt },
         {
             role: 'user',
-            content: caseStore.simCaseMarkdown + stateStore.genTestKeyPoint,
+            content: caseStore.caseContentMarkdown + caseStore.testTag,
         },
     ]
-    testStore.updateTest(await bigModel.getTest(messages))
-    console.log(testStore.test)
+    caseStore.caseTest = JSON.parse(await modelRouter.getTest(messages))
     isLoading.value = false
 }
 </script>

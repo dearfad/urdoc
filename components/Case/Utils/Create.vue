@@ -20,14 +20,8 @@
 
 <script setup>
 const stateStore = useStateStore()
-const {
-    selectedBook,
-    selectedChapter,
-    selectedSection,
-    selectedSubsection,
-    caseTag,
-    modelResponseField,
-} = storeToRefs(stateStore)
+const { selectedBook, selectedChapter, selectedSection, selectedSubsection, modelResponseField } =
+    storeToRefs(stateStore)
 
 // 生成状态提示
 const isLoading = ref(false)
@@ -56,7 +50,7 @@ async function genCase() {
                 '\n' +
                 selectedSubsection.value +
                 '\n' +
-                caseTag.value,
+                caseStore.caseTag,
         },
     ]
 

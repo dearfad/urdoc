@@ -43,8 +43,8 @@
                     </v-list-item>
                 </template>
                 <v-list-item to="/case" title="生成病例" />
-                <v-list-item title="编写故事" />
-                <v-list-item title="设计问题" />
+                <v-list-item to="/story" title="编写故事" />
+                <v-list-item to="/test" title="设计问题" />
                 <v-list-item title="模拟问诊" />
                 <v-list-item title="评估能力" />
                 <v-list-item to="/face" title="头像生成" />

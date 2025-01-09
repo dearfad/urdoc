@@ -2,7 +2,7 @@
     <v-sheet class="d-flex flex-column">
         <CommonCaseNavCard />
         <StoryContentShow />
-        <StoryUtilsTabs />
+        <StoryUtilsCreate />
     </v-sheet>
 </template>
 

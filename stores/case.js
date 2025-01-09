@@ -1,15 +1,20 @@
 export const useCaseStore = defineStore(
     'case',
     () => {
+        const promptStore = usePromptStore()
+        const modelRouter = useModelRouter()
         // CSTAR MODEL BASIC FIELDS
         const caseContent = ref({})
         const caseStory = ref('')
         const caseTest = ref('')
         const caseAct = ref([])
         const caseRate = ref('')
-
-        // Media Attachments
         const caseFace = ref('')
+
+        // 自定义设定
+        const caseTag = ref('')
+        const storyTag = ref('真实')
+        const testTag = ref('执业医师考试')
 
         // Watch Generating Fields
         const caseContentFields = ref([
@@ -59,6 +64,23 @@ export const useCaseStore = defineStore(
                 .map(([key, value]) => `**${key}：** ${value}`)
                 .join('\n\n')
         })
+        const caseTestMarkdown = computed(() => {
+            // return Object.entries(caseTest.value)
+            //     .map(([key, value]) => `**${key}：** ${value}`)
+            //     .join('\n\n')
+            let markdown = ''
+            for (const [key, value] of Object.entries(caseTest.value)) {
+                markdown += `**问题${key.slice(2)}**: ${value['问题']}\n`
+                markdown += '\n'
+                markdown += `**选项**:\n`
+                for (const [optionKey, optionValue] of Object.entries(value['选项'])) {
+                    markdown += `- ${optionKey}: ${optionValue}\n`
+                }
+                markdown += `\n**答案**: ${value['答案']}\n`
+                markdown += '\n'
+            }
+            return markdown
+        })
 
         // 重置所有数据，例如生成新病例前
         // https://pinia.vuejs.org/zh/core-concepts/state.html
@@ -71,6 +93,36 @@ export const useCaseStore = defineStore(
             caseFace.value = ''
         }
 
+        async function newCase() {
+            $reset()
+            let messages = ''
+            messages = [
+                { role: 'system', content: promptStore.casePrompt },
+                {
+                    role: 'user',
+                    content: '病例要点设定：\n',
+                },
+            ]
+            caseContent.value = JSON.parse(await modelRouter.getCase(messages))
+            messages = [
+                { role: 'system', content: promptStore.storyPrompt },
+                {
+                    role: 'user',
+                    content: caseContentMarkdown.value + storyTag.value,
+                },
+            ]
+            caseStory.value = await modelRouter.getStory(messages)
+            messages = [
+                { role: 'system', content: promptStore.testPrompt },
+                {
+                    role: 'user',
+                    content: caseContentMarkdown.value + testTag.value,
+                },
+            ]
+            caseTest.value = JSON.parse(await modelRouter.getTest(messages))
+            caseFace.value = await modelRouter.getFace()
+        }
+
         return {
             caseContent,
             caseStory,
@@ -78,12 +130,20 @@ export const useCaseStore = defineStore(
             caseAct,
             caseRate,
             caseFace,
+
+            caseTag,
+            storyTag,
+            testTag,
+
             caseContentFields,
             caseStoryFields,
             caseTestFields,
             caseContentText,
             caseContentMarkdown,
+            caseTestMarkdown,
+
             $reset,
+            newCase,
         }
     },
     {

@@ -2,6 +2,6 @@
     <v-sheet class="d-flex flex-column">
         <CommonCaseNavCard />
         <TestContentShow />
-        <TestUtilsTabs />
+        <TestUtilsCreate />
     </v-sheet>
 </template>

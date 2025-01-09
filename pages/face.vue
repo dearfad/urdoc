@@ -25,29 +25,12 @@
 
 <script setup>
 const isLoading = ref(false)
-const stateStore = useStateStore()
 const caseStore = useCaseStore()
+const modelRouter = useModelRouter()
 
 async function getFace() {
     isLoading.value = true
-    const response = await $fetch('https://open.bigmodel.cn/api/paas/v4/images/generations', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + import.meta.env.VITE_BIGMODEL_API_KEY,
-        },
-        body: {
-            model: 'cogview-3-flash',
-            prompt: `${caseStore.caseContent.年龄}${caseStore.caseContent.性别}性，中国人，半身近照，在医院门诊拍摄。`,
-        },
-    })
-    if (!response) {
-        return (stateStore.appInfo = '获取模型响应数据为空！')
-    } else {
-        if (response.data[0].url) {
-            caseStore.caseFace = response.data[0].url
-        }
-    }
+    caseStore.caseFace = await modelRouter.getFace()
     isLoading.value = false
 }
 </script>
