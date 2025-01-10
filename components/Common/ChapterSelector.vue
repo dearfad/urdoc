@@ -43,7 +43,7 @@
             hide-details="auto"
         />
         <v-text-field
-            v-model="caseTag"
+            v-model="caseStore.caseTag"
             label="设定"
             variant="outlined"
             class="my-4"
@@ -56,7 +56,8 @@
 
 <script setup>
 const stateStore = useStateStore()
-const { selectedBook, selectedChapter, selectedSection, selectedSubsection, caseTag } =
+const caseStore = useCaseStore()
+const { selectedBook, selectedChapter, selectedSection, selectedSubsection } =
     storeToRefs(stateStore)
 
 // 处理教科书、章节、节次、子节的匹配

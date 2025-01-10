@@ -3,11 +3,6 @@ export default function () {
     const modelResponse = useModelResponse()
     const caseStore = useCaseStore()
 
-    interface CaseContent {
-        年龄: string
-        性别: string
-    }
-
     function getModelParams(
         messages: MessagesArray,
         watchFields: string[],
@@ -62,12 +57,17 @@ export default function () {
     }
 
     async function getStory(messages: MessagesArray) {
-        const params = getModelParams(messages, caseStore.caseStoryFields, { type: 'text' })
+        const params = getModelParams(messages, caseStore.caseStoryFields)
         return await modelResponse.getResponse(params)
     }
 
     async function getTest(messages: MessagesArray) {
         const params = getModelParams(messages, caseStore.caseTestFields)
+        return await modelResponse.getResponse(params)
+    }
+
+    async function getAct(messages: MessagesArray) {
+        const params = getModelParams(messages, [], { type: 'text' })
         return await modelResponse.getResponse(params)
     }
 
@@ -82,13 +82,11 @@ export default function () {
                 },
                 body: {
                     model: 'cogview-3-flash',
-                    prompt: `${(caseStore.caseContent as CaseContent).年龄}${
-                        (caseStore.caseContent as CaseContent).性别
-                    }性，中国人，半身近照，在医院门诊拍摄。`,
+                    prompt: `${caseStore.caseContentMarkdown}，中国人，半身近照，在医院门诊拍摄。`,
                 },
             }
         )
         return response.data[0].url
     }
-    return { getCase, getStory, getTest, getFace }
+    return { getCase, getStory, getTest, getAct, getFace }
 }

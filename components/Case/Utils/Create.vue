@@ -12,7 +12,7 @@
         >
             <template #loader>
                 <v-progress-circular indeterminate color="white" class="mr-4" />
-                {{ modelResponseField }}
+                {{ stateStore.modelResponseField }}
             </template>
         </v-btn>
     </v-sheet>
@@ -20,8 +20,6 @@
 
 <script setup>
 const stateStore = useStateStore()
-const { selectedBook, selectedChapter, selectedSection, selectedSubsection, modelResponseField } =
-    storeToRefs(stateStore)
 
 // 生成状态提示
 const isLoading = ref(false)
@@ -42,13 +40,13 @@ async function genCase() {
             role: 'user',
             content:
                 '病例要点设定：\n' +
-                selectedBook.value +
+                stateStore.selectedBook +
                 '\n' +
-                selectedChapter.value +
+                stateStore.selectedChapter +
                 '\n' +
-                selectedSection.value +
+                stateStore.selectedSection +
                 '\n' +
-                selectedSubsection.value +
+                stateStore.selectedSubsection +
                 '\n' +
                 caseStore.caseTag,
         },

@@ -11,6 +11,9 @@ export const useCaseStore = defineStore(
         const caseRate = ref('')
         const caseFace = ref('')
 
+        // Messages
+        const actMessages = ref([])
+        const rateMessages = ref([])
         // 自定义设定
         const caseTag = ref('')
         const storyTag = ref('真实')
@@ -32,7 +35,7 @@ export const useCaseStore = defineStore(
             '手术',
             '病理',
         ])
-        const caseStoryFields = ref([])
+        const caseStoryFields = ref(['相貌', '故事'])
         const caseTestFields = ref(['题目1', '题目2', '题目3'])
 
         // Computed Fields
@@ -61,6 +64,11 @@ export const useCaseStore = defineStore(
         // 题目Markdown格式，显示模式
         const caseContentMarkdown = computed(() => {
             return Object.entries(caseContent.value)
+                .map(([key, value]) => `**${key}：** ${value}`)
+                .join('\n\n')
+        })
+        const caseStoryMarkdown = computed(() => {
+            return Object.entries(caseStory.value)
                 .map(([key, value]) => `**${key}：** ${value}`)
                 .join('\n\n')
         })
@@ -100,10 +108,11 @@ export const useCaseStore = defineStore(
                 { role: 'system', content: promptStore.casePrompt },
                 {
                     role: 'user',
-                    content: '病例要点设定：\n',
+                    content: '病例要点设定：外科学 乳房疾病\n',
                 },
             ]
             caseContent.value = JSON.parse(await modelRouter.getCase(messages))
+            caseFace.value = await modelRouter.getFace()
             messages = [
                 { role: 'system', content: promptStore.storyPrompt },
                 {
@@ -111,7 +120,7 @@ export const useCaseStore = defineStore(
                     content: caseContentMarkdown.value + storyTag.value,
                 },
             ]
-            caseStory.value = await modelRouter.getStory(messages)
+            caseStory.value = JSON.parse(await modelRouter.getStory(messages))
             messages = [
                 { role: 'system', content: promptStore.testPrompt },
                 {
@@ -120,7 +129,6 @@ export const useCaseStore = defineStore(
                 },
             ]
             caseTest.value = JSON.parse(await modelRouter.getTest(messages))
-            caseFace.value = await modelRouter.getFace()
         }
 
         return {
@@ -131,6 +139,9 @@ export const useCaseStore = defineStore(
             caseRate,
             caseFace,
 
+            actMessages,
+            rateMessages,
+
             caseTag,
             storyTag,
             testTag,
@@ -140,6 +151,7 @@ export const useCaseStore = defineStore(
             caseTestFields,
             caseContentText,
             caseContentMarkdown,
+            caseStoryMarkdown,
             caseTestMarkdown,
 
             $reset,
