@@ -26,6 +26,19 @@
                 </v-col>
                 <v-col />
             </v-row>
+            <v-row>
+                <v-col />
+                <v-col cols="12" md="8">
+                    <v-btn @click="isActing = !isActing"> 开始问诊 </v-btn>
+                </v-col>
+                <v-col />
+            </v-row>
+            <v-row>
+                <v-col v-if="isActing">
+                    <ActContentShow />
+                    <ActUtilsSend />
+                </v-col>
+            </v-row>
         </v-container>
     </ClientOnly>
 </template>
@@ -37,6 +50,7 @@ definePageMeta({
 const caseStore = useCaseStore()
 const stateStore = useStateStore()
 const isLoading = ref(false)
+const isActing = ref(false)
 async function nextCase() {
     isLoading.value = true
     await caseStore.newCase()
