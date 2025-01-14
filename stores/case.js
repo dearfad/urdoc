@@ -108,7 +108,7 @@ export const useCaseStore = defineStore(
                 { role: 'system', content: promptStore.casePrompt },
                 {
                     role: 'user',
-                    content: '病例要点设定：外科学 乳房疾病\n',
+                    content: '病例要点设定：外科学\n',
                 },
             ]
             caseContent.value = JSON.parse(await modelRouter.getCase(messages))
