@@ -2,7 +2,7 @@
     <v-sheet>
         <ClientOnly>
             <v-btn
-                v-if="isFirst"
+                v-if="!stateStore.isActing"
                 block
                 size="x-large"
                 class="font-weight-bold"
@@ -27,7 +27,7 @@
                 @blur="handleBlur"
             /> -->
             <v-text-field
-                v-if="!isFirst"
+                v-if="stateStore.isActing"
                 ref="inputPrompt"
                 v-model="prompt"
                 hide-details
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-const isFirst = ref(true)
+const stateStore = useStateStore()
 // const inputPrompt = useTemplateRef('inputPrompt')
 const prompt = ref('')
 const isReceiving = ref(false)
@@ -92,7 +92,7 @@ async function sendPrompt() {
 }
 
 function firstChat() {
-    isFirst.value = false
+    stateStore.isActing = true
     caseStore.actMessages = []
     caseStore.actMessages.push({
         role: 'system',

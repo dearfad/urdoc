@@ -15,8 +15,34 @@
             </v-row>
             <v-row>
                 <v-col />
-                <v-col cols="12" md="8">
-                    <v-btn :loading="isLoading" @click="nextCase">
+                <v-col cols="12" md="2">
+                    <v-btn
+                        size="x-large"
+                        block
+                        :class="stateStore.isActing ? 'font-weight-bold' : 'font-weight-regular'"
+                        @click=";(stateStore.isActing = true), (stateStore.isRating = false)"
+                    >
+                        开始问诊
+                    </v-btn>
+                </v-col>
+                <v-col cols="12" md="2">
+                    <v-btn
+                        size="x-large"
+                        block
+                        :class="stateStore.isRating ? 'font-weight-bold' : 'font-weight-regular'"
+                        @click=";(stateStore.isActing = false), (stateStore.isRating = true)"
+                    >
+                        回答问题
+                    </v-btn>
+                </v-col>
+                <v-col cols="12" md="2">
+                    <v-btn
+                        size="x-large"
+                        block
+                        class="font-weight-bold"
+                        :loading="isLoading"
+                        @click="nextCase"
+                    >
                         下一位患者
                         <template #loader>
                             <v-progress-circular indeterminate color="white" class="mr-4" />
@@ -26,18 +52,22 @@
                 </v-col>
                 <v-col />
             </v-row>
-            <v-row>
+
+            <v-row v-if="stateStore.isActing">
                 <v-col />
-                <v-col cols="12" md="8">
-                    <v-btn @click="isActing = !isActing"> 开始问诊 </v-btn>
-                </v-col>
-                <v-col />
-            </v-row>
-            <v-row>
-                <v-col v-if="isActing">
+                <v-col cols="12" md="6">
                     <ActContentShow />
                     <ActUtilsSend />
                 </v-col>
+                <v-col />
+            </v-row>
+            <v-row v-if="stateStore.isRating">
+                <v-col />
+                <v-col cols="12" md="6">
+                    <RateContentShow />
+                    <RateUtilsSend />
+                </v-col>
+                <v-col />
             </v-row>
         </v-container>
     </ClientOnly>
@@ -50,7 +80,6 @@ definePageMeta({
 const caseStore = useCaseStore()
 const stateStore = useStateStore()
 const isLoading = ref(false)
-const isActing = ref(false)
 async function nextCase() {
     isLoading.value = true
     await caseStore.newCase()

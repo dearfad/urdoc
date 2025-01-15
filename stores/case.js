@@ -3,6 +3,7 @@ export const useCaseStore = defineStore(
     () => {
         const promptStore = usePromptStore()
         const modelRouter = useModelRouter()
+        const stateStore = useStateStore()
         // CSTAR MODEL BASIC FIELDS
         const caseContent = ref({})
         const caseStory = ref('')
@@ -99,6 +100,9 @@ export const useCaseStore = defineStore(
             caseAct.value = []
             caseRate.value = ''
             caseFace.value = ''
+            stateStore.isActing = false
+            stateStore.isRating = false
+            actMessages.value = []
         }
 
         async function newCase() {
