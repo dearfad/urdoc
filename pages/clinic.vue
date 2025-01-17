@@ -19,6 +19,7 @@
                     <v-btn
                         size="x-large"
                         block
+                        :disabled="isLoading"
                         :class="stateStore.isActing ? 'font-weight-bold' : 'font-weight-regular'"
                         @click=";(stateStore.isActing = true), (stateStore.isRating = false)"
                     >
@@ -29,6 +30,7 @@
                     <v-btn
                         size="x-large"
                         block
+                        :disabled="isLoading"
                         :class="stateStore.isRating ? 'font-weight-bold' : 'font-weight-regular'"
                         @click=";(stateStore.isActing = false), (stateStore.isRating = true)"
                     >

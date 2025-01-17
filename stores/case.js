@@ -103,6 +103,7 @@ export const useCaseStore = defineStore(
             stateStore.isActing = false
             stateStore.isRating = false
             actMessages.value = []
+            rateMessages.value = []
         }
 
         async function newCase() {

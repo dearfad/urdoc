@@ -21,15 +21,7 @@ export const useStateStore = defineStore(
         // 当前模型生成字段
         const modelResponseField = ref('')
 
-        function resetModelResponse() {
-            modelResponseStream.value = ''
-            modelResponseString.value = ''
-            modelResponseField.value = ''
-        }
-        //
-
-        const currentPatientTab = ref('')
-        //
+        // 当前章节选择
         const selectedBook = ref('')
         const selectedChapter = ref('')
         const selectedSection = ref('')
@@ -46,26 +38,21 @@ export const useStateStore = defineStore(
         // 聊天模式
         const isActing = ref(false)
         const isRating = ref(false)
-        //
-        const currentContent = ref('')
+
+        // 输入框焦点状态
         const isInputFocused = ref(false)
-
-        const responseData = ref()
-
-        function updateResponseData(value: string | JSON) {
-            responseData.value = value
-        }
 
         return {
             isNavDrawerLeftShow,
             isNavDrawerRightShow,
+
             isDebug,
             modelResponseStream,
             modelResponseString,
+
             appInfo,
 
             modelResponseField,
-            resetModelResponse,
 
             selectedBook,
             selectedChapter,
@@ -80,13 +67,8 @@ export const useStateStore = defineStore(
 
             isActing,
             isRating,
-            //
-            currentPatientTab,
 
-            currentContent,
             isInputFocused,
-            responseData,
-            updateResponseData,
         }
     },
     {

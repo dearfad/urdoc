@@ -2,7 +2,9 @@ import { jsonrepair } from 'jsonrepair'
 export default function () {
     async function getResponse(params: ModelParamsType) {
         const stateStore = useStateStore()
-        stateStore.resetModelResponse()
+        stateStore.modelResponseStream = ''
+        stateStore.modelResponseString = ''
+        stateStore.modelResponseField = ''
         let dataFieldPointer = 0
         //
         const response = await $fetch(params.url, {
