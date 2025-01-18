@@ -1,105 +1,97 @@
 <template>
     <v-sheet>
-        <!-- <v-btn
-            v-if="isFirst"
-            block
-            size="x-large"
-            class="font-weight-bold"
-            text="开始问诊"
-            @click="firstChat"
-        />
-        <v-text-field
-            v-if="!isFirst"
-            ref="inputPrompt"
-            v-model="prompt"
-            hide-details
-            :loading="isReceiving"
-            :disabled="isReceiving"
-            variant="solo"
-            label="请输入"
-            :prepend-inner-icon="prependIconInputPrompt"
-            append-inner-icon="mdi-send"
-            @keyup.enter="sendPrompt"
-            @click:prepend-inner="setMsgWatcher"
-            @click:append-inner="sendPrompt"
-            @focus="handleFocus"
-            @blur="handleBlur"
-        /> -->
+        <ClientOnly>
+            <v-text-field
+                ref="inputPrompt"
+                v-model="prompt"
+                hide-details
+                :loading="isReceiving"
+                :disabled="isReceiving"
+                variant="solo"
+                label="请输入"
+                :prepend-inner-icon="prependIconInputPrompt"
+                append-inner-icon="mdi-send"
+                @click:prepend-inner="setMsgWatcher"
+                @keyup.enter="sendPrompt"
+                @click:append-inner="sendPrompt"
+                @focus="handleFocus"
+                @blur="handleBlur"
+            />
+        </ClientOnly>
     </v-sheet>
 </template>
 
 <script setup>
-// const isFirst = ref(true)
-// const inputPrompt = useTemplateRef('inputPrompt')
-// const prompt = ref('')
-// const isReceiving = ref(false)
-// const prependIconInputPrompt = ref('mdi-cellphone-text')
-// const messageStore = useMessageStore()
-// const { messages } = storeToRefs(messageStore)
-// const { addMessage } = messageStore
+const caseStore = useCaseStore()
+const promptStore = usePromptStore()
+const stateStore = useStateStore()
+const modelRouter = useModelRouter()
+const prompt = ref('')
+const isReceiving = ref(false)
 
-// const bigModel = useBigModel()
-// const { message } = storeToRefs(bigModel)
-// const { getResponse } = bigModel
+const inputPrompt = useTemplateRef('inputPrompt')
+const prependIconInputPrompt = ref('mdi-cellphone-text')
+const keepInputFocus = ref(false)
 
-// const promptStore = usePromptStore()
-// const { askPrompt } = storeToRefs(promptStore)
+async function sendPrompt() {
+    if (prompt.value == '') {
+        return
+    }
+    if (caseStore.rateMessages.length == 0) {
+        caseStore.rateMessages.push({
+            role: 'system',
+            content:
+                promptStore.ratePrompt + '下面是用户提供的题库：\n' + caseStore.caseTestMarkdown,
+        })
+    }
+    isReceiving.value = true
+    caseStore.rateMessages.push({ role: 'user', content: prompt.value })
+    prompt.value = ''
+    const msg = { role: 'assistant', content: '' }
+    msg.content = await modelRouter.getRate(caseStore.rateMessages)
+    caseStore.rateMessages.push(msg)
+    isReceiving.value = false
+}
 
-// const testStore = useTestStore()
-// const { test } = storeToRefs(testStore)
+// 保持输入栏锁定
+const chatMsgWatcher = watch(caseStore.rateMessages, () => {
+    nextTick(() => {
+        inputPrompt.value.focus()
+    })
+})
+// 当前输入状态判定
+function handleFocus() {
+    stateStore.isInputFocused = true
+}
 
-// const keepInputFocus = ref(false)
+function handleBlur() {
+    stateStore.isInputFocused = false
+}
 
-// Keep input Focused
-// const chatMsgWatcher = watch(messages.value, () => {
-//     nextTick(() => {
-//         inputPrompt.value.focus()
-//     })
-// })
+// 手机输入法遮挡滚动
 
-// onMounted(() => {
-//     chatMsgWatcher.pause()
-// })
-// function setMsgWatcher() {
-//     keepInputFocus.value = !keepInputFocus.value
-//     prependIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
-//     if (keepInputFocus.value) {
-//         chatMsgWatcher.resume()
-//     } else {
-//         chatMsgWatcher.pause()
+// const goTo = useGoTo()
+
+// watch(
+//     () => stateStore.isInputFocused,
+//     () => {
+//         setTimeout(() => {
+//             goTo('.generateCaseBottom', { container: '.generateCaseContainer' })
+//         }, 300)
 //     }
-// }
+// )
 
-// async function sendPrompt() {
-//     if (prompt.value == '') {
-//         return
-//     }
-//     isReceiving.value = true
-//     addMessage({ role: 'user', content: prompt.value })
-//     prompt.value = ''
-//     const msg = { role: 'assistant', content: '' }
-//     await getResponse(messages.value)
-//     msg.content = message.value
-//     addMessage(msg)
-//     isReceiving.value = false
-// }
-
-// function firstChat() {
-//     isFirst.value = false
-//     addMessage({ role: 'system', content: askPrompt.value + test.value })
-//     prompt.value = '请提问'
-//     sendPrompt()
-//     console.log(messages.value)
-// }
-
-// //
-// const stateStore = useStateStore()
-// const { isInputFocused } = storeToRefs(stateStore)
-// function handleFocus() {
-//     isInputFocused.value = true
-// }
-
-// function handleBlur() {
-//     isInputFocused.value = false
-// }
+// 手机输入法遮挡滚动
+onMounted(() => {
+    chatMsgWatcher.pause()
+})
+function setMsgWatcher() {
+    keepInputFocus.value = !keepInputFocus.value
+    prependIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
+    if (keepInputFocus.value) {
+        chatMsgWatcher.resume()
+    } else {
+        chatMsgWatcher.pause()
+    }
+}
 </script>

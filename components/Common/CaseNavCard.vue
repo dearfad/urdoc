@@ -10,7 +10,7 @@
             >
                 <template #prepend>
                     <v-avatar size="150" rounded="circle">
-                        <v-img :src="caseStore.caseFace" />
+                        <v-img :src="caseStore.caseFace" @click="showFace" />
                     </v-avatar>
                 </template>
                 <template #append>
@@ -33,7 +33,7 @@
             <v-btn text="故事" to="/story" variant="text" />
             <v-btn text="问题" to="/test" variant="text" />
             <v-btn text="问诊" to="/act" variant="text" />
-            <v-btn text="评估" variant="text" />
+            <v-btn text="评估" to="/rate" variant="text" />
         </v-sheet>
     </v-sheet>
 </template>
@@ -41,4 +41,8 @@
 <script setup>
 const caseStore = useCaseStore()
 const stateStore = useStateStore()
+
+function showFace() {
+    window.open(caseStore.caseFace, '_blank')
+}
 </script>

@@ -20,28 +20,28 @@ const items = [
         title: '第二步：编写故事 ( Story )',
         text: '疾病对患者生活影响的故事',
         icon: 'mdi-book-open-outline',
-        // link: '/story',
+        link: '/story',
     },
     {
         id: useId(),
         title: '第三步：设计问题 ( Test )',
         text: '获得患者资料后生成相关的问题',
         icon: 'mdi-ab-testing',
-        // link: '/test',
+        link: '/test',
     },
     {
         id: useId(),
         title: '第四步：模拟问诊 ( Act )',
         text: '模拟门诊问诊过程以获得患者资料',
         icon: 'mdi-account-outline',
-        // link: '/act',
+        link: '/act',
     },
     {
         id: useId(),
         title: '第五步：评估能力 ( Rate )',
         text: '模拟问答过程进而了解诊疗能力',
         icon: 'mdi-shield-star-outline',
-        // link: '/rate',
+        link: '/rate',
     },
 ]
 </script>

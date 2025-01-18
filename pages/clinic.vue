@@ -9,6 +9,9 @@
                         <v-sheet class="font-weight-bold text-h5 pt-4">
                             {{ caseStore.caseContent.姓名 }}
                         </v-sheet>
+                        <v-sheet class="text-h6 pt-2">
+                            {{ caseStore.caseContent.主诉 }}
+                        </v-sheet>
                     </v-sheet>
                 </v-col>
                 <v-col />

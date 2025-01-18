@@ -1,16 +1,20 @@
 <template>
-    <v-list class="chatMsgContainer flex-grow-1">
-        <ClientOnly>
-            <v-list-item
-                v-for="(message, index) in caseStore.rateMessages.slice(1)"
-                :key="index"
-                :title="message.role == 'user' ? '医生' : caseStore.caseContent['姓名'] + ':'"
-            >
-                <span class="font-weight-bold">{{ message.content }}</span>
-            </v-list-item>
-            <v-list-item class="chatMsgBottom" />
-        </ClientOnly>
-    </v-list>
+    <v-sheet min-height="20" class="text-left">
+        <v-list class="chatMsgContainer flex-grow-1">
+            <ClientOnly>
+                <v-list-item
+                    v-for="(message, index) in caseStore.rateMessages.slice(1)"
+                    :key="index"
+                    :title="
+                        message.role == 'user' ? '医生：' : caseStore.caseContent['姓名'] + '：'
+                    "
+                >
+                    <span class="font-weight-bold">{{ message.content }}</span>
+                </v-list-item>
+                <v-list-item class="chatMsgBottom" />
+            </ClientOnly>
+        </v-list>
+    </v-sheet>
 </template>
 
 <script setup>

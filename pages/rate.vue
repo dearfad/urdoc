@@ -1,7 +1,7 @@
 <template>
     <v-sheet class="d-flex flex-column">
         <CommonCaseNavCard />
-        <AskShowChatMessages />
-        <AskSendInterface />
+        <RateContentShow />
+        <RateUtilsSend />
     </v-sheet>
 </template>

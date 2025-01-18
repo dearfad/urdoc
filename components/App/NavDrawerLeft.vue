@@ -46,7 +46,8 @@
                 <v-list-item to="/story" title="编写故事" />
                 <v-list-item to="/test" title="设计问题" />
                 <v-list-item to="/act" title="模拟问诊" />
-                <v-list-item title="评估能力" />
+                <v-list-item to="/rate" title="评估能力" />
+                <v-divider length="80" class="mx-13 my-2 border-opacity-30" thickness="1" />
                 <v-list-item to="/face" title="头像生成" />
                 <v-list-item title="视频生成" />
                 <v-list-item title="语音合成" />

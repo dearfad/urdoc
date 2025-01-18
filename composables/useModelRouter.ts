@@ -71,6 +71,11 @@ export default function () {
         return await modelResponse.getResponse(params)
     }
 
+    async function getRate(messages: MessagesArray) {
+        const params = getModelParams(messages, [], { type: 'text' })
+        return await modelResponse.getResponse(params)
+    }
+
     async function getFace() {
         stateStore.modelResponseField = '头像'
         const response: BigmodelCogviewResponse = await $fetch(
@@ -88,5 +93,5 @@ export default function () {
         )
         return response.data[0].url
     }
-    return { getCase, getStory, getTest, getAct, getFace }
+    return { getCase, getStory, getTest, getAct, getRate, getFace }
 }

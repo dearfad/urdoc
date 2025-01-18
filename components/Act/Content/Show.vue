@@ -22,14 +22,11 @@ const caseStore = useCaseStore()
 
 // 聊天信息更新后自动滚动
 // const goTo = useGoTo()
-// watch(
-//     () => caseStore.actMessages,
-//     () => {
-//         nextTick(() => {
-//             goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
-//         })
-//     }
-// )
+// watch(caseStore.actMessages, () => {
+//     nextTick(() => {
+//         goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
+//     })
+// })
 
 // 手机输入法遮挡滚动
 // const stateStore = useStateStore()

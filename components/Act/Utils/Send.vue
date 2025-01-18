@@ -2,7 +2,6 @@
     <v-sheet>
         <ClientOnly>
             <v-text-field
-                v-if="stateStore.isActing"
                 ref="inputPrompt"
                 v-model="prompt"
                 hide-details
