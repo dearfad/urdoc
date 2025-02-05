@@ -20,6 +20,7 @@
             class="my-4"
             hide-details="auto"
             clearable
+            return-object
         />
     </v-sheet>
 </template>

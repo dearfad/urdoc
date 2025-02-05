@@ -43,7 +43,12 @@ export default function () {
                     try {
                         const jsonDataStr = line.split('data: ')[1].trim()
                         const jsonData = JSON.parse(jsonDataStr)
-                        stateStore.modelResponseString += jsonData.choices[0].delta.content
+                        // 临时更改，待阿里云修正stream
+                        if (params.model === 'deepseek-v3') {
+                            stateStore.modelResponseString = jsonData.choices[0].message.content
+                        } else {
+                            stateStore.modelResponseString += jsonData.choices[0].delta.content
+                        }
                         // 更新当前生成字段
                         if (params.watchFields.length > 0) {
                             if (
