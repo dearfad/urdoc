@@ -60,4 +60,10 @@ export default defineNuxtConfig({
       proxy: 'https://ark.cn-beijing.volces.com/**',
     },
   },
+  runtimeConfig: {
+    testApiKey: '12345',
+    // public: {
+    //   supabaseUrl: process.env.SUPABASE_URL,
+    // },
+  },
 })
