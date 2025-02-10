@@ -12,6 +12,7 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^0.7.5",
+    "@nuxthub/core": "^0.8.12",
     "@nuxtjs/mdc": "^0.13.1",
     "@nuxtjs/seo": "^2.0.3",
     "@nuxtjs/supabase": "^1.4.5",
