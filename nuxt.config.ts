@@ -19,6 +19,7 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         'pinia-plugin-persistedstate/nuxt',
         '@nuxtjs/eslint-module',
+        '@nuxthub/core',
         'nuxt-cloudflare-analytics',
         '@nuxtjs/supabase',
         '@nuxtjs/seo',
