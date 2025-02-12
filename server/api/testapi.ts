@@ -1,5 +1,5 @@
-export default defineEventHandler(async () => {
-  const runtimeConfig = useRuntimeConfig()
-  console.log(runtimeConfig.testApiKey)
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event)
+  console.log(query)
   return 'api OK'
 })

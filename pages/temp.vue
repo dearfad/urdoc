@@ -8,6 +8,8 @@
 <script setup>
 const data = ref(null)
 async function getData() {
-  data.value = await $fetch('/api/testapi')
+  data.value = await $fetch('/api/testapi', {
+    query: { name: 'test', id: '1' },
+  })
 }
 </script>

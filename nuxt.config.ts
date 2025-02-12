@@ -51,6 +51,12 @@ export default defineNuxtConfig({
         changeOrigin: true,
       },
     },
+    prerender: {
+      // Pre-render the homepage
+      routes: ['/'],
+      // Then crawl all the links on the page
+      crawlLinks: true,
+    },
   },
   routeRules: {
     '/api/xfyun/**': {
