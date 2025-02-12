@@ -72,4 +72,7 @@ export default defineNuxtConfig({
     //   supabaseUrl: process.env.SUPABASE_URL,
     // },
   },
+  hub: {
+    ai: true,
+  },
 })

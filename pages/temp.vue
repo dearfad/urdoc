@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div>{{ data }}</div>
+    <div>{{ res }}</div>
     <v-btn text="get" @click="getData" />
   </div>
 </template>
 
 <script setup>
-const data = ref(null)
+const res = ref(null)
 async function getData() {
-  data.value = await $fetch('/api/testapi', {
-    query: { name: 'test', id: '1' },
-  })
+  const data = await $fetch('/api/ai-test')
+  res.value = data.response
 }
 </script>
