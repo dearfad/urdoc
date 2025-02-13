@@ -14,6 +14,7 @@
     "@nuxt/eslint": "^1.0.1",
     "@nuxtjs/mdc": "^0.13.5",
     "@nuxtjs/seo": "^2.1.1",
+    "@nuxthub/core": "^0.8.17",
     "@nuxtjs/supabase": "^1.4.6",
     "@pinia/nuxt": "^0.10.1",
     "jsonrepair": "^3.12.0",
