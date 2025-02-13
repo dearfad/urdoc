@@ -1,14 +1,19 @@
 <template>
   <div>
-    <div>{{ res }}</div>
-    <v-btn text="get" @click="getData" />
+    <div>{{ data }}</div>
+    <v-btn text="get" :loading="isLoading" @click="getData" />
   </div>
 </template>
 
 <script setup>
-const res = ref(null)
+const data = ref(null)
+const isLoading = ref(false)
 async function getData() {
-  const data = await $fetch('/api/ai-test')
-  res.value = data.response
+  isLoading.value = true
+  data.value = await $fetch('/api/testapi', {
+    name: 'test',
+    id: 20,
+  })
+  isLoading.value = false
 }
 </script>
