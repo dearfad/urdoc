@@ -1,14 +1,14 @@
 {
-  "terminal.integrated.fontFamily": "FiraCode Nerd Font",
   "editor.fontSize": 16,
   "editor.lineHeight": 1.8,
-  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontFamily": "FiraCode Nerd Font Propo",
   "editor.fontLigatures": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "nuxt.config.ts": "package.json, package-lock.json, tsconfig.json, eslint.config.mjs, .prettierrc.json, .env, .gitignore"

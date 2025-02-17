@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-module": "^4.1.0",
-    "wrangler": "^3.108.1"
+    "wrangler": "^3.109.1"
   }
 }

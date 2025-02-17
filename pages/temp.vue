@@ -10,10 +10,7 @@ const data = ref(null)
 const isLoading = ref(false)
 async function getData() {
   isLoading.value = true
-  data.value = await $fetch('/api/testapi', {
-    name: 'test',
-    id: 20,
-  })
+  data.value = await $fetch('/api/supabase')
   isLoading.value = false
 }
 </script>
