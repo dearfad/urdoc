@@ -53,7 +53,9 @@ watch(selected, () => {
 
 async function loadCase() {
   isLoading.value = true
-  const { data, error } = await $fetch('/api/supabase')
+  const { data, error } = await $fetch('/api/supabase', {
+    headers: useRequestHeaders(['cookie']),
+  })
   if (error) {
     stateStore.appInfo = error
   } else {
