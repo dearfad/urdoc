@@ -1,6 +1,6 @@
-import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseServiceRole } from '#supabase/server'
 export default defineEventHandler(async (event) => {
-  const supabaseClient = await serverSupabaseClient(event)
+  const supabaseClient = await serverSupabaseServiceRole(event)
   const { data, error } = await supabaseClient
     .from('cases')
     .select(
