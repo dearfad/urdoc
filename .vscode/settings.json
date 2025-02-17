@@ -1,14 +1,16 @@
 {
-  "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.patterns": {
-    "tsconfig.json": "tsconfig.*.json, env.d.ts",
-    "vite.config.*": "jsconfig*, vitest.config.*, cypress.config.*, playwright.config.*",
-    "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig"
-  },
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font",
+  "editor.fontSize": 16,
+  "editor.lineHeight": 1.8,
+  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "Codegeex.RepoIndex": true
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "nuxt.config.ts": "package.json, package-lock.json, tsconfig.json, eslint.config.mjs, .prettierrc.json, .env, .gitignore"
+  }
 }

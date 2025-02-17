@@ -1,8 +1,8 @@
 {
   "recommendations": [
     "Vue.volar",
+    "nuxtr.nuxtr-vscode",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "nuxtr.nuxtr-vscode"
+    "esbenp.prettier-vscode"
   ]
 }
