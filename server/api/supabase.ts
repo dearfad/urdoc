@@ -1,6 +1,6 @@
-import { serverSupabaseClient } from '#supabase/server'
+// import { serverSupabaseClient } from '#supabase/server'
 export default defineEventHandler(async (event) => {
-  const runtimeConfig = useRuntimeConfig()
+  const runtimeConfig = useRuntimeConfig(event)
   return runtimeConfig.public
   // const supabaseClient = await serverSupabaseClient(event)
   // const { data, error } = await supabaseClient
