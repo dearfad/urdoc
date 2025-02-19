@@ -13,5 +13,8 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "nuxt.config.ts": "package.json, package-lock.json, tsconfig.json, eslint.config.mjs, .prettierrc.json, .env, .gitignore"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
   }
 }
