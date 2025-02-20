@@ -10,7 +10,10 @@ const data = ref(null)
 const isLoading = ref(false)
 async function getData() {
   isLoading.value = true
-  data.value = await $fetch('/api/supabase')
+  data.value = await $fetch('/api/auth/login', {
+    method: 'POST',
+    body: { email: 'test', password: 'psw' },
+  })
   isLoading.value = false
 }
 </script>
