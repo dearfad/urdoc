@@ -1,58 +1,55 @@
 <template>
   <v-container class="pa-12">
     <v-row>
-      <v-col cols="12" md="6" class="mx-auto">
-        <v-text-field
-          v-model="email"
-          label="邮箱"
-          variant="outlined"
-          :disabled="user ? true : false"
+      <v-col cols="12" md="3" class="mx-auto">
+        <v-text-field v-model="email" label="邮箱" variant="outlined"
       /></v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6" class="mx-auto">
-        <v-text-field
-          v-model="password"
-          label="密码"
-          type="password"
-          variant="outlined"
-          :disabled="user ? true : false"
-        />
+      <v-col cols="12" md="3 " class="mx-auto">
+        <v-text-field v-model="password" label="密码" type="password" variant="outlined" />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" md="3" class="mx-auto">
-        <v-btn size="large" block :disabled="user ? true : false" @click="signInWithPassword"
-          >登录</v-btn
-        >
+        <v-btn size="large" block :loading="isSignIn" @click="signInWithPassword"> 登录 </v-btn>
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" md="3" class="mx-auto">
-        <v-btn size="large" block :disabled="user ? false : true" @click="signOut">退出</v-btn>
+        <v-btn size="large" block :loading="isSignOut" @click="signOut"> 退出 </v-btn>
       </v-col>
     </v-row>
+    {{ userStore.user }}
+    <!-- <v-btn block text="getUser" @click="getUser" />
+    <div>user: {{ user }}</div>
     <v-row v-if="user">
       <v-col cols="12" md="3" class="mx-auto text-center"> 当前登录：{{ user.email }} </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
 <script setup>
-const supabase = useSupabaseClient()
 const email = ref('')
 const password = ref('')
+const isSignIn = ref(false)
+const isSignOut = ref(false)
 const stateStore = useStateStore()
+const userStore = useUserStore()
+// const user = ref()
 
-const user = useSupabaseUser()
+// async function getUser() {
+//   user.value = useSupabaseUser()
+// }
 
-const signInWithPassword = async () => {
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value,
+async function signInWithPassword() {
+  isSignIn.value = true
+  const { data, error } = await $fetch('/api/auth/login', {
+    method: 'POST',
+    headers: useRequestHeaders(['cookie']),
+    body: { email: email.value, password: password.value },
   })
   if (error) {
-    console.log(error.code)
     switch (error.code) {
       case 'invalid_credentials':
         stateStore.appInfo = '认证失败：登录凭证无效'
@@ -63,13 +60,20 @@ const signInWithPassword = async () => {
       default:
         stateStore.appInfo = error
     }
+  } else {
+    userStore.user = data
   }
+  isSignIn.value = false
 }
 
-const signOut = async () => {
-  const { error } = await supabase.auth.signOut()
+async function signOut() {
+  isSignOut.value = true
+  const { error } = await $fetch('/api/auth/logout', {
+    headers: useRequestHeaders(['cookie']),
+  })
   if (error) {
     stateStore.appInfo = error
   }
+  isSignOut.value = false
 }
 </script>
