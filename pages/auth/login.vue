@@ -15,11 +15,7 @@
         <v-btn size="large" block :loading="isSignIn" @click="signInWithPassword"> 登录 </v-btn>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12" md="3" class="mx-auto">
-        <v-btn size="large" block :loading="isSignOut" @click="signOut"> 退出 </v-btn>
-      </v-col>
-    </v-row>
+
     {{ userStore.user }}
     <!-- <v-btn block text="getUser" @click="getUser" />
     <div>user: {{ user }}</div>
@@ -33,7 +29,7 @@
 const email = ref('')
 const password = ref('')
 const isSignIn = ref(false)
-const isSignOut = ref(false)
+
 const stateStore = useStateStore()
 const userStore = useUserStore()
 // const user = ref()
@@ -64,16 +60,5 @@ async function signInWithPassword() {
     userStore.user = data
   }
   isSignIn.value = false
-}
-
-async function signOut() {
-  isSignOut.value = true
-  const { error } = await $fetch('/api/auth/logout', {
-    headers: useRequestHeaders(['cookie']),
-  })
-  if (error) {
-    stateStore.appInfo = error
-  }
-  isSignOut.value = false
 }
 </script>

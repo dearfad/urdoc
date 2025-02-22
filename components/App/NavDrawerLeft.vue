@@ -54,7 +54,9 @@
             </v-list-item-title>
           </v-list-item>
         </template>
-        <v-list-item title="账号登录" to="/login" />
+        <v-list-item title="注册" to="/auth/register" />
+        <v-list-item title="登录" to="/auth/login" />
+        <v-list-item title="退出" to="/auth/logout" />
       </v-list-group>
     </v-list>
   </v-navigation-drawer>

@@ -2,7 +2,7 @@
   "editor.fontSize": 16,
   "editor.lineHeight": 1.8,
   "editor.fontFamily": "'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
-  "editor.fontLigatures": true,
+  "editor.fontLigatures": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
