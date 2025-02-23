@@ -57,6 +57,9 @@
         <v-list-item title="注册" to="/auth/register" />
         <v-list-item title="登录" to="/auth/login" />
         <v-list-item title="退出" to="/auth/logout" />
+        <v-list-item title="资料" to="/user/profile" />
+        <v-list-item title="改名" to="/user/update" />
+        <v-list-item title="删除" to="/user/delete" />
       </v-list-group>
     </v-list>
   </v-navigation-drawer>

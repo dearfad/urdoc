@@ -1,27 +1,28 @@
 <template>
-  <v-container class="pa-12">
+  <v-container>
     <v-row>
-      <v-col cols="12" md="3" class="mx-auto">
+      <v-col cols="12" md="6" class="mx-auto">
         <v-text-field v-model="email" label="邮箱" variant="outlined"
       /></v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="3 " class="mx-auto">
+      <v-col cols="12" md="6" class="mx-auto">
         <v-text-field v-model="password" label="密码" type="password" variant="outlined" />
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="3" class="mx-auto">
-        <v-btn size="large" block :loading="isSignIn" @click="signInWithPassword"> 登录 </v-btn>
+      <v-col cols="12" md="6" class="mx-auto">
+        <v-btn
+          size="large"
+          block
+          :loading="isSignIn"
+          :disabled="userStore.user.id ? true : false"
+          @click="signInWithPassword"
+        >
+          登录
+        </v-btn>
       </v-col>
     </v-row>
-
-    {{ userStore.user }}
-    <!-- <v-btn block text="getUser" @click="getUser" />
-    <div>user: {{ user }}</div>
-    <v-row v-if="user">
-      <v-col cols="12" md="3" class="mx-auto text-center"> 当前登录：{{ user.email }} </v-col>
-    </v-row> -->
   </v-container>
 </template>
 
@@ -32,11 +33,6 @@ const isSignIn = ref(false)
 
 const stateStore = useStateStore()
 const userStore = useUserStore()
-// const user = ref()
-
-// async function getUser() {
-//   user.value = useSupabaseUser()
-// }
 
 async function signInWithPassword() {
   isSignIn.value = true
@@ -46,18 +42,9 @@ async function signInWithPassword() {
     body: { email: email.value, password: password.value },
   })
   if (error) {
-    switch (error.code) {
-      case 'invalid_credentials':
-        stateStore.appInfo = '认证失败：登录凭证无效'
-        break
-      case 'validation_failed':
-        stateStore.appInfo = '认证失败：请填写邮箱和密码'
-        break
-      default:
-        stateStore.appInfo = error
-    }
+    stateStore.appInfo = error
   } else {
-    userStore.user = data
+    await userStore.getUser(data.user.id)
   }
   isSignIn.value = false
 }

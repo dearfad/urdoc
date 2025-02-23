@@ -1,14 +1,14 @@
 <template>
-    <v-footer app>
-        <v-sheet class="mx-auto text-caption">
-            {{ new Date().getFullYear() }} - 虚拟病例研究所 - Ver 0.0.1 -
-            <span class="font-weight-bold">{{
-                user && user.email ? user.email.split('@')[0] : '访客'
-            }}</span>
-        </v-sheet>
-    </v-footer>
+  <v-footer app>
+    <ClientOnly>
+      <v-sheet class="mx-auto text-caption">
+        {{ new Date().getFullYear() }} - 虚拟病例研究所 - Ver 20250222 -
+        <span class="font-weight-bold">{{ userStore.user ? userStore.user.name : '访客' }}</span>
+      </v-sheet>
+    </ClientOnly>
+  </v-footer>
 </template>
 
-<script lang="ts" setup>
-const user = useSupabaseUser()
+<script setup>
+const userStore = useUserStore()
 </script>
