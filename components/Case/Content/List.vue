@@ -46,14 +46,16 @@ const headers = ref([
   { title: '模型', key: 'model_name' },
   { title: '模型ID', key: 'model_id' },
 ])
+
 const selected = ref()
+
 watch(selected, () => {
   stateStore.appInfo = selected.value
 })
 
 async function loadCase() {
   isLoading.value = true
-  const { data, error } = await $fetch('/api/supabase', {
+  const { data, error } = await $fetch('/api/case/list', {
     headers: useRequestHeaders(['cookie']),
   })
   if (error) {
