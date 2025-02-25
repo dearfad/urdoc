@@ -28,19 +28,19 @@ export default function () {
       //     },
       // },
       case '智谱':
-        modelParams.apiKey = import.meta.env.VITE_BIGMODEL_API_KEY
+        modelParams.apiKey = process.env.BIGMODEL_API_KEY as string
         modelParams.url = 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
         break
       case '讯飞':
-        modelParams.apiKey = import.meta.env.VITE_XFYUN_API_KEY
+        modelParams.apiKey = process.env.VITE_XFYUN_API_KEY as string
         modelParams.url = '/api/xfyun/v1/chat/completions'
         break
       case '火山方舟':
-        modelParams.apiKey = import.meta.env.VITE_DOUBAO_API_KEY
+        modelParams.apiKey = process.env.VITE_DOUBAO_API_KEY as string
         modelParams.url = '/api/doubao/api/v3/chat/completions'
         break
       case '阿里云百炼':
-        modelParams.apiKey = import.meta.env.VITE_ALIYUN_API_KEY
+        modelParams.apiKey = process.env.VITE_ALIYUN_API_KEY as string
         modelParams.url = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions'
         break
       default:

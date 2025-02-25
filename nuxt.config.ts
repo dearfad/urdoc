@@ -22,7 +22,6 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxtjs/seo',
     '@nuxtjs/mdc',
-    '@nuxtjs/tailwindcss',
   ],
 
   supabase: {
