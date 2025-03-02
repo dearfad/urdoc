@@ -3,6 +3,7 @@
     "Vue.volar",
     "nuxtr.nuxtr-vscode",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "ms-ceintl.vscode-language-pack-zh-hans"
   ]
 }
