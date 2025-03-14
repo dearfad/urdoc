@@ -21,7 +21,6 @@
     "nuxt": "^3.16.0",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",
-    "vant": "^4.9.17",
     "vue": "latest",
     "vue-json-pretty": "^2.4.0",
     "vue-router": "latest",

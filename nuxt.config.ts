@@ -16,16 +16,14 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    'vuetify-nuxt-module',
     '@nuxt/eslint',
+    'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxthub/core',
     '@nuxtjs/supabase',
     '@nuxtjs/seo',
     '@nuxtjs/mdc',
-    '@vant/nuxt',
-    '@nuxtjs/device',
   ],
   supabase: {
     redirect: false,
