@@ -2,7 +2,9 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   ssr: true,
-  devtools: { enabled: false },
+  devtools: {
+    enabled: false,
+  },
   site: {
     url: 'https://urdoc.dearfad.com',
     name: 'URDOC',
@@ -22,16 +24,11 @@ export default defineNuxtConfig({
     '@nuxtjs/supabase',
     '@nuxtjs/seo',
     '@nuxtjs/mdc',
+    '@vant/nuxt',
+    '@nuxtjs/device',
   ],
-
   supabase: {
     redirect: false,
-  },
-  app: {
-    // 页面切换动画，同时更新app.vue中的transition属性
-    // pageTransition: { name: 'page', mode: 'out-in' },
-    pageTransition: false,
-    layoutTransition: false,
   },
   piniaPluginPersistedstate: {
     storage: 'localStorage',
@@ -56,6 +53,7 @@ export default defineNuxtConfig({
       proxy: 'https://ark.cn-beijing.volces.com/**',
     },
   },
+
   runtimeConfig: {
     apiKey: '',
   },
