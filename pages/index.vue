@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <span class="text-h4 font-weight-bold">虚拟病例研究所</span>
+        <span class="text-h4 font-weight-bold">虚拟病例研究平台</span>
       </v-col>
     </v-row>
     <v-row>

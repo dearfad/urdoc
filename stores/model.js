@@ -11,7 +11,8 @@ export const useModelStore = defineStore('model', () => {
 
     // 阿里云百炼 通义大模型 https://www.aliyun.com/product/bailian
     阿里云百炼: [
-      { name: '通义千问-Plus-2024-11-25', id: 'qwen-plus-2024-11-25' },
+      { name: '通义千问-Plus-2025-01-25', id: 'qwen-plus-2025-01-25' },
+      { name: '通义千问-QwQ-32B', id: 'qwq-32b' },
       { name: 'DeepSeek-V3', id: 'deepseek-v3' },
     ],
   })
