@@ -6,6 +6,7 @@ export default function () {
     stateStore.modelResponseString = ''
     stateStore.modelResponseField = ''
     const lineRegex = /data: (?:\[.*?\]|\{.*?\})/
+    const jsonRegex = /\{.*?\}/s
     let dataFieldPointer = 0
     let tempIncompleteLine = ''
 
@@ -50,12 +51,7 @@ export default function () {
         const jsonDataStr = line.split('data: ')[1]
         try {
           const jsonData = JSON.parse(jsonDataStr)
-          // 临时更改，待阿里云修正stream
-          if (params.model === 'deepseek-v3') {
-            stateStore.modelResponseString = jsonData.choices[0].message.content
-          } else {
-            stateStore.modelResponseString += jsonData.choices[0].delta.content
-          }
+          stateStore.modelResponseString += jsonData.choices[0].delta.content
           // 更新当前生成字段
           if (params.watchFields.length > 0) {
             if (stateStore.modelResponseString.includes(params.watchFields[dataFieldPointer])) {
@@ -64,7 +60,6 @@ export default function () {
             }
           }
         } catch (error) {
-          console.log('*******************************************************')
           stateStore.appInfo = `解析模型数据流失败：${error}`
         }
       })
@@ -74,11 +69,19 @@ export default function () {
     if (params.responseFormat.type === 'json_object') {
       try {
         let dataString = stateStore.modelResponseString
-        dataString = dataString.includes('```json') ? dataString.slice(7, -3) : dataString
+
+        // 去除 ```json ``` 框架
+        const matchJson = dataString.match(jsonRegex)
+        if (matchJson) dataString = matchJson[0]
+        // 替换中文字符 引号 “” 和 逗号 ，
+        dataString = dataString.replace(/“/g, '"').replace(/”/g, '"')
+        dataString = dataString.replace(/，/g, ',')
+        // 其他修复
         dataString = jsonrepair(dataString)
+
         stateStore.modelResponseString = dataString
       } catch (error) {
-        stateStore.appInfo = `Failed to parse message: ${error}`
+        stateStore.appInfo = `修复json格式失败: ${error}`
       }
     }
     // console.log(responseDataStream.value)
