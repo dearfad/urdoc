@@ -14,7 +14,7 @@ export default function () {
     // https://nuxt.com/docs/getting-started/data-fetching
 
     // Make a POST request to the SSE endpoint
-    const response = await $fetch<ReadableStream>('/api/case/create', {
+    const response = await $fetch<ReadableStream>('/api/cstar/case/create', {
       method: 'POST',
       body: {
         params: params,

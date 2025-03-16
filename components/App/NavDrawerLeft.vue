@@ -36,11 +36,11 @@
             </v-list-item-title>
           </v-list-item>
         </template>
-        <v-list-item to="/case" title="生成病例" />
-        <v-list-item to="/story" title="编写故事" />
-        <v-list-item to="/test" title="设计问题" />
-        <v-list-item to="/act" title="模拟问诊" />
-        <v-list-item to="/rate" title="评估能力" />
+        <v-list-item to="/cstar/case" title="生成病例" />
+        <v-list-item to="/cstar/story" title="编写故事" />
+        <v-list-item to="/cstar/test" title="设计问题" />
+        <v-list-item to="/cstar/act" title="模拟问诊" />
+        <v-list-item to="/cstar/rate" title="评估能力" />
         <v-divider length="80" class="mx-13 my-2 border-opacity-30" thickness="1" />
         <v-list-item to="/face" title="头像生成" />
         <v-list-item to="/pose" title="视频生成" />

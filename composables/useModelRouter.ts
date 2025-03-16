@@ -1,5 +1,8 @@
 export default function () {
   const stateStore = useStateStore()
+  const caseModelResponse = useCaseModelResponse()
+  const storyModelResponse = useStoryModelResponse()
+  const testModelResponse = useTestModelResponse()
   const modelResponse = useModelResponse()
   const caseStore = useCaseStore()
 
@@ -21,17 +24,17 @@ export default function () {
 
   async function getCase(messages: MessagesArray) {
     const params = getModelParams(messages, caseStore.caseContentFields)
-    return await modelResponse.getResponse(params)
+    return await caseModelResponse.getResponse(params)
   }
 
   async function getStory(messages: MessagesArray) {
     const params = getModelParams(messages, caseStore.caseStoryFields)
-    return await modelResponse.getResponse(params)
+    return await storyModelResponse.getResponse(params)
   }
 
   async function getTest(messages: MessagesArray) {
     const params = getModelParams(messages, caseStore.caseTestFields)
-    return await modelResponse.getResponse(params)
+    return await testModelResponse.getResponse(params)
   }
 
   async function getAct(messages: MessagesArray) {

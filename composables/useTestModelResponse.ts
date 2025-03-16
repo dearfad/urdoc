@@ -14,7 +14,7 @@ export default function () {
     // https://nuxt.com/docs/getting-started/data-fetching
 
     // Make a POST request to the SSE endpoint
-    const response = await $fetch<ReadableStream>('/api/case/create', {
+    const response = await $fetch<ReadableStream>('/api/cstar/test/create', {
       method: 'POST',
       body: {
         params: params,
@@ -69,8 +69,8 @@ export default function () {
         let dataString = stateStore.modelResponseString
 
         // 去除 ```json ``` 框架
-        const matchJson = dataString.match(jsonRegex)
-        if (matchJson) dataString = matchJson[0]
+        // const matchJson = dataString.match(jsonRegex)
+        // if (matchJson) dataString = matchJson[0]
         // 替换中文字符 引号 “” 和 逗号 ，
         dataString = dataString.replace(/“/g, '"').replace(/”/g, '"')
         dataString = dataString.replace(/，/g, ',')

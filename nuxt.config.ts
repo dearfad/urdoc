@@ -31,4 +31,9 @@ export default defineNuxtConfig({
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
+  routeRules: {
+    '/': { prerender: true },
+    '/guide': { prerender: true },
+    '/cstar/**': { ssr: false },
+  },
 })

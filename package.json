@@ -24,7 +24,7 @@
     "vue": "latest",
     "vue-json-pretty": "^2.4.0",
     "vue-router": "latest",
-    "vuetify-nuxt-module": "^0.18.3"
+    "vuetify-nuxt-module": "^0.18.4"
   },
   "overrides": {
     "vue": "latest"
