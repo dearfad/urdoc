@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxthub/core',
+    // '@nuxthub/core',
     '@nuxtjs/supabase',
     '@nuxtjs/seo',
     '@nuxtjs/mdc',
