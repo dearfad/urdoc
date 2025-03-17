@@ -1,118 +1,114 @@
 <template>
-    <v-sheet>
-        <v-select
-            v-model="selectedBook"
-            label="教科书"
-            :items="books"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            clearable
-            @update:model-value="handleBookChange"
-        />
-        <v-select
-            v-model="selectedChapter"
-            label="章节"
-            :items="chapters"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            clearable
-            :disabled="!selectedBook || chapters.length === 0"
-            @update:model-value="handleChapterChange"
-        />
-        <v-select
-            v-model="selectedSection"
-            label="节次"
-            :items="sections"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            clearable
-            :disabled="!selectedChapter || sections.length === 0"
-            @update:model-value="handleSectionChange"
-        />
-        <v-select
-            v-model="selectedSubsection"
-            label="子节"
-            :items="subsections"
-            variant="outlined"
-            class="my-4"
-            clearable
-            :disabled="!selectedSection || subsections.length === 0"
-            hide-details="auto"
-        />
-        <v-text-field
-            v-model="caseStore.caseTag"
-            label="设定"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            clearable
-            placeholder="多个要点请用空格隔开"
-        />
-    </v-sheet>
+  <v-sheet class="pa-2">
+    <v-select
+      v-model="stateStore.selectedBook"
+      label="教科书"
+      :items="books"
+      variant="outlined"
+      class="my-4"
+      hide-details="auto"
+      prepend-inner-icon="mdi-book-open-variant-outline"
+      density="comfortable"
+      @update:model-value="handleBookChange"
+    />
+    <v-select
+      v-model="stateStore.selectedChapter"
+      label="章节"
+      :items="chapters"
+      variant="outlined"
+      class="my-4"
+      hide-details="auto"
+      density="comfortable"
+      prepend-inner-icon="mdi-bookmark-multiple-outline"
+      :disabled="!stateStore.selectedBook || chapters.length === 0"
+      @update:model-value="handleChapterChange"
+    />
+    <v-select
+      v-model="stateStore.selectedSection"
+      label="节次"
+      :items="sections"
+      variant="outlined"
+      class="my-4"
+      hide-details="auto"
+      density="comfortable"
+      prepend-inner-icon="mdi-book-outline"
+      :disabled="!stateStore.selectedChapter || sections.length === 0"
+      @update:model-value="handleSectionChange"
+    />
+    <v-select
+      v-model="stateStore.selectedSubsection"
+      label="子节"
+      :items="subsections"
+      variant="outlined"
+      class="my-4"
+      density="comfortable"
+      prepend-inner-icon="mdi-bookmark-outline"
+      :disabled="!stateStore.selectedSection || subsections.length === 0"
+      hide-details="auto"
+    />
+  </v-sheet>
 </template>
 
 <script setup>
 const stateStore = useStateStore()
-const caseStore = useCaseStore()
-const { selectedBook, selectedChapter, selectedSection, selectedSubsection } =
-    storeToRefs(stateStore)
 
 // 处理教科书、章节、节次、子节的匹配
 const chapterStore = useChapterStore()
-const { chapter } = storeToRefs(chapterStore)
 
 const books = computed(() => {
-    return [...Object.keys(chapter.value)]
+  return [...Object.keys(chapterStore.chapter)]
 })
 
 const chapters = computed(() => {
-    return selectedBook.value === null
-        ? []
-        : [...Object.keys(chapter.value[selectedBook.value] || {})]
+  return stateStore.selectedBook === null
+    ? []
+    : [...Object.keys(chapterStore.chapter[stateStore.selectedBook] || {})]
 })
 
 const sections = computed(() => {
-    if (selectedChapter.value) {
-        return chapter.value[selectedBook.value][selectedChapter.value] == {}
-            ? []
-            : [...Object.keys(chapter.value[selectedBook.value][selectedChapter.value] || {})]
-    } else {
-        return []
-    }
+  if (stateStore.selectedChapter) {
+    return chapterStore.chapter[stateStore.selectedBook][stateStore.selectedChapter] == {}
+      ? []
+      : [
+          ...Object.keys(
+            chapterStore.chapter[stateStore.selectedBook][stateStore.selectedChapter] || {}
+          ),
+        ]
+  } else {
+    return []
+  }
 })
 
 const subsections = computed(() => {
-    if (selectedSection.value) {
-        return chapter.value[selectedBook.value][selectedChapter.value][selectedSection.value] == {}
-            ? []
-            : [
-                  ...Object.keys(
-                      chapter.value[selectedBook.value][selectedChapter.value][
-                          selectedSection.value
-                      ] || {}
-                  ),
-              ]
-    } else {
-        return []
-    }
+  if (stateStore.selectedSection) {
+    return chapterStore.chapter[stateStore.selectedBook][stateStore.selectedChapter][
+      stateStore.selectedSection
+    ] == {}
+      ? []
+      : [
+          ...Object.keys(
+            chapterStore.chapter[stateStore.selectedBook][stateStore.selectedChapter][
+              stateStore.selectedSection
+            ] || {}
+          ),
+        ]
+  } else {
+    return []
+  }
 })
 
-// v-select clearable 默认为 null
 function handleBookChange() {
-    selectedChapter.value = null
-    selectedSection.value = null
-    selectedSubsection.value = null
+  stateStore.selectedChapter = null
+  stateStore.selectedSection = null
+  stateStore.selectedSubsection = null
 }
 
 function handleChapterChange() {
-    selectedSection.value = null
-    selectedSubsection.value = null
+  stateStore.selectedSection = null
+  stateStore.selectedSubsection = null
 }
 
 function handleSectionChange() {
-    selectedSubsection.value = null
+  stateStore.selectedSubsection = null
 }
 </script>

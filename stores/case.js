@@ -115,7 +115,17 @@ export const useCaseStore = defineStore(
         { role: 'system', content: promptStore.casePrompt },
         {
           role: 'user',
-          content: '病例要点设定：外科学\n',
+          content:
+            '病例要点设定：\n' +
+            stateStore.selectedBook +
+            '\n' +
+            stateStore.selectedChapter +
+            '\n' +
+            stateStore.selectedSection +
+            '\n' +
+            stateStore.selectedSubsection +
+            '\n' +
+            caseTag.value,
         },
       ]
       caseContent.value = JSON.parse(await modelRouter.getCase(messages))

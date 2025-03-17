@@ -20,7 +20,7 @@
           >
         </template>
         <v-card-text class="pb-0">
-          <CommonCaseTag />
+          <CommonCaseConfig />
         </v-card-text>
       </v-card>
     </ClientOnly>

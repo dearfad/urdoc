@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="py-4">
+  <v-sheet class="py-0">
     <ClientOnly>
       <v-textarea
         v-if="stateStore.isDebug"
