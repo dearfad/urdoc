@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="border-thin text-body-1 pa-4 mx-2">
+  <v-sheet class="text-body-1 pa-4 mx-2 my-3" elevation="4" rounded="lg">
     <div v-if="!caseStore.caseContentMarkdown" class="pa-4">
       {{ stateStore.modelResponseString }}
     </div>

@@ -2,6 +2,7 @@
   <v-sheet class="d-flex flex-column">
     <CommonChapterSelector />
     <CommonModelSelector />
+    <CommonPromptSelector />
     <v-sheet class="px-4 mx-2 my-4" elevation="4" rounded="lg">
       <v-text-field
         v-model="caseStore.caseTag"

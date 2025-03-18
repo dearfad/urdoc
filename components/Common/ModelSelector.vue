@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="px-4 mx-2" elevation="4" rounded="lg">
+  <v-sheet class="px-4 mx-2 my-3" elevation="4" rounded="lg">
     <v-select
       v-model="stateStore.selectedPlatform"
       label="平台"
