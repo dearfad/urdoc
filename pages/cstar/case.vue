@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="d-flex flex-column d-md-flex flex-md-row w-100 w-md-75 mx-auto">
+  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto">
     <div>
       <CommonCaseNavCard />
       <CaseContentShow />

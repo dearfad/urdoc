@@ -2,19 +2,23 @@
   <v-sheet class="d-flex flex-column">
     <CommonChapterSelector />
     <CommonModelSelector />
-    <v-text-field
-      v-model="caseStore.caseTag"
-      label="设定"
-      variant="outlined"
-      class="my-4"
-      hide-details="auto"
-      clearable
-      placeholder="多个要点请用空格隔开"
-    />
+    <v-sheet class="px-4 mx-2 my-4" elevation="4" rounded="lg">
+      <v-text-field
+        v-model="caseStore.caseTag"
+        class="my-4"
+        label="设定"
+        variant="outlined"
+        hide-details="auto"
+        clearable
+        density="comfortable"
+        placeholder="多个要点请用空格隔开"
+      />
+    </v-sheet>
     <v-btn
       size="x-large"
-      block
-      class="font-weight-bold"
+      class="font-weight-bold ma-2"
+      elevation="4"
+      rounded="lg"
       text="生成病例"
       :loading="isLoading"
       @click="genCase"

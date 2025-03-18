@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-2">
+  <v-sheet class="px-4 mx-2 my-4" elevation="4" rounded="lg">
     <v-select
       v-model="stateStore.selectedBook"
       label="教科书"

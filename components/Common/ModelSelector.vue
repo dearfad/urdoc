@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="px-4 mx-2" elevation="4" rounded="lg">
     <v-select
       v-model="stateStore.selectedPlatform"
       label="平台"
@@ -7,7 +7,7 @@
       variant="outlined"
       class="my-4"
       hide-details="auto"
-      clearable
+      density="comfortable"
       @update:model-value="handlePlatformChange"
     />
     <v-select
@@ -19,7 +19,7 @@
       variant="outlined"
       class="my-4"
       hide-details="auto"
-      clearable
+      density="comfortable"
       return-object
     />
   </v-sheet>
