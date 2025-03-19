@@ -39,6 +39,7 @@ const isLoading = ref(false)
 
 async function getStory() {
   isLoading.value = true
+  caseStore.caseStory = ''
   const messages = [
     { role: 'system', content: promptStore.storyPrompt },
     {
