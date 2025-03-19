@@ -9,7 +9,7 @@
       hide-details="auto"
       prepend-inner-icon="mdi-file-word-box-outline"
       density="comfortable"
-      disabled="true"
+      disabled
       @update:model-value="handlePromptChange"
     />
   </v-sheet>

@@ -1,11 +1,11 @@
 <template>
-    <v-sheet class="border-thin text-body-1 pa-4 mx-2">
-        <ClientOnly>
-            <div v-if="!caseStore.caseStoryMarkdown" class="pa-4">请生成问题！</div>
-            <MDC :value="caseStore.caseStoryMarkdown" />
-        </ClientOnly>
-    </v-sheet>
-    <!-- <v-sheet>
+  <v-sheet class="text-body-1 pa-4 mx-4 my-2" elevation="4" rounded="lg" min-height="60vh">
+    <div v-if="!caseStore.caseStoryMarkdown" class="pa-4">
+      {{ stateStore.modelResponseString }}
+    </div>
+    <MDC :value="caseStore.caseStoryMarkdown" />
+  </v-sheet>
+  <!-- <v-sheet>
         <ClientOnly>
             <v-textarea v-model="caseStore.caseStory" auto-grow variant="outlined" />
             <v-sheet class="my-2">
@@ -26,5 +26,6 @@
 </template>
 
 <script setup>
+const stateStore = useStateStore()
 const caseStore = useCaseStore()
 </script>

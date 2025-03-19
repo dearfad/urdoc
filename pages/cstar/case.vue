@@ -1,9 +1,8 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto">
+  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto mb-16">
     <!-- <CommonCaseNavCard /> -->
     <CaseContentShow />
     <CaseUtilsCreate />
-    <CommonBottomNavgation />
     <!-- <CaseUtilsTabs /> -->
   </v-sheet>
 </template>
