@@ -5,3 +5,10 @@
     <TestUtilsCreate />
   </v-sheet>
 </template>
+
+<script setup>
+definePageMeta({
+  title: '测试问题',
+  layout: 'cstar',
+})
+</script>

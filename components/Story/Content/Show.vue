@@ -5,6 +5,7 @@
     </div>
     <MDC :value="caseStore.caseStoryMarkdown" />
   </v-sheet>
+
   <!-- <v-sheet>
         <ClientOnly>
             <v-textarea v-model="caseStore.caseStory" auto-grow variant="outlined" />

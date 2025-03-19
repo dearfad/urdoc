@@ -9,5 +9,6 @@
 <script setup>
 definePageMeta({
   title: '编写故事',
+  layout: 'cstar',
 })
 </script>

@@ -5,3 +5,10 @@
     <ActUtilsSend />
   </v-sheet>
 </template>
+
+<script setup>
+definePageMeta({
+  title: '问诊',
+  layout: 'cstar',
+})
+</script>

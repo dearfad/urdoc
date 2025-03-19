@@ -10,5 +10,6 @@
 <script setup>
 definePageMeta({
   title: '生成病例',
+  layout: 'cstar',
 })
 </script>
