@@ -1,5 +1,5 @@
 <template>
-  <v-sheet elevation="4" class="mx-2 my-4 pa-4" rounded="lg">
+  <v-sheet elevation="4" class="pa-2 mx-4 my-2" rounded="lg">
     <v-card
       v-if="caseStore.caseContent"
       :title="caseStore.caseContent.姓名"

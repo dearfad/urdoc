@@ -1,23 +1,8 @@
 <template>
-  <v-sheet class="d-flex flex-column">
-    <CommonChapterSelector />
-    <CommonModelSelector />
-    <CommonPromptSelector />
-    <v-sheet class="px-4 mx-2 my-4" elevation="4" rounded="lg">
-      <v-text-field
-        v-model="caseStore.caseTag"
-        class="my-4"
-        label="设定"
-        variant="outlined"
-        hide-details="auto"
-        clearable
-        density="comfortable"
-        placeholder="多个要点请用空格隔开"
-      />
-    </v-sheet>
+  <v-sheet class="d-flex flex-column mx-4">
     <v-btn
       size="x-large"
-      class="font-weight-bold ma-2"
+      class="font-weight-bold my-5"
       elevation="4"
       rounded="lg"
       text="生成病例"
@@ -29,6 +14,21 @@
         {{ stateStore.modelResponseField }}
       </template>
     </v-btn>
+    <v-sheet class="px-4 my-4" elevation="4" rounded="lg">
+      <v-text-field
+        v-model="caseStore.caseTag"
+        class="my-4"
+        label="设定"
+        variant="outlined"
+        hide-details="auto"
+        clearable
+        density="comfortable"
+        placeholder="多个要点请用空格隔开"
+      />
+    </v-sheet>
+    <CommonChapterSelector />
+    <CommonModelSelector />
+    <CommonPromptSelector />
   </v-sheet>
 </template>
 
