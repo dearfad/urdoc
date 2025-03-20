@@ -85,7 +85,7 @@ export const useCaseStore = defineStore(
         markdown += '\n'
         markdown += `**选项**:\n`
         for (const [optionKey, optionValue] of Object.entries(value['选项'])) {
-          markdown += `- ${optionKey}: ${optionValue}\n`
+          markdown += `${optionKey}: ${optionValue}\n`
         }
         markdown += `\n**答案**: ${value['答案']}\n`
         markdown += '\n'
