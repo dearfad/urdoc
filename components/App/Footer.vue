@@ -2,7 +2,7 @@
   <v-footer app>
     <ClientOnly>
       <v-sheet class="mx-auto text-caption">
-        {{ new Date().getFullYear() }} - 虚拟病例研究所 - Ver 20250318 -
+        {{ new Date().getFullYear() }} - 虚拟病例研究所 - Ver 20250322 - NuxtHub
         <span class="font-weight-bold">{{ userStore.user ? userStore.user.name : '访客' }}</span>
       </v-sheet>
     </ClientOnly>
