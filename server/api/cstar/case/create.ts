@@ -32,6 +32,7 @@ export default defineEventHandler(async (event) => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + apiKey,
+      'Access-Control-Allow-Origin': '*',
     },
     body: {
       model: params.model,
