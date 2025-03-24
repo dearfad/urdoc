@@ -1,9 +1,7 @@
 <template>
   <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto mb-16">
-    <!-- <CommonCaseNavCard /> -->
     <CaseContentShow />
     <CaseUtilsCreate />
-    <!-- <CaseUtilsTabs /> -->
   </v-sheet>
 </template>
 
