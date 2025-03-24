@@ -32,11 +32,6 @@ export default defineNuxtConfig({
     storage: 'localStorage',
   },
   routeRules: {
-    '/**': {
-      cors: true,
-    },
-    // '/': { prerender: true },
-    // '/guide': { prerender: true },
     '/cstar/**': { ssr: false },
   },
 })

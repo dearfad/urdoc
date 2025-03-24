@@ -3,6 +3,7 @@ export default function () {
   const caseModelResponse = useCaseModelResponse()
   const storyModelResponse = useStoryModelResponse()
   const testModelResponse = useTestModelResponse()
+  const actModelResponse = useActModelResponse()
   const modelResponse = useModelResponse()
   const caseStore = useCaseStore()
 
@@ -39,7 +40,7 @@ export default function () {
 
   async function getAct(messages: MessagesArray) {
     const params = getModelParams(messages, [], { type: 'text' })
-    return await modelResponse.getResponse(params)
+    return await actModelResponse.getResponse(params)
   }
 
   async function getRate(messages: MessagesArray) {

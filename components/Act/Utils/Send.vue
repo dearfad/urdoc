@@ -1,12 +1,13 @@
 <template>
   <v-sheet class="d-flex flex-column mx-4">
     <v-text-field
+      v-if="caseStore.actMessages.length != 0"
       ref="inputPrompt"
       v-model="prompt"
-      class="font-weight-bold my-5"
+      class="font-weight-bold my-5 elevation-4 rounded-lg"
       hide-details
-      :loading="isReceiving"
-      :disabled="isReceiving"
+      :loading="isLoading"
+      :disabled="isLoading"
       variant="solo"
       label="请输入"
       :prepend-inner-icon="prependIconInputPrompt"
@@ -17,18 +18,35 @@
       @focus="handleFocus"
       @blur="handleBlur"
     />
+    <v-btn
+      v-if="caseStore.actMessages.length === 0"
+      size="x-large"
+      class="font-weight-bold my-5"
+      elevation="4"
+      rounded="lg"
+      text="开始对话"
+      @click=";(prompt = '哪里不舒服？'), sendPrompt()"
+    />
+    <v-btn
+      size="x-large"
+      class="font-weight-bold my-5"
+      elevation="4"
+      rounded="lg"
+      text="清空对话"
+      @click="caseStore.actMessages = []"
+    />
     <CommonModelSelector />
     <CommonPromptSelector />
   </v-sheet>
 </template>
 
 <script setup>
+const stateStore = useStateStore()
 const caseStore = useCaseStore()
 const promptStore = usePromptStore()
-const stateStore = useStateStore()
 const modelRouter = useModelRouter()
 const prompt = ref('')
-const isReceiving = ref(false)
+const isLoading = ref(false)
 
 const inputPrompt = useTemplateRef('inputPrompt')
 const prependIconInputPrompt = ref('mdi-cellphone-text')
@@ -44,13 +62,13 @@ async function sendPrompt() {
       content: promptStore.actPrompt + '下面是用户提供的病历\n' + caseStore.caseContentMarkdown,
     })
   }
-  isReceiving.value = true
+  isLoading.value = true
   caseStore.actMessages.push({ role: 'user', content: prompt.value })
   prompt.value = ''
   const msg = { role: 'assistant', content: '' }
   msg.content = await modelRouter.getAct(caseStore.actMessages)
   caseStore.actMessages.push(msg)
-  isReceiving.value = false
+  isLoading.value = false
 }
 // 保持输入栏锁定
 const chatMsgWatcher = watch(caseStore.actMessages, () => {

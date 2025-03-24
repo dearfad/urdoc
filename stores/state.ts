@@ -25,7 +25,7 @@ export const useStateStore = defineStore(
     const modelResponseField = ref('')
 
     // 当前章节选择
-    const selectedBook = ref('')
+    const selectedBook = ref('外科学')
     const selectedChapter = ref('')
     const selectedSection = ref('')
     const selectedSubsection = ref('')

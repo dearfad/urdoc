@@ -5,16 +5,26 @@
     rounded="lg"
     height="60vh"
   >
-    <v-list class="chatMsgContainer flex-grow-1">
+    <v-list class="chatMsgContainer">
       <v-list-item
         v-for="(message, index) in caseStore.actMessages.slice(1)"
         :key="index"
-        :title="message.role == 'user' ? '医生：' : caseStore.caseContent['姓名'] + '：'"
+        variant="elevated"
+        class="my-3"
+        rounded="lg"
+        elevation="2"
       >
-        <span class="font-weight-bold">- - - {{ message.content }}</span>
+        <template #title>{{
+          message.role === 'user' ? '医生' : caseStore.caseContent['姓名']
+        }}</template>
+        <template #prepend>
+          <v-icon v-if="message.role === 'user'" icon="mdi-doctor" size="x-large" />
+          <v-icon v-if="message.role != 'user'" icon="mdi-account-voice" size="x-large" />
+        </template>
+        <span class="font-weight-bold">{{ message.content }}</span>
       </v-list-item>
-      <v-list-item class="chatMsgBottom" />
     </v-list>
+    <div class="chatMsgBottom" />
   </v-sheet>
 </template>
 
