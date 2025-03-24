@@ -39,6 +39,7 @@ const isLoading = ref(false)
 
 async function getStory() {
   isLoading.value = true
+  stateStore.isModelResponseStringShow = true
   caseStore.caseStory = ''
   const messages = [
     { role: 'system', content: promptStore.storyPrompt },
@@ -48,6 +49,7 @@ async function getStory() {
     },
   ]
   caseStore.caseStory = JSON.parse(await modelRouter.getStory(messages))
+  stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }
 </script>

@@ -46,6 +46,7 @@ async function genCase() {
   caseStore.$reset()
   // 提示生成中
   isLoading.value = true
+  stateStore.isModelResponseStringShow = true
   // 构造prompt
   const messages = [
     { role: 'system', content: promptStore.casePrompt },
@@ -66,6 +67,7 @@ async function genCase() {
   ]
 
   caseStore.caseContent = JSON.parse(await modelRouter.getCase(messages))
+  stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }
 </script>

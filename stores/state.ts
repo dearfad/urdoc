@@ -7,6 +7,8 @@ export const useStateStore = defineStore(
     const isNavDrawerRightShow = ref(false)
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(true)
+    const isModelResponseStringShow = ref(false)
+
     // AppDebug
     // 是否开启调试模式以显示原始数据
     const isDebug = ref(false)
@@ -48,6 +50,8 @@ export const useStateStore = defineStore(
       isNavDrawerRightShow,
 
       isBottomNavigationShow,
+
+      isModelResponseStringShow,
 
       isDebug,
       modelResponseStream,

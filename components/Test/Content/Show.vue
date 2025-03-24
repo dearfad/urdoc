@@ -5,7 +5,7 @@
     rounded="lg"
     height="60vh"
   >
-    <div v-if="!caseStore.caseTestMarkdown">
+    <div v-if="!caseStore.caseTestMarkdown && stateStore.isModelResponseStringShow">
       {{ stateStore.modelResponseString }}
     </div>
     <MDC :value="caseStore.caseTestMarkdown" />

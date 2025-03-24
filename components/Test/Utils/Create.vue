@@ -37,6 +37,7 @@ const modelRouter = useModelRouter()
 
 async function getTest() {
   isLoading.value = true
+  stateStore.isModelResponseStringShow = true
   caseStore.caseTest = ''
   const messages = [
     { role: 'system', content: promptStore.testPrompt },
@@ -46,6 +47,7 @@ async function getTest() {
     },
   ]
   caseStore.caseTest = JSON.parse(await modelRouter.getTest(messages))
+  stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
-  <v-sheet class="d-flex flex-column">
-    <CommonCaseNavCard />
+  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto mb-16">
     <ActContentShow />
     <ActUtilsSend />
   </v-sheet>
