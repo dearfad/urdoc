@@ -42,8 +42,8 @@
         <v-list-item to="/cstar/act" title="模拟问诊" />
         <v-list-item to="/cstar/rate" title="评估能力" />
         <v-divider length="80" class="mx-13 my-2 border-opacity-30" thickness="1" />
-        <v-list-item to="/face" title="头像生成" />
-        <v-list-item to="/pose" title="视频生成" />
+        <v-list-item to="/media/face" title="头像生成" />
+        <v-list-item to="/media/pose" title="视频生成" />
         <v-list-item title="语音合成" />
       </v-list-group>
       <v-list-group>

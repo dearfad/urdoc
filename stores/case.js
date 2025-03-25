@@ -10,7 +10,7 @@ export const useCaseStore = defineStore(
     const caseTest = ref('')
     const caseAct = ref([])
     const caseRate = ref('')
-    const caseFace = ref('')
+    const caseFaceUrl = ref('')
     const casePose = ref('')
     const casePoseId = ref('')
 
@@ -101,7 +101,7 @@ export const useCaseStore = defineStore(
       caseTest.value = ''
       caseAct.value = []
       caseRate.value = ''
-      caseFace.value = ''
+      caseFaceUrl.value = ''
       stateStore.isActing = false
       stateStore.isRating = false
       actMessages.value = []
@@ -129,7 +129,7 @@ export const useCaseStore = defineStore(
         },
       ]
       caseContent.value = JSON.parse(await modelRouter.getCase(messages))
-      caseFace.value = await modelRouter.getFace()
+      caseFaceUrl.value = await modelRouter.getFaceUrl()
       messages = [
         { role: 'system', content: promptStore.storyPrompt },
         {
@@ -154,7 +154,7 @@ export const useCaseStore = defineStore(
       caseTest,
       caseAct,
       caseRate,
-      caseFace,
+      caseFaceUrl,
       casePose,
       casePoseId,
 

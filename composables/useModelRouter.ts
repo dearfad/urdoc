@@ -5,6 +5,7 @@ export default function () {
   const testModelResponse = useTestModelResponse()
   const actModelResponse = useActModelResponse()
   const rateModelResponse = useRateModelResponse()
+  const faceModelResponse = useFaceModelResponse()
   const caseStore = useCaseStore()
 
   function getModelParams(
@@ -48,22 +49,8 @@ export default function () {
     return await rateModelResponse.getResponse(params)
   }
 
-  async function getFace() {
-    stateStore.modelResponseField = '头像'
-    const response: BigmodelCogviewResponse = await $fetch(
-      'https://open.bigmodel.cn/api/paas/v4/images/generations',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + import.meta.env.VITE_BIGMODEL_API_KEY,
-        },
-        body: {
-          model: 'cogview-3-flash',
-          prompt: `${caseStore.caseContentMarkdown}，中国人，半身近照，在医院门诊拍摄。`,
-        },
-      }
-    )
-    return response.data[0].url
+  async function getFaceUrl() {
+    return await faceModelResponse.getResponse()
   }
 
   async function getPoseId() {
@@ -78,7 +65,7 @@ export default function () {
         body: {
           model: 'cogvideox-flash',
           prompt: '表情痛苦',
-          image_url: `${caseStore.caseFace}`,
+          image_url: `${caseStore.caseFaceUrl}`,
         },
       }
     )
@@ -103,5 +90,5 @@ export default function () {
     }
   }
 
-  return { getCase, getStory, getTest, getAct, getRate, getFace, getPoseId, getPose }
+  return { getCase, getStory, getTest, getAct, getRate, getFaceUrl, getPoseId, getPose }
 }

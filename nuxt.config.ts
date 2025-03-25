@@ -33,5 +33,6 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/cstar/**': { ssr: false },
+    '/media/**': { ssr: false },
   },
 })
