@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="d-flex flex-column mx-4">
-    <v-text-field
+    <!-- <v-text-field
       ref="inputPrompt"
       v-model="prompt"
       class="font-weight-bold my-5"
@@ -16,6 +16,37 @@
       @click:append-inner="sendPrompt"
       @focus="handleFocus"
       @blur="handleBlur"
+    /> -->
+    <v-text-field
+      v-if="caseStore.rateMessages.length != 0"
+      v-model="prompt"
+      class="font-weight-bold my-5 elevation-4 rounded-lg"
+      hide-details
+      :loading="isLoading"
+      :disabled="isLoading"
+      variant="solo"
+      label="请输入"
+      prepend-inner-icon="mdi-cellphone-text"
+      append-inner-icon="mdi-send"
+      @keyup.enter="sendPrompt"
+      @click:append-inner="sendPrompt"
+    />
+    <v-btn
+      v-if="caseStore.rateMessages.length === 0"
+      size="x-large"
+      class="font-weight-bold my-5"
+      elevation="4"
+      rounded="lg"
+      text="开始对话"
+      @click=";(prompt = '请提问'), sendPrompt()"
+    />
+    <v-btn
+      size="x-large"
+      class="font-weight-bold my-5"
+      elevation="4"
+      rounded="lg"
+      text="清空对话"
+      @click="caseStore.rateMessages = []"
     />
     <CommonModelSelector />
     <CommonPromptSelector />
@@ -25,14 +56,14 @@
 <script setup>
 const caseStore = useCaseStore()
 const promptStore = usePromptStore()
-const stateStore = useStateStore()
+// const stateStore = useStateStore()
 const modelRouter = useModelRouter()
 const prompt = ref('')
-const isReceiving = ref(false)
+const isLoading = ref(false)
 
-const inputPrompt = useTemplateRef('inputPrompt')
-const prependIconInputPrompt = ref('mdi-cellphone-text')
-const keepInputFocus = ref(false)
+// const inputPrompt = useTemplateRef('inputPrompt')
+// const prependIconInputPrompt = ref('mdi-cellphone-text')
+// const keepInputFocus = ref(false)
 
 async function sendPrompt() {
   if (prompt.value == '') {
@@ -44,29 +75,29 @@ async function sendPrompt() {
       content: promptStore.ratePrompt + '下面是用户提供的题库：\n' + caseStore.caseTestMarkdown,
     })
   }
-  isReceiving.value = true
+  isLoading.value = true
   caseStore.rateMessages.push({ role: 'user', content: prompt.value })
   prompt.value = ''
   const msg = { role: 'assistant', content: '' }
   msg.content = await modelRouter.getRate(caseStore.rateMessages)
   caseStore.rateMessages.push(msg)
-  isReceiving.value = false
+  isLoading.value = false
 }
 
 // 保持输入栏锁定
-const chatMsgWatcher = watch(caseStore.rateMessages, () => {
-  nextTick(() => {
-    inputPrompt.value.focus()
-  })
-})
+// const chatMsgWatcher = watch(caseStore.rateMessages, () => {
+//   nextTick(() => {
+//     inputPrompt.value.focus()
+//   })
+// })
 // 当前输入状态判定
-function handleFocus() {
-  stateStore.isInputFocused = true
-}
+// function handleFocus() {
+//   stateStore.isInputFocused = true
+// }
 
-function handleBlur() {
-  stateStore.isInputFocused = false
-}
+// function handleBlur() {
+//   stateStore.isInputFocused = false
+// }
 
 // 手机输入法遮挡滚动
 
@@ -82,16 +113,16 @@ function handleBlur() {
 // )
 
 // 手机输入法遮挡滚动
-onMounted(() => {
-  chatMsgWatcher.pause()
-})
-function setMsgWatcher() {
-  keepInputFocus.value = !keepInputFocus.value
-  prependIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
-  if (keepInputFocus.value) {
-    chatMsgWatcher.resume()
-  } else {
-    chatMsgWatcher.pause()
-  }
-}
+// onMounted(() => {
+//   chatMsgWatcher.pause()
+// })
+// function setMsgWatcher() {
+//   keepInputFocus.value = !keepInputFocus.value
+//   prependIconInputPrompt.value = keepInputFocus.value ? 'mdi-focus-auto' : ' mdi-cellphone-text'
+//   if (keepInputFocus.value) {
+//     chatMsgWatcher.resume()
+//   } else {
+//     chatMsgWatcher.pause()
+//   }
+// }
 </script>
