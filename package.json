@@ -10,9 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.2.0",
-    "@nuxt/fonts": "^0.11.0",
-    "@nuxthub/core": "^0.8.21",
+    "@nuxthub/core": "^0.8.18",
     "@nuxtjs/mdc": "^0.16.1",
     "@nuxtjs/seo": "^3.0.1",
     "@nuxtjs/supabase": "^1.5.0",
@@ -30,6 +30,6 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "wrangler": "^4.5.0"
+    "wrangler": "^4.4.0"
   }
 }
