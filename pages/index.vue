@@ -2,12 +2,22 @@
   <v-container fluid class="text-center">
     <v-row>
       <v-col cols="12">
-        <span class="text-h2 font-weight-bold text-blue">URDOC</span>
+        <span class="text-h2 font-weight-bold text-blue" style="font-family: 'Arial Black'"
+          >URDOC</span
+        >
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">
-        <span class="text-h4 font-weight-bold">虚拟病例研究平台</span>
+        <span
+          class="text-h4 font-weight-bold"
+          style="
+            font-family: hellofont-id-hunyuanti, sans-serif;
+            font-style: normal;
+            font-weight: 400;
+          "
+          >虚拟病例研究平台</span
+        >
       </v-col>
     </v-row>
     <v-row>
