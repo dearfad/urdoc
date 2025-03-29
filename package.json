@@ -7,7 +7,11 @@
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "docs:dev": "vitepress dev docs --host",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "urdoc": "nuxt generate && vitepress build docs"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -29,6 +33,7 @@
     "vue": "latest"
   },
   "devDependencies": {
+    "vitepress": "^1.6.3",
     "wrangler": "^4.6.0"
   }
 }

@@ -7,12 +7,12 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxt/eslint',
+    '@nuxtjs/mdc',
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    process.env.URDOC_ENV === 'edgeone' ? '' : '@nuxthub/core',
     '@nuxtjs/supabase',
-    '@nuxtjs/mdc',
+    process.env.HOSTING_PROVIDER === 'edgeone' ? '' : '@nuxthub/core',
   ],
   supabase: {
     redirect: false,
