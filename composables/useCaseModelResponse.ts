@@ -15,13 +15,17 @@ export default function () {
 
     // Make a POST request to the SSE endpoint
     const apiBase = process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://pages.dearfad.com' : ''
-    const response = await $fetch<ReadableStream>(`${apiBase}/api/cstar/case/create`, {
-      method: 'POST',
-      body: {
-        params: params,
-      },
-      responseType: 'stream',
-    })
+    console.log(apiBase)
+    const response = await $fetch<ReadableStream>(
+      `https://pages.dearfad.com/api/cstar/case/create`,
+      {
+        method: 'POST',
+        body: {
+          params: params,
+        },
+        responseType: 'stream',
+      }
+    )
 
     // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
     const reader = response.pipeThrough(new TextDecoderStream()).getReader()

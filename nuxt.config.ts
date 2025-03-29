@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/api/**': {
       cors: true,
-      headers: { 'access-control-allow-methods': '*' },
+      headers: { 'access-control-allow-methods': 'POST, OPTIONS' },
     },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
   },

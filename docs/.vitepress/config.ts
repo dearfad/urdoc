@@ -2,8 +2,8 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'My Awesome Project',
-  description: 'A VitePress Site',
+  title: 'URDOC',
+  description: '虚拟病例研究平台',
   base: '/docs/',
   outDir:
     process.env.HOSTING_PROVIDER === 'edgeone' ? '../.output/public/docs' : './.vitepress/dist',
@@ -24,6 +24,6 @@ export default defineConfig({
       },
     ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/dearfad/urdoc' }],
   },
 })
