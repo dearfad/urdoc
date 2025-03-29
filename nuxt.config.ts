@@ -20,4 +20,7 @@ export default defineNuxtConfig({
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
+  routeRules: {
+    '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
+  },
 })

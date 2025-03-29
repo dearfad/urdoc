@@ -31,12 +31,7 @@ jobs:
         run: npx nuxthub@latest ensure
 
       - name: Build application
-        run: npm run nuxthub
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs/.vitepress/dist
+        run: npm run build
 
       - name: Deploy to NuxtHub
         uses: nuxt-hub/action@v1
