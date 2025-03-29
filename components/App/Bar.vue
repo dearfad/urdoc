@@ -5,7 +5,7 @@
       URDOC
     </v-app-bar-title>
     <v-spacer />
-    <v-btn text="文档" to="/docs" />
+    <v-btn text="文档" to="https://urdoc.dearfad.com/docs" />
     <template #append>
       <v-btn
         icon="mdi-dots-vertical"

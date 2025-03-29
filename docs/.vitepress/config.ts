@@ -5,7 +5,8 @@ export default defineConfig({
   title: 'My Awesome Project',
   description: 'A VitePress Site',
   base: '/docs/',
-  outDir: process.env.HOSTING_PROVIDER === 'edgeone' ? '../.output/public/docs' : '../dist/docs',
+  outDir:
+    process.env.HOSTING_PROVIDER === 'edgeone' ? '../.output/public/docs' : './.vitepress/dist',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
