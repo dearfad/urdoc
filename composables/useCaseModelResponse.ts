@@ -14,7 +14,8 @@ export default function () {
     // https://nuxt.com/docs/getting-started/data-fetching
 
     // Make a POST request to the SSE endpoint
-    const response = await $fetch<ReadableStream>('/api/cstar/case/create', {
+    const apiBase = process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://pages.dearfad.com' : ''
+    const response = await $fetch<ReadableStream>(`${apiBase}/api/cstar/case/create`, {
       method: 'POST',
       body: {
         params: params,
