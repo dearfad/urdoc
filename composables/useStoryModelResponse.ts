@@ -15,6 +15,7 @@ export default function () {
 
     // Make a POST request to the SSE endpoint
     const response = await $fetch<ReadableStream>('/api/cstar/story/create', {
+      baseURL: stateStore.apiBaseURL,
       method: 'POST',
       body: {
         params: params,

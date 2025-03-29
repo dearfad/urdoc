@@ -6,7 +6,7 @@ export default function () {
     stateStore.modelResponseString = ''
     stateStore.modelResponseField = ''
     const lineRegex = /data: (?:\[.*?\]|\{.*?\})/
-    const jsonRegex = /\{.*?\}/s
+    // const jsonRegex = /\{.*?\}/s
     let dataFieldPointer = 0
     let tempIncompleteLine = ''
 
@@ -15,6 +15,7 @@ export default function () {
 
     // Make a POST request to the SSE endpoint
     const response = await $fetch<ReadableStream>('/api/cstar/test/create', {
+      baseURL: stateStore.apiBaseURL,
       method: 'POST',
       body: {
         params: params,

@@ -14,10 +14,8 @@ export default function () {
     // https://nuxt.com/docs/getting-started/data-fetching
 
     // Make a POST request to the SSE endpoint
-    const runtimeConfig = useRuntimeConfig()
-    const baseURL = runtimeConfig.public.apiBaseURL as string
     const response = await $fetch<ReadableStream>('/api/cstar/case/create', {
-      baseURL: baseURL,
+      baseURL: stateStore.apiBaseURL,
       method: 'POST',
       body: {
         params: params,

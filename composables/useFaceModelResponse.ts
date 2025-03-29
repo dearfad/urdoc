@@ -8,6 +8,7 @@ export default function () {
       // 待加入故事相貌描绘
     }
     return await $fetch('/api/media/face/create', {
+      baseURL: stateStore.apiBaseURL,
       method: 'POST',
       body: {
         params: params,
