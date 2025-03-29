@@ -21,9 +21,9 @@ export default defineNuxtConfig({
     storage: 'localStorage',
   },
   routeRules: {
-    '/api/**': {
-      cors: true,
-    },
+    '/api/**': { cors: true },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
+    '/cstar/**': { ssr: false },
+    '/media/**': { ssr: false },
   },
 })
