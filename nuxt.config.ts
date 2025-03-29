@@ -21,7 +21,10 @@ export default defineNuxtConfig({
     storage: 'localStorage',
   },
   routeRules: {
-    '/api/**': { cors: true },
+    '/api/**':
+      process.env.HOSTING_PROVIDER === 'edgeone'
+        ? { proxy: 'https://pages.dearfad.com/api/**', cors: true }
+        : { cors: true },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },
