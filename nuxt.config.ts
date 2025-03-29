@@ -26,4 +26,9 @@ export default defineNuxtConfig({
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },
   },
+  runtimeConfig: {
+    public: {
+      apiBaseURL: process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://urdoc.pages.dev' : '',
+    },
+  },
 })
