@@ -1,7 +1,7 @@
 export default defineEventHandler((event) => {
   if (event.method === 'OPTIONS') {
-    event.node.res.statusCode = 204
-    event.node.res.statusMessage = 'No Content'
-    return ''
+    event.node.res.statusCode = 200
+    event.node.res.statusMessage = 'OK'
+    // return ''
   }
 })
