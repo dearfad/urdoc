@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/api/**':
       process.env.HOSTING_PROVIDER === 'edgeone'
-        ? { proxy: 'https://pages.dearfad.com/api/**', cors: true }
+        ? { proxy: 'https://urdoc.pages.dev/api/**' }
         : { cors: true },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
