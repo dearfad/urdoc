@@ -37,8 +37,19 @@ export const useStateStore = defineStore(
     // 是否通过验证
     const validated = ref(false)
     // 默认平台和模型
-    const selectedPlatform = ref('智谱')
+    const selectedGateway = ref('无网关')
+    const selectedProvider = ref('智谱')
     const selectedModel = ref({ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' })
+    const chatModel = ref({
+      gateway: '',
+      provider: '智谱',
+      name: '智谱 GLM-4-Flash',
+      id: 'glm-4-flash',
+      url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+      envApiKeyName: 'ZHIPU_API_KEY',
+    })
+    const ttiModel = ref({ name: 'CogView-3-Flash', id: 'cogview-3-flash' })
+    const itvModel = ref({ name: 'CogVideoX-Flash', id: 'cogvideox-flash' })
 
     // 聊天模式
     const isActing = ref(false)
@@ -73,8 +84,12 @@ export const useStateStore = defineStore(
       id,
       validated,
 
-      selectedPlatform,
+      selectedGateway,
+      selectedProvider,
       selectedModel,
+      chatModel,
+      ttiModel,
+      itvModel,
 
       isActing,
       isRating,

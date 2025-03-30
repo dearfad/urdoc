@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },
+    '/admin/**': { ssr: false },
   },
   runtimeConfig: {
     public: {
