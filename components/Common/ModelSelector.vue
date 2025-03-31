@@ -87,9 +87,8 @@ function handleModelChange() {
     name: model.value.name,
     id: model.value.id,
     url: gateway.value.url ? gateway.value.url : provider.value.url,
-    envApiKeyName: gateway.value.envApiKeyName
-      ? gateway.value.envApiKeyName
-      : provider.value.envApiKeyName,
+    envGatewayApiKeyName: gateway.value.envApiKeyName,
+    envProviderApiKeyName: provider.value.envApiKeyName,
   }
 }
 </script>

@@ -44,7 +44,8 @@ export const useStateStore = defineStore(
         name: '智谱 GLM-4-Flash',
         id: 'glm-4-flash',
         url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-        envApiKeyName: 'ZHIPU_API_KEY',
+        envGatewayApiKeyName: '',
+        envProviderApiKeyName: 'ZHIPU_API_KEY',
       },
       ttiModel: {
         gateway: 'native',
@@ -52,7 +53,8 @@ export const useStateStore = defineStore(
         name: 'CogView-3-Flash',
         id: 'cogview-3-flash',
         url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-        envApiKeyName: 'ZHIPU_API_KEY',
+        envGatewayApiKeyName: '',
+        envProviderApiKeyName: 'ZHIPU_API_KEY',
       },
       itvModel: {
         gateway: 'native',
@@ -60,7 +62,8 @@ export const useStateStore = defineStore(
         name: 'CogVideoX-Flash',
         id: 'cogvideox-flash',
         url: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-        envApiKeyName: 'ZHIPU_API_KEY',
+        envGatewayApiKeyName: '',
+        envProviderApiKeyName: 'ZHIPU_API_KEY',
       },
     })
     // 聊天模式
