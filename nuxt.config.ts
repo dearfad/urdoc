@@ -32,11 +32,10 @@ export default defineNuxtConfig({
       apiBaseURL: process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://pages.dearfad.com' : '',
     },
   },
-  // proxy:{
-  //   '/function': {
-  //     target: 'http://localhost:8088',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/function': '' },
-  //   },
-  // }
+  // EdgeOne Pages Dev
+  nitro: {
+    devProxy: {
+      '/function': 'http://localhost:8088/function',
+    },
+  },
 })
