@@ -6,9 +6,6 @@ hero:
   name: 'URDOC'
   text: '虚拟病例研究平台'
   tagline: CSTAR模式的应用与创新实践
-  image:
-    src: /logo.svg
-    alt: URDOC
   actions:
     - theme: brand
       text: Markdown Examples
