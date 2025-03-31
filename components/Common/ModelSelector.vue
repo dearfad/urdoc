@@ -1,27 +1,31 @@
 <template>
   <v-sheet class="px-4 my-3" elevation="4" rounded="lg">
     <v-select
-      v-model="selectedGateway"
+      v-model="gateway"
       label="聚合网关"
       :items="gateways"
+      item-title="name"
       variant="outlined"
       class="my-4"
       hide-details="auto"
       density="comfortable"
+      return-object
       @update:model-value="handleGatewayChange"
     />
     <v-select
-      v-model="selectedProvider"
+      v-model="provider"
       label="服务商"
       :items="providers"
+      item-title="name"
       variant="outlined"
       class="my-4"
       hide-details="auto"
       density="comfortable"
+      return-object
       @update:model-value="handleProviderChange"
     />
     <v-select
-      v-model="selectedModel"
+      v-model="model"
       label="模型"
       :items="models"
       item-title="name"
@@ -30,54 +34,55 @@
       hide-details="auto"
       density="comfortable"
       return-object
+      @update:model-value="handleModelChange"
     />
-    <div>gateway: {{ selectedGateway }}</div>
-    <div>provider: {{ selectedProvider }}</div>
-    <div>model: {{ selectedModel.name }}</div>
   </v-sheet>
 </template>
 
 <script setup>
+const { modelsType } = defineProps({ modelsType: { type: String, required: true } })
 const modelStore = useModelStore()
 const stateStore = useStateStore()
 
-const gateways = modelStore.chatModels.gateways.map((gateway) => gateway.name)
-const selectedGateway = ref(gateways[0])
+const gateways = modelStore[modelsType].gateways
+const gateway = ref(gateways[0])
 
 const providers = computed(() => {
-  return modelStore.chatModels.gateways
-    .find((gateway) => gateway.name === selectedGateway.value)
-    .providers.map((provider) => provider.name)
+  return gateway.value.providers
 })
-const selectedProvider = ref(providers.value[0])
+const provider = ref(providers.value[0])
 
 const models = computed(() => {
-  return modelStore.chatModels.gateways
-    .find((gateway) => gateway.name === selectedGateway.value)
-    .providers.find((provider) => provider.name === selectedProvider.value)
-    .models.map((model) => model.name)
+  return provider.value.models
 })
-
-const selectedModel = ref(models.value[0])
-
-// const gateways = computed(() => {
-//   return [...Object.keys(modelStore.models)]
-// })
-
-// const providers = computed(() => {
-//   return [...Object.keys(modelStore.models[stateStore.selectedGateway])]
-// })
-
-// const models = computed(() => {
-//   return modelStore.models[stateStore.selectedGateway][stateStore.selectedProvider]
-// })
+const model = ref(models.value[0])
 
 function handleGatewayChange() {
-  // stateStore.selectedProvider = providers.value[0]
-  // handleProviderChange()
+  provider.value = providers.value[0]
+  handleProviderChange()
 }
 
 function handleProviderChange() {
-  // stateStore.selectedModel = models.value[0]
+  model.value = models.value[0]
+  handleModelChange()
+}
+
+const modelTypeMap = {
+  chatModels: 'chatModel',
+  itvModels: 'itvModel',
+  ttiModels: 'ttiModel',
+}
+
+function handleModelChange() {
+  stateStore.models[modelTypeMap[modelsType]] = {
+    gateway: gateway.value.id,
+    provider: provider.value.id,
+    name: model.value.name,
+    id: model.value.id,
+    url: gateway.value.url ? gateway.value.url : provider.value.url,
+    envApiKeyName: gateway.value.envApiKeyName
+      ? gateway.value.envApiKeyName
+      : provider.value.envApiKeyName,
+  }
 }
 </script>
