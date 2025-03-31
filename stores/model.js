@@ -61,14 +61,17 @@ export const useModelStore = defineStore('model', () => {
             id: '阿里AI',
             url: '',
             envApiKeyName: 'ALIYUN_API_KEY',
-            models: [{ name: '通义千问-Plus-2025-01-25', id: 'qwen-plus-2025-01-25' }],
+            models: [
+              { name: '通义千问-Plus-2025-01-25', id: 'qwen-plus-2025-01-25' },
+              { name: 'DeepSeek-V3', id: 'deepseek-v3' },
+            ],
           },
         ],
       },
       {
         name: 'OpenRouter',
         id: 'OpenRouter',
-        url: 'https://openrouter.ai/api/v1',
+        url: 'https://openrouter.ai/api/v1/chat/completions',
         envApiKeyName: 'OPENROUTER_API_KEY',
         providers: [
           {
@@ -76,7 +79,56 @@ export const useModelStore = defineStore('model', () => {
             id: 'DeepSeek',
             url: '',
             envApiKeyName: '',
-            models: [{ name: 'DeepSeek V3 Base (free)', id: 'deepseek/deepseek-v3-base:free' }],
+            models: [
+              {
+                name: 'DeepSeek: DeepSeek V3 0324 (free)',
+                id: 'deepseek/deepseek-chat-v3-0324:free',
+              },
+              {
+                name: 'Moonshot AI: Moonlight 16B A3B Instruct (free)',
+                id: 'moonshotai/moonlight-16b-a3b-instruct:free',
+              },
+              {
+                name: 'Google: Gemma 3 12B (free)',
+                id: 'google/gemma-3-12b-it:free',
+              },
+            ],
+          },
+          {
+            name: 'Moonshot',
+            id: 'Moonshot',
+            url: '',
+            envApiKeyName: '',
+            models: [
+              {
+                name: 'Moonshot AI: Moonlight 16B A3B Instruct (free)',
+                id: 'moonshotai/moonlight-16b-a3b-instruct:free',
+              },
+            ],
+          },
+          {
+            name: 'Google',
+            id: 'Google',
+            url: '',
+            envApiKeyName: '',
+            models: [
+              {
+                name: 'Google: Gemma 3 12B (free)',
+                id: 'google/gemma-3-12b-it:free',
+              },
+            ],
+          },
+          {
+            name: 'Mistral',
+            id: 'Mistral',
+            url: '',
+            envApiKeyName: '',
+            models: [
+              {
+                name: 'Mistral: Mistral Small 3.1 24B (free)',
+                id: 'mistralai/mistral-small-3.1-24b-instruct:free',
+              },
+            ],
           },
         ],
       },

@@ -50,7 +50,7 @@
       @click="caseStore.actMessages = []"
     />
 
-    <CommonModelSelector />
+    <CommonModelSelector models-type="chatModels" />
     <CommonPromptSelector />
   </v-sheet>
 </template>

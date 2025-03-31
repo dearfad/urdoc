@@ -24,7 +24,7 @@
         clearable
         density="comfortable"
     /></v-sheet>
-    <CommonModelSelector />
+    <CommonModelSelector models-type="chatModels" />
   </v-sheet>
 </template>
 

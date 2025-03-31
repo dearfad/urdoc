@@ -9,8 +9,7 @@ type MessagesArray = MessageInterface[]
 // response_format
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
 type ModelParamsType = {
-  platform: string
-  model: string
+  models: { [key: string]: { [key: string]: string } }
   messages: MessagesArray
   watchFields: string[]
   responseFormat: ResponseFormatType

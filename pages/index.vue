@@ -34,7 +34,7 @@
           rounded="lg"
           variant="outlined"
         >
-          开始门诊
+          创建病例
         </v-btn>
       </v-col>
     </v-row>

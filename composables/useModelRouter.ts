@@ -14,8 +14,7 @@ export default function () {
     responseFormat: ResponseFormatType = { type: 'json_object' }
   ) {
     const modelParams: ModelParamsType = {
-      platform: stateStore.selectedPlatform,
-      model: stateStore.selectedModel.id,
+      models: stateStore.models,
       messages: messages,
       watchFields: watchFields,
       responseFormat: responseFormat,

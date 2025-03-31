@@ -41,21 +41,34 @@
 
 <script setup>
 const { modelsType } = defineProps({ modelsType: { type: String, required: true } })
+const modelTypeMap = {
+  chatModels: 'chatModel',
+  itvModels: 'itvModel',
+  ttiModels: 'ttiModel',
+}
 const modelStore = useModelStore()
 const stateStore = useStateStore()
 
 const gateways = modelStore[modelsType].gateways
-const gateway = ref(gateways[0])
+const gateway = ref(
+  gateways.find((g) => g.id === stateStore.models[modelTypeMap[modelsType]].gateway) || gateways[0]
+)
 
 const providers = computed(() => {
   return gateway.value.providers
 })
-const provider = ref(providers.value[0])
+const provider = ref(
+  providers.value.find((p) => p.id === stateStore.models[modelTypeMap[modelsType]].provider) ||
+    providers.value[0]
+)
 
 const models = computed(() => {
   return provider.value.models
 })
-const model = ref(models.value[0])
+const model = ref(
+  models.value.find((m) => m.id === stateStore.models[modelTypeMap[modelsType]].id) ||
+    models.value[0]
+)
 
 function handleGatewayChange() {
   provider.value = providers.value[0]
@@ -65,12 +78,6 @@ function handleGatewayChange() {
 function handleProviderChange() {
   model.value = models.value[0]
   handleModelChange()
-}
-
-const modelTypeMap = {
-  chatModels: 'chatModel',
-  itvModels: 'itvModel',
-  ttiModels: 'ttiModel',
 }
 
 function handleModelChange() {
