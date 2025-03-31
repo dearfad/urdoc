@@ -5,7 +5,10 @@ layout: home
 hero:
   name: 'URDOC'
   text: '虚拟病例研究平台'
-  tagline: My great project tagline
+  tagline: CSTAR模式的应用与创新实践
+  image:
+    src: /heroimage.png
+    alt: URDOC
   actions:
     - theme: brand
       text: Markdown Examples
@@ -15,10 +18,14 @@ hero:
       link: /api-examples
 
 features:
-  - title: Feature A
+  - title: 病例生成
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
+  - title: 故事编写
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
+  - title: 问题设计
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 问诊模拟
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 能力评估
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
