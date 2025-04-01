@@ -12,6 +12,6 @@ import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
 const env = ref()
 async function getProcessEnv() {
-  env.value = await $fetch('/admin/context')
+  env.value = await $fetch('/function/admin/context')
 }
 </script>
