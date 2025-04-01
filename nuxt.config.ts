@@ -1,6 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-05-07',
+  // Netlify
+  // compatibilityDate: '2024-05-07',
+  // Cloudflare Pages
+  // compatibilityDate: '2024-09-19',
+  compatibilityDate: '2024-09-19',
   ssr: true,
   devtools: {
     enabled: false,
@@ -12,7 +16,8 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/supabase',
-    process.env.HOSTING_PROVIDER === 'nuxthub' ? '@nuxthub/core' : '',
+    '@nuxthub/core',
+    // process.env.HOSTING_PROVIDER === 'nuxthub' ? '@nuxthub/core' : '',
   ],
   supabase: {
     redirect: false,
