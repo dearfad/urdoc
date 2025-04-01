@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/supabase',
-    process.env.HOSTING_PROVIDER === 'edgeone' ? '' : '@nuxthub/core',
+    process.env.HOSTING_PROVIDER === 'nuxthub' ? '@nuxthub/core' : '',
   ],
   supabase: {
     redirect: false,
