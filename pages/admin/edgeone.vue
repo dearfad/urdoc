@@ -35,14 +35,14 @@ async function getContext() {
   content.value = await $fetch('/function/admin/context')
 }
 async function postFunction() {
-  content.value = await fetch('/function/cstar/create', {
+  content.value = await $fetch('/function/cstar/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
+    body: {
       test: { name: 'test' },
-    }),
+    },
   })
 }
 </script>
