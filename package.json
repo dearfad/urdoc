@@ -27,13 +27,13 @@
     "vue": "latest",
     "vue-json-pretty": "^2.4.0",
     "vue-router": "latest",
-    "vuetify-nuxt-module": "^0.18.4"
+    "vuetify-nuxt-module": "^0.18.5"
   },
   "overrides": {
     "vue": "latest"
   },
   "devDependencies": {
     "vitepress": "^1.6.3",
-    "wrangler": "^4.6.0"
+    "wrangler": "^4.7.0"
   }
 }
