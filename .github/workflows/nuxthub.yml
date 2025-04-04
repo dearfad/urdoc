@@ -3,7 +3,7 @@ on: push
 
 jobs:
   deploy:
-    name: "Deploy to NuxtHub"
+    name: 'Deploy to NuxtHub'
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref == 'refs/heads/master' && 'production' || 'preview' }}
@@ -31,7 +31,7 @@ jobs:
         run: npx nuxthub@latest ensure
 
       - name: Build application
-        run: npm run build
+        run: npm run pages
 
       - name: Deploy to NuxtHub
         uses: nuxt-hub/action@v1

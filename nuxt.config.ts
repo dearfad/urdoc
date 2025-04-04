@@ -28,10 +28,11 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/api/**': { cors: true },
-    '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
+    // '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },
     '/admin/**': { ssr: false },
+    '/': { prerender: true },
   },
   runtimeConfig: {
     public: {
@@ -43,5 +44,6 @@ export default defineNuxtConfig({
     devProxy: {
       '/function': 'http://localhost:8088/function',
     },
+    preset: 'cloudflare_pages',
   },
 })
