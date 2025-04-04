@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   // compatibilityDate: '2024-05-07',
   // Cloudflare Pages
   // compatibilityDate: '2024-09-19',
-  // compatibilityDate: '2024-09-19',
+  compatibilityDate: '2024-09-19',
   ssr: true,
   devtools: {
     enabled: false,
