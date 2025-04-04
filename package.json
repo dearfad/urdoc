@@ -11,8 +11,7 @@
     "docs:dev": "vitepress dev docs --host",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "edgeone": "nuxt generate && vitepress build docs",
-    "pages": "nuxt build && vitepress build docs"
+    "edgeone": "nuxt generate && vitepress build docs"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
