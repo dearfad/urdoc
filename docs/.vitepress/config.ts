@@ -5,8 +5,7 @@ export default defineConfig({
   title: 'URDOC',
   description: '虚拟病例研究平台',
   base: '/docs/',
-  outDir:
-    process.env.HOSTING_PROVIDER === 'edgeone' ? '../.output/public/docs' : '../dist/static/docs',
+  outDir: process.env.HOSTING_PROVIDER === 'edgeone' ? '../.output/public/docs' : '../dist/docs',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
