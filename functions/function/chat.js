@@ -41,7 +41,6 @@ export async function onRequest({ request, env }) {
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Transfer-Encoding': 'chunked',
       'Accept-Encoding': '',
-      'Content-Encoding': '',
     },
   })
 }
