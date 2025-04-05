@@ -1,15 +1,15 @@
 export async function onRequest({ request, env }) {
-  // if (request.method === 'OPTIONS') {
-  //   return new Response(null, {
-  //     headers: {
-  //       'Access-Control-Allow-Origin': '*',
-  //       'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  //       'Access-Control-Allow-Headers': 'Content-Type',
-  //       'Access-Control-Max-Age': '86400',
-  //     },
-  //   })
-  // }
-  // request.headers.delete('accept-encoding')
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Max-Age': '86400',
+      },
+    })
+  }
+  request.headers.delete('accept-encoding')
   const { params } = await request.clone().json()
   const model = params.models.chatModel
   const providerApiKey = env[model.envProviderApiKeyName]
@@ -39,8 +39,6 @@ export async function onRequest({ request, env }) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Transfer-Encoding': 'chunked',
-      'Accept-Encoding': '',
     },
   })
 }
