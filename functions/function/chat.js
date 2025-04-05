@@ -42,7 +42,7 @@ export async function onRequest({ request, env }) {
         const lines = text.split('\n\n')
         lines.forEach((line) => {
           if (line === '') return
-          controller.enqueue(encoder.encode(line))
+          controller.enqueue(encoder.encode(line + '\n\n'))
         })
       }
     },
