@@ -31,7 +31,24 @@ export async function onRequest({ request, env }) {
     }),
   })
 
-  return new Response(stream.body, {
+  const responseStream = new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder()
+      const reader = stream.body.getReader()
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        const text = new TextDecoder().decode(value)
+        const lines = text.split('\n\n')
+        lines.forEach((line) => {
+          if (line === '') return
+          controller.enqueue(encoder.encode(line))
+        })
+      }
+    },
+  })
+
+  return new Response(responseStream, {
     headers: {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
@@ -39,9 +56,9 @@ export async function onRequest({ request, env }) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Transfer-Encoding': 'chunked',
-      'Accept-Encoding': '',
-      'Content-Encoding': '',
+      // 'Transfer-Encoding': 'chunked',
+      // 'Accept-Encoding': '',
+      // 'Content-Encoding': '',
     },
   })
 }
