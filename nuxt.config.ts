@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxthub/core',
+    // '@nuxthub/core',
     // 无用，待完善
     // process.env.HOSTING_PROVIDER === 'nuxthub' ? '@nuxthub/core' : '',
     '@nuxtjs/supabase',
