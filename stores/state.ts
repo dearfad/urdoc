@@ -1,8 +1,11 @@
 export const useStateStore = defineStore(
   'state',
   () => {
-    const runtimeConfig = useRuntimeConfig()
-    const apiBaseURL = runtimeConfig.public.apiBaseURL as string
+    //
+    // API 地址设定
+    //
+    const apiBaseUrl = ref('https://urdoc.pages.dev/api')
+
     // AppBar
     // 左右侧边栏显示切换
     const isNavDrawerLeftShow = ref(false)
@@ -74,7 +77,7 @@ export const useStateStore = defineStore(
     const isInputFocused = ref(false)
 
     return {
-      apiBaseURL,
+      apiBaseUrl,
 
       isNavDrawerLeftShow,
       isNavDrawerRightShow,

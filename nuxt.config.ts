@@ -36,7 +36,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBaseURL: process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://pages.dearfad.com' : '',
+      hostingProvider: 'edgeone',
+      // apiBaseURL: process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://pages.dearfad.com' : '',
     },
   },
   // EdgeOne Pages Dev

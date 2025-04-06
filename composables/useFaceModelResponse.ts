@@ -7,8 +7,8 @@ export default function () {
       prompt: `${caseStore.caseContentMarkdown}，中国人，半身近照，在医院门诊拍摄。`,
       // 待加入故事相貌描绘
     }
-    return await $fetch('/api/media/face/create', {
-      baseURL: stateStore.apiBaseURL,
+    return await $fetch('/media/face/create', {
+      baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
         params: params,
