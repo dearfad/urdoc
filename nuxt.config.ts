@@ -1,5 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  site: {
+    url: 'https://urdoc.dearfad.com',
+    name: 'URDOC',
+  },
+  seo: {
+    meta: {
+      description:
+        'URDOC Virtual Case Research Institute: Pioneering in AI-generated medical cases, storytelling, question formulation, and consultation simulation for comprehensive capability assessment in healthcare education and research.',
+    },
+  },
   // Netlify
   // compatibilityDate: '2024-05-07',
   // Cloudflare Pages
