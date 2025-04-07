@@ -26,7 +26,7 @@
         density="comfortable"
       />
     </v-sheet>
-    <CommonModelSelector models-type="chatModels" />
+    <CommonModelSelector model-type="chat" model-usage="story" />
     <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

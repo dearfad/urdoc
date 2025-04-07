@@ -1,15 +1,27 @@
 <template>
-  <v-sheet class="d-flex flex-column mx-4">
-    <div class="ma-4 font-weight-bold">当前模型</div>
-    <div class="ma-4 font-weight-bold">
-      <vue-json-pretty :data="stateStore.models" class="mx-auto" />
-    </div>
-    <div class="ma-4 font-weight-bold">对话模型</div>
-    <CommonModelSelector models-type="chatModels" />
-    <div class="ma-4 font-weight-bold">文生图模型</div>
-    <CommonModelSelector models-type="ttiModels" />
-    <div class="ma-4 font-weight-bold">图生视频模型</div>
-    <CommonModelSelector models-type="itvModels" />
+  <v-sheet class="d-flex mx-4">
+    <v-sheet class="w-50">
+      <div class="ma-4 font-weight-bold">当前模型</div>
+      <div class="ma-4 font-weight-bold">
+        <vue-json-pretty :data="stateStore.models" class="mx-auto" />
+      </div>
+    </v-sheet>
+    <v-sheet class="w-50">
+      <div class="ma-4 font-weight-bold">对话模型 - 病例</div>
+      <CommonModelSelector model-type="chat" model-usage="case" />
+      <div class="ma-4 font-weight-bold">对话模型 - 故事</div>
+      <CommonModelSelector model-type="chat" model-usage="story" />
+      <div class="ma-4 font-weight-bold">对话模型 - 测试</div>
+      <CommonModelSelector model-type="chat" model-usage="test" />
+      <div class="ma-4 font-weight-bold">对话模型 - 问诊</div>
+      <CommonModelSelector model-type="chat" model-usage="act" />
+      <div class="ma-4 font-weight-bold">对话模型 - 评价</div>
+      <CommonModelSelector model-type="chat" model-usage="rate" />
+      <div class="ma-4 font-weight-bold">文生图模型 - 头像</div>
+      <CommonModelSelector model-type="textToImage" model-usage="face" />
+      <div class="ma-4 font-weight-bold">图生视频模型 - 动作</div>
+      <CommonModelSelector model-type="imageToVideo" model-usage="pose" />
+    </v-sheet>
   </v-sheet>
 </template>
 

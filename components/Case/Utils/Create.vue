@@ -27,7 +27,7 @@
       />
     </v-sheet>
     <CommonChapterSelector />
-    <CommonModelSelector models-type="chatModels" />
+    <CommonModelSelector model-type="chat" model-usage="case" />
     <CommonPromptSelector />
     <CommonApiBaseUrlSelector />
   </v-sheet>

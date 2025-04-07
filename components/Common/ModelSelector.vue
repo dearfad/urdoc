@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="px-4 my-3" elevation="4" rounded="lg">
+  <v-sheet class="px-4 py-1 my-3" elevation="4" rounded="lg">
     <v-select
       v-model="gateway"
       label="聚合网关"
@@ -40,25 +40,24 @@
 </template>
 
 <script setup>
-const { modelsType } = defineProps({ modelsType: { type: String, required: true } })
-const modelTypeMap = {
-  chatModels: 'chatModel',
-  itvModels: 'itvModel',
-  ttiModels: 'ttiModel',
-}
+const { modelType, modelUsage } = defineProps({
+  modelType: { type: String, required: true },
+  modelUsage: { type: String, required: true },
+})
+
 const modelStore = useModelStore()
 const stateStore = useStateStore()
 
-const gateways = modelStore[modelsType].gateways
+const gateways = modelStore.models[modelType].gateways
 const gateway = ref(
-  gateways.find((g) => g.id === stateStore.models[modelTypeMap[modelsType]].gateway) || gateways[0]
+  gateways.find((g) => g.id === stateStore.models[modelType][modelUsage].gateway) || gateways[0]
 )
 
 const providers = computed(() => {
   return gateway.value.providers
 })
 const provider = ref(
-  providers.value.find((p) => p.id === stateStore.models[modelTypeMap[modelsType]].provider) ||
+  providers.value.find((p) => p.id === stateStore.models[modelType][modelUsage].provider) ||
     providers.value[0]
 )
 
@@ -66,8 +65,7 @@ const models = computed(() => {
   return provider.value.models
 })
 const model = ref(
-  models.value.find((m) => m.id === stateStore.models[modelTypeMap[modelsType]].id) ||
-    models.value[0]
+  models.value.find((m) => m.id === stateStore.models[modelType][modelUsage].id) || models.value[0]
 )
 
 function handleGatewayChange() {
@@ -81,7 +79,7 @@ function handleProviderChange() {
 }
 
 function handleModelChange() {
-  stateStore.models[modelTypeMap[modelsType]] = {
+  stateStore.models[modelType][modelUsage] = {
     gateway: gateway.value.id,
     provider: provider.value.id,
     name: model.value.name,
