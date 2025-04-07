@@ -15,18 +15,19 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    // '@nuxthub/core',
-    // 无用，待完善
-    // process.env.HOSTING_PROVIDER === 'nuxthub' ? '@nuxthub/core' : '',
     '@nuxtjs/supabase',
     '@nuxtjs/seo',
+    // '@nuxthub/core',
   ],
+
   supabase: {
     redirect: false,
   },
+
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
+
   routeRules: {
     '/api/**': { cors: true },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
@@ -34,12 +35,7 @@ export default defineNuxtConfig({
     '/media/**': { ssr: false },
     '/admin/**': { ssr: false },
   },
-  runtimeConfig: {
-    public: {
-      hostingProvider: 'edgeone',
-      // apiBaseURL: process.env.HOSTING_PROVIDER === 'edgeone' ? 'https://pages.dearfad.com' : '',
-    },
-  },
+
   // EdgeOne Pages Dev
   nitro: {
     devProxy: {
