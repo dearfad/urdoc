@@ -74,7 +74,8 @@ export async function onRequest({ request, env }) {
 
   return new Response(stream.body, {
     headers: {
-      'Content-Type': 'text/event-stream',
+      'Transfer-Encoding': 'chunked',
+      'Content-Type': 'text/event-stream; charset=utf-8',
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
       'Access-Control-Allow-Origin': '*',
