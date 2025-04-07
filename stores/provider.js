@@ -2,12 +2,12 @@ export const useProviderStore = defineStore('provider', () => {
   // 网址
   const sites = ref([
     {
-      name: 'EdgeOne',
-      url: 'https://urdoc.dearfad.com',
-    },
-    {
       name: 'Cloudflare',
       url: 'https://urdoc.pages.dev',
+    },
+    {
+      name: 'EdgeOne',
+      url: 'https://urdoc.dearfad.com',
     },
     {
       name: 'Cloudflare(EdgeOne)',
