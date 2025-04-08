@@ -30,11 +30,19 @@
       :items="models"
       item-title="name"
       variant="outlined"
-      class="my-4"
+      class="mt-4"
       hide-details="auto"
       density="comfortable"
       return-object
       @update:model-value="handleModelChange"
+    />
+    <v-checkbox
+      v-model="global"
+      v-tooltip:bottom="'更改模型后生效'"
+      max-width="70px"
+      label="全局"
+      density="compact"
+      hide-details
     />
   </v-sheet>
 </template>
@@ -47,6 +55,8 @@ const { modelType, modelUsage } = defineProps({
 
 const modelStore = useModelStore()
 const stateStore = useStateStore()
+
+const global = ref(false)
 
 const gateways = modelStore.models[modelType].gateways
 const gateway = ref(
@@ -79,14 +89,28 @@ function handleProviderChange() {
 }
 
 function handleModelChange() {
-  stateStore.models[modelType][modelUsage] = {
-    gateway: gateway.value.id,
-    provider: provider.value.id,
-    name: model.value.name,
-    id: model.value.id,
-    url: gateway.value.url ? gateway.value.url : provider.value.url,
-    envGatewayApiKeyName: gateway.value.envApiKeyName,
-    envProviderApiKeyName: provider.value.envApiKeyName,
+  let usages = []
+  switch (modelType) {
+    case 'chat':
+      usages = global.value ? ['case', 'story', 'test', 'act', 'rate'] : [modelUsage]
+      break
+    case 'textToImage':
+      usages = global.value ? ['face'] : [modelUsage]
+      break
+    case 'imageToVideo ':
+      usages = global.value ? ['pose'] : [modelUsage]
+      break
+  }
+  for (const usage of usages) {
+    stateStore.models[modelType][usage] = {
+      gateway: gateway.value.id,
+      provider: provider.value.id,
+      name: model.value.name,
+      id: model.value.id,
+      url: gateway.value.url ? gateway.value.url : provider.value.url,
+      envGatewayApiKeyName: gateway.value.envApiKeyName,
+      envProviderApiKeyName: provider.value.envApiKeyName,
+    }
   }
 }
 </script>
