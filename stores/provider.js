@@ -48,6 +48,10 @@ export const useProviderStore = defineStore('provider', () => {
       name: 'Vercel',
       url: 'https://vercel.dearfad.com/api',
     },
+    {
+      name: 'Local',
+      url: '/api',
+    },
   ])
   return { sites, apiBaseUrls }
 })

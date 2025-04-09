@@ -7,16 +7,12 @@ type MessageType = {
 type MessagesArray = MessageInterface[]
 
 // Model
-
-// response_format
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
-type KeyType = {
-  gateway: string
-  provider: string
-}
+
 type ModelParamsType = {
-  key: KeyType
-  models: { [key: string]: { [key: string]: string } }
+  key: { gateway: string; provider: string }
+  url: string
+  id: string
   messages: MessagesArray
   watchFields: string[]
   responseFormat: ResponseFormatType

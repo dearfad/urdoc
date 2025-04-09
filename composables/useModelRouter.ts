@@ -27,22 +27,21 @@ export default function () {
   // }
 
   function getChatModelParams(
-    modelType: keyof typeof stateStore.models,
     modelUsage: keyof typeof stateStore.models.chat,
     messages: MessagesArray,
     watchFields: string[],
     responseFormat: ResponseFormatType = { type: 'json_object' }
   ) {
-    const modelParams = {
+    const params: ModelParamsType = {
       key: stateStore.models.chat[modelUsage].key,
       url: stateStore.models.chat[modelUsage].url,
       id: stateStore.models.chat[modelUsage].id,
       messages: messages,
-      responseFormat: responseFormat,
       watchFields: watchFields,
+      responseFormat: responseFormat,
     }
 
-    return modelParams
+    return params
   }
 
   async function getCase(messages: MessagesArray) {
