@@ -48,8 +48,7 @@ export const useStateStore = defineStore(
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         story: {
           gateway: '无网关',
@@ -57,8 +56,7 @@ export const useStateStore = defineStore(
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         test: {
           gateway: '无网关',
@@ -66,8 +64,7 @@ export const useStateStore = defineStore(
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         act: {
           gateway: '无网关',
@@ -75,8 +72,7 @@ export const useStateStore = defineStore(
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         rate: {
           gateway: '无网关',
@@ -84,8 +80,7 @@ export const useStateStore = defineStore(
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
       textToImage: {
@@ -95,8 +90,7 @@ export const useStateStore = defineStore(
           name: 'CogView-3-Flash',
           id: 'cogview-3-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
       imageToVideo: {
@@ -106,8 +100,7 @@ export const useStateStore = defineStore(
           name: 'CogVideoX-Flash',
           id: 'cogvideox-flash',
           url: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-          envGatewayApiKeyName: '',
-          envProviderApiKeyName: 'ZHIPU_API_KEY',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
     })

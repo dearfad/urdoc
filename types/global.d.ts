@@ -1,14 +1,21 @@
 // Message
 type RoleType = 'system' | 'user' | 'assistant'
-interface MessageInterface {
+type MessageType = {
   role: RoleType
   content: string
 }
 type MessagesArray = MessageInterface[]
 
+// Model
+
 // response_format
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
+type KeyType = {
+  gateway: string
+  provider: string
+}
 type ModelParamsType = {
+  key: KeyType
   models: { [key: string]: { [key: string]: string } }
   messages: MessagesArray
   watchFields: string[]

@@ -108,8 +108,10 @@ function handleModelChange() {
       name: model.value.name,
       id: model.value.id,
       url: gateway.value.url ? gateway.value.url : provider.value.url,
-      envGatewayApiKeyName: gateway.value.envApiKeyName,
-      envProviderApiKeyName: provider.value.envApiKeyName,
+      key: {
+        gateway: gateway.value.key,
+        provider: provider.value.key,
+      },
     }
   }
 }
