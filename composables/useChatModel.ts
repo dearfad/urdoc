@@ -24,7 +24,9 @@ export default function () {
     })
 
     // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
+
     const reader = response.pipeThrough(new TextDecoderStream()).getReader()
+
     while (true) {
       const { value, done } = await reader.read()
       if (done) break

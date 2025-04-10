@@ -52,6 +52,10 @@ export const useProviderStore = defineStore('provider', () => {
       name: 'Local',
       url: '/api',
     },
+    {
+      name: 'Local(edgeone)',
+      url: '/function',
+    },
   ])
   return { sites, apiBaseUrls }
 })
