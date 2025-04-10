@@ -30,19 +30,37 @@
 <script setup>
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
+const stateStore = useStateStore()
+
 const content = ref()
 async function getContext() {
   content.value = await $fetch('/function/admin/context')
 }
 async function postFunction() {
-  content.value = await $fetch('/function/cstar/create', {
+  // content.value = await $fetch('/function/admin/test', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: {
+  //     test: { name: 'test' },
+  //   },
+  // })
+  content.value = await fetch('/function/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: {
-      test: { name: 'test' },
-    },
+    body: JSON.stringify({
+      apiKey: stateStore.models.chat['case'].key['provider'],
+      url: stateStore.models.chat['case'].url,
+      model: stateStore.models.chat['case'].id,
+      messages: [{ role: 'user', content: 'test' }],
+      watchFields: [],
+      responseFormat: { type: 'json_object' },
+    }),
   })
+    .then((res) => res.json())
+    .then((res) => res.choices[0].message.content)
 }
 </script>

@@ -33,9 +33,9 @@ export default function () {
     responseFormat: ResponseFormatType = { type: 'json_object' }
   ) {
     const params: ModelParamsType = {
-      key: stateStore.models.chat[modelUsage].key,
+      apiKey: stateStore.models.chat[modelUsage].key,
       url: stateStore.models.chat[modelUsage].url,
-      id: stateStore.models.chat[modelUsage].id,
+      model: stateStore.models.chat[modelUsage].id,
       messages: messages,
       watchFields: watchFields,
       responseFormat: responseFormat,

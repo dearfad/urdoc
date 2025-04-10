@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const { params }: { params: ModelParamsType } = await readBody(event)
+  const { params } = await readBody(event)
   return await $fetch(params.url, {
     method: 'POST',
     headers: {
@@ -7,13 +7,10 @@ export default defineEventHandler(async (event) => {
       Authorization: 'Bearer ' + process.env[params.key.provider],
     },
     body: {
-      model: params.id,
+      model: params.model,
       messages: params.messages,
-      response_format: params.responseFormat,
       stream: true,
-      // temperature: 0.95,
-      // top_p: 0.7,
-      // max_tokens: 1024,
+      response_format: params.responseFormat,
     },
     responseType: 'stream',
   })
