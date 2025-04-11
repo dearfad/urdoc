@@ -43,7 +43,7 @@ export const useStateStore = defineStore(
     const models = reactive({
       chat: {
         case: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
@@ -51,7 +51,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         story: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
@@ -59,7 +59,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         test: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
@@ -67,7 +67,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         act: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
@@ -75,7 +75,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         rate: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: '智谱 GLM-4-Flash',
           id: 'glm-4-flash',
@@ -83,9 +83,9 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
-      textToImage: {
+      image: {
         face: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: 'CogView-3-Flash',
           id: 'cogview-3-flash',
@@ -93,9 +93,9 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
-      imageToVideo: {
+      video: {
         pose: {
-          gateway: '无网关',
+          gateway: '直连',
           provider: '智谱',
           name: 'CogVideoX-Flash',
           id: 'cogvideox-flash',

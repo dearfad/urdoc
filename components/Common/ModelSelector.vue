@@ -2,7 +2,7 @@
   <v-sheet class="px-4 py-1 my-3" elevation="4" rounded="lg">
     <v-select
       v-model="gateway"
-      label="聚合网关"
+      label="网关"
       :items="gateways"
       item-title="name"
       variant="outlined"
@@ -43,6 +43,7 @@
       label="全局"
       density="compact"
       hide-details
+      @update:model-value="handleModelChange"
     />
   </v-sheet>
 </template>
@@ -94,12 +95,15 @@ function handleModelChange() {
     case 'chat':
       usages = global.value ? ['case', 'story', 'test', 'act', 'rate'] : [modelUsage]
       break
-    case 'textToImage':
+    case 'image':
       usages = global.value ? ['face'] : [modelUsage]
       break
-    case 'imageToVideo ':
+    case 'video':
       usages = global.value ? ['pose'] : [modelUsage]
       break
+    default:
+      stateStore.appInfo = '未知模型类型'
+      return
   }
   for (const usage of usages) {
     stateStore.models[modelType][usage] = {

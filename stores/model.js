@@ -3,8 +3,8 @@ export const useModelStore = defineStore('model', () => {
     chat: {
       gateways: [
         {
-          name: '无网关',
-          id: '无网关',
+          name: '直连',
+          id: '直连',
           url: '',
           key: '',
           providers: [
@@ -135,11 +135,11 @@ export const useModelStore = defineStore('model', () => {
         },
       ],
     },
-    textToImage: {
+    image: {
       gateways: [
         {
-          name: '无网关',
-          id: '无网关',
+          name: '直连',
+          id: '直连',
           url: '',
           key: '',
           providers: [
@@ -154,11 +154,11 @@ export const useModelStore = defineStore('model', () => {
         },
       ],
     },
-    imageToVideo: {
+    video: {
       gateways: [
         {
-          name: '无网关',
-          id: '无网关',
+          name: '直连',
+          id: '直连',
           url: '',
           key: '',
           providers: [

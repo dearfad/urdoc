@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-09-19',
   ssr: true,
   devtools: {
-    enabled: false,
+    enabled: true,
   },
   modules: [
     '@nuxt/eslint',
@@ -50,6 +50,16 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/function': 'http://localhost:8088/function',
+    },
+  },
+
+  vuetify: {
+    vuetifyOptions: {
+      defaults: {
+        VBtn: {
+          variant: 'outlined',
+        },
+      },
     },
   },
 })

@@ -15,9 +15,9 @@
     <div class="ma-4 font-weight-bold">对话模型 - 评价</div>
     <CommonModelSelector model-type="chat" model-usage="rate" />
     <div class="ma-4 font-weight-bold">文生图模型 - 头像</div>
-    <CommonModelSelector model-type="textToImage" model-usage="face" />
+    <CommonModelSelector model-type="image" model-usage="face" />
     <div class="ma-4 font-weight-bold">图生视频模型 - 动作</div>
-    <CommonModelSelector model-type="imageToVideo" model-usage="pose" />
+    <CommonModelSelector model-type="video" model-usage="pose" />
   </v-sheet>
 </template>
 
