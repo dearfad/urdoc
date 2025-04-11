@@ -36,15 +36,17 @@
       return-object
       @update:model-value="handleModelChange"
     />
-    <v-checkbox
-      v-model="global"
-      v-tooltip:bottom="'更改模型后生效'"
-      max-width="70px"
-      label="全局"
-      density="compact"
-      hide-details
-      @update:model-value="handleModelChange"
-    />
+    <div class="d-flex flex-column align-end mt-2">
+      <v-checkbox
+        v-model="global"
+        v-tooltip:bottom="'更改模型后生效'"
+        max-width="70px"
+        label="全局"
+        density="compact"
+        hide-details
+        @update:model-value="handleModelChange"
+      />
+    </div>
   </v-sheet>
 </template>
 

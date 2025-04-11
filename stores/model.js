@@ -49,6 +49,15 @@ export const useModelStore = defineStore('model', () => {
                 { name: 'DeepSeek-V3', id: 'deepseek-v3' },
               ],
             },
+
+            // 腾讯云 混元大模型 https://cloud.tencent.com/product/hunyuan
+            {
+              name: '腾讯混元大模型',
+              id: '腾讯混元大模型',
+              url: 'https://api.hunyuan.cloud.tencent.com/v1/chat/completions',
+              key: 'HUNYUAN_API_KEY',
+              models: [{ name: 'hunyuan-lite', id: 'hunyuan-lite' }],
+            },
           ],
         },
         {

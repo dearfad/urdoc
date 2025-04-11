@@ -56,8 +56,9 @@ export default defineNuxtConfig({
   vuetify: {
     vuetifyOptions: {
       defaults: {
-        VBtn: {
-          variant: 'outlined',
+        VSelect: {
+          // variant: 'outlined',
+          // density: 'comfortable',
         },
       },
     },
