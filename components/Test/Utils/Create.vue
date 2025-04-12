@@ -47,7 +47,12 @@ async function getTest() {
       content: caseStore.caseContentMarkdown + caseStore.testTag,
     },
   ]
-  caseStore.caseTest = JSON.parse(await modelRouter.getTest(messages))
+  try {
+    caseStore.caseTest = JSON.parse(await modelRouter.getTest(messages))
+  } catch (error) {
+    caseStore.caseTest = ''
+    stateStore.appInfo = error
+  }
   stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }

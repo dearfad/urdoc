@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-09-19',
   ssr: true,
   devtools: {
-    enabled: true,
+    enabled: false,
   },
   modules: [
     '@nuxt/eslint',

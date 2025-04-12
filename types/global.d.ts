@@ -23,6 +23,27 @@ type ModelParamsType = {
   responseFormat: ResponseFormatType
 }
 
+// SSE STREAM
+type SseStream = {
+  id?: string
+  object?: string
+  created?: string
+  model?: string
+  system_fingerprint?: string
+  choices: [
+    {
+      index?: number
+      delta: {
+        role?: string
+        content: string
+        reasoning_content?: string
+      }
+      finish_reason?: string | null
+    }
+  ]
+  note?: string
+}
+
 // bigmodel cogview model response
 // https://bigmodel.cn/dev/api/image-model/cogview
 type BigmodelCogviewResponseData = {

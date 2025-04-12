@@ -57,10 +57,10 @@ export async function onRequest({ request, env }) {
 
   return new Response(response.body, {
     headers: {
-      'Transfer-Encoding': 'chunked',
       'Content-Type': 'text/event-stream; charset=utf-8',
       'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
+      'Transfer-Encoding': 'chunked',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',

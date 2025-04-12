@@ -5,10 +5,14 @@ export default function () {
     stateStore.modelResponseStream = ''
     stateStore.modelResponseString = ''
     stateStore.modelResponseField = ''
-    const lineRegex = /data: (?:\[.*?\]|\{.*?\})/
-    const jsonRegex = /\{.*?\}/s
+    // 匹配以 data: 开头，后面跟着一个 JSON 格式的数组或对象的字符串
+    const lineRegex = /data: (?:\[.*\]|\{.*\})/
+    // 匹配以 { 开头、以 } 结尾的 JSON 对象格式的内容，并且会匹配其中的所有字符，包括换行符
+    const jsonRegex = /\{.*\}/s
     let dataFieldPointer = 0
     let tempIncompleteLine = ''
+    let jsonData: SseStream
+    let dataString = ''
 
     // Consuming SSE (Server Sent Events) via POST request
     // https://nuxt.com/docs/getting-started/data-fetching
@@ -51,7 +55,8 @@ export default function () {
 
         const jsonDataStr = line.split('data: ')[1]
         try {
-          const jsonData = JSON.parse(jsonDataStr)
+          jsonData = JSON.parse(jsonDataStr)
+          // 更新当前生成内容
           stateStore.modelResponseString += jsonData.choices[0].delta.content
           // 更新当前生成字段
           if (params.watchFields.length > 0) {
@@ -61,15 +66,15 @@ export default function () {
             }
           }
         } catch (error) {
+          console.log('解析模型数据流失败：', jsonData)
           stateStore.appInfo = `解析模型数据流失败：${error}`
         }
       })
     }
-
     // 解析modelResponseString的json问题
     if (params.responseFormat.type === 'json_object') {
       try {
-        let dataString = stateStore.modelResponseString
+        dataString = stateStore.modelResponseString
 
         // 去除 ```json ``` 框架
         const matchJson = dataString.match(jsonRegex)
@@ -82,7 +87,9 @@ export default function () {
 
         stateStore.modelResponseString = dataString
       } catch (error) {
+        console.log('修复json格式失败: ', dataString)
         stateStore.appInfo = `修复json格式失败: ${error}`
+        stateStore.modelResponseString = `{'status':'error', 'data':'${dataString.slice(1, -1)}'}`
       }
     }
     // console.log(responseDataStream.value)

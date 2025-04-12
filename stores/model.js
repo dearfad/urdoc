@@ -45,7 +45,6 @@ export const useModelStore = defineStore('model', () => {
               key: 'ALIYUN_API_KEY',
               models: [
                 { name: '通义千问-Plus-2025-01-25', id: 'qwen-plus-2025-01-25' },
-                { name: '通义千问-QwQ-32B', id: 'qwq-32b' },
                 { name: 'DeepSeek-V3', id: 'deepseek-v3' },
               ],
             },
@@ -93,14 +92,6 @@ export const useModelStore = defineStore('model', () => {
                 {
                   name: 'DeepSeek: DeepSeek V3 0324 (free)',
                   id: 'deepseek/deepseek-chat-v3-0324:free',
-                },
-                {
-                  name: 'Moonshot AI: Moonlight 16B A3B Instruct (free)',
-                  id: 'moonshotai/moonlight-16b-a3b-instruct:free',
-                },
-                {
-                  name: 'Google: Gemma 3 12B (free)',
-                  id: 'google/gemma-3-12b-it:free',
                 },
               ],
             },
