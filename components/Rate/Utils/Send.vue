@@ -48,7 +48,7 @@
       text="清空对话"
       @click="caseStore.rateMessages = []"
     />
-    <CommonModelSelector models-type="chatModels" />
+    <CommonModelSelector model-type="chat" model-usage="rate" />
     <CommonPromptSelector />
     <CommonApiBaseUrlSelector />
   </v-sheet>

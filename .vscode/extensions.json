@@ -5,6 +5,8 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ms-ceintl.vscode-language-pack-zh-hans",
-    "tencent-cloud.coding-copilot"
+    "tencent-cloud.coding-copilot",
+    "antfu.iconify",
+    "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
   ]
 }

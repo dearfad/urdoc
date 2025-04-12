@@ -27,7 +27,7 @@
       />
     </v-sheet>
     <CommonChapterSelector />
-    <CommonModelSelector models-type="chatModels" />
+    <CommonModelSelector model-type="chat" model-usage="case" />
     <CommonPromptSelector />
     <CommonApiBaseUrlSelector />
   </v-sheet>
@@ -66,8 +66,12 @@ async function genCase() {
         caseStore.caseTag,
     },
   ]
-
-  caseStore.caseContent = JSON.parse(await modelRouter.getCase(messages))
+  try {
+    caseStore.caseContent = JSON.parse(await modelRouter.getCase(messages))
+  } catch (error) {
+    caseStore.caseContent = ''
+    stateStore.appInfo = error
+  }
   stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }

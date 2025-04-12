@@ -1,51 +1,49 @@
+import useChatModel from './useChatModel'
+
 export default function () {
   const stateStore = useStateStore()
-  const caseModelResponse = useCaseModelResponse()
-  const storyModelResponse = useStoryModelResponse()
-  const testModelResponse = useTestModelResponse()
-  const actModelResponse = useActModelResponse()
-  const rateModelResponse = useRateModelResponse()
+  const chatModel = useChatModel()
   const faceModelResponse = useFaceModelResponse()
   const caseStore = useCaseStore()
 
-  function getModelParams(
+  function getChatModelParams(
+    modelUsage: keyof typeof stateStore.models.chat,
     messages: MessagesArray,
     watchFields: string[],
     responseFormat: ResponseFormatType = { type: 'json_object' }
   ) {
-    const modelParams: ModelParamsType = {
-      models: stateStore.models,
+    const params: ModelParamsType = {
+      model: stateStore.models.chat[modelUsage],
       messages: messages,
       watchFields: watchFields,
       responseFormat: responseFormat,
     }
-
-    return modelParams
+    return params
   }
 
   async function getCase(messages: MessagesArray) {
-    const params = getModelParams(messages, caseStore.caseContentFields)
-    return await caseModelResponse.getResponse(params)
+    const params = getChatModelParams('case', messages, caseStore.caseContentFields)
+    return await chatModel.getResponse(params)
   }
 
   async function getStory(messages: MessagesArray) {
-    const params = getModelParams(messages, caseStore.caseStoryFields)
-    return await storyModelResponse.getResponse(params)
+    const params = getChatModelParams('story', messages, caseStore.caseStoryFields)
+    return await chatModel.getResponse(params)
   }
 
   async function getTest(messages: MessagesArray) {
-    const params = getModelParams(messages, caseStore.caseTestFields)
-    return await testModelResponse.getResponse(params)
+    const params = getChatModelParams('test', messages, caseStore.caseTestFields)
+    return await chatModel.getResponse(params)
   }
 
   async function getAct(messages: MessagesArray) {
-    const params = getModelParams(messages, [], { type: 'text' })
-    return await actModelResponse.getResponse(params)
+    const params = getChatModelParams('act', messages, [], { type: 'text' })
+    return await chatModel.getResponse(params)
   }
 
   async function getRate(messages: MessagesArray) {
-    const params = getModelParams(messages, [], { type: 'text' })
-    return await rateModelResponse.getResponse(params)
+    const params = getChatModelParams('rate', messages, [], { type: 'text' })
+    return await chatModel.getResponse(params)
   }
 
   async function getFaceUrl() {

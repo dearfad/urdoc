@@ -26,7 +26,7 @@
         density="comfortable"
       />
     </v-sheet>
-    <CommonModelSelector models-type="chatModels" />
+    <CommonModelSelector model-type="chat" model-usage="story" />
     <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>
@@ -49,7 +49,14 @@ async function getStory() {
       content: caseStore.caseContentMarkdown + '\n设定：' + caseStore.storyTag,
     },
   ]
-  caseStore.caseStory = JSON.parse(await modelRouter.getStory(messages))
+
+  try {
+    caseStore.caseStory = JSON.parse(await modelRouter.getStory(messages))
+  } catch (error) {
+    caseStore.caseStory = ''
+    stateStore.appInfo = error
+  }
+
   stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }

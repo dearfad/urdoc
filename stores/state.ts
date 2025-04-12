@@ -41,32 +41,67 @@ export const useStateStore = defineStore(
     const validated = ref(false)
     // 默认平台和模型
     const models = reactive({
-      chatModel: {
-        gateway: 'native',
-        provider: '智谱',
-        name: '智谱 GLM-4-Flash',
-        id: 'glm-4-flash',
-        url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-        envGatewayApiKeyName: '',
-        envProviderApiKeyName: 'ZHIPU_API_KEY',
+      chat: {
+        case: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
+        story: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
+        test: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
+        act: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
+        rate: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
       },
-      ttiModel: {
-        gateway: 'native',
-        provider: '智谱',
-        name: 'CogView-3-Flash',
-        id: 'cogview-3-flash',
-        url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-        envGatewayApiKeyName: '',
-        envProviderApiKeyName: 'ZHIPU_API_KEY',
+      image: {
+        face: {
+          gateway: '直连',
+          provider: '智谱',
+          name: 'CogView-3-Flash',
+          id: 'cogview-3-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
       },
-      itvModel: {
-        gateway: 'native',
-        provider: '智谱',
-        name: 'CogVideoX-Flash',
-        id: 'cogvideox-flash',
-        url: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-        envGatewayApiKeyName: '',
-        envProviderApiKeyName: 'ZHIPU_API_KEY',
+      video: {
+        pose: {
+          gateway: '直连',
+          provider: '智谱',
+          name: 'CogVideoX-Flash',
+          id: 'cogvideox-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
       },
     })
     // 聊天模式

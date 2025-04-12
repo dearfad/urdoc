@@ -1,8 +1,8 @@
 <template>
-  <v-sheet class="px-4 my-3" elevation="4" rounded="lg">
+  <v-sheet class="px-4 py-1 my-3" elevation="4" rounded="lg">
     <v-select
       v-model="gateway"
-      label="聚合网关"
+      label="网关"
       :items="gateways"
       item-title="name"
       variant="outlined"
@@ -30,35 +30,47 @@
       :items="models"
       item-title="name"
       variant="outlined"
-      class="my-4"
+      class="mt-4"
       hide-details="auto"
       density="comfortable"
       return-object
       @update:model-value="handleModelChange"
     />
+    <div class="d-flex flex-column align-end mt-2">
+      <v-checkbox
+        v-model="global"
+        v-tooltip:bottom="'更改模型后生效'"
+        max-width="70px"
+        label="全局"
+        density="compact"
+        hide-details
+        @update:model-value="handleModelChange"
+      />
+    </div>
   </v-sheet>
 </template>
 
 <script setup>
-const { modelsType } = defineProps({ modelsType: { type: String, required: true } })
-const modelTypeMap = {
-  chatModels: 'chatModel',
-  itvModels: 'itvModel',
-  ttiModels: 'ttiModel',
-}
+const { modelType, modelUsage } = defineProps({
+  modelType: { type: String, required: true },
+  modelUsage: { type: String, required: true },
+})
+
 const modelStore = useModelStore()
 const stateStore = useStateStore()
 
-const gateways = modelStore[modelsType].gateways
+const global = ref(false)
+
+const gateways = modelStore.models[modelType].gateways
 const gateway = ref(
-  gateways.find((g) => g.id === stateStore.models[modelTypeMap[modelsType]].gateway) || gateways[0]
+  gateways.find((g) => g.id === stateStore.models[modelType][modelUsage].gateway) || gateways[0]
 )
 
 const providers = computed(() => {
   return gateway.value.providers
 })
 const provider = ref(
-  providers.value.find((p) => p.id === stateStore.models[modelTypeMap[modelsType]].provider) ||
+  providers.value.find((p) => p.id === stateStore.models[modelType][modelUsage].provider) ||
     providers.value[0]
 )
 
@@ -66,8 +78,7 @@ const models = computed(() => {
   return provider.value.models
 })
 const model = ref(
-  models.value.find((m) => m.id === stateStore.models[modelTypeMap[modelsType]].id) ||
-    models.value[0]
+  models.value.find((m) => m.id === stateStore.models[modelType][modelUsage].id) || models.value[0]
 )
 
 function handleGatewayChange() {
@@ -81,14 +92,33 @@ function handleProviderChange() {
 }
 
 function handleModelChange() {
-  stateStore.models[modelTypeMap[modelsType]] = {
-    gateway: gateway.value.id,
-    provider: provider.value.id,
-    name: model.value.name,
-    id: model.value.id,
-    url: gateway.value.url ? gateway.value.url : provider.value.url,
-    envGatewayApiKeyName: gateway.value.envApiKeyName,
-    envProviderApiKeyName: provider.value.envApiKeyName,
+  let usages = []
+  switch (modelType) {
+    case 'chat':
+      usages = global.value ? ['case', 'story', 'test', 'act', 'rate'] : [modelUsage]
+      break
+    case 'image':
+      usages = global.value ? ['face'] : [modelUsage]
+      break
+    case 'video':
+      usages = global.value ? ['pose'] : [modelUsage]
+      break
+    default:
+      stateStore.appInfo = '未知模型类型'
+      return
+  }
+  for (const usage of usages) {
+    stateStore.models[modelType][usage] = {
+      gateway: gateway.value.id,
+      provider: provider.value.id,
+      name: model.value.name,
+      id: model.value.id,
+      url: gateway.value.url ? gateway.value.url : provider.value.url,
+      key: {
+        gateway: gateway.value.key,
+        provider: provider.value.key,
+      },
+    }
   }
 }
 </script>

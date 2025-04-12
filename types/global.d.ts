@@ -1,18 +1,47 @@
 // Message
 type RoleType = 'system' | 'user' | 'assistant'
-interface MessageInterface {
+type MessageType = {
   role: RoleType
   content: string
 }
 type MessagesArray = MessageInterface[]
 
-// response_format
+// Model
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
+
 type ModelParamsType = {
-  models: { [key: string]: { [key: string]: string } }
+  model: {
+    gateway: string
+    provider: string
+    name: string
+    id: string
+    url: string
+    key: { gateway: string; provider: string }
+  }
   messages: MessagesArray
   watchFields: string[]
   responseFormat: ResponseFormatType
+}
+
+// SSE STREAM
+type SseStream = {
+  id?: string
+  object?: string
+  created?: string
+  model?: string
+  system_fingerprint?: string
+  choices: [
+    {
+      index?: number
+      delta: {
+        role?: string
+        content: string
+        reasoning_content?: string
+      }
+      finish_reason?: string | null
+    }
+  ]
+  note?: string
 }
 
 // bigmodel cogview model response

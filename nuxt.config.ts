@@ -52,4 +52,15 @@ export default defineNuxtConfig({
       '/function': 'http://localhost:8088/function',
     },
   },
+
+  vuetify: {
+    vuetifyOptions: {
+      defaults: {
+        VSelect: {
+          // variant: 'outlined',
+          // density: 'comfortable',
+        },
+      },
+    },
+  },
 })

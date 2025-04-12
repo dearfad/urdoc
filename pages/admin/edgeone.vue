@@ -6,43 +6,28 @@
       rounded="lg"
       height="60vh"
     >
-      <vue-json-pretty v-if="content" :data="content" />
+      <vue-json-pretty v-if="context" :data="context" />
     </v-sheet>
-    <v-btn
-      text="Context"
-      size="x-large"
-      class="font-weight-bold my-5"
-      elevation="4"
-      rounded="lg"
-      @click="getContext"
-    />
-    <v-btn
-      text="Function"
-      size="x-large"
-      class="font-weight-bold my-5"
-      elevation="4"
-      rounded="lg"
-      @click="postFunction"
-    />
+    <v-sheet class="mx-4">
+      <v-btn
+        block
+        text="Context"
+        size="x-large"
+        class="font-weight-bold my-5"
+        elevation="4"
+        rounded="lg"
+        @click="getContext"
+      />
+    </v-sheet>
   </v-sheet>
 </template>
 
 <script setup>
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
-const content = ref()
+
+const context = ref()
 async function getContext() {
-  content.value = await $fetch('/function/admin/context')
-}
-async function postFunction() {
-  content.value = await $fetch('/function/cstar/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: {
-      test: { name: 'test' },
-    },
-  })
+  context.value = await $fetch('/function/admin/context')
 }
 </script>

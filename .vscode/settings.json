@@ -1,14 +1,14 @@
 {
   "editor.fontSize": 16,
   "editor.lineHeight": 1.8,
-  "editor.fontFamily": "'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
-  "editor.fontLigatures": false,
+  "editor.fontFamily": "'Maple Mono NF CN', 'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
+  "editor.fontLigatures": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
-  "terminal.integrated.fontFamily": "'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
+  "terminal.integrated.fontFamily": "'Maple Mono NF CN', 'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
