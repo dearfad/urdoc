@@ -1,8 +1,8 @@
-import { defineConfig } from 'vitepress'
-import { configureDiagramsPlugin } from 'vitepress-plugin-diagrams'
-
+// import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+// export default defineConfig({
+export default withMermaid({
   title: 'URDOC',
   description: '虚拟病例研究平台',
   base: '/docs/',
@@ -26,12 +26,14 @@ export default defineConfig({
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/dearfad/urdoc' }],
   },
-  markdown: {
-    config: (md) => {
-      configureDiagramsPlugin(md, {
-        diagramsDir: 'docs/public/diagrams', // 可选：自定义 SVG 文件目录
-        publicPath: '/docs/diagrams', // 可选：自定义公共路径
-      })
-    },
+
+  // your existing vitepress config...
+  // optionally, you can pass MermaidConfig
+  mermaid: {
+    // refer https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults for options
+  },
+  // optionally set additional config for plugin itself with MermaidPluginConfig
+  mermaidPlugin: {
+    class: 'mermaid my-class', // set additional css classes for parent container
   },
 })
