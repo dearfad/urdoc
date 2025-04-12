@@ -55,7 +55,7 @@ export default function () {
 
         const jsonDataStr = line.split('data: ')[1]
         try {
-          jsonData = JSON.parse(jsonDataStr)
+          jsonData = JSON.parse(jsonrepair(jsonDataStr))
           // 更新当前生成内容
           stateStore.modelResponseString += jsonData.choices[0].delta.content
           // 更新当前生成字段
