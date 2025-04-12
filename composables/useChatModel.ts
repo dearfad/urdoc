@@ -67,6 +67,7 @@ export default function () {
           }
         } catch (error) {
           console.log('解析模型数据流失败：', jsonData)
+          console.log('error: ', error)
           stateStore.appInfo = `解析模型数据流失败：${error}`
         }
       })
