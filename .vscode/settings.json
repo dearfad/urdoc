@@ -16,5 +16,9 @@
   },
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 120,
   }
 }
