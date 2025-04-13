@@ -1,10 +1,46 @@
+// Cstar
+
+// Knowledge framework
+
+// Medical Record
+interface Case {
+  姓名: string
+  性别: string
+  年龄: string
+  主诉: string
+  现病史?: string
+  既往史?: string
+  查体?: string
+  专科查体?: string
+  辅助检查?: string
+  诊断: string
+  治疗?: string
+  手术?: string
+  病理?: string
+}
+interface MedicalRecord {
+  case: Case
+  story?: string
+  test?: string
+  act?: string
+  rate?: string
+  face?: string
+  voice?: string
+  pose?: string
+}
+
+type Records = Record[]
+
 // Message
-type RoleType = 'system' | 'user' | 'assistant'
-type MessageType = {
-  role: RoleType
+type MessagesArray = Message[]
+
+// Message
+type Role = 'system' | 'user' | 'assistant'
+type Message = {
+  role: Role
   content: string
 }
-type MessagesArray = MessageInterface[]
+type Messages = Message[]
 
 // Model
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }

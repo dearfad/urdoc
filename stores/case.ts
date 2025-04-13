@@ -5,7 +5,21 @@ export const useCaseStore = defineStore(
     const modelRouter = useModelRouter()
     const stateStore = useStateStore()
     // CSTAR MODEL BASIC FIELDS
-    const caseContent = ref({})
+    const record = ref<MedicalRecord>({
+      case:{
+        姓名: '',
+        性别: '',
+        年龄: '',
+        主诉: '',
+        诊断: '',
+      },
+      story: '',
+      test: '',
+      act: '',
+      rate: '',
+      face: '',
+      pose: '',
+    })
     const caseStory = ref('')
     const caseTest = ref('')
     const caseAct = ref([])
@@ -13,6 +27,7 @@ export const useCaseStore = defineStore(
     const caseFaceUrl = ref('')
     const casePose = ref('')
     const casePoseId = ref('')
+
 
     // Messages
     const actMessages = ref([])
@@ -45,28 +60,25 @@ export const useCaseStore = defineStore(
 
     // 题目文本格式，考试模式
     const caseContentText = computed(() => {
-      if (caseContent.value) {
-        let text = `患者，${caseContent.value.性别}，${caseContent.value.年龄}，因${caseContent.value.主诉}入院。${caseContent.value.现病史}${caseContent.value.既往史}查体：${caseContent.value.查体}专科查体：${caseContent.value.专科查体}辅助检查：${caseContent.value.辅助检查}`
-        if (caseContent.value.诊断) {
-          text += `诊断：${caseContent.value.诊断}`
+      let text = `患者，${record.value.case.性别}，${record.value.case.年龄}，因${record.value.case.主诉}入院。${record.value.case.现病史}${record.value.case.既往史}查体：${record.value.case.查体}专科查体：${record.value.case.专科查体}辅助检查：${record.value.case.辅助检查}`
+        if (record.value.case.诊断) {
+          text += `诊断：${record.value.case.诊断}`
         }
-        if (caseContent.value.治疗) {
-          text += `治疗：${caseContent.value.治疗}`
+        if (record.value.case.治疗) {
+          text += `治疗：${record.value.case.治疗}`
         }
-        if (caseContent.value.手术) {
-          text += `手术：${caseContent.value.手术}`
+        if (record.value.case.手术) {
+          text += `手术：${record.value.case.手术}`
         }
-        if (caseContent.value.病理) {
-          text += `病理：${caseContent.value.病理}`
+        if (record.value.case.病理) {
+          text += `病理：${record.value.case.病理}`
         }
         return text
-      } else {
-        return ''
-      }
     })
+
     // 题目Markdown格式，显示模式
     const caseContentMarkdown = computed(() => {
-      return Object.entries(caseContent.value)
+      return Object.entries(record.value.case)
         .map(([key, value]) => `**${key}：** ${value}`)
         .join('\n\n')
     })
@@ -96,12 +108,21 @@ export const useCaseStore = defineStore(
     // 重置所有数据，例如生成新病例前
     // https://pinia.vuejs.org/zh/core-concepts/state.html
     function $reset() {
-      caseContent.value = {}
-      caseStory.value = ''
-      caseTest.value = ''
-      caseAct.value = []
-      caseRate.value = ''
-      caseFaceUrl.value = ''
+      const record = ref<MedicalRecord>({
+        case:{
+          姓名: '',
+          性别: '',
+          年龄: '',
+          主诉: '',
+          诊断: '',
+        },
+        story: '',
+        test: '',
+        act: '',
+        rate: '',
+        face: '',
+        pose: '',
+      })
       stateStore.isActing = false
       stateStore.isRating = false
       actMessages.value = []
@@ -128,7 +149,7 @@ export const useCaseStore = defineStore(
             caseTag.value,
         },
       ]
-      caseContent.value = JSON.parse(await modelRouter.getCase(messages))
+      case.value = JSON.parse(await modelRouter.getCase(messages))
       caseFaceUrl.value = await modelRouter.getFace()
       messages = [
         { role: 'system', content: promptStore.storyPrompt },
@@ -149,14 +170,15 @@ export const useCaseStore = defineStore(
     }
 
     return {
-      caseContent,
-      caseStory,
-      caseTest,
-      caseAct,
-      caseRate,
-      caseFaceUrl,
-      casePose,
-      casePoseId,
+      record,
+      // caseContent: case,
+      // caseStory,
+      // caseTest,
+      // caseAct,
+      // caseRate,
+      // caseFaceUrl,
+      // casePose,
+      // casePoseId,
 
       actMessages,
       rateMessages,
