@@ -12,6 +12,7 @@ export const useStateStore = defineStore(
     const isNavDrawerRightShow = ref(false)
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(true)
+    const isAppFooterShow = ref(true)
     const isModelResponseStringShow = ref(false)
 
     // AppDebug
@@ -83,7 +84,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
-      image: {
+      images: {
         face: {
           gateway: '直连',
           provider: '智谱',
@@ -93,7 +94,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
-      video: {
+      videos: {
         pose: {
           gateway: '直连',
           provider: '智谱',
@@ -118,6 +119,7 @@ export const useStateStore = defineStore(
       isNavDrawerRightShow,
 
       isBottomNavigationShow,
+      isAppFooterShow,
 
       isModelResponseStringShow,
 

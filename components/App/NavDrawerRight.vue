@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     v-model="stateStore.isNavDrawerRightShow"
-    location="end"
+    location="right"
     class="pa-4"
     :disable-resize-watcher="true"
     rail
@@ -30,11 +30,18 @@
       @click="stateStore.isDebug = !stateStore.isDebug"
     />
     <v-btn
-      v-tooltip="'底部导航'"
+      v-tooltip="'开关底部导航'"
       icon="mdi-filter-variant"
       variant="plain"
       :ripple="false"
       @click="stateStore.isBottomNavigationShow = !stateStore.isBottomNavigationShow"
+    />
+    <v-btn
+      v-tooltip="'开关应用页脚'"
+      icon="mdi-format-vertical-align-bottom"
+      variant="plain"
+      :ripple="false"
+      @click="stateStore.isAppFooterShow = !stateStore.isAppFooterShow"
     />
     <v-btn
       v-tooltip="'镜像站点'"

@@ -30,7 +30,7 @@
         <v-btn
           class="font-weight-bold my-4"
           size="x-large"
-          to="/clinic"
+          to="/cstar/case"
           rounded="lg"
           variant="outlined"
         >

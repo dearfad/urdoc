@@ -13,9 +13,9 @@ hero:
     - theme: brand
       text: 什么是 CSTAR ？
       link: /cstar
-    - theme: alt
-      text: 快速开始
-      link: /urdoc
+    # - theme: alt
+    #   text: 快速开始
+    #   link: /urdoc
 
 features:
   - icon: 💼

@@ -135,7 +135,7 @@ export const useModelStore = defineStore('model', () => {
         },
       ],
     },
-    image: {
+    images: {
       gateways: [
         {
           name: '直连',
@@ -154,7 +154,7 @@ export const useModelStore = defineStore('model', () => {
         },
       ],
     },
-    video: {
+    videos: {
       gateways: [
         {
           name: '直连',

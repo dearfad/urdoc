@@ -18,9 +18,10 @@ type ModelParamsType = {
     url: string
     key: { gateway: string; provider: string }
   }
-  messages: MessagesArray
-  watchFields: string[]
-  responseFormat: ResponseFormatType
+  messages?: MessagesArray
+  watchFields?: string[]
+  responseFormat?: ResponseFormatType
+  prompt?: string
 }
 
 // SSE STREAM

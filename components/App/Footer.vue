@@ -1,5 +1,5 @@
 <template>
-  <v-footer app>
+  <v-footer v-if="stateStore.isAppFooterShow" app>
     <ClientOnly>
       <v-sheet class="mx-auto text-caption">
         {{ new Date().getFullYear() }} - 虚拟病例研究所 - Ver 20250412 - test
@@ -11,4 +11,5 @@
 
 <script setup>
 const userStore = useUserStore()
+const stateStore = useStateStore()
 </script>

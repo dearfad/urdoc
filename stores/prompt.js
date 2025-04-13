@@ -172,9 +172,11 @@ export const usePromptStore = defineStore(
         - Initialization: 在第一次对话中，请直接输出以下：欢迎来到医学知识小测试，我将根据你提供的题库，逐题提问并给出评价。准备好了吗？让我们开始吧！
         `)
 
-    const types = ref(['case', 'story', 'test', 'act', 'rate'])
+    const facePrompt = ref('中国人，半身近照，在医院门诊拍摄。')
 
-    return { casePrompt, storyPrompt, testPrompt, actPrompt, ratePrompt, types }
+    const types = ref(['case', 'story', 'test', 'act', 'rate', 'face'])
+
+    return { casePrompt, storyPrompt, testPrompt, actPrompt, ratePrompt, facePrompt, types }
   },
   {
     persist: true,

@@ -129,7 +129,7 @@ export const useCaseStore = defineStore(
         },
       ]
       caseContent.value = JSON.parse(await modelRouter.getCase(messages))
-      caseFaceUrl.value = await modelRouter.getFaceUrl()
+      caseFaceUrl.value = await modelRouter.getFace()
       messages = [
         { role: 'system', content: promptStore.storyPrompt },
         {

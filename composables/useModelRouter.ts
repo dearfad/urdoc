@@ -2,9 +2,11 @@ import useChatModel from './useChatModel'
 
 export default function () {
   const stateStore = useStateStore()
-  const chatModel = useChatModel()
-  const faceModelResponse = useFaceModelResponse()
   const caseStore = useCaseStore()
+  const chatModel = useChatModel()
+  const imageModel = useImageModel()
+  const videoModel = useVideoModel()
+  const promptStore = usePromptStore()
 
   function getChatModelParams(
     modelUsage: keyof typeof stateStore.models.chat,
@@ -20,6 +22,16 @@ export default function () {
     }
     return params
   }
+
+  function getImageModelParams(modelUsage: keyof typeof stateStore.models.images) {
+    const params: ModelParamsType = {
+      model: stateStore.models.images[modelUsage],
+      prompt: `${caseStore.caseContentMarkdown}, ${promptStore.facePrompt}`,
+    }
+    return params
+  }
+
+  // Chat Model
 
   async function getCase(messages: MessagesArray) {
     const params = getChatModelParams('case', messages, caseStore.caseContentFields)
@@ -46,9 +58,14 @@ export default function () {
     return await chatModel.getResponse(params)
   }
 
-  async function getFaceUrl() {
-    return await faceModelResponse.getResponse()
+  // Image Model
+
+  async function getFace() {
+    const params = getImageModelParams('face')
+    return await imageModel.getResponse(params)
   }
+
+  // Video Model
 
   async function getPoseId() {
     stateStore.modelResponseField = '视频'
@@ -87,5 +104,5 @@ export default function () {
     }
   }
 
-  return { getCase, getStory, getTest, getAct, getRate, getFaceUrl, getPoseId, getPose }
+  return { getCase, getStory, getTest, getAct, getRate, getFace, getPoseId, getPose }
 }

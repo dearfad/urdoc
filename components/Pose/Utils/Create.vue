@@ -20,6 +20,7 @@
       @click="getPose"
     />
     <pre>{{ caseStore.casePose }}</pre>
+    <CommonModelSelector model-type="videos" model-usage="pose" />
   </v-sheet>
 </template>
 
