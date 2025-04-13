@@ -50,7 +50,6 @@
     />
     <CommonModelSelector model-type="chat" model-usage="rate" />
     <CommonPromptSelector />
-    <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>
 

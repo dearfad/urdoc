@@ -27,7 +27,6 @@
       />
     </v-sheet>
     <CommonModelSelector model-type="chat" model-usage="story" />
-    <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>
 
