@@ -3,6 +3,7 @@
 // Knowledge framework
 
 // Medical Record
+
 interface Case {
   姓名: string
   性别: string
@@ -18,29 +19,48 @@ interface Case {
   手术?: string
   病理?: string
 }
+type Cases = Case[]
+
+interface Test {
+  问题: string
+  选项: {
+    [option: string]: string
+  }
+  答案: string
+}
+type Tests = Test[]
+
 interface MedicalRecord {
   case: Case
-  story?: string
-  test?: string
-  act?: string
-  rate?: string
-  face?: string
-  voice?: string
-  pose?: string
+  story: string
+  tests: Tests
+  act: string
+  rate: string
+  face: string
+  voice: string
+  pose: string
 }
-
-type Records = Record[]
-
-// Message
-type MessagesArray = Message[]
+type MedicalRecords = MedicalRecord[]
 
 // Message
 type Role = 'system' | 'user' | 'assistant'
-type Message = {
+interface Message {
   role: Role
   content: string
 }
 type Messages = Message[]
+
+// Tags
+interface Tags {
+  case: string
+  story: string
+  test: string
+}
+
+// Fields
+interface Fields {
+  case: string[]
+}
 
 // Model
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }

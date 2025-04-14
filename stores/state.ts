@@ -13,7 +13,6 @@ export const useStateStore = defineStore(
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(true)
     const isAppFooterShow = ref(true)
-    const isModelResponseStringShow = ref(false)
 
     // AppDebug
     // 是否开启调试模式以显示原始数据
@@ -22,6 +21,7 @@ export const useStateStore = defineStore(
     const modelResponseStream = ref('')
     // 模型返回数据内容
     const modelResponseString = ref('')
+    const isModelResponseStringShow = ref(false)
 
     // AppInfo
     // 全局信息显示
@@ -31,11 +31,19 @@ export const useStateStore = defineStore(
     const modelResponseField = ref('')
 
     // 当前章节选择
-    const selectedBook = ref('外科学')
-    const selectedChapter = ref('')
-    const selectedSection = ref('')
-    const selectedSubsection = ref('')
+    const bookScope = ref({
+      book: '外科学',
+      chapter: '',
+      section: '',
+      subsection: '',
+    })
 
+    // Tags
+    const tags = ref<Tags>({
+      case: '',
+      story: '真实',
+      test: '执业医师考试',
+    })
     // 病例id判断是否在数据库内
     const id = ref(0)
     // 是否通过验证
@@ -126,15 +134,12 @@ export const useStateStore = defineStore(
       isDebug,
       modelResponseStream,
       modelResponseString,
+      modelResponseField,
 
       appInfo,
 
-      modelResponseField,
-
-      selectedBook,
-      selectedChapter,
-      selectedSection,
-      selectedSubsection,
+      bookScope,
+      tags,
 
       id,
       validated,

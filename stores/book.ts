@@ -1,5 +1,5 @@
-export const useChapterStore = defineStore('chapter', () => {
-  const chapter = ref({
+export const useBookStore = defineStore('book', () => {
+  const books = ref({
     // 外科学 2024年7月 第10版
     // 第一篇 外科学基础
     外科学: {
@@ -996,5 +996,5 @@ export const useChapterStore = defineStore('chapter', () => {
     神经病学: {},
   })
 
-  return { chapter }
+  return { books }
 })

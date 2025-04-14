@@ -9,6 +9,7 @@ export default function () {
     const lineRegex = /data: (?:\[.*\]|\{.*\})/
     // 匹配以 { 开头、以 } 结尾的 JSON 对象格式的内容，并且会匹配其中的所有字符，包括换行符
     const jsonRegex = /\{.*\}/s
+    const baiduRegex = /```json.*/s
     let dataFieldPointer = 0
     let tempIncompleteLine = ''
     let jsonData: SseStream
@@ -76,7 +77,9 @@ export default function () {
     if (params.responseFormat.type === 'json_object') {
       try {
         dataString = stateStore.modelResponseString
-
+        // 去除 baidu 最开始的 {
+        const baiduJson = dataString.match(baiduRegex)
+        if (baiduJson) dataString = baiduJson[0]
         // 去除 ```json ``` 框架
         const matchJson = dataString.match(jsonRegex)
         if (matchJson) dataString = matchJson[0]

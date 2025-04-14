@@ -37,16 +37,24 @@ export const useProviderStore = defineStore('provider', () => {
       url: 'https://urdoc.pages.dev/api',
     },
     {
+      name: 'Cloudflare(EdgeOne)',
+      url: 'https://pages.dearfad.com/api',
+    },
+    {
       name: 'Netlify',
       url: 'https://urdoc.netlify.app/api',
     },
     {
-      name: 'EdgeOne',
-      url: 'https://urdoc.dearfad.com/function',
+      name: 'Netlify(EdgeOne)',
+      url: 'https://netlify.dearfad.com/api',
     },
     {
-      name: 'Vercel',
+      name: 'Vercel(CnameDNS)',
       url: 'https://vercel.dearfad.com/api',
+    },
+    {
+      name: 'EdgeOne',
+      url: 'https://urdoc.dearfad.com/function',
     },
     {
       name: 'Local',
