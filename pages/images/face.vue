@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto mb-16">
-    <FaceContentShow />
-    <FaceUtilsCreate />
+    <!-- <FaceContentShow />
+    <FaceUtilsCreate /> -->
   </v-sheet>
 </template>
 

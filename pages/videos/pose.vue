@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto mb-16">
-    <PoseContentShow />
-    <PoseUtilsCreate />
+    <!-- <PoseContentShow />
+    <PoseUtilsCreate /> -->
   </v-sheet>
 </template>
 

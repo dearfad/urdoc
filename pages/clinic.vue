@@ -7,10 +7,10 @@
           <v-sheet>
             <FaceContentShow />
             <v-sheet class="font-weight-bold text-h5 pt-4">
-              {{ caseStore.caseContent.姓名 }}
+              {{ recordStore.case.姓名 }}
             </v-sheet>
             <v-sheet class="text-h6 pt-2">
-              {{ caseStore.caseContent.主诉 }}
+              {{ recordStore.case.主诉 }}
             </v-sheet>
           </v-sheet>
         </v-col>
@@ -82,12 +82,12 @@
 definePageMeta({
   title: '开诊',
 })
-const caseStore = useCaseStore()
+const recordStore = useRecordStore()
 const stateStore = useStateStore()
 const isLoading = ref(false)
 async function nextCase() {
   isLoading.value = true
-  await caseStore.newCase()
+  await recordStore.newCase()
   isLoading.value = false
 }
 </script>
