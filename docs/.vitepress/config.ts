@@ -11,7 +11,7 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',
     nav: [
-      { text: '主页', link: 'https://urdoc.dearfad.com' },
+      { text: '主页', link: 'https://urdoc.dearfad.com', target: '_self' },
       { text: '文档', link: '/' },
     ],
 
