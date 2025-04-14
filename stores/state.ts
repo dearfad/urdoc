@@ -31,15 +31,16 @@ export const useStateStore = defineStore(
     const modelResponseField = ref('')
 
     // 当前章节选择
-    const bookScope = ref({
-      book: '外科学',
+    const bookScope = ref<BookScope>({
+      custom: '',
+      book: '',
       chapter: '',
       section: '',
       subsection: '',
     })
 
-    // Tags
-    const tags = ref<Tags>({
+    // CustomConfig
+    const customConfig = ref<CustomConfig>({
       case: '',
       story: '真实',
       test: '执业医师考试',
@@ -139,7 +140,7 @@ export const useStateStore = defineStore(
       appInfo,
 
       bookScope,
-      tags,
+      customConfig,
 
       id,
       validated,

@@ -50,11 +50,19 @@ interface Message {
 }
 type Messages = Message[]
 
-// Tags
-interface Tags {
-  case: string
-  story: string
-  test: string
+// BookScope
+interface BookScope {
+  book: string | null
+  chapter: string | null
+  section: string | null
+  subsection: string | null
+}
+
+// CustomConfig
+interface CustomConfig {
+  case: string | null
+  story: string | null
+  test: string | null
 }
 
 // Fields
