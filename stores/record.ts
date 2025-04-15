@@ -171,17 +171,9 @@ export const useRecordStore = defineStore(
         { role: 'system', content: promptStore.casePrompt },
         {
           role: 'user',
-          content:
-            '病例要点设定：\n' +
-            stateStore.bookScope.book +
-            '\n' +
-            stateStore.bookScope.chapter +
-            '\n' +
-            stateStore.bookScope.section +
-            '\n' +
-            stateStore.bookScope.subsection +
-            '\n' +
-            stateStore.customConfig.case,
+          content: `病例要点设定：${Object.values(stateStore.bookScope).join('\n')}\n${
+            stateStore.customConfig.case
+          }`,
         },
       ]
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
