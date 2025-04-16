@@ -5,14 +5,16 @@
     rounded="lg"
     height="60vh"
   >
-    <div v-if="!caseStore.caseTestMarkdown && stateStore.isModelResponseStringShow">
+    <div v-if="stateStore.isModelResponseStringShow">
       {{ stateStore.modelResponseString }}
     </div>
-    <MDC :value="caseStore.caseTestMarkdown" />
+    <div v-else>
+      <MDC :value="recordStore.view.test.markdown" />
+    </div>
   </v-sheet>
 </template>
 
 <script setup>
-const caseStore = useCaseStore()
+const recordStore = useRecordStore()
 const stateStore = useStateStore()
 </script>

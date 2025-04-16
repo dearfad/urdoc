@@ -1,7 +1,7 @@
 export const useRecordStore = defineStore(
   'record',
   () => {
-    const promptStore = usePromptStore()
+    const promptGenerator = usePromptGenerator()
     const modelRouter = useModelRouter()
     const stateStore = useStateStore()
 
@@ -22,8 +22,10 @@ export const useRecordStore = defineStore(
         手术: '',
         病理: '',
       },
-      story: '',
-      tests: [
+      story: {
+        故事: '',
+      },
+      test: [
         {
           问题: '',
           选项: {
@@ -35,19 +37,13 @@ export const useRecordStore = defineStore(
           答案: '',
         },
       ],
-      act: '',
-      rate: '',
+      act: [],
+      rate: [],
       face: '',
       voice: '',
       pose: '',
     })
     const records = ref<MedicalRecords>([])
-
-    // Messages
-    const messages = ref({
-      act: [] as Messages,
-      rate: [] as Messages,
-    })
 
     // 观察字段，提示进度
     const watchFields = ref<Fields>({
@@ -79,8 +75,21 @@ export const useRecordStore = defineStore(
         .join('\n\n')
     })
 
-    const testsText = computed(() => {
-      return record.value.tests
+    const storyText = computed(() => {
+      return Object.entries(record.value.story)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n\n')
+    })
+
+    const storyMarkdown = computed(() => {
+      return Object.entries(record.value.story)
+        .map(([key, value]) => `**${key}**:\n\n${value}`)
+        .join('\n\n')
+    })
+
+    const testText = computed(() => {
+      // return record.value.test
+      return record.value.test
         .map((test, index) => {
           const question = `问题${index + 1}: ${test.问题}`
           const options = Object.entries(test.选项)
@@ -92,8 +101,9 @@ export const useRecordStore = defineStore(
         .join('\n\n')
     })
 
-    const testsMarkdown = computed(() => {
-      return record.value.tests
+    const testMarkdown = computed(() => {
+      // return record.value.test
+      return record.value.test
         .map((test, index) => {
           const question = `**问题${index + 1}**: ${test.问题}\n`
           const options = Object.entries(test.选项)
@@ -112,10 +122,15 @@ export const useRecordStore = defineStore(
           text: caseText.value,
           markdown: caseMarkdown.value,
         },
-        tests: {
-          json: record.value.tests,
-          text: testsText.value,
-          markdown: testsMarkdown.value,
+        story: {
+          json: record.value.story,
+          text: storyText.value,
+          markdown: storyMarkdown.value,
+        },
+        test: {
+          json: record.value.test,
+          text: testText.value,
+          markdown: testMarkdown.value,
         },
       }
     })
@@ -139,8 +154,10 @@ export const useRecordStore = defineStore(
           手术: '',
           病理: '',
         },
-        story: '',
-        tests: [
+        story: {
+          故事: '',
+        },
+        test: [
           {
             问题: '',
             选项: {
@@ -167,38 +184,37 @@ export const useRecordStore = defineStore(
     }
 
     async function getCase() {
-      const messages: Messages = [
-        { role: 'system', content: promptStore.casePrompt },
-        {
-          role: 'user',
-          content: `病例要点设定：${Object.values(stateStore.bookScope).join('\n')}\n${
-            stateStore.customConfig.case
-          }`,
-        },
-      ]
+      $reset()
+      const messages: Messages = promptGenerator.getSystemPrompt('case')
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
+    }
+
+    async function getStory() {
+      const messages: Messages = promptGenerator.getSystemPrompt('story')
+      record.value.story = JSON.parse(await modelRouter.getStory(messages))
+    }
+
+    async function getTest() {
+      const messages: Messages = promptGenerator.getSystemPrompt('test')
+      record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
+    }
+
+    async function getAct() {
+      const messages: Messages = promptGenerator.getSystemPrompt('act')
+      record.value.test = Object.values(JSON.parse(await modelRouter.getAct(messages)))
+    }
+
+    async function getRate() {
+      const messages: Messages = promptGenerator.getSystemPrompt('rate')
+      record.value.test = Object.values(JSON.parse(await modelRouter.getRate(messages)))
     }
 
     async function newRecord() {
       $reset()
       await getCase()
+      await getStory()
+      await getTest()
       //   caseFaceUrl.value = await modelRouter.getFace()
-      //   messages = [
-      //     { role: 'system', content: promptStore.storyPrompt },
-      //     {
-      //       role: 'user',
-      //       content: caseContentMarkdown.value + storyTag.value,
-      //     },
-      //   ]
-      //   caseStory.value = JSON.parse(await modelRouter.getStory(messages))
-      //   messages = [
-      //     { role: 'system', content: promptStore.testPrompt },
-      //     {
-      //       role: 'user',
-      //       content: caseContentMarkdown.value + testTag.value,
-      //     },
-      //   ]
-      //   caseTest.value = JSON.parse(await modelRouter.getTest(messages))
     }
 
     return {
@@ -210,6 +226,10 @@ export const useRecordStore = defineStore(
 
       $reset,
       getCase,
+      getStory,
+      getTest,
+      getAct,
+      getRate,
       newRecord,
     }
   },

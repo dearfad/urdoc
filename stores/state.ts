@@ -32,7 +32,6 @@ export const useStateStore = defineStore(
 
     // 当前章节选择
     const bookScope = ref<BookScope>({
-      custom: '',
       book: '',
       chapter: '',
       section: '',
@@ -44,6 +43,9 @@ export const useStateStore = defineStore(
       case: '',
       story: '真实',
       test: '执业医师考试',
+      act: '',
+      rate: '',
+      face: '',
     })
     // 病例id判断是否在数据库内
     const id = ref(0)

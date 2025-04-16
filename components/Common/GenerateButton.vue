@@ -4,7 +4,7 @@
     class="font-weight-bold my-5"
     elevation="4"
     rounded="lg"
-    text="生成病例"
+    text="开始生成"
     :loading="isLoading"
     @click="generate"
   >
@@ -24,7 +24,6 @@ const recordStore = useRecordStore()
 const isLoading = ref(false)
 
 async function generate() {
-  recordStore.$reset()
   isLoading.value = true
   stateStore.isModelResponseStringShow = true
   switch (generateType) {

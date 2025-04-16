@@ -1,5 +1,6 @@
 <template>
-  <v-sheet class="d-flex flex-column mx-4">
+  <v-sheet>
+    {{ recordStore.messages[chatType] }}
     <!-- <v-text-field
       v-if="caseStore.actMessages.length != 0"
       ref="inputPrompt"
@@ -18,73 +19,74 @@
       @focus="handleFocus"
       @blur="handleBlur"
     /> -->
-    <v-text-field
-      v-if="caseStore.actMessages.length != 0"
-      v-model="prompt"
-      class="font-weight-bold my-5 elevation-4 rounded-lg"
-      hide-details
-      :loading="isLoading"
-      :disabled="isLoading"
-      variant="solo"
-      label="请输入"
-      prepend-inner-icon="mdi-cellphone-text"
-      append-inner-icon="mdi-send"
-      @keyup.enter="sendPrompt"
-      @click:append-inner="sendPrompt"
-    />
-    <v-btn
-      v-if="caseStore.actMessages.length === 0"
-      size="x-large"
-      class="font-weight-bold my-5"
-      elevation="4"
-      rounded="lg"
-      text="开始对话"
-      @click=";(prompt = '哪里不舒服？'), sendPrompt()"
-    />
-    <v-btn
-      size="x-large"
-      class="font-weight-bold my-5"
-      elevation="4"
-      rounded="lg"
-      text="清空对话"
-      @click="caseStore.actMessages = []"
-    />
-
-    <CommonModelSelector model-type="chat" model-usage="act" />
-    <CommonPromptSelector />
+    <!-- <v-text-field
+    v-if="caseStore.actMessages.length != 0"
+    v-model="prompt"
+    class="font-weight-bold my-5 elevation-4 rounded-lg"
+    hide-details
+    :loading="isLoading"
+    :disabled="isLoading"
+    variant="solo"
+    label="请输入"
+    prepend-inner-icon="mdi-cellphone-text"
+    append-inner-icon="mdi-send"
+    @keyup.enter="sendPrompt"
+    @click:append-inner="sendPrompt"
+  /> -->
+    <!-- <v-btn
+    v-if="caseStore.actMessages.length === 0"
+    size="x-large"
+    class="font-weight-bold my-5"
+    elevation="4"
+    rounded="lg"
+    text="开始对话"
+    @click=";(prompt = '哪里不舒服？'), sendPrompt()"
+  /> -->
+    <!-- <v-btn
+    size="x-large"
+    class="font-weight-bold my-5"
+    elevation="4"
+    rounded="lg"
+    text="清空对话"
+    @click="caseStore.actMessages = []"
+  /> -->
   </v-sheet>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+const { chatType } = defineProps({
+  chatType: { type: String, required: true },
+})
+const recordStore = useRecordStore()
+
 // const stateStore = useStateStore()
-const caseStore = useCaseStore()
-const promptStore = usePromptStore()
-const modelRouter = useModelRouter()
-const prompt = ref('')
-const isLoading = ref(false)
+// const promptStore = usePromptStore()
+// const modelRouter = useModelRouter()
+// const prompt = ref('')
+// const isLoading = ref(false)
 
 // const inputPrompt = useTemplateRef('inputPrompt')
 // const prependIconInputPrompt = ref('mdi-cellphone-text')
 // const keepInputFocus = ref(false)
 
-async function sendPrompt() {
-  if (prompt.value == '') {
-    return
-  }
-  if (caseStore.actMessages.length == 0) {
-    caseStore.actMessages.push({
-      role: 'system',
-      content: promptStore.actPrompt + '下面是用户提供的病历\n' + caseStore.caseContentMarkdown,
-    })
-  }
-  isLoading.value = true
-  caseStore.actMessages.push({ role: 'user', content: prompt.value })
-  prompt.value = ''
-  const msg = { role: 'assistant', content: '' }
-  msg.content = await modelRouter.getAct(caseStore.actMessages)
-  caseStore.actMessages.push(msg)
-  isLoading.value = false
-}
+// async function sendPrompt() {
+//   if (prompt.value == '') {
+//     return
+//   }
+//   if (caseStore.actMessages.length == 0) {
+//     caseStore.actMessages.push({
+//       role: 'system',
+//       content: promptStore.actPrompt + '下面是用户提供的病历\n' + caseStore.caseContentMarkdown,
+//     })
+//   }
+//   isLoading.value = true
+//   caseStore.actMessages.push({ role: 'user', content: prompt.value })
+//   prompt.value = ''
+//   const msg = { role: 'assistant', content: '' }
+//   msg.content = await modelRouter.getAct(caseStore.actMessages)
+//   caseStore.actMessages.push(msg)
+//   isLoading.value = false
+// }
 // 保持输入栏锁定
 // const chatMsgWatcher = watch(caseStore.actMessages, () => {
 //   nextTick(() => {

@@ -7,7 +7,7 @@
   >
     <v-list>
       <v-list-item
-        v-for="(message, index) in caseStore.rateMessages.slice(1)"
+        v-for="(message, index) in recordStore.messages.rate.slice(1)"
         :key="index"
         variant="elevated"
         class="my-3"
@@ -15,7 +15,7 @@
         elevation="2"
       >
         <template #title>{{
-          message.role === 'user' ? '医生' : caseStore.caseContent['姓名']
+          message.role === 'user' ? '医生' : recordStore.case['姓名']
         }}</template>
         <template #prepend>
           <v-icon v-if="message.role === 'user'" icon="mdi-doctor" size="x-large" />
@@ -29,11 +29,11 @@
 </template>
 
 <script setup>
-const caseStore = useCaseStore()
+const recordStore = useRecordStore()
 
 // 聊天信息更新后自动滚动
 const goTo = useGoTo()
-watch(caseStore.rateMessages, () => {
+watch(recordStore.messages.rate, () => {
   nextTick(() => {
     goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
   })

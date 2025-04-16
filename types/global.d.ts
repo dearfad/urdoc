@@ -21,6 +21,11 @@ interface Case {
 }
 type Cases = Case[]
 
+interface Story {
+  故事: string
+}
+type Stories = Story[]
+
 interface Test {
   问题: string
   选项: {
@@ -30,18 +35,6 @@ interface Test {
 }
 type Tests = Test[]
 
-interface MedicalRecord {
-  case: Case
-  story: string
-  tests: Tests
-  act: string
-  rate: string
-  face: string
-  voice: string
-  pose: string
-}
-type MedicalRecords = MedicalRecord[]
-
 // Message
 type Role = 'system' | 'user' | 'assistant'
 interface Message {
@@ -49,6 +42,18 @@ interface Message {
   content: string
 }
 type Messages = Message[]
+
+interface MedicalRecord {
+  case: Case
+  story: Story
+  test: Tests
+  act: Messages
+  rate: Messages
+  face: string
+  voice: string
+  pose: string
+}
+type MedicalRecords = MedicalRecord[]
 
 // BookScope
 interface BookScope {
@@ -63,12 +68,18 @@ interface CustomConfig {
   case: string | null
   story: string | null
   test: string | null
+  act: string | null
+  rate: string | null
+  face: string | null
 }
 
 // Fields
 interface Fields {
   case: string[]
 }
+
+// SystemPrompt
+type SystemPromptType = 'case' | 'story' | 'test' | 'act' | 'rate' | 'face'
 
 // Model
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
