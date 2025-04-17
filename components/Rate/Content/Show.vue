@@ -8,7 +8,7 @@
     <div v-if="recordStore.record.rate.length > 0">
       <v-list>
         <v-list-item
-          v-for="(message, index) in recordStore.record.rate.slice(1)"
+          v-for="(message, index) in recordStore.record.rate.slice(2)"
           :key="index"
           variant="elevated"
           class="my-3"
@@ -42,13 +42,13 @@ watch(recordStore.record.rate, () => {
 })
 
 // 手机输入法遮挡滚动
-// const stateStore = useStateStore()
-// watch(
-//     () => stateStore.isInputFocused,
-//     () => {
-//         setTimeout(() => {
-//             goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
-//         }, 300)
-//     }
-// )
+const stateStore = useStateStore()
+watch(
+  () => stateStore.isInputFocused,
+  () => {
+    setTimeout(() => {
+      goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
+    }, 300)
+  }
+)
 </script>

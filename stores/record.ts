@@ -1,7 +1,7 @@
 export const useRecordStore = defineStore(
   'record',
   () => {
-    const promptGenerator = usePromptGenerator()
+    const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
     const stateStore = useStateStore()
 
@@ -181,23 +181,23 @@ export const useRecordStore = defineStore(
 
     async function getCase() {
       $reset()
-      const messages: Messages = promptGenerator.getSystemPrompt('case')
+      const messages: Messages = promptStore.getSystemPrompt('case')
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
     }
 
     async function getStory() {
-      const messages: Messages = promptGenerator.getSystemPrompt('story')
+      const messages: Messages = promptStore.getSystemPrompt('story')
       record.value.story = JSON.parse(await modelRouter.getStory(messages))
     }
 
     async function getTest() {
-      const messages: Messages = promptGenerator.getSystemPrompt('test')
+      const messages: Messages = promptStore.getSystemPrompt('test')
       record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
     }
 
     async function getAct() {
       if (record.value.act.length === 0) {
-        record.value.act = promptGenerator.getSystemPrompt('act')
+        record.value.act = promptStore.getSystemPrompt('act')
       }
       record.value.act.push({ role: 'user', content: stateStore.userPrompt })
       record.value.act.push({
@@ -207,8 +207,14 @@ export const useRecordStore = defineStore(
     }
 
     async function getRate() {
-      const messages: Messages = promptGenerator.getSystemPrompt('rate')
-      record.value.test = Object.values(JSON.parse(await modelRouter.getRate(messages)))
+      if (record.value.rate.length === 0) {
+        record.value.rate = promptStore.getSystemPrompt('rate')
+      }
+      record.value.rate.push({ role: 'user', content: stateStore.userPrompt })
+      record.value.rate.push({
+        role: 'assistant' as Role,
+        content: await modelRouter.getRate(record.value.rate),
+      })
     }
 
     async function newRecord() {

@@ -42,13 +42,13 @@ watch(recordStore.record.act, () => {
 })
 
 // 手机输入法遮挡滚动
-// const stateStore = useStateStore()
-// watch(
-//     () => stateStore.isInputFocused,
-//     () => {
-//         setTimeout(() => {
-//             goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
-//         }, 300)
-//     }
-// )
+const stateStore = useStateStore()
+watch(
+  () => stateStore.isInputFocused,
+  () => {
+    setTimeout(() => {
+      goTo('.chatMsgBottom', { container: '.chatMsgContainer' })
+    }, 300)
+  }
+)
 </script>
