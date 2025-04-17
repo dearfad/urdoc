@@ -18,7 +18,7 @@
     "@nuxt/eslint": "^1.3.0",
     "@nuxthub/core": "^0.8.24",
     "@nuxtjs/mdc": "^0.16.1",
-    "@nuxtjs/seo": "^3.0.2",
+    "@nuxtjs/seo": "^3.0.3",
     "@nuxtjs/supabase": "^1.5.0",
     "@pinia/nuxt": "^0.11.0",
     "jsonrepair": "^3.12.0",
@@ -37,6 +37,6 @@
     "mermaid": "^11.6.0",
     "vitepress": "^1.6.3",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "wrangler": "^4.10.0"
+    "wrangler": "^4.11.1"
   }
 }

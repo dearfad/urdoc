@@ -10,12 +10,12 @@
       width="160"
       min-height="160"
       class="mx-auto"
-      :src="caseStore.caseFaceUrl"
+      :src="recordStore.face"
       rounded="circle"
       @click="showFace"
     >
       <template #placeholder
-        ><div v-if="caseStore.caseFaceUrl" class="d-flex align-center justify-center fill-height">
+        ><div v-if="recordStore.face" class="d-flex align-center justify-center fill-height">
           <v-progress-circular color="grey-lighten-4" indeterminate /></div
       ></template>
     </v-img>
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-const caseStore = useCaseStore()
+const recordStore = useRecordStore()
 function showFace() {
   window.open(caseStore.caseFaceUrl, '_blank')
 }

@@ -16,7 +16,24 @@ export const useModelStore = defineStore('model', () => {
               key: 'ZHIPU_API_KEY',
               models: [{ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' }],
             },
-
+            {
+              // 百度千帆大模型平台 https://cloud.baidu.com/product-s/qianfan_home
+              name: '百度千帆',
+              id: '百度千帆',
+              url: 'https://qianfan.baidubce.com/v2/chat/completions',
+              key: 'QIANFAN_API_KEY',
+              models: [
+                { name: 'ERNIE-Lite-8K', id: 'ernie-lite-8k' },
+                { name: 'ERNIE-Tiny-8K', id: 'ernie-tiny-8k' },
+                {
+                  name: 'Llama-4-Maverick-17B-128E-Instruct',
+                  id: 'llama-4-maverick-17b-128e-instruct',
+                },
+                { name: 'Llama-4-Scout-17B-16E-Instruct', id: 'llama-4-scout-17b-16e-instruct' },
+                { name: 'ERNIE-Speed-8K', id: 'ernie-speed-8k' },
+                { name: 'ERNIE-Speed-128K', id: 'ernie-speed-128k' },
+              ],
+            },
             // 讯飞开放平台 星火大模型 https://www.xfyun.cn/
             {
               name: '讯飞',
@@ -27,6 +44,7 @@ export const useModelStore = defineStore('model', () => {
             },
 
             // 火山方舟 豆包大模型 https://www.volcengine.com/product/ark
+            // 剩362,270/共50万tokens
             {
               name: '火山方舟',
               id: '火山方舟',

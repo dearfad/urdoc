@@ -1,8 +1,6 @@
-import useChatModel from './useChatModel'
-
 export default function () {
   const stateStore = useStateStore()
-  const caseStore = useCaseStore()
+  const recordStore = useRecordStore()
   const chatModel = useChatModel()
   const imageModel = useImageModel()
   const videoModel = useVideoModel()
@@ -10,7 +8,7 @@ export default function () {
 
   function getChatModelParams(
     modelUsage: keyof typeof stateStore.models.chat,
-    messages: MessagesArray,
+    messages: Messages,
     watchFields: string[],
     responseFormat: ResponseFormatType = { type: 'json_object' }
   ) {
@@ -26,34 +24,34 @@ export default function () {
   function getImageModelParams(modelUsage: keyof typeof stateStore.models.images) {
     const params: ModelParamsType = {
       model: stateStore.models.images[modelUsage],
-      prompt: `${caseStore.caseContentMarkdown}, ${promptStore.facePrompt}`,
+      prompt: `${recordStore.view.case.markdown}, ${promptStore.facePrompt}`,
     }
     return params
   }
 
   // Chat Model
 
-  async function getCase(messages: MessagesArray) {
-    const params = getChatModelParams('case', messages, caseStore.caseContentFields)
+  async function getCase(messages: Messages) {
+    const params = getChatModelParams('case', messages, recordStore.watchFields.case)
     return await chatModel.getResponse(params)
   }
 
-  async function getStory(messages: MessagesArray) {
-    const params = getChatModelParams('story', messages, caseStore.caseStoryFields)
+  async function getStory(messages: Messages) {
+    const params = getChatModelParams('story', messages, [])
     return await chatModel.getResponse(params)
   }
 
-  async function getTest(messages: MessagesArray) {
-    const params = getChatModelParams('test', messages, caseStore.caseTestFields)
+  async function getTest(messages: Messages) {
+    const params = getChatModelParams('test', messages, [])
     return await chatModel.getResponse(params)
   }
 
-  async function getAct(messages: MessagesArray) {
+  async function getAct(messages: Messages) {
     const params = getChatModelParams('act', messages, [], { type: 'text' })
     return await chatModel.getResponse(params)
   }
 
-  async function getRate(messages: MessagesArray) {
+  async function getRate(messages: Messages) {
     const params = getChatModelParams('rate', messages, [], { type: 'text' })
     return await chatModel.getResponse(params)
   }
@@ -79,7 +77,7 @@ export default function () {
         body: {
           model: 'cogvideox-flash',
           prompt: '表情痛苦',
-          image_url: `${caseStore.caseFaceUrl}`,
+          image_url: `${recordStore.caseFaceUrl}`,
         },
       }
     )
@@ -89,7 +87,7 @@ export default function () {
   async function getPose() {
     stateStore.modelResponseField = '获取视频'
     const response: BigmodelCogvideoxResponse = await $fetch(
-      `https://open.bigmodel.cn/api/paas/v4/async-result/${caseStore.casePoseId}`,
+      `https://open.bigmodel.cn/api/paas/v4/async-result/${recordStore.casePoseId}`,
       {
         method: 'GET',
         headers: {

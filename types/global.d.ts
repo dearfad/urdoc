@@ -1,10 +1,85 @@
+// Cstar
+
+// Knowledge framework
+
+// Medical Record
+
+interface Case {
+  姓名: string
+  性别: string
+  年龄: string
+  主诉: string
+  现病史?: string
+  既往史?: string
+  查体?: string
+  专科查体?: string
+  辅助检查?: string
+  诊断: string
+  治疗?: string
+  手术?: string
+  病理?: string
+}
+type Cases = Case[]
+
+interface Story {
+  故事: string
+}
+type Stories = Story[]
+
+interface Test {
+  问题: string
+  选项: {
+    [option: string]: string
+  }
+  答案: string
+}
+type Tests = Test[]
+
 // Message
-type RoleType = 'system' | 'user' | 'assistant'
-type MessageType = {
-  role: RoleType
+type Role = 'system' | 'user' | 'assistant'
+interface Message {
+  role: Role
   content: string
 }
-type MessagesArray = MessageInterface[]
+type Messages = Message[]
+
+interface MedicalRecord {
+  case: Case
+  story: Story
+  test: Tests
+  act: Messages
+  rate: Messages
+  face: string
+  voice: string
+  pose: string
+}
+type MedicalRecords = MedicalRecord[]
+
+// BookScope
+interface BookScope {
+  book: string | null
+  chapter: string | null
+  section: string | null
+  subsection: string | null
+}
+
+// CustomConfig
+interface CustomConfig {
+  case: string | null
+  story: string | null
+  test: string | null
+  act: string | null
+  rate: string | null
+  face: string | null
+}
+
+// Fields
+interface Fields {
+  case: string[]
+}
+
+// SystemPrompt
+type SystemPromptType = 'case' | 'story' | 'test' | 'act' | 'rate' | 'face'
 
 // Model
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }

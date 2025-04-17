@@ -8,6 +8,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 120,
   "terminal.integrated.fontFamily": "'Maple Mono NF CN', 'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
   "explorer.fileNesting.enabled": true,
@@ -19,6 +21,6 @@
   },
   "[markdown]": {
     "editor.wordWrap": "bounded",
-    "editor.wordWrapColumn": 120,
+    "editor.wordWrapColumn": 120
   }
 }

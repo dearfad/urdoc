@@ -16,6 +16,10 @@
 </template>
 
 <script setup>
+const { modelType, modelUsage } = defineProps({
+  modelType: { type: String, required: true },
+  modelUsage: { type: String, required: true },
+})
 const item = ref()
 const items = ref(['标准病历', '职业医师考试'])
 function handlePromptChange() {}
