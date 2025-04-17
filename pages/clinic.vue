@@ -1,5 +1,6 @@
 <template>
-  <ClientOnly>
+  <v-sheet>Clinic</v-sheet>
+  <!-- <ClientOnly>
     <v-container class="text-center">
       <v-row>
         <v-col />
@@ -75,19 +76,19 @@
         <v-col />
       </v-row>
     </v-container>
-  </ClientOnly>
+  </ClientOnly> -->
 </template>
 
 <script setup>
 definePageMeta({
   title: '开诊',
 })
-const recordStore = useRecordStore()
-const stateStore = useStateStore()
-const isLoading = ref(false)
-async function nextCase() {
-  isLoading.value = true
-  await recordStore.newCase()
-  isLoading.value = false
-}
+// const recordStore = useRecordStore()
+// const stateStore = useStateStore()
+// const isLoading = ref(false)
+// async function nextCase() {
+//   isLoading.value = true
+//   await recordStore.newCase()
+//   isLoading.value = false
+// }
 </script>

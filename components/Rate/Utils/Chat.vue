@@ -1,5 +1,6 @@
 <template>
   <v-sheet class="d-flex flex-column mx-4">
+    Rate
     <!-- <v-text-field
       ref="inputPrompt"
       v-model="prompt"
@@ -17,7 +18,7 @@
       @focus="handleFocus"
       @blur="handleBlur"
     /> -->
-    <v-text-field
+    <!-- <v-text-field
       v-if="caseStore.rateMessages.length != 0"
       v-model="prompt"
       class="font-weight-bold my-5 elevation-4 rounded-lg"
@@ -30,8 +31,8 @@
       append-inner-icon="mdi-send"
       @keyup.enter="sendPrompt"
       @click:append-inner="sendPrompt"
-    />
-    <v-btn
+    /> -->
+    <!-- <v-btn
       v-if="caseStore.rateMessages.length === 0"
       size="x-large"
       class="font-weight-bold my-5"
@@ -39,8 +40,8 @@
       rounded="lg"
       text="开始对话"
       @click=";(prompt = '请提问'), sendPrompt()"
-    />
-    <v-btn
+    /> -->
+    <!-- <v-btn
       size="x-large"
       class="font-weight-bold my-5"
       elevation="4"
@@ -49,40 +50,40 @@
       @click="caseStore.rateMessages = []"
     />
     <CommonModelSelector model-type="chat" model-usage="rate" />
-    <CommonPromptSelector />
+    <CommonPromptSelector /> -->
   </v-sheet>
 </template>
 
 <script setup>
-const caseStore = useCaseStore()
-const promptStore = usePromptStore()
-// const stateStore = useStateStore()
-const modelRouter = useModelRouter()
-const prompt = ref('')
-const isLoading = ref(false)
+// const caseStore = useCaseStore()
+// const promptStore = usePromptStore()
+// // const stateStore = useStateStore()
+// const modelRouter = useModelRouter()
+// const prompt = ref('')
+// const isLoading = ref(false)
 
 // const inputPrompt = useTemplateRef('inputPrompt')
 // const prependIconInputPrompt = ref('mdi-cellphone-text')
 // const keepInputFocus = ref(false)
 
-async function sendPrompt() {
-  if (prompt.value == '') {
-    return
-  }
-  if (caseStore.rateMessages.length == 0) {
-    caseStore.rateMessages.push({
-      role: 'system',
-      content: promptStore.ratePrompt + '下面是用户提供的题库：\n' + caseStore.caseTestMarkdown,
-    })
-  }
-  isLoading.value = true
-  caseStore.rateMessages.push({ role: 'user', content: prompt.value })
-  prompt.value = ''
-  const msg = { role: 'assistant', content: '' }
-  msg.content = await modelRouter.getRate(caseStore.rateMessages)
-  caseStore.rateMessages.push(msg)
-  isLoading.value = false
-}
+// async function sendPrompt() {
+//   if (prompt.value == '') {
+//     return
+//   }
+//   if (caseStore.rateMessages.length == 0) {
+//     caseStore.rateMessages.push({
+//       role: 'system',
+//       content: promptStore.ratePrompt + '下面是用户提供的题库：\n' + caseStore.caseTestMarkdown,
+//     })
+//   }
+//   isLoading.value = true
+//   caseStore.rateMessages.push({ role: 'user', content: prompt.value })
+//   prompt.value = ''
+//   const msg = { role: 'assistant', content: '' }
+//   msg.content = await modelRouter.getRate(caseStore.rateMessages)
+//   caseStore.rateMessages.push(msg)
+//   isLoading.value = false
+// }
 
 // 保持输入栏锁定
 // const chatMsgWatcher = watch(caseStore.rateMessages, () => {

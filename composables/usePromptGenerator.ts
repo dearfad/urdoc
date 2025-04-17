@@ -14,13 +14,13 @@ export default function () {
         content = `系统要点设定：\n${stateStore.customConfig.story}\n${recordStore.view.case.markdown}`
         break
       case 'test':
-        content = `系统要点设定：\n${stateStore.customConfig.test}\n${recordStore.view.case.markdown}`
+        content = `系统要点设定：\n${stateStore.customConfig.test}\n${recordStore.view.case.markdown}\n${recordStore.view.story.markdown}`
         break
       case 'act':
-        content = `系统要点设定：\n${stateStore.customConfig.act}`
+        content = `下面是用户提供的病历：\n${recordStore.view.case.markdown}`
         break
       case 'rate':
-        content = `系统要点设定：\n${stateStore.customConfig.rate}`
+        content = `下面是用户提供的题库：\n${recordStore.view.test.markdown}`
         break
       case 'face':
         content = `系统要点设定：\n${stateStore.customConfig.face}`

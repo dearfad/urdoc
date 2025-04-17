@@ -119,6 +119,7 @@ export const useStateStore = defineStore(
     // 聊天模式
     const isActing = ref(false)
     const isRating = ref(false)
+    const userPrompt = ref('')
 
     // 输入框焦点状态
     const isInputFocused = ref(false)
@@ -151,6 +152,7 @@ export const useStateStore = defineStore(
 
       isActing,
       isRating,
+      userPrompt,
 
       isInputFocused,
     }

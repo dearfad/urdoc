@@ -169,15 +169,11 @@ export const useRecordStore = defineStore(
             答案: '',
           },
         ],
-        act: '',
-        rate: '',
+        act: [],
+        rate: [],
         face: '',
         voice: '',
         pose: '',
-      }
-      messages.value = {
-        act: [],
-        rate: [],
       }
       stateStore.isActing = false
       stateStore.isRating = false
@@ -200,8 +196,14 @@ export const useRecordStore = defineStore(
     }
 
     async function getAct() {
-      const messages: Messages = promptGenerator.getSystemPrompt('act')
-      record.value.test = Object.values(JSON.parse(await modelRouter.getAct(messages)))
+      if (record.value.act.length === 0) {
+        record.value.act = promptGenerator.getSystemPrompt('act')
+      }
+      record.value.act.push({ role: 'user', content: stateStore.userPrompt })
+      record.value.act.push({
+        role: 'assistant' as Role,
+        content: await modelRouter.getAct(record.value.act),
+      })
     }
 
     async function getRate() {
@@ -220,7 +222,6 @@ export const useRecordStore = defineStore(
     return {
       record,
       records,
-      messages,
       watchFields,
       view,
 
