@@ -37,6 +37,6 @@
     "mermaid": "^11.6.0",
     "vitepress": "^1.6.3",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "wrangler": "^4.11.1"
+    "wrangler": "^4.12.0"
   }
 }

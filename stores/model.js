@@ -14,7 +14,20 @@ export const useModelStore = defineStore('model', () => {
               id: '智谱',
               url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
               key: 'ZHIPU_API_KEY',
-              models: [{ name: '智谱 GLM-4-Flash', id: 'glm-4-flash' }],
+              models: [
+                {
+                  name: 'GLM-4-Flash-250414',
+                  id: 'glm-4-flash-250414',
+                },
+                {
+                  name: 'GLM-Z1-Flash',
+                  id: 'glm-z1-flash',
+                },
+                {
+                  name: 'GLM-4-Flash',
+                  id: 'glm-4-flash',
+                },
+              ],
             },
             {
               // 百度千帆大模型平台 https://cloud.baidu.com/product-s/qianfan_home
