@@ -9,12 +9,12 @@
       {{ stateStore.modelResponseString }}
     </div>
     <div v-else>
-      <MDC :value="recordStore.view.case.markdown" />
+      <MDC :value="recordStore.view.story.markdown" />
     </div>
   </v-sheet>
 </template>
 
-<script setup lang="ts">
-const recordStore = useRecordStore()
+<script setup>
 const stateStore = useStateStore()
+const recordStore = useRecordStore()
 </script>

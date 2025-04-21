@@ -3,7 +3,7 @@
     class="chatMsgContainer text-body-1 px-4 mx-4 my-2 overflow-auto"
     elevation="4"
     rounded="lg"
-    height="60vh"
+    height="55vh"
   >
     <div v-if="recordStore.record.act.length > 0">
       <v-list>

@@ -43,18 +43,6 @@ interface Message {
 }
 type Messages = Message[]
 
-interface MedicalRecord {
-  case: Case
-  story: Story
-  test: Tests
-  act: Messages
-  rate: Messages
-  face: string
-  voice: string
-  pose: string
-}
-type MedicalRecords = MedicalRecord[]
-
 // BookScope
 interface BookScope {
   book: string | null
@@ -72,6 +60,20 @@ interface CustomConfig {
   rate: string | null
   face: string | null
 }
+
+interface MedicalRecord {
+  case: Case
+  story: Story
+  test: Tests
+  act: Messages
+  rate: Messages
+  face: string
+  voice: string
+  pose: string
+  bookScope: BookScope
+  customConfig: CustomConfig
+}
+type MedicalRecords = MedicalRecord[]
 
 // Fields
 interface Fields {

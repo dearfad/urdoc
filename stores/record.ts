@@ -3,6 +3,7 @@ export const useRecordStore = defineStore(
   () => {
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
+    const databaseRouter = useDatabaseRouter()
     const stateStore = useStateStore()
 
     // Medical Records
@@ -42,6 +43,20 @@ export const useRecordStore = defineStore(
       face: '',
       voice: '',
       pose: '',
+      bookScope: {
+        book: '',
+        chapter: '',
+        section: '',
+        subsection: '',
+      },
+      customConfig: {
+        case: '',
+        story: '',
+        test: '',
+        act: '',
+        rate: '',
+        face: '',
+      },
     })
     const records = ref<MedicalRecords>([])
 
@@ -174,6 +189,20 @@ export const useRecordStore = defineStore(
         face: '',
         voice: '',
         pose: '',
+        bookScope: {
+          book: '',
+          chapter: '',
+          section: '',
+          subsection: '',
+        },
+        customConfig: {
+          case: '',
+          story: '',
+          test: '',
+          act: '',
+          rate: '',
+          face: '',
+        },
       }
       stateStore.isActing = false
       stateStore.isRating = false
@@ -183,16 +212,20 @@ export const useRecordStore = defineStore(
       $reset()
       const messages: Messages = promptStore.getSystemPrompt('case')
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
+      record.value.bookScope = stateStore.bookScope
+      record.value.customConfig.case = stateStore.customConfig.case
     }
 
     async function getStory() {
       const messages: Messages = promptStore.getSystemPrompt('story')
       record.value.story = JSON.parse(await modelRouter.getStory(messages))
+      record.value.customConfig.story = stateStore.customConfig.story
     }
 
     async function getTest() {
       const messages: Messages = promptStore.getSystemPrompt('test')
       record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
+      record.value.customConfig.test = stateStore.customConfig.test
     }
 
     async function getAct() {
@@ -217,6 +250,22 @@ export const useRecordStore = defineStore(
       })
     }
 
+    async function save() {
+      try {
+        const result = await databaseRouter.saveRecord()
+        if (result === 'OK') {
+          stateStore.appInfo = 'Saved.'
+        } else {
+          stateStore.appInfo = '保存失败: ' + result
+        }
+      } catch (error) {
+        stateStore.appInfo = '错误: ' + error
+      }
+    }
+    async function load() {}
+    async function remove() {}
+    async function update() {}
+
     async function newRecord() {
       $reset()
       await getCase()
@@ -238,6 +287,11 @@ export const useRecordStore = defineStore(
       getAct,
       getRate,
       newRecord,
+
+      save,
+      remove,
+      load,
+      update,
     }
   },
   {

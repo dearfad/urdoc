@@ -1,6 +1,6 @@
 <template>
   <v-sheet
-    class="text-body-1 px-5 py-2 mx-4 my-2 overflow-auto"
+    class="text-body-1 pa-5 mx-4 my-2 overflow-auto"
     elevation="4"
     rounded="lg"
     height="55vh"
@@ -9,12 +9,12 @@
       {{ stateStore.modelResponseString }}
     </div>
     <div v-else>
-      <MDC :value="recordStore.view.case.markdown" />
+      <MDC :value="recordStore.view.test.markdown" />
     </div>
   </v-sheet>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const recordStore = useRecordStore()
 const stateStore = useStateStore()
 </script>

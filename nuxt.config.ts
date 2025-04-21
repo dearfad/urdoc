@@ -25,8 +25,9 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/supabase', // '@nuxthub/core',
+    '@nuxtjs/supabase',
     '@nuxtjs/seo',
+    // '@nuxthub/core',
   ],
 
   supabase: {

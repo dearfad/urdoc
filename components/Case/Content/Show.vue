@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="stateStore.isRecordEdit">
-      <StoryContentEdit />
+      <CaseContentEdit />
     </div>
     <div v-else>
-      <StoryContentMarkdown />
+      <CaseContentMarkdown />
     </div>
   </div>
 </template>
