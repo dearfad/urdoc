@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 export default defineEventHandler(async (event) => {
-  const { record } = await readBody(event)
+  const { record, method } = await readBody(event)
   const uri =
     'mongodb+srv://anonymous:anonymous@azurehk.vppsagb.mongodb.net/urdoc?retryWrites=true&w=majority&appName=AzureHK'
   await mongoose.connect(uri)
@@ -71,12 +71,18 @@ export default defineEventHandler(async (event) => {
     },
   })
   const Record = mongoose.model('Record', recordSchema)
-  const newRecord = new Record(record)
-  try {
-    newRecord.save()
-    console.log('meow')
-    return 'OK'
-  } catch (error) {
-    return error
+  if (method === 'save') {
+    const newRecord = new Record(record)
+    try {
+      newRecord.save()
+      console.log('meow')
+      return 'OK'
+    } catch (error) {
+      return error
+    }
+  }
+  if (method === 'list') {
+    const record = await Record.findOne({ 'bookScope.book': '外科学' }).exec()
+    console.log(record._id)
   }
 })
