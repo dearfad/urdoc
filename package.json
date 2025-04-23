@@ -16,7 +16,7 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.3.0",
-    "@nuxthub/core": "^0.8.24",
+    "@nuxthub/core": "^0.8.25",
     "@nuxtjs/mdc": "^0.16.1",
     "@nuxtjs/seo": "^3.0.3",
     "@nuxtjs/supabase": "^1.5.0",
@@ -37,6 +37,6 @@
     "mermaid": "^11.6.0",
     "vitepress": "^1.6.3",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "wrangler": "^4.12.0"
+    "wrangler": "^4.12.1"
   }
 }
