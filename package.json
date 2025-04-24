@@ -26,6 +26,7 @@
     "nuxt": "^3.16.2",
     "nuxt-clarity-analytics": "^0.0.9",
     "nuxt-cloudflare-analytics": "^1.0.8",
+    "nuxt-gtag": "^3.0.2",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "latest",
