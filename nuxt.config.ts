@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     'nuxt-cloudflare-analytics',
     'nuxt-clarity-analytics',
     'nuxt-gtag',
-    '@nuxthub/core',
+    // '@nuxthub/core',
   ],
 
   cloudflareAnalytics: {
