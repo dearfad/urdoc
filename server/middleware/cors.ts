@@ -1,3 +1,4 @@
+// 处理跨域时NUXT对于OPTIONS请求无响应
 export default defineEventHandler((event) => {
   if (event.method === 'OPTIONS') {
     // For CORS preflight requests -> Optional

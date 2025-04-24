@@ -1,88 +1,48 @@
 import mongoose from 'mongoose'
-export default defineEventHandler(async (event) => {
-  const { record, method } = await readBody(event)
-  const uri =
-    'mongodb+srv://anonymous:anonymous@azurehk.vppsagb.mongodb.net/urdoc?retryWrites=true&w=majority&appName=AzureHK'
-  await mongoose.connect(uri)
+import Record from './recordModel.ts'
 
-  const recordSchema = new mongoose.Schema({
-    case: {
-      姓名: String,
-      性别: String,
-      年龄: String,
-      主诉: String,
-      现病史: String,
-      既往史: String,
-      查体: String,
-      专科查体: String,
-      辅助检查: String,
-      诊断: String,
-      治疗: String,
-      手术: String,
-      病理: String,
-    },
-    story: {
-      故事: String,
-    },
-    test: [
-      {
-        问题: String,
-        选项: {
-          type: Map,
-          of: String,
-        },
-        答案: String,
-      },
-    ],
-    act: [
-      {
-        role: {
-          type: String,
-          enum: ['system', 'user', 'assistant'],
-        },
-        content: String,
-      },
-    ],
-    rate: [
-      {
-        role: {
-          type: String,
-          enum: ['system', 'user', 'assistant'],
-        },
-        content: String,
-      },
-    ],
-    face: String,
-    voice: String,
-    pose: String,
-    bookScope: {
-      book: String,
-      chapter: String,
-      section: String,
-      subsection: String,
-    },
-    customConfig: {
-      case: String,
-      story: String,
-      test: String,
-      act: String,
-      rate: String,
-      face: String,
-    },
-  })
-  const Record = mongoose.model('Record', recordSchema)
-  if (method === 'save') {
+const handlers = {
+  save: async (record) => {
     const newRecord = new Record(record)
-    try {
-      newRecord.save()
-      console.log('meow')
-      return 'OK'
-    } catch (error) {
-      return error
+    const savedRecord = await newRecord.save()
+    return { status: 'OK', id: savedRecord._id }
+  },
+
+  update: async (record) => {
+    await Record.findByIdAndUpdate(record.id, record)
+    return { status: 'OK' }
+  },
+
+  // list: async () => {
+  //   return await Record.find({ 'bookScope.book': '外科学' }).exec()
+  // },
+}
+
+export default defineEventHandler(async (event) => {
+  try {
+    const { record, method } = await readBody(event)
+    let uri = process.env.RECORD_DATABASE_URL
+    if (!uri) {
+      throw new Error('Database URI is not defined in environment variables.')
     }
-  }
-  if (method === 'list') {
-    const record = await Record.findOne({ 'bookScope.book': '外科学' }).exec()
-    console.log(record._id)
+    // Fix Edgeone RECORD_DATABASE_URL
+    if (!uri.startsWith('mongodb+srv://')) {
+      uri = 'mongodb+srv://' + uri
+    }
+
+    await mongoose.connect(uri)
+
+    const handler = handlers[method]
+    if (!handler) {
+      throw new Error('Invalid method specified.')
+    }
+
+    const result = await handler(record)
+    return result
+  } catch (error) {
+    console.error('Error in event handler:', error)
+    return { error: error.message }
+  } finally {
+    await mongoose.connection.close()
   }
 })

@@ -17,13 +17,15 @@
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.3.0",
     "@nuxthub/core": "^0.8.25",
-    "@nuxtjs/mdc": "^0.16.1",
+    "@nuxtjs/mdc": "^0.17.0",
     "@nuxtjs/seo": "^3.0.3",
     "@nuxtjs/supabase": "^1.5.0",
     "@pinia/nuxt": "^0.11.0",
     "jsonrepair": "^3.12.0",
     "mongoose": "^8.13.2",
     "nuxt": "^3.16.2",
+    "nuxt-clarity-analytics": "^0.0.9",
+    "nuxt-cloudflare-analytics": "^1.0.8",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "latest",
@@ -38,6 +40,6 @@
     "mermaid": "^11.6.0",
     "vitepress": "^1.6.3",
     "vitepress-plugin-mermaid": "^2.0.17",
-    "wrangler": "^4.12.1"
+    "wrangler": "^4.13.0"
   }
 }

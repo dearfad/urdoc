@@ -62,6 +62,7 @@ interface CustomConfig {
 }
 
 interface MedicalRecord {
+  id: string
   case: Case
   story: Story
   test: Tests

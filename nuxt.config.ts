@@ -19,16 +19,12 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
-  modules: [
-    '@nuxt/eslint',
-    '@nuxtjs/mdc',
-    'vuetify-nuxt-module',
-    '@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/supabase',
-    '@nuxtjs/seo',
-    // '@nuxthub/core',
-  ],
+  modules: ['@nuxt/eslint', '@nuxtjs/mdc', 'vuetify-nuxt-module', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@nuxtjs/supabase', '@nuxtjs/seo', // '@nuxthub/core',
+  'nuxt-cloudflare-analytics', 'nuxt-clarity-analytics'],
+
+  cloudflareAnalytics: {
+    token: '97db8550f18d4cdda844ff8ab2199b36',
+  },
 
   supabase: {
     redirect: false,

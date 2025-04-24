@@ -8,7 +8,12 @@
       <v-btn text="查看" :value="false" />
       <v-btn text="编辑" :value="true" />
     </v-btn-toggle>
-    <v-btn variant="plain" text="保存" class="font-weight-bold" @click="recordStore.save" />
+    <div v-if="recordStore.record.id">
+      <v-btn variant="plain" text="更新" class="font-weight-bold" @click="recordStore.update" />
+    </div>
+    <div v-else>
+      <v-btn variant="plain" text="保存" class="font-weight-bold" @click="recordStore.save" />
+    </div>
   </v-sheet>
 </template>
 

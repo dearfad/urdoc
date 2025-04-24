@@ -6,7 +6,19 @@ export default function () {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
-        method: 'list',
+        method: 'save',
+        record: recordStore.record,
+      },
+    })
+    return response
+  }
+
+  async function updateRecord() {
+    const response = await $fetch('/database/record', {
+      baseURL: stateStore.apiBaseUrl,
+      method: 'POST',
+      body: {
+        method: 'update',
         record: recordStore.record,
       },
     })
@@ -37,5 +49,5 @@ export default function () {
     return response
   }
 
-  return { saveRecord, listRecord, loadRecord }
+  return { saveRecord, listRecord, loadRecord, updateRecord }
 }

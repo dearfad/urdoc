@@ -8,6 +8,7 @@ export const useRecordStore = defineStore(
 
     // Medical Records
     const record = ref<MedicalRecord>({
+      id: '',
       case: {
         姓名: '',
         性别: '',
@@ -154,6 +155,7 @@ export const useRecordStore = defineStore(
     // https://pinia.vuejs.org/zh/core-concepts/state.html
     function $reset() {
       record.value = {
+        id: '',
         case: {
           姓名: '',
           性别: '',
@@ -252,9 +254,11 @@ export const useRecordStore = defineStore(
 
     async function save() {
       try {
-        const result = await databaseRouter.saveRecord()
-        if (result === 'OK') {
-          stateStore.appInfo = 'Saved.'
+        type Result = { status: string; id: string }
+        const result = (await databaseRouter.saveRecord()) as Result
+        if (result.status === 'OK') {
+          record.value.id = result.id
+          stateStore.appInfo = '保存成功'
         } else {
           stateStore.appInfo = '保存失败: ' + result
         }
@@ -262,9 +266,21 @@ export const useRecordStore = defineStore(
         stateStore.appInfo = '错误: ' + error
       }
     }
+    async function update() {
+      try {
+        type Result = { status: string; id: string }
+        const result = (await databaseRouter.updateRecord()) as Result
+        if (result.status === 'OK') {
+          stateStore.appInfo = '更新完毕'
+        } else {
+          stateStore.appInfo = '更新失败: ' + result
+        }
+      } catch (error) {
+        stateStore.appInfo = '错误: ' + error
+      }
+    }
     async function load() {}
     async function remove() {}
-    async function update() {}
 
     async function newRecord() {
       $reset()
