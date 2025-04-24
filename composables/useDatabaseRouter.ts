@@ -1,12 +1,12 @@
 export default function () {
   const stateStore = useStateStore()
   const recordStore = useRecordStore()
-  async function saveRecord() {
+  async function insertRecord() {
     const response = await $fetch('/database/record', {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
-        method: 'save',
+        method: 'insert',
         record: recordStore.record,
       },
     })
@@ -49,5 +49,5 @@ export default function () {
     return response
   }
 
-  return { saveRecord, listRecord, loadRecord, updateRecord }
+  return { insertRecord, listRecord, loadRecord, updateRecord }
 }

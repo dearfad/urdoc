@@ -22,7 +22,7 @@
     "@nuxtjs/supabase": "^1.5.0",
     "@pinia/nuxt": "^0.11.0",
     "jsonrepair": "^3.12.0",
-    "mongoose": "^8.13.2",
+    "mongodb": "^6.16.0",
     "nuxt": "^3.16.2",
     "nuxt-clarity-analytics": "^0.0.9",
     "nuxt-cloudflare-analytics": "^1.0.8",

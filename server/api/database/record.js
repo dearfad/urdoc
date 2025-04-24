@@ -1,48 +1,42 @@
-import mongoose from 'mongoose'
-import Record from './recordModel.ts'
-
-const handlers = {
-  save: async (record) => {
-    const newRecord = new Record(record)
-    const savedRecord = await newRecord.save()
-    return { status: 'OK', id: savedRecord._id }
-  },
-
-  update: async (record) => {
-    await Record.findByIdAndUpdate(record.id, record)
-    return { status: 'OK' }
-  },
-
-  // list: async () => {
-  //   return await Record.find({ 'bookScope.book': '外科学' }).exec()
-  // },
-}
+import { MongoClient, ObjectId } from 'mongodb'
 
 export default defineEventHandler(async (event) => {
+  const { record, method } = await readBody(event)
+  let uri = process.env.MONGODB_URI
+  // Fix Edgeone RECORD_DATABASE_URL
+  if (!uri.startsWith('mongodb+srv://')) {
+    uri = 'mongodb+srv://' + uri
+  }
+  const client = new MongoClient(uri)
   try {
-    const { record, method } = await readBody(event)
-    let uri = process.env.RECORD_DATABASE_URL
-    if (!uri) {
-      throw new Error('Database URI is not defined in environment variables.')
-    }
-    // Fix Edgeone RECORD_DATABASE_URL
-    if (!uri.startsWith('mongodb+srv://')) {
-      uri = 'mongodb+srv://' + uri
-    }
+    const database = client.db('urdoc')
+    const records = database.collection('records')
 
-    await mongoose.connect(uri)
+    const handlers = {
+      insert: async (record) => {
+        record._id = new ObjectId()
+        const result = await records.insertOne(record)
+        return { status: 'OK', id: result.insertedId }
+      },
+
+      update: async (record) => {
+        const { _id, ...rest } = record
+        if (typeof _id !== 'string') {
+          throw new Error('Invalid _id type. Expected a string.')
+        }
+        const result = await records.updateOne({ _id: new ObjectId(_id) }, { $set: rest })
+        console.log('update result', result.modifiedCount)
+        return { status: 'OK', count: result.modifiedCount }
+      },
+    }
 
     const handler = handlers[method]
-    if (!handler) {
-      throw new Error('Invalid method specified.')
-    }
-
     const result = await handler(record)
     return result
   } catch (error) {
     console.error('Error in event handler:', error)
-    return { error: error.message }
+    return { status: 'FAILED', error: error.message }
   } finally {
-    await mongoose.connection.close()
+    await client.close()
   }
 })
