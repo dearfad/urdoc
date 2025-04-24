@@ -25,11 +25,12 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/supabase', // '@nuxthub/core',
+    '@nuxtjs/supabase',
     '@nuxtjs/seo',
     'nuxt-cloudflare-analytics',
     'nuxt-clarity-analytics',
     'nuxt-gtag',
+    '@nuxthub/core',
   ],
 
   cloudflareAnalytics: {
