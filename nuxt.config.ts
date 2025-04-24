@@ -25,11 +25,19 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/supabase',
+    '@nuxtjs/supabase', // '@nuxthub/core',
     '@nuxtjs/seo',
-    // '@nuxthub/core',
+    'nuxt-cloudflare-analytics',
+    'nuxt-clarity-analytics',
+    'nuxt-gtag',
   ],
 
+  cloudflareAnalytics: {
+    token: '97db8550f18d4cdda844ff8ab2199b36',
+  },
+  gtag: {
+    id: 'G-9YWW70NGQQ',
+  },
   supabase: {
     redirect: false,
   },

@@ -3,10 +3,12 @@ export const useRecordStore = defineStore(
   () => {
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
+    const databaseRouter = useDatabaseRouter()
     const stateStore = useStateStore()
 
     // Medical Records
     const record = ref<MedicalRecord>({
+      id: '',
       case: {
         姓名: '',
         性别: '',
@@ -42,6 +44,20 @@ export const useRecordStore = defineStore(
       face: '',
       voice: '',
       pose: '',
+      bookScope: {
+        book: '',
+        chapter: '',
+        section: '',
+        subsection: '',
+      },
+      customConfig: {
+        case: '',
+        story: '',
+        test: '',
+        act: '',
+        rate: '',
+        face: '',
+      },
     })
     const records = ref<MedicalRecords>([])
 
@@ -139,6 +155,7 @@ export const useRecordStore = defineStore(
     // https://pinia.vuejs.org/zh/core-concepts/state.html
     function $reset() {
       record.value = {
+        id: '',
         case: {
           姓名: '',
           性别: '',
@@ -174,6 +191,20 @@ export const useRecordStore = defineStore(
         face: '',
         voice: '',
         pose: '',
+        bookScope: {
+          book: '',
+          chapter: '',
+          section: '',
+          subsection: '',
+        },
+        customConfig: {
+          case: '',
+          story: '',
+          test: '',
+          act: '',
+          rate: '',
+          face: '',
+        },
       }
       stateStore.isActing = false
       stateStore.isRating = false
@@ -183,16 +214,20 @@ export const useRecordStore = defineStore(
       $reset()
       const messages: Messages = promptStore.getSystemPrompt('case')
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
+      record.value.bookScope = stateStore.bookScope
+      record.value.customConfig.case = stateStore.customConfig.case
     }
 
     async function getStory() {
       const messages: Messages = promptStore.getSystemPrompt('story')
       record.value.story = JSON.parse(await modelRouter.getStory(messages))
+      record.value.customConfig.story = stateStore.customConfig.story
     }
 
     async function getTest() {
       const messages: Messages = promptStore.getSystemPrompt('test')
       record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
+      record.value.customConfig.test = stateStore.customConfig.test
     }
 
     async function getAct() {
@@ -217,6 +252,36 @@ export const useRecordStore = defineStore(
       })
     }
 
+    async function save() {
+      try {
+        type Result = { status: string; id: string }
+        const result = (await databaseRouter.saveRecord()) as Result
+        if (result.status === 'OK') {
+          record.value.id = result.id
+          stateStore.appInfo = '保存成功'
+        } else {
+          stateStore.appInfo = '保存失败: ' + result
+        }
+      } catch (error) {
+        stateStore.appInfo = '错误: ' + error
+      }
+    }
+    async function update() {
+      try {
+        type Result = { status: string; id: string }
+        const result = (await databaseRouter.updateRecord()) as Result
+        if (result.status === 'OK') {
+          stateStore.appInfo = '更新完毕'
+        } else {
+          stateStore.appInfo = '更新失败: ' + result
+        }
+      } catch (error) {
+        stateStore.appInfo = '错误: ' + error
+      }
+    }
+    async function load() {}
+    async function remove() {}
+
     async function newRecord() {
       $reset()
       await getCase()
@@ -238,6 +303,11 @@ export const useRecordStore = defineStore(
       getAct,
       getRate,
       newRecord,
+
+      save,
+      remove,
+      load,
+      update,
     }
   },
   {
