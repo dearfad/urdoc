@@ -54,17 +54,18 @@
   </v-sheet>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const stateStore = useStateStore()
 const bookStore = useBookStore()
 
 const books = Object.keys(bookStore.books)
-const book = ref(stateStore.bookScope.book)
+const book = ref(stateStore.scope.book)
 
 const chapters = computed(() => {
+  if (!book.value) return []
   return bookStore.books[book.value] ? Object.keys(bookStore.books[book.value]) : []
 })
-const chapter = ref(stateStore.bookScope.chapter)
+const chapter = ref(stateStore.scope.chapter)
 
 const sections = computed(() => {
   if (chapters.value.length === 0) return []
@@ -72,7 +73,7 @@ const sections = computed(() => {
     ? Object.keys(bookStore.books[book.value][chapter.value])
     : []
 })
-const section = ref(stateStore.bookScope.section)
+const section = ref(stateStore.scope.section)
 
 const subsections = computed(() => {
   if (sections.value.length === 0) return []
@@ -80,7 +81,7 @@ const subsections = computed(() => {
     ? Object.keys(bookStore.books[book.value][chapter.value][section.value])
     : []
 })
-const subsection = ref(stateStore.bookScope.subsection)
+const subsection = ref(stateStore.scope.subsection)
 
 function handleBookChange() {
   chapter.value = ''
@@ -98,11 +99,11 @@ function handleSectionChange() {
 }
 
 function handleSubSectionChange() {
-  handleBookScope()
+  handleScope()
 }
 
-function handleBookScope() {
-  stateStore.bookScope = {
+function handleScope() {
+  stateStore.scope = {
     book: book.value,
     chapter: chapter.value,
     section: section.value,

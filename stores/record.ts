@@ -41,23 +41,22 @@ export const useRecordStore = defineStore(
       ],
       act: [],
       rate: [],
-      face: '',
-      voice: '',
-      pose: '',
-      bookScope: {
+      scope: {
         book: '',
         chapter: '',
         section: '',
         subsection: '',
       },
-      customConfig: {
-        case: '',
-        story: '',
-        test: '',
-        act: '',
-        rate: '',
-        face: '',
+      tag: {
+        case: [],
+        story: [],
+        test: [],
+        act: [],
+        rate: [],
       },
+      face: '',
+      pose: '',
+      voice: '',
     })
     const records = ref<MedicalRecords>([])
 
@@ -188,23 +187,22 @@ export const useRecordStore = defineStore(
         ],
         act: [],
         rate: [],
-        face: '',
-        voice: '',
-        pose: '',
-        bookScope: {
+        scope: {
           book: '',
           chapter: '',
           section: '',
           subsection: '',
         },
-        customConfig: {
-          case: '',
-          story: '',
-          test: '',
-          act: '',
-          rate: '',
-          face: '',
+        tag: {
+          case: [],
+          story: [],
+          test: [],
+          act: [],
+          rate: [],
         },
+        face: '',
+        voice: '',
+        pose: '',
       }
       stateStore.isActing = false
       stateStore.isRating = false
@@ -214,20 +212,20 @@ export const useRecordStore = defineStore(
       $reset()
       const messages: Messages = promptStore.getSystemPrompt('case')
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
-      record.value.bookScope = stateStore.bookScope
-      record.value.customConfig.case = stateStore.customConfig.case
+      record.value.scope = stateStore.scope
+      record.value.tag.case = stateStore.tag.case
     }
 
     async function getStory() {
       const messages: Messages = promptStore.getSystemPrompt('story')
       record.value.story = JSON.parse(await modelRouter.getStory(messages))
-      record.value.customConfig.story = stateStore.customConfig.story
+      record.value.tag.story = stateStore.tag.story
     }
 
     async function getTest() {
       const messages: Messages = promptStore.getSystemPrompt('test')
       record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
-      record.value.customConfig.test = stateStore.customConfig.test
+      record.value.tag.test = stateStore.tag.test
     }
 
     async function getAct() {

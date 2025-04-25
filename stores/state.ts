@@ -34,28 +34,23 @@ export const useStateStore = defineStore(
     const modelResponseField = ref('')
 
     // 当前章节选择
-    const bookScope = ref<BookScope>({
+    const scope = ref<Scope>({
       book: '',
       chapter: '',
       section: '',
       subsection: '',
     })
 
-    // CustomConfig
-    const customConfig = ref<CustomConfig>({
-      case: '',
-      story: '真实',
-      test: '执业医师考试',
-      act: '',
-      rate: '',
-      face: '',
+    // Tag
+    const tag = ref<Tag>({
+      case: [],
+      story: ['真实'],
+      test: ['执业医师考试'],
+      act: [],
+      rate: [],
     })
-    // 病例id判断是否在数据库内
-    const id = ref(0)
-    // 是否通过验证
-    const validated = ref(false)
     // 默认平台和模型
-    const models = reactive({
+    const models = ref({
       chat: {
         case: {
           gateway: '直连',
@@ -147,11 +142,8 @@ export const useStateStore = defineStore(
 
       appInfo,
 
-      bookScope,
-      customConfig,
-
-      id,
-      validated,
+      scope,
+      tag,
 
       models,
 

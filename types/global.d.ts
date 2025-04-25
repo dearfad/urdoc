@@ -1,31 +1,28 @@
-// Cstar
-
-// Knowledge framework
-
-// Medical Record
-
+// 标准病历项目
 interface Case {
   姓名: string
   性别: string
   年龄: string
   主诉: string
-  现病史?: string
-  既往史?: string
-  查体?: string
-  专科查体?: string
-  辅助检查?: string
+  现病史: string
+  既往史: string
+  查体: string
+  专科查体: string
+  辅助检查: string
   诊断: string
-  治疗?: string
+  治疗: string
   手术?: string
   病理?: string
 }
 type Cases = Case[]
 
+// 相关故事
 interface Story {
   故事: string
 }
 type Stories = Story[]
 
+// 测验 - 选择题
 interface Test {
   问题: string
   选项: {
@@ -35,7 +32,7 @@ interface Test {
 }
 type Tests = Test[]
 
-// Message
+// 大语言模型 Message
 type Role = 'system' | 'user' | 'assistant'
 interface Message {
   role: Role
@@ -43,39 +40,39 @@ interface Message {
 }
 type Messages = Message[]
 
-// BookScope
-interface BookScope {
+// 教科书内容范围
+interface Scope {
   book: string | null
   chapter: string | null
   section: string | null
   subsection: string | null
 }
 
-// CustomConfig
-interface CustomConfig {
-  case: string | null
-  story: string | null
-  test: string | null
-  act: string | null
-  rate: string | null
-  face: string | null
+// 自定义标签
+interface Tag {
+  case: string[] | null
+  story: string[] | null
+  test: string[] | null
+  act: string[] | null
+  rate: string[] | null
 }
 
 interface MedicalRecord {
-  id: number
+  id: number // 索引键
   case: Case
   story: Story
   test: Tests
   act: Messages
   rate: Messages
-  face: string
-  voice: string
-  pose: string
-  bookScope: BookScope
-  customConfig: CustomConfig
+  scope: Scope
+  tag: Tag
+  face: string // 头像图片地址
+  pose: string // 视频地址
+  voice: string // 语言设置
 }
 type MedicalRecords = MedicalRecord[]
 
+// 下面的待定
 // Fields
 interface Fields {
   case: string[]
