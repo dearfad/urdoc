@@ -62,7 +62,7 @@ interface CustomConfig {
 }
 
 interface MedicalRecord {
-  _id: string
+  id: number
   case: Case
   story: Story
   test: Tests

@@ -1,43 +1,37 @@
-// import { MongoClient, ObjectId } from 'mongodb'
+import { createClient } from '@supabase/supabase-js'
+export default defineEventHandler(async (event) => {
+  const { record, method } = await readBody(event)
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
+  // data = {error:null,data:[],count:null,status:200,statusText:'OK'}
+  const handlers = {
+    insert: async (record) => {
+      delete record.id
+      const { data, error } = await supabase.from('records').insert({ record: record }).select()
+      if (error) {
+        return { status: 'FAILED', data: error }
+      } else {
+        return { status: 'OK', data: data[0].id }
+      }
+    },
 
-export default defineEventHandler(async () => {
-  return { status: 'FAILED', content: 'No server' }
-  // const { record, method } = await readBody(event)
-  // let uri = process.env.MONGODB_URI
-  // // Fix Edgeone RECORD_DATABASE_URL
-  // if (!uri.startsWith('mongodb+srv://')) {
-  //   uri = 'mongodb+srv://' + uri
-  // }
-  // const client = new MongoClient(uri)
-  // try {
-  //   const database = client.db('urdoc')
-  //   const records = database.collection('records')
+    update: async (record) => {
+      const id = record.id
+      delete record.id
+      const { error } = await supabase.from('records').update({ record: record }).eq('id', id)
+      if (error) {
+        return { status: 'FAILED', data: error }
+      } else {
+        return { status: 'OK' }
+      }
+    },
+  }
 
-  //   const handlers = {
-  //     insert: async (record) => {
-  //       record._id = new ObjectId()
-  //       const result = await records.insertOne(record)
-  //       return { status: 'OK', id: result.insertedId }
-  //     },
-
-  //     update: async (record) => {
-  //       const { _id, ...rest } = record
-  //       if (typeof _id !== 'string') {
-  //         throw new Error('Invalid _id type. Expected a string.')
-  //       }
-  //       const result = await records.updateOne({ _id: new ObjectId(_id) }, { $set: rest })
-  //       console.log('update result', result.modifiedCount)
-  //       return { status: 'OK', count: result.modifiedCount }
-  //     },
-  //   }
-
-  //   const handler = handlers[method]
-  //   const result = await handler(record)
-  //   return result
-  // } catch (error) {
-  //   console.error('Error in event handler:', error)
-  //   return { status: 'FAILED', error: error.message }
-  // } finally {
-  //   await client.close()
-  // }
+  try {
+    const handler = handlers[method]
+    const result = await handler(record)
+    return result
+  } catch (error) {
+    console.error('Error in event handler:', error)
+    return { status: 'FAILED', error: error.message }
+  }
 })

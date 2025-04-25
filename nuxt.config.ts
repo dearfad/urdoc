@@ -10,12 +10,7 @@ export default defineNuxtConfig({
         'URDOC Virtual Case Research Institute: Pioneering in AI-generated medical cases, storytelling, question formulation, and consultation simulation for comprehensive capability assessment in healthcare education and research.',
     },
   },
-  // Netlify
-  // compatibilityDate: '2024-05-07',
-  // Cloudflare Pages
-  // compatibilityDate: '2024-09-19',
-  // For mongodb
-  compatibilityDate: '2024-12-05',
+  compatibilityDate: '2025-04-25',
   ssr: true,
   devtools: {
     enabled: false,
@@ -26,7 +21,6 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/supabase',
     '@nuxtjs/seo',
   ],
 

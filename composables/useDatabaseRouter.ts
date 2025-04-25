@@ -2,24 +2,36 @@ export default function () {
   const stateStore = useStateStore()
   const recordStore = useRecordStore()
   async function insertRecord() {
+    const record = {
+      id: recordStore.record.id,
+      case: recordStore.record.case,
+      story: recordStore.record.story,
+      test: recordStore.record.test,
+    }
     const response = await $fetch('/database/record', {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
         method: 'insert',
-        record: recordStore.record,
+        record: record,
       },
     })
     return response
   }
 
   async function updateRecord() {
+    const record = {
+      id: recordStore.record.id,
+      case: recordStore.record.case,
+      story: recordStore.record.story,
+      test: recordStore.record.test,
+    }
     const response = await $fetch('/database/record', {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
         method: 'update',
-        record: recordStore.record,
+        record: record,
       },
     })
     return response

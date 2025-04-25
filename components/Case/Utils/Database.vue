@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <v-sheet class="d-flex flex-column">
         <v-btn text="保存" size="x-large" block class="font-weight-bold my-4" @click="saveCase" />
         <v-btn text="删除" size="x-large" block class="font-weight-bold my-4" @click="deleteCase" />
@@ -96,4 +96,4 @@ async function deleteCase() {
         stateStore.appInfo = '当前记录未在数据库中！'
     }
 }
-</script>
+</script> -->
