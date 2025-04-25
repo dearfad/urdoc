@@ -28,18 +28,8 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/supabase',
     '@nuxtjs/seo',
-    'nuxt-cloudflare-analytics',
-    'nuxt-clarity-analytics',
-    'nuxt-gtag',
-    // '@nuxthub/core',
   ],
 
-  cloudflareAnalytics: {
-    token: '97db8550f18d4cdda844ff8ab2199b36',
-  },
-  gtag: {
-    id: 'G-9YWW70NGQQ',
-  },
   supabase: {
     redirect: false,
   },
