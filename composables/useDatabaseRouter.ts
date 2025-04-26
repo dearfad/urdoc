@@ -43,7 +43,7 @@ export default function () {
       method: 'POST',
       body: {
         method: 'list',
-        record: recordStore.record,
+        record: '',
       },
     })
     return response
@@ -54,12 +54,24 @@ export default function () {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
-        method: 'delete',
-        record: recordStore.record,
+        method: 'load',
+        record: stateStore.listSelectedRecordId[0],
       },
     })
     return response
   }
 
-  return { insertRecord, listRecord, loadRecord, updateRecord }
+  async function removeRecord() {
+    const response = await $fetch('/database/record', {
+      baseURL: stateStore.apiBaseUrl,
+      method: 'POST',
+      body: {
+        method: 'remove',
+        record: stateStore.listSelectedRecordId[0],
+      },
+    })
+    return response
+  }
+
+  return { insertRecord, listRecord, loadRecord, updateRecord, removeRecord }
 }

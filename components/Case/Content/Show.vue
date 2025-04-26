@@ -1,10 +1,13 @@
 <template>
   <div>
-    <div v-if="stateStore.isRecordEdit">
+    <div v-if="stateStore.recordShowContent === 'markdown'">
+      <CaseContentMarkdown />
+    </div>
+    <div v-if="stateStore.recordShowContent === 'edit'">
       <CaseContentEdit />
     </div>
-    <div v-else>
-      <CaseContentMarkdown />
+    <div v-if="stateStore.recordShowContent === 'list'">
+      <CaseContentList />
     </div>
   </div>
 </template>

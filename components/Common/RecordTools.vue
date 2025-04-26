@@ -4,16 +4,20 @@
     elevation="4"
     rounded="lg"
   >
-    <v-btn-toggle v-model="stateStore.isRecordEdit" mandatory density="compact">
-      <v-btn text="查看" :value="false" />
-      <v-btn text="编辑" :value="true" />
+    <v-btn-toggle v-model="stateStore.recordShowContent" mandatory density="compact">
+      <v-btn text="查看" :value="'markdown'" />
+      <v-btn text="编辑" :value="'edit'" />
     </v-btn-toggle>
-    <div>
-      <v-btn variant="plain" text="读取" class="font-weight-bold" />
+    <div class="ml-auto">
+      <v-btn
+        variant="plain"
+        text="浏览"
+        class="font-weight-bold"
+        @click="stateStore.recordShowContent = 'list'"
+      />
     </div>
     <div v-if="recordStore.record.id">
       <v-btn variant="plain" text="更新" class="font-weight-bold" @click="recordStore.update" />
-      <v-btn variant="plain" text="删除" class="font-weight-bold" />
     </div>
     <div v-else>
       <v-btn variant="plain" text="保存" class="font-weight-bold" @click="recordStore.insert" />

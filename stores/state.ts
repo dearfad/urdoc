@@ -24,7 +24,9 @@ export const useStateStore = defineStore(
     const isModelResponseStringShow = ref(false)
 
     // 是否编辑病例
-    const isRecordEdit = ref(false)
+    const recordShowContent = ref('markdown')
+    const listRecords = ref()
+    const listSelectedRecordId = ref()
 
     // AppInfo
     // 全局信息显示
@@ -138,7 +140,9 @@ export const useStateStore = defineStore(
       modelResponseString,
       modelResponseField,
 
-      isRecordEdit,
+      recordShowContent,
+      listRecords,
+      listSelectedRecordId,
 
       appInfo,
 

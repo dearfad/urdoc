@@ -24,6 +24,37 @@ export default defineEventHandler(async (event) => {
         return { status: 'OK' }
       }
     },
+
+    list: async () => {
+      const { data, error } = await supabase
+        .from('records')
+        .select(
+          `id, record->case->姓名, record->case->性别, record->case->年龄, record->case->主诉`
+        )
+      if (error) {
+        return { status: 'FAILED', data: error }
+      } else {
+        return { status: 'OK', data: data }
+      }
+    },
+
+    remove: async (record) => {
+      const { data, error } = await supabase.from('records').delete().eq('id', record)
+      if (error) {
+        return { status: 'FAILED', data: error }
+      } else {
+        return { status: 'OK', data: data }
+      }
+    },
+
+    load: async (record) => {
+      const { data, error } = await supabase.from('records').select().eq('id', record)
+      if (error) {
+        return { status: 'FAILED', data: error }
+      } else {
+        return { status: 'OK', data: data[0] }
+      }
+    },
   }
 
   try {

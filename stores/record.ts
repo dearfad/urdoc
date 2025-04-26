@@ -277,8 +277,63 @@ export const useRecordStore = defineStore(
         stateStore.appInfo = '更新错误: ' + error
       }
     }
-    async function load() {}
-    async function remove() {}
+
+    async function list() {
+      try {
+        type Result = {
+          status: string
+          data: []
+        }
+        const result = (await databaseRouter.listRecord()) as Result
+        if (result.status === 'OK') {
+          stateStore.listRecords = result.data
+          stateStore.appInfo = '列表完毕'
+        } else {
+          stateStore.appInfo = '列表失败: ' + result.data
+        }
+      } catch (error) {
+        stateStore.appInfo = '列表错误: ' + error
+      }
+    }
+
+    async function load() {
+      try {
+        type Result = {
+          status: string
+          data: { id: number; record: { case: Case; story: Story; test: Tests } }
+        }
+        const result = (await databaseRouter.loadRecord()) as Result
+        if (result.status === 'OK') {
+          $reset()
+          record.value.id = result.data.id
+          record.value.case = result.data.record.case
+          record.value.story = result.data.record.story
+          record.value.test = result.data.record.test
+          stateStore.appInfo = '读取完毕'
+        } else {
+          stateStore.appInfo = '读取失败: ' + result.data
+        }
+      } catch (error) {
+        stateStore.appInfo = '读取错误: ' + error
+      }
+    }
+    async function remove() {
+      try {
+        type Result = {
+          status: string
+          data: string
+        }
+        const result = (await databaseRouter.removeRecord()) as Result
+        if (result.status === 'OK') {
+          await list()
+          stateStore.appInfo = '列表完毕'
+        } else {
+          stateStore.appInfo = '列表失败: ' + result.data
+        }
+      } catch (error) {
+        stateStore.appInfo = '列表错误: ' + error
+      }
+    }
 
     async function newRecord() {
       $reset()
@@ -302,6 +357,7 @@ export const useRecordStore = defineStore(
       getRate,
       newRecord,
 
+      list,
       insert,
       remove,
       load,
