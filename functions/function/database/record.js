@@ -4,12 +4,15 @@ export async function onRequest({ request, env }) {
   const { record, method } = await request.json()
   const handleSupabaseResponse = (data, error) => {
     if (error) return { status: 'FAILED', data: error }
-    return new Response(JSON.stringify({ status: 'OK', data }), {
-      headers: {
-        'content-type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-    })
+    return new Response(
+      { status: 'OK', data },
+      {
+        headers: {
+          'content-type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    )
   }
 
   try {
