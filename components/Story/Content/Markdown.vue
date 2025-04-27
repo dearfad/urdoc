@@ -9,7 +9,7 @@
       {{ stateStore.modelResponseString }}
     </div>
     <div v-else>
-      <MDC :value="recordStore.view.story.markdown" />
+      <p><MDC :value="recordStore.view.story.markdown" /></p>
     </div>
   </v-sheet>
 </template>
@@ -18,3 +18,9 @@
 const stateStore = useStateStore()
 const recordStore = useRecordStore()
 </script>
+
+<style scoped>
+p {
+  text-indent: 2em;
+}
+</style>

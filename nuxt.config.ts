@@ -24,10 +24,6 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
   ],
 
-  supabase: {
-    redirect: false,
-  },
-
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
@@ -44,17 +40,6 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/function': 'http://localhost:8088/function',
-    },
-  },
-
-  vuetify: {
-    vuetifyOptions: {
-      defaults: {
-        VSelect: {
-          // variant: 'outlined',
-          // density: 'comfortable',
-        },
-      },
     },
   },
 })
