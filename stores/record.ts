@@ -306,7 +306,10 @@ export const useRecordStore = defineStore(
         if (result.status === 'OK') {
           $reset()
           record.value.id = result.data.id
-          record.value.case = result.data.record.case
+          for (const key in record.value.case) {
+            record.value.case[key as keyof typeof record.value.case] =
+              result.data.record.case[key as keyof typeof result.data.record.case] || ''
+          }
           record.value.story = result.data.record.story
           record.value.test = result.data.record.test
           stateStore.appInfo = '读取完毕'

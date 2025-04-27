@@ -25,6 +25,7 @@ const isLoading = ref(false)
 
 async function generate() {
   isLoading.value = true
+  stateStore.recordShowContent = 'markdown'
   stateStore.isModelResponseStringShow = true
   switch (generateType) {
     case 'case':
