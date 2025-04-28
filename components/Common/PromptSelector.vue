@@ -4,14 +4,15 @@
       v-model="item"
       label="提示词"
       :items="items"
+      item-title="title"
       variant="outlined"
       class="my-4"
       hide-details="auto"
       prepend-inner-icon="mdi-file-word-box-outline"
       density="comfortable"
-      disabled
       @update:model-value="handlePromptChange"
     />
+    <v-btn text="列表" @click="promptStore.getPrompts" />
   </v-sheet>
 </template>
 
@@ -21,6 +22,7 @@ const { modelType, modelUsage } = defineProps({
   modelUsage: { type: String, required: true },
 })
 const item = ref()
-const items = ref(['标准病历', '职业医师考试'])
+const promptStore = usePromptStore()
+const items = ref(promptStore.prompts.system[modelUsage].user)
 function handlePromptChange() {}
 </script>

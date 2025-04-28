@@ -10,11 +10,15 @@
   },
   "editor.wordWrap": "bounded",
   "editor.wordWrapColumn": 120,
+  "editor.unicodeHighlight.allowedCharacters": {
+    "：": true,
+    "，": true
+  },
   "terminal.integrated.fontFamily": "'Maple Mono NF CN', 'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "nuxt.config.ts": "package.json, package-lock.json, tsconfig.json, eslint.config.mjs, .prettierrc.json, .env, .gitignore"
+    "nuxt.config.ts": "package.json, package-lock.json, tsconfig.json, eslint.config.mjs, .prettierrc.json, .env, .gitignore, .npmrc"
   },
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"

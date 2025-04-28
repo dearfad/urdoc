@@ -1,14 +1,15 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
-
-const handleSupabaseResponse = (data, error) => {
-  if (error) return { status: 'FAILED', data: error }
-  return { status: 'OK', data }
-}
-
 export default defineEventHandler(async (event) => {
   const { record, method } = await readBody(event)
+
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
+
+  const handleSupabaseResponse = (data, error) => {
+    if (error) return { status: 'FAILED', data: error }
+    // ES6 return { status: 'OK', data }
+    return { status: 'OK', data: data }
+  }
 
   try {
     let result

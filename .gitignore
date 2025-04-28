@@ -26,7 +26,6 @@ logs
 .wrangler
 
 # Tencent Cloud EdgeOne
-.env
 .edgeone
 .edgeone/*
 .tef_dist/*

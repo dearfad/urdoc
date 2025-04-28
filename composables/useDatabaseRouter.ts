@@ -73,5 +73,20 @@ export default function () {
     return response
   }
 
-  return { insertRecord, listRecord, loadRecord, updateRecord, removeRecord }
+  async function prompt(action: string) {
+    switch (action) {
+      case 'list': {
+        return await $fetch('/database/prompt', {
+          baseURL: stateStore.apiBaseUrl,
+          method: 'POST',
+          body: {
+            action: 'list',
+            prompt: '',
+          },
+        })
+      }
+    }
+  }
+
+  return { insertRecord, listRecord, loadRecord, updateRecord, removeRecord, prompt }
 }

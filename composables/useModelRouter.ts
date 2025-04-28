@@ -3,7 +3,7 @@ export default function () {
   const recordStore = useRecordStore()
   const chatModel = useChatModel()
   const imageModel = useImageModel()
-  const videoModel = useVideoModel()
+  // const videoModel = useVideoModel()
   const promptStore = usePromptStore()
 
   function getChatModelParams(
