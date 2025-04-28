@@ -7,7 +7,7 @@
     </ClientOnly>
     <AppFooter />
     <AppInfo />
-    <v-main class="pt-12 pb-9">
+    <v-main>
       <slot />
       <AppDebug />
     </v-main>

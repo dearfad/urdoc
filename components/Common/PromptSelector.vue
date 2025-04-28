@@ -1,5 +1,6 @@
 <template>
-  <v-sheet class="px-4 my-3" elevation="4" rounded="lg">
+  <v-card hover height="600" rounded="lg">
+    <!-- <v-sheet class="px-4 my-3" elevation="4" rounded="lg"> -->
     <v-select
       v-model="item"
       label="提示词"
@@ -13,7 +14,8 @@
       @update:model-value="handlePromptChange"
     />
     <v-btn text="列表" @click="promptStore.getPrompts" />
-  </v-sheet>
+    <!-- </v-sheet> -->
+  </v-card>
 </template>
 
 <script setup>
