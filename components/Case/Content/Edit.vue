@@ -1,10 +1,5 @@
 <template>
-  <v-sheet
-    class="text-body-1 pa-5 mx-4 my-2 overflow-auto"
-    elevation="4"
-    rounded="lg"
-    height="55vh"
-  >
+  <v-sheet class="text-body-1 pa-5 overflow-auto" elevation="4" rounded="lg" height="55vh">
     <v-text-field
       v-model="recordStore.record.case.姓名"
       class="mt-0 mb-4"

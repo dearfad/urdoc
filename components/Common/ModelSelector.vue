@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="px-4 py-1 my-3" elevation="4" rounded="lg">
+  <v-sheet class="px-4 py-2" elevation="4" rounded="lg">
     <v-select
       v-model="gateway"
       label="网关"

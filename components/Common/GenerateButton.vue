@@ -1,7 +1,7 @@
 <template>
   <v-btn
     size="x-large"
-    class="font-weight-bold my-2"
+    class="font-weight-bold"
     elevation="4"
     rounded="lg"
     text="开始生成"
