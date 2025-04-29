@@ -1,6 +1,6 @@
 <template>
   <v-sheet
-    class="chatMsgContainer text-body-1 px-4 mx-4 my-2 overflow-auto"
+    class="chatMsgContainer text-body-1 px-4 mx-4 overflow-auto"
     elevation="4"
     rounded="lg"
     height="55vh"

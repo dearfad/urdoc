@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="d-flex justify-space-between font-weight-bold" elevation="4" rounded="lg">
+  <v-sheet class="d-flex justify-space-between font-weight-bold mx-4" elevation="4" rounded="lg">
     <v-btn-toggle v-model="stateStore.recordShowContent" mandatory density="compact">
       <v-btn text="查看" :value="'markdown'" />
       <v-btn text="编辑" :value="'edit'" />

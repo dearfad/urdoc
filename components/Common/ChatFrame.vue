@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="d-flex flex-column ga-4">
     <v-text-field
       v-if="recordStore.record[chatType  as 'act' | 'rate'].length > 0"
       ref="inputPrompt'"
@@ -21,7 +21,7 @@
     <v-btn
       v-if="recordStore.record[chatType as 'act' | 'rate'].length === 0"
       size="x-large"
-      class="font-weight-bold my-5"
+      class="font-weight-bold"
       block
       elevation="4"
       rounded="lg"
@@ -32,7 +32,7 @@
     />
     <v-btn
       size="x-large"
-      class="font-weight-bold my-5"
+      class="font-weight-bold"
       elevation="4"
       block
       rounded="lg"

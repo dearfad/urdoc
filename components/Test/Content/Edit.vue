@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="text-body-1 mx-4 my-2 overflow-auto" elevation="4" rounded="lg" height="55vh">
+  <v-sheet class="text-body-1 mx-4 overflow-auto" elevation="4" rounded="lg" height="55vh">
     <v-list variant="plain">
       <v-list-item
         v-for="(item, index) in recordStore.record.test"

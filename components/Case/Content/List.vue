@@ -1,5 +1,10 @@
 <template>
-  <v-sheet class="text-body-1 px-4 py-2 overflow-auto" elevation="4" rounded="lg" height="55vh">
+  <v-sheet
+    class="text-body-1 px-4 py-2 overflow-auto mx-4"
+    elevation="4"
+    rounded="lg"
+    height="55vh"
+  >
     <v-data-table
       v-model="stateStore.listSelectedRecordId"
       :headers="headers"
