@@ -38,11 +38,6 @@ export const useModelStore = defineStore('model', () => {
               models: [
                 { name: 'ERNIE-Lite-8K', id: 'ernie-lite-8k' },
                 { name: 'ERNIE-Tiny-8K', id: 'ernie-tiny-8k' },
-                {
-                  name: 'Llama-4-Maverick-17B-128E-Instruct',
-                  id: 'llama-4-maverick-17b-128e-instruct',
-                },
-                { name: 'Llama-4-Scout-17B-16E-Instruct', id: 'llama-4-scout-17b-16e-instruct' },
                 { name: 'ERNIE-Speed-8K', id: 'ernie-speed-8k' },
                 { name: 'ERNIE-Speed-128K', id: 'ernie-speed-128k' },
               ],
@@ -57,7 +52,7 @@ export const useModelStore = defineStore('model', () => {
             },
 
             // 火山方舟 豆包大模型 https://www.volcengine.com/product/ark
-            // 剩362,270/共50万tokens
+            // 剩362,270/共50万tokens，其他模型免费50万tokens
             {
               name: '火山方舟',
               id: '火山方舟',
@@ -69,15 +64,13 @@ export const useModelStore = defineStore('model', () => {
             },
 
             // 阿里云百炼 通义大模型 https://www.aliyun.com/product/bailian
+            // 模型100万Tokens，到期时间：2025-10-26
             {
               name: '阿里云百炼',
               id: '阿里云百炼',
               url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
               key: 'ALIYUN_API_KEY',
-              models: [
-                { name: '通义千问-Plus-2025-01-25', id: 'qwen-plus-2025-01-25' },
-                { name: 'DeepSeek-V3', id: 'deepseek-v3' },
-              ],
+              models: [{ name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' }],
             },
 
             // 腾讯云 混元大模型 https://cloud.tencent.com/product/hunyuan
@@ -91,7 +84,7 @@ export const useModelStore = defineStore('model', () => {
           ],
         },
         {
-          name: 'EdgeOne',
+          name: 'EdgeOne(Beta)',
           id: 'EdgeOne',
           url: 'https://ai-gateway.eo-edgefunctions7.com',
           key: 'EDGEONE_AIGATEWAY_KEY',
@@ -101,10 +94,7 @@ export const useModelStore = defineStore('model', () => {
               id: '阿里AI',
               url: '',
               key: 'ALIYUN_API_KEY',
-              models: [
-                { name: '通义千问-Plus-2025-01-25', id: 'qwen-plus-2025-01-25' },
-                { name: 'DeepSeek-V3', id: 'deepseek-v3' },
-              ],
+              models: [{ name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' }],
             },
           ],
         },
@@ -114,6 +104,18 @@ export const useModelStore = defineStore('model', () => {
           url: 'https://openrouter.ai/api/v1/chat/completions',
           key: 'OPENROUTER_API_KEY',
           providers: [
+            {
+              name: 'Qwen',
+              id: 'Qwen',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'Qwen: Qwen3 30B A3B (free)',
+                  id: 'qwen/qwen3-30b-a3b:free',
+                },
+              ],
+            },
             {
               name: 'DeepSeek',
               id: 'DeepSeek',
@@ -159,6 +161,30 @@ export const useModelStore = defineStore('model', () => {
                 {
                   name: 'Mistral: Mistral Small 3.1 24B (free)',
                   id: 'mistralai/mistral-small-3.1-24b-instruct:free',
+                },
+              ],
+            },
+            {
+              name: 'THUDM',
+              id: 'THUDM',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'THUDM: GLM 4 32B (free)',
+                  id: 'thudm/glm-4-32b:free',
+                },
+              ],
+            },
+            {
+              name: 'NVIDIA',
+              id: 'NVIDIA',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'NVIDIA: Llama 3.1 Nemotron Ultra 253B v1 (free)',
+                  id: 'nvidia/llama-3.1-nemotron-ultra-253b-v1:free',
                 },
               ],
             },

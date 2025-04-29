@@ -10,21 +10,18 @@
       prepend-inner-icon="mdi-file-word-box-outline"
       density="comfortable"
       class="mt-4"
+      return-object
       @update:model-value="handlePromptChange"
     />
     <v-card-actions>
       <v-spacer />
-      <v-btn text="列表" @click="promptStore.getPrompts" />
+      <v-btn text="读取" @click="promptStore.getPrompts" />
       <v-btn text="编辑" @click="show = !show" />
     </v-card-actions>
     <v-expand-transition>
-      <div v-show="show">
-        <v-divider />
-        <v-textarea
-          variant="outlined"
-          auto-grow
-          :model-value="promptStore.prompts.system[modelUsage].default"
-        />
+      <div v-show="show" v-if="item">
+        <v-text-field variant="outlined" label="标题" :model-value="item.title" />
+        <v-textarea variant="outlined" label="内容" auto-grow :model-value="item.prompt" />
       </div>
     </v-expand-transition>
   </v-card>
@@ -36,8 +33,8 @@ const { modelType, modelUsage } = defineProps({
   modelType: { type: String, required: true },
   modelUsage: { type: String, required: true },
 })
-const item = ref()
 const promptStore = usePromptStore()
-const items = ref(promptStore.prompts.system[modelUsage].user)
+const item = ref(promptStore.prompts.system[modelUsage])
+const items = computed(() => promptStore.prompts.user[modelUsage])
 function handlePromptChange() {}
 </script>
