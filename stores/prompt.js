@@ -61,21 +61,59 @@ export const usePromptStore = defineStore(
       },
     })
 
-    async function getPrompts() {
-      try {
-        const response = await databaseRouter.prompt('list')
-        if (response.status === 'OK') {
-          const promptList = ['case', 'story', 'test', 'act', 'rate']
-          promptList.forEach((item) => {
-            prompts.value.user[item] = response.data.filter((i) => i.type === item)
-          })
-          stateStore.appInfo = '读取成功'
-        } else {
-          stateStore.appInfo = '读取失败: ' + response.data
+    const prompt = {
+      async list() {
+        try {
+          const response = await databaseRouter.prompt('list')
+          if (response.status === 'OK') {
+            const promptList = ['case', 'story', 'test', 'act', 'rate']
+            promptList.forEach((item) => {
+              prompts.value.user[item] = response.data.filter((i) => i.type === item)
+            })
+            stateStore.appInfo = '读取成功'
+          } else {
+            stateStore.appInfo = '读取失败: ' + response.data
+          }
+        } catch (error) {
+          stateStore.appInfo = '读取错误: ' + error
         }
-      } catch (error) {
-        stateStore.appInfo = '读取错误: ' + error
-      }
+      },
+      async insert() {
+        try {
+          const response = await databaseRouter.prompt('insert')
+          if (response.status === 'OK') {
+            stateStore.appInfo = '添加保存成功'
+          } else {
+            stateStore.appInfo = '添加保存失败: ' + response.data
+          }
+        } catch (error) {
+          stateStore.appInfo = '添加保存错误: ' + error
+        }
+      },
+      async update() {
+        try {
+          const response = await databaseRouter.prompt('update')
+          if (response.status === 'OK') {
+            stateStore.appInfo = '更新成功'
+          } else {
+            stateStore.appInfo = '更新失败: ' + response.data
+          }
+        } catch (error) {
+          stateStore.appInfo = '更新错误: ' + error
+        }
+      },
+      async remove() {
+        try {
+          const response = await databaseRouter.prompt('remove')
+          if (response.status === 'OK') {
+            stateStore.appInfo = '删除成功'
+          } else {
+            stateStore.appInfo = '删除失败: ' + response.data
+          }
+        } catch (error) {
+          stateStore.appInfo = '删除错误: ' + error
+        }
+      },
     }
 
     function getSystemPrompt(systemPromptType) {
@@ -115,7 +153,7 @@ export const usePromptStore = defineStore(
       ]
     }
 
-    return { prompts, getSystemPrompt, getPrompts, defaultCasePrompt }
+    return { prompts, getSystemPrompt, prompt, defaultCasePrompt }
   },
   {
     persist: true,

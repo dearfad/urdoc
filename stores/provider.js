@@ -57,11 +57,11 @@ export const useProviderStore = defineStore('provider', () => {
       url: 'https://urdoc.dearfad.com/function',
     },
     {
-      name: 'Local',
+      name: '本地 /api',
       url: '/api',
     },
     {
-      name: 'Local(edgeone)',
+      name: '本地 /function (EdgeOne)',
       url: '/function',
     },
   ])

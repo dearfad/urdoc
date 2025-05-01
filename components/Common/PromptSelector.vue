@@ -16,12 +16,12 @@
     />
     <v-card-actions>
       <v-spacer />
-      <v-btn text="读取" @click="promptStore.getPrompts" />
+      <v-btn text="读取" @click="promptStore.prompt.list" />
       <v-btn text="编辑" @click="show = !show" />
       <div v-if="item.id">
-        <v-btn text="保存" @click="promptStore.insertPrompt" />
-        <v-btn text="更新" @click="promptStore.updatePrompt" />
-        <v-btn text="删除" @click="promptStore.deletePrompt" />
+        <v-btn text="保存" @click="promptStore.prompt.insert" />
+        <v-btn text="更新" @click="promptStore.prompt.update" />
+        <v-btn text="删除" @click="promptStore.prompt.remove" />
       </div>
     </v-card-actions>
     <v-expand-transition>

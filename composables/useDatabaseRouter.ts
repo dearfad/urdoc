@@ -1,6 +1,9 @@
+import PromptSelector from '~/components/Common/PromptSelector.vue'
+
 export default function () {
   const stateStore = useStateStore()
   const recordStore = useRecordStore()
+  const promptStore = usePromptStore()
   async function insertRecord() {
     const record = {
       id: recordStore.record.id,
@@ -75,7 +78,7 @@ export default function () {
 
   async function prompt(action: string) {
     switch (action) {
-      case 'list': {
+      case 'list':
         return await $fetch('/database/prompt', {
           baseURL: stateStore.apiBaseUrl,
           method: 'POST',
@@ -84,7 +87,15 @@ export default function () {
             prompt: '',
           },
         })
-      }
+      case 'insert':
+        return await $fetch('/database/prompt', {
+          baseURL: stateStore.apiBaseUrl,
+          method: 'POST',
+          body: {
+            action: 'list',
+            prompt: promptStore.prompt,
+          },
+        })
     }
   }
 
