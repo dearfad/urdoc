@@ -3,7 +3,7 @@
     <CommonGenerateButton generate-type="story" />
     <CommonTagInput tag-type="story" />
     <CommonModelSelector model-type="chat" model-usage="story" />
-    <CommonPromptSelector model-type="chat" model-usage="story" />
+    <CommonPromptSelector usage="story" />
     <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

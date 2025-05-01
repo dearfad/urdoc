@@ -48,7 +48,7 @@
       icon="mdi-sitemap-outline"
       variant="plain"
       :ripple="false"
-      to="/site"
+      to="/utils/site"
     />
   </v-navigation-drawer>
 </template>
