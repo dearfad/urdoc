@@ -31,6 +31,7 @@ export const useStateStore = defineStore(
     // AppInfo
     // 全局信息显示
     const appInfo = ref('')
+    const appInfos = ref([])
 
     // 当前模型生成字段
     const modelResponseField = ref('')
@@ -145,6 +146,7 @@ export const useStateStore = defineStore(
       listSelectedRecordId,
 
       appInfo,
+      appInfos,
 
       scope,
       tag,

@@ -1,72 +1,34 @@
 import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
-  const { prompt, action } = await readBody(event)
+  const { action, prompt } = await readBody(event)
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
-  const handleSupabaseResponse = (data, error) =>
-    error ? { status: 'FAILED', data: error } : { status: 'OK', data: data }
 
   try {
     let response
     switch (action) {
-      // case 'insert':
-      //   {
-      //     delete prompt.id
-      //     const { data: insertData, error: insertError } = await supabase
-      //       .from('records')
-      //       .insert({ record: prompt })
-      //       .select()
-      //     response = handleSupabaseResponse(insertData[0].id, insertError)
-      //   }
-      //   break
-
-      // case 'update':
-      //   {
-      //     const id = prompt.id
-      //     delete prompt.id
-      //     const { error: updateError } = await supabase
-      //       .from('records')
-      //       .update({ record: prompt })
-      //       .eq('id', id)
-      //     response = handleSupabaseResponse(null, updateError)
-      //   }
-      //   break
-
       case 'list':
-        {
-          const { data: listData, error: listError } = await supabase
-            .from('prompts')
-            .select(`id, type, title, prompt`)
-          response = handleSupabaseResponse(listData, listError)
-        }
+        response = await supabase.from('prompts').select().order('id', { ascending: true })
         break
-
-      // case 'remove':
-      //   {
-      //     const { data: removeData, error: removeError } = await supabase
-      //       .from('records')
-      //       .delete()
-      //       .eq('id', prompt)
-      //     response = handleSupabaseResponse(removeData, removeError)
-      //   }
-      //   break
-
-      // case 'load':
-      //   {
-      //     const { data: loadData, error: loadError } = await supabase
-      //       .from('records')
-      //       .select()
-      //       .eq('id', prompt)
-      //     response = handleSupabaseResponse(loadData[0], loadError)
-      //   }
-      //   break
-
+      case 'fetch':
+        response = await supabase.from('prompts').eq('id', prompt.id).select()
+        break
+      case 'insert':
+        response = await supabase.from('prompts').insert(prompt).select()
+        break
+      case 'update':
+        response = await supabase.from('prompts').update(prompt).eq('id', prompt.id).select()
+        break
+      case 'delete':
+        response = await supabase.from('prompts').delete().eq('id', prompt.id)
+        break
       default:
-        response = handleSupabaseResponse('', 'Unsupported action')
+        response = { data: '', error: 'Unsupported action' }
     }
-
-    return response
+    return response.error
+      ? { status: '', data: response.error }
+      : { status: 'OK', data: response.data }
   } catch (error) {
-    return { status: 'FAILED', data: error }
+    return { status: '', data: error }
   }
 })

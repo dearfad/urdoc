@@ -72,6 +72,12 @@ interface MedicalRecord {
 }
 type MedicalRecords = MedicalRecord[]
 
+interface SystemPrompt {
+  id?: number
+  type: string
+  title: string
+  prompt: string
+}
 // 下面的待定
 // Fields
 interface Fields {

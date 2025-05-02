@@ -1,15 +1,24 @@
 <template>
-  <v-snackbar
-    v-model="snackbar"
-    :timeout="timeout"
-    timer="true"
-    @update:model-value="snackbarClose"
-  >
-    {{ stateStore.appInfo }}
-    <template #actions>
-      <v-btn variant="text" @click="snackbarClose"> 关闭 </v-btn>
-    </template>
-  </v-snackbar>
+  <v-sheet>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      timer="true"
+      @update:model-value="snackbarClose"
+    >
+      {{ stateStore.appInfo }}
+      <template #actions>
+        <v-btn variant="text" @click="snackbarClose"> 关闭 </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar-queue
+      v-model="stateStore.appInfos"
+      :timeout="timeout"
+      timer="true"
+      closable="true"
+      close-text="关闭"
+    />
+  </v-sheet>
 </template>
 
 <script setup lang="ts">

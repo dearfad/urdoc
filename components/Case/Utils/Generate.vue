@@ -4,7 +4,7 @@
     <CommonTagInput tag-type="case" />
     <CommonScopeSelector />
     <CommonModelSelector model-type="chat" model-usage="case" />
-    <CommonPromptSelector usage="case" />
+    <CommonPromptManager usage="case" />
     <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

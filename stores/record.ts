@@ -3,7 +3,7 @@ export const useRecordStore = defineStore(
   () => {
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
-    const databaseRouter = useDatabaseRouter()
+    const databaseApi = useDatabaseApi()
     const stateStore = useStateStore()
 
     // Medical Records
@@ -253,7 +253,7 @@ export const useRecordStore = defineStore(
     async function insert() {
       try {
         type Result = { status: string; data: string }
-        const result = (await databaseRouter.insertRecord()) as Result
+        const result = (await databaseApi.insertRecord()) as Result
         if (result.status === 'OK') {
           record.value.id = Number(result.data)
           stateStore.appInfo = '保存成功'
@@ -267,7 +267,7 @@ export const useRecordStore = defineStore(
     async function update() {
       try {
         type Result = { status: string; data: string }
-        const result = (await databaseRouter.updateRecord()) as Result
+        const result = (await databaseApi.updateRecord()) as Result
         if (result.status === 'OK') {
           stateStore.appInfo = '更新完毕'
         } else {
@@ -284,7 +284,7 @@ export const useRecordStore = defineStore(
           status: string
           data: []
         }
-        const result = (await databaseRouter.listRecord()) as Result
+        const result = (await databaseApi.listRecord()) as Result
         if (result.status === 'OK') {
           stateStore.listRecords = result.data
           stateStore.appInfo = '列表完毕'
@@ -302,7 +302,7 @@ export const useRecordStore = defineStore(
           status: string
           data: { id: number; record: { case: Case; story: Story; test: Tests } }
         }
-        const result = (await databaseRouter.loadRecord()) as Result
+        const result = (await databaseApi.loadRecord()) as Result
         if (result.status === 'OK') {
           $reset()
           record.value.id = result.data.id
@@ -326,7 +326,7 @@ export const useRecordStore = defineStore(
           status: string
           data: string
         }
-        const result = (await databaseRouter.removeRecord()) as Result
+        const result = (await databaseApi.removeRecord()) as Result
         if (result.status === 'OK') {
           await list()
           stateStore.appInfo = '列表完毕'

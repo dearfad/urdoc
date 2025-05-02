@@ -9,7 +9,7 @@ export const usePromptStore = defineStore(
   () => {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
-    const databaseRouter = useDatabaseRouter()
+    const databaseApi = useDatabaseApi()
     const prompts = ref({
       system: {
         case: {
@@ -42,8 +42,6 @@ export const usePromptStore = defineStore(
           title: '默认',
           prompt: defaultRatePrompt,
         },
-
-        // "相貌": "一位中年女性，60岁，身材肥胖，白色头发，颈部粗大，脸上带着一丝疲惫，痛苦表情。"
         face: {
           id: '',
           type: 'face',
@@ -61,59 +59,44 @@ export const usePromptStore = defineStore(
       },
     })
 
-    const prompt = {
-      async list() {
-        try {
-          const response = await databaseRouter.prompt('list')
-          if (response.status === 'OK') {
-            const promptList = ['case', 'story', 'test', 'act', 'rate']
-            promptList.forEach((item) => {
-              prompts.value.user[item] = response.data.filter((i) => i.type === item)
-            })
-            stateStore.appInfo = '读取成功'
-          } else {
-            stateStore.appInfo = '读取失败: ' + response.data
-          }
-        } catch (error) {
-          stateStore.appInfo = '读取错误: ' + error
+    async function managePrompt(action, prompt) {
+      let response
+      try {
+        switch (action) {
+          case 'list':
+            {
+              response = await databaseApi.operatePrompt('list')
+
+              if (response.status === 'OK') {
+                const promptList = ['case', 'story', 'test', 'act', 'rate']
+                promptList.forEach((item) => {
+                  prompts.value.user[item] = response.data.filter((i) => i.type === item)
+                })
+              }
+            }
+            break
+          case 'load':
+            response = await databaseApi.operatePrompt('fetch', prompt)
+            break
+          case 'insert':
+            response = await databaseApi.operatePrompt('insert', prompt)
+            break
+          case 'update':
+            response = await databaseApi.operatePrompt('update', prompt)
+            break
+          case 'delete':
+            response = await databaseApi.operatePrompt('delete', prompt)
+            break
         }
-      },
-      async insert() {
-        try {
-          const response = await databaseRouter.prompt('insert')
-          if (response.status === 'OK') {
-            stateStore.appInfo = '添加保存成功'
-          } else {
-            stateStore.appInfo = '添加保存失败: ' + response.data
-          }
-        } catch (error) {
-          stateStore.appInfo = '添加保存错误: ' + error
+      } catch (error) {
+        stateStore.appInfos.push('错误: ' + error.message)
+      } finally {
+        if (response.status === 'OK') {
+          stateStore.appInfos.push('成功！')
+        } else {
+          stateStore.appInfos.push('失败: ' + response.data)
         }
-      },
-      async update() {
-        try {
-          const response = await databaseRouter.prompt('update')
-          if (response.status === 'OK') {
-            stateStore.appInfo = '更新成功'
-          } else {
-            stateStore.appInfo = '更新失败: ' + response.data
-          }
-        } catch (error) {
-          stateStore.appInfo = '更新错误: ' + error
-        }
-      },
-      async remove() {
-        try {
-          const response = await databaseRouter.prompt('remove')
-          if (response.status === 'OK') {
-            stateStore.appInfo = '删除成功'
-          } else {
-            stateStore.appInfo = '删除失败: ' + response.data
-          }
-        } catch (error) {
-          stateStore.appInfo = '删除错误: ' + error
-        }
-      },
+      }
     }
 
     function getSystemPrompt(systemPromptType) {
@@ -153,7 +136,7 @@ export const usePromptStore = defineStore(
       ]
     }
 
-    return { prompts, getSystemPrompt, prompt, defaultCasePrompt }
+    return { prompts, getSystemPrompt, managePrompt, defaultCasePrompt }
   },
   {
     persist: true,
