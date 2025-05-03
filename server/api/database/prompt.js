@@ -1,30 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
-
 export default defineEventHandler(async (event) => {
   const { action, prompt } = await readBody(event)
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
+  const supabase = createClient(process.env.supabaseUrl, process.env.supabaseKey)
 
   try {
-    let response
-    switch (action) {
-      case 'list':
-        response = await supabase.from('prompts').select().order('id', { ascending: true })
-        break
-      case 'fetch':
-        response = await supabase.from('prompts').eq('id', prompt.id).select()
-        break
-      case 'insert':
-        response = await supabase.from('prompts').insert(prompt).select()
-        break
-      case 'update':
-        response = await supabase.from('prompts').update(prompt).eq('id', prompt.id).select()
-        break
-      case 'delete':
-        response = await supabase.from('prompts').delete().eq('id', prompt.id)
-        break
-      default:
-        response = { data: '', error: 'Unsupported action' }
-    }
+    const tableRef = supabase.from('prompts')
+    const response = await handleDatabaseAction(action, tableRef, prompt)
     return response.error
       ? { status: '', data: response.error }
       : { status: 'OK', data: response.data }
@@ -32,3 +13,20 @@ export default defineEventHandler(async (event) => {
     return { status: '', data: error }
   }
 })
+
+async function handleDatabaseAction(action, tableRef, prompt) {
+  switch (action) {
+    case 'list':
+      return await tableRef.select().order('id', { ascending: true })
+    case 'fetch':
+      return await tableRef.eq('id', prompt.id).select()
+    case 'insert':
+      return await tableRef.insert(prompt).select()
+    case 'update':
+      return await tableRef.update(prompt).eq('id', prompt.id).select()
+    case 'delete':
+      return await tableRef.delete().eq('id', prompt.id)
+    default:
+      return { status: '', data: 'Unsupported action' }
+  }
+}
