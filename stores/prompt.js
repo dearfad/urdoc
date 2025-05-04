@@ -17,36 +17,48 @@ export const usePromptStore = defineStore(
           type: 'case',
           title: '默认',
           prompt: defaultCasePrompt,
+          author: '',
+          public: true,
         },
         story: {
           id: '',
           type: 'story',
           title: '默认',
           prompt: defaultStoryPrompt,
+          author: '',
+          public: true,
         },
         test: {
           id: '',
           type: 'test',
           title: '默认',
           prompt: defaultTestPrompt,
+          author: '',
+          public: true,
         },
         act: {
           id: '',
           type: 'act',
           title: '默认',
           prompt: defaultActPrompt,
+          author: '',
+          public: true,
         },
         rate: {
           id: '',
           type: 'rate',
           title: '默认',
           prompt: defaultRatePrompt,
+          author: '',
+          public: true,
         },
         face: {
           id: '',
           type: 'face',
           title: '默认',
           prompt: defaultFacePrompt,
+          author: '',
+          public: true,
         },
       },
       user: {
@@ -88,12 +100,11 @@ export const usePromptStore = defineStore(
             response = await databaseApi.operatePrompt('delete', prompt)
             break
         }
+        return response.data
       } catch (error) {
         stateStore.appInfos.push('错误: ' + error.message)
       } finally {
-        if (response.status === 'OK') {
-          stateStore.appInfos.push('成功！')
-        } else {
+        if (response.status != 'OK') {
           stateStore.appInfos.push('失败: ' + response.data)
         }
       }

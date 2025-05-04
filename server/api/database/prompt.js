@@ -1,8 +1,9 @@
-import { createClient } from '@supabase/supabase-js'
+// import { createClient } from '@supabase/supabase-js'
+import { serverSupabaseClient } from '#supabase/server'
 export default defineEventHandler(async (event) => {
   const { action, prompt } = await readBody(event)
-  const supabase = createClient(process.env.supabaseUrl, process.env.supabaseKey)
-
+  // const supabase = createClient(process.env.supabaseUrl, process.env.supabaseKey)
+  const supabase = await serverSupabaseClient(event)
   try {
     const tableRef = supabase.from('prompts')
     const response = await handleDatabaseAction(action, tableRef, prompt)
@@ -25,7 +26,7 @@ async function handleDatabaseAction(action, tableRef, prompt) {
     case 'update':
       return await tableRef.update(prompt).eq('id', prompt.id).select()
     case 'delete':
-      return await tableRef.delete().eq('id', prompt.id)
+      return await tableRef.delete().eq('id', prompt.id).select()
     default:
       return { status: '', data: 'Unsupported action' }
   }

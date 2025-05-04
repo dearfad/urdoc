@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/seo',
+    '@nuxtjs/supabase',
   ],
 
   piniaPluginPersistedstate: {
@@ -41,5 +42,9 @@ export default defineNuxtConfig({
     devProxy: {
       '/function': 'http://localhost:8088/function',
     },
+  },
+
+  supabase: {
+    redirect: false,
   },
 })

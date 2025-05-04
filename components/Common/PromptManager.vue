@@ -1,5 +1,5 @@
 <template>
-  <v-card hover class="px-4" rounded="lg">
+  <v-card hover class="px-4" rounded="lg" :loading="isLoading">
     <v-select
       v-model="item"
       label="提示词"
@@ -12,7 +12,6 @@
       class="mt-4"
       return-object
       no-data-text="读取后可选择"
-      @update:model-value="handlePromptChange"
     />
     <v-card-actions>
       <v-btn text="编辑" @click="isEdit = !isEdit" />
@@ -40,10 +39,13 @@
     </v-card-actions>
     <v-expand-transition>
       <div v-if="isEdit">
-        <v-text-field v-model="item.id" variant="outlined" label="id" disabled="true" />
-        <v-text-field v-model="item.type" variant="outlined" label="类型" disabled="true" />
+        {{ item }}
+        <v-text-field v-model="item.id" variant="outlined" label="id" :disabled="true" />
+        <v-text-field v-model="item.type" variant="outlined" label="类型" :disabled="true" />
         <v-text-field v-model="item.title" variant="outlined" label="标题" />
         <v-textarea v-model="item.prompt" variant="outlined" label="内容" auto-grow />
+        <v-text-field v-model="item.author" variant="outlined" label="作者" :disabled="true" />
+        <v-switch v-model="item.public" label="公开" color="primary" />
       </div>
     </v-expand-transition>
   </v-card>
@@ -59,11 +61,14 @@ const stateStore = useStateStore()
 const item = ref(promptStore.prompts.system[usage])
 const items = computed(() => promptStore.prompts.user[usage])
 
+const isLoading = ref(false)
+
 async function handlePromptList() {
+  isLoading.value = true
   await promptStore.managePrompt('list')
+  isLoading.value = false
   if (items.value.length != 0) {
     item.value = promptStore.prompts.user[usage][0]
-    handlePromptChange()
   }
 }
 
@@ -73,17 +78,25 @@ function handlePromptCreate() {
     type: usage,
     title: '新建',
     prompt: '',
+    author: '',
+    public: true,
   }
+  isEdit.value = true
 }
 
 async function handlePromptInsert() {
+  isLoading.value = true
   const insertPrompt = {
     type: usage,
     title: item.value.title,
     prompt: item.value.prompt,
+    author: '',
+    public: item.value.public,
   }
-  await promptStore.managePrompt('insert', insertPrompt)
-  await promptStore.managePrompt('list')
+  const response = await promptStore.managePrompt('insert', insertPrompt)
+  promptStore.prompts.user[usage].push(response[0])
+  item.value = response[0]
+  isLoading.value = false
 }
 
 async function handlePromptupdate() {
@@ -93,18 +106,36 @@ async function handlePromptupdate() {
     title: item.value.title,
     prompt: item.value.prompt,
   }
-  await promptStore.managePrompt('update', updatePrompt)
-  await promptStore.managePrompt('list')
+  isLoading.value = true
+  const response = await promptStore.managePrompt('update', updatePrompt)
+  promptStore.prompts.user[usage] = promptStore.prompts.user[usage].map((item) =>
+    item.id === response[0].id ? { ...item, ...response } : item
+  )
+  isLoading.value = false
 }
 async function handlePromptDelete() {
+  isLoading.value = true
   if ([1, 2, 3, 4, 5].includes(promptStore.prompts.system[usage].id)) {
     stateStore.appInfos.push('默认提示词不能删除')
   } else {
-    await promptStore.managePrompt('delete', promptStore.prompts.system[usage])
-    await promptStore.managePrompt('list')
+    const response = await promptStore.managePrompt('delete', promptStore.prompts.system[usage])
+    promptStore.prompts.user[usage] = promptStore.prompts.user[usage].filter(
+      (item) => item.id !== response[0].id
+    )
+    if (item.value.id === response[0].id) {
+      item.value = promptStore.prompts.user[usage][0]
+    }
   }
+  isLoading.value = false
 }
-function handlePromptChange() {
-  if (items.value.length != 0) promptStore.prompts.system[usage] = item.value
-}
+
+watch(
+  () => item.value,
+  (newVal) => {
+    if (items.value.length != 0) {
+      promptStore.prompts.system[usage] = newVal
+    }
+  },
+  { deep: true }
+)
 </script>
