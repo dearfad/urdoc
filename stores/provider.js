@@ -33,6 +33,10 @@ export const useProviderStore = defineStore('provider', () => {
   // API服务网址
   const apiBaseUrls = ref([
     {
+      name: '本地 /api',
+      url: '/api',
+    },
+    {
       name: 'Cloudflare',
       url: 'https://urdoc.pages.dev/api',
     },
@@ -55,10 +59,6 @@ export const useProviderStore = defineStore('provider', () => {
     {
       name: 'EdgeOne',
       url: 'https://urdoc.dearfad.com/function',
-    },
-    {
-      name: '本地 /api',
-      url: '/api',
     },
     {
       name: '本地 /function (EdgeOne)',
