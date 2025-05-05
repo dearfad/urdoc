@@ -1,17 +1,5 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <ClientOnly>
-          <vue-json-pretty :data="userStore.user" />
-        </ClientOnly>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto py-4 ga-4">
+    <CommonUserCard />
+  </v-sheet>
 </template>
-
-<script setup>
-import VueJsonPretty from 'vue-json-pretty'
-import 'vue-json-pretty/lib/styles.css'
-const userStore = useUserStore()
-</script>

@@ -78,6 +78,13 @@ interface SystemPrompt {
   title: string
   prompt: string
 }
+
+interface User {
+  id: string
+  name: string
+  email: string
+  password?: string
+}
 // 下面的待定
 // Fields
 interface Fields {

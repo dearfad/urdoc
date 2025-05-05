@@ -2,17 +2,61 @@ export const useUserStore = defineStore(
   'user',
   () => {
     const stateStore = useStateStore()
+    const userApi = useUserApi()
 
-    const user = reactive({
+    const user = ref({
       id: '',
       name: '',
       email: '',
     })
 
     function $reset() {
-      user.id = ''
-      user.name = ''
-      user.email = ''
+      user.value.id = ''
+      user.value.name = ''
+      user.value.email = ''
+    }
+
+    async function auth(action, userData = null) {
+      let response
+      try {
+        switch (action) {
+          case 'login':
+            {
+              response = await userApi.auth('login', userData)
+              if (response.error) {
+                stateStore.appInfos.push('登录错误: ' + response.error)
+              } else {
+                user.value.id = response.data.user.id
+                user.value.email = response.data.user.email
+              }
+            }
+            break
+          case 'logout':
+            {
+              response = await userApi.auth('logout')
+              if (response.error) {
+                stateStore.appInfos.push('登出错误: ' + response.error)
+              } else {
+                user.value.id = ''
+                user.value.email = ''
+              }
+            }
+            break
+          case 'register':
+            {
+              response = await userApi.auth('register', userData)
+              if (response.error) {
+                stateStore.appInfos.push('注册错误: ' + response.error.code)
+              } else {
+                user.value.id = response.data.user.id
+                user.value.email = response.data.user.email
+              }
+            }
+            break
+        }
+      } catch (error) {
+        stateStore.appInfos.push('错误: ' + error.message)
+      }
     }
 
     async function createUser(id, email) {
@@ -72,7 +116,7 @@ export const useUserStore = defineStore(
       }
     }
 
-    return { user, $reset, createUser, getUser, updateUser, deleteUser }
+    return { user, $reset, createUser, getUser, updateUser, deleteUser, auth }
   },
   {
     persist: true,

@@ -35,6 +35,7 @@ export default defineNuxtConfig({
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },
     '/admin/**': { ssr: false },
+    '/user/**': { ssr: false },
   },
 
   // EdgeOne Pages Dev
