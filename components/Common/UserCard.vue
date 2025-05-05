@@ -2,14 +2,12 @@
   <v-sheet>
     <v-card v-if="userStore.user.id" hover class="px-4" rounded="lg" :loading="isLoading">
       <template #title>
-        <div class="my-2">{{ userStore.user.name || '昵称' }}</div>
+        <div class="my-2">昵称: {{ userStore.user.name || '' }}</div>
       </template>
       <template #subtitle
-        ><div class="my-2">{{ userStore.user.email || '邮箱' }}</div>
+        ><div class="my-2">邮箱: {{ userStore.user.email || '' }}</div>
       </template>
-      <template #text>
-        {{ userStore.user.id || 'ID' }}
-      </template>
+      <template #text> ID: {{ userStore.user.id || '' }} </template>
       <v-card-actions>
         <v-spacer />
         <v-btn text="退出" @click="handleLogout" />
