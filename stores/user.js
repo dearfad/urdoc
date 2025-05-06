@@ -16,47 +16,45 @@ export const useUserStore = defineStore(
       user.value.email = ''
     }
 
-    async function auth(action, userData = null) {
-      let response
-      try {
-        switch (action) {
-          case 'login':
-            {
-              response = await userApi.auth('login', userData)
-              if (response.error) {
-                stateStore.appInfos.push('登录错误: ' + response.error)
-              } else {
-                user.value.id = response.data.user.id
-                user.value.email = response.data.user.email
-              }
-            }
-            break
-          case 'logout':
-            {
-              response = await userApi.auth('logout')
-              if (response.error) {
-                stateStore.appInfos.push('登出错误: ' + response.error)
-              } else {
-                user.value.id = ''
-                user.value.email = ''
-              }
-            }
-            break
-          case 'register':
-            {
-              response = await userApi.auth('register', userData)
-              if (response.error) {
-                stateStore.appInfos.push('注册错误: ' + response.error.code)
-              } else {
-                user.value.id = response.data.user.id
-                user.value.email = response.data.user.email
-              }
-            }
-            break
+    const auth = {
+      async login(userData) {
+        try {
+          const response = await userApi.auth('login', userData)
+          if (response.error) {
+            stateStore.appInfos.push('登录错误: ' + response.error)
+          } else {
+            const { id, email, name } = response.data.user
+            user.value = { id, email, name }
+          }
+        } catch (error) {
+          stateStore.appInfos.push('登录异常: ' + error)
         }
-      } catch (error) {
-        stateStore.appInfos.push('错误: ' + error.message)
-      }
+      },
+      async logout() {
+        try {
+          const response = await userApi.auth('logout')
+          if (response.error) {
+            stateStore.appInfos.push('退出登录错误: ' + response.error)
+          } else {
+            $reset()
+          }
+        } catch (error) {
+          stateStore.appInfos.push('退出登录异常: ' + error)
+        }
+      },
+      async register(userData) {
+        try {
+          const response = await userApi.auth('register', userData)
+          if (response.error) {
+            stateStore.appInfos.push('注册错误: ' + response.error.code)
+          } else {
+            user.value.id = response.data.user.id
+            user.value.email = response.data.user.email
+          }
+        } catch (error) {
+          stateStore.appInfos.push('注册异常: ' + error)
+        }
+      },
     }
 
     async function createUser(id, email) {
