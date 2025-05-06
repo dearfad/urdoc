@@ -33,7 +33,7 @@ export const useProviderStore = defineStore('provider', () => {
   // API服务网址
   const apiBaseUrls = ref([
     {
-      name: '本地 /api',
+      name: '本地接口 /api',
       url: '/api',
     },
     {

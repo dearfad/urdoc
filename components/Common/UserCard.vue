@@ -1,16 +1,51 @@
 <template>
   <v-sheet>
-    <v-card v-if="userStore.user.id" hover class="px-4" rounded="lg" :loading="isLoading">
-      <template #title>
-        <div class="my-2">昵称: {{ userStore.user.name || '' }}</div>
-      </template>
-      <template #subtitle
-        ><div class="my-2">邮箱: {{ userStore.user.email || '' }}</div>
-      </template>
-      <template #text> ID: {{ userStore.user.id || '' }} </template>
+    <v-card
+      v-if="userStore.user.id"
+      hover
+      class="d-flex flex-column pa-4 ga-4"
+      rounded="lg"
+      :loading="isLoading"
+    >
+      <v-text-field
+        v-model="userStore.user.name"
+        label="昵称"
+        variant="outlined"
+        hide-details="auto"
+      />
+      <v-btn text="更改昵称" block size="large" class="mb-2" @click="handleUpdateName" />
+      <v-text-field
+        v-model="userStore.user.email"
+        label="邮箱"
+        variant="outlined"
+        disabled
+        hide-details="auto"
+      />
+      <v-text-field
+        v-model="userStore.user.id"
+        label="ID"
+        variant="outlined"
+        disabled
+        hide-details="auto"
+      />
       <v-card-actions>
         <v-spacer />
         <v-btn text="退出" @click="handleLogout" />
+        <v-dialog max-width="400">
+          <template #activator="{ props: activatorProps }">
+            <v-btn text="注销" v-bind="activatorProps" color="error" />
+          </template>
+          <template #default="{ isActive }">
+            <v-card title="确认注销">
+              <v-card-text> 本操作将在数据库中删除用户，是否继续？ </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn text="取消" @click="isActive.value = false" />
+                <v-btn text="确认" @click=";(isActive.value = false), handleRemoveUser()" />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
       </v-card-actions>
     </v-card>
     <v-card v-else hover class="px-4" rounded="lg" :loading="isLoading">
@@ -35,11 +70,12 @@
 const isLoading = ref(false)
 const email = ref('')
 const password = ref('')
+
 const userStore = useUserStore()
 
 async function handleLogout() {
   isLoading.value = true
-  await userStore.auth('logout')
+  await userStore.auth.logout()
   isLoading.value = false
 }
 
@@ -51,7 +87,7 @@ async function handleLogin() {
     password: password.value,
     name: '',
   }
-  await userStore.auth('login', user)
+  await userStore.auth.login(user)
   isLoading.value = false
 }
 
@@ -63,7 +99,24 @@ async function handleRegister() {
     password: password.value,
     name: '',
   }
-  await userStore.auth('register', user)
+  await userStore.auth.register(user)
+  isLoading.value = false
+}
+
+async function handleRemoveUser() {
+  isLoading.value = true
+  await userStore.auth.remove(userStore.user)
+  isLoading.value = false
+}
+
+async function handleUpdateName() {
+  isLoading.value = true
+  const user = {
+    id: userStore.user.id,
+    email: userStore.user.email,
+    name: userStore.user.name,
+  }
+  await userStore.profile.update(user)
   isLoading.value = false
 }
 </script>
