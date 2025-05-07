@@ -1,9 +1,11 @@
 <template>
   <v-app-bar flat density="compact">
     <v-app-bar-nav-icon @click="stateStore.isNavDrawerLeftShow = !stateStore.isNavDrawerLeftShow" />
-    <v-app-bar-title class="font-weight-bold cursor-pointer" @click="router.push('/')">
-      URDOC
-    </v-app-bar-title>
+    <v-app-bar-title
+      class="font-weight-bold cursor-pointer"
+      text="URDOC"
+      @click="router.push('/')"
+    />
     <v-spacer />
     <v-btn text="文档" to="/docs" />
     <v-btn v-if="!userStore.user.id" text="登录" to="/user/profile" />
@@ -23,3 +25,9 @@ const router = useRouter()
 const stateStore = useStateStore()
 const userStore = useUserStore()
 </script>
+
+<style scoped>
+:deep(.v-toolbar-title__placeholder) {
+  overflow: visible;
+}
+</style>

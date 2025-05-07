@@ -1,14 +1,15 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto align-center pt-2 ga-4">
-    <div class="text-h3 font-weight-bold text-blue">URDOC</div>
-    <div class="text-h3 font-weight-bold">虚拟病例研究平台</div>
-    <div>
-      <v-img min-width="640" src="/heroimage.png" class="mx-auto" />
+  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto justify-center align-center pt-4 ga-4">
+    <div class="text-h2 font-weight-bold text-blue">URDOC</div>
+    <div class="text-h4 font-weight-bold">虚拟病例研究平台</div>
+    <div class="d-flex w-100 justify-center">
+      <v-img max-width="640" src="/heroimage.png" />
     </div>
-    <div class="text-h6 text-center">
-      是通过大语言模型
-      <span class="font-weight-bold"> 生成病例、编写故事、设计问题、模拟问诊和评估能力 </span>
-      为一体的虚拟病例研究平台
+    <div class="text-h6 text-center px-4">
+      <p>通过大语言模型</p>
+      <p class="font-weight-bold">生成病例 编写故事 设计问题</p>
+      <p class="font-weight-bold">模拟问诊 评估能力</p>
+      <p>CSTAR模式的应用与创新实践</p>
     </div>
     <v-btn
       class="font-weight-bold my-8"

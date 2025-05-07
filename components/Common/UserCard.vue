@@ -1,5 +1,5 @@
 <template>
-  <v-sheet>
+  <v-sheet class="ma-4">
     <v-card
       v-if="userStore.user.id"
       hover
