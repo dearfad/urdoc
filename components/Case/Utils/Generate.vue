@@ -3,8 +3,8 @@
     <CommonGenerateButton generate-type="case" />
     <CommonTagInput tag-type="case" />
     <CommonScopeSelector />
-    <CommonModelSelector model-type="chat" model-usage="case" />
-    <CommonPromptManager usage="case" />
+    <CommonModelCard model-type="chat" model-usage="case" />
+    <CommonPromptCard usage="case" />
     <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

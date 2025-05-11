@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="px-4 py-2" elevation="4" rounded="lg">
+  <v-card hover class="px-4 py-2" rounded="lg">
     <v-select
       v-model="gateway"
       label="网关"
@@ -47,7 +47,7 @@
         @update:model-value="handleModelChange"
       />
     </div>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup>

@@ -1,12 +1,13 @@
 <template>
-  <v-sheet
+  <v-card
+    hover
     class="text-body-1 px-4 py-2 overflow-auto mx-4"
-    elevation="4"
     rounded="lg"
     height="55vh"
+    :loading="isLoading"
   >
     <v-data-table
-      v-model="stateStore.listSelectedRecordId"
+      v-model="id"
       :headers="headers"
       :items="stateStore.listRecords"
       show-select
@@ -20,10 +21,10 @@
     />
     <v-sheet class="d-flex justify-end">
       <div>
-        <v-btn text="刷新" variant="plain" @click="recordStore.list()" />
+        <v-btn text="刷新" variant="plain" @click="selectAll()" />
       </div>
       <div>
-        <v-btn text="读取" variant="plain" @click="recordStore.load()" />
+        <v-btn text="读取" variant="plain" @click="selectRecord()" />
       </div>
       <v-dialog max-width="400">
         <template #activator="{ props: activatorProps }">
@@ -36,23 +37,50 @@
             <v-card-actions>
               <v-spacer />
               <v-btn text="取消" @click="isActive.value = false" />
-              <v-btn text="确认" @click=";(isActive.value = false), recordStore.remove()" />
+              <v-btn text="确认" @click=";(isActive.value = false), deleteRecord()" />
             </v-card-actions>
           </v-card>
         </template>
       </v-dialog>
     </v-sheet>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup>
 const stateStore = useStateStore()
 const recordStore = useRecordStore()
+const id = ref([])
+const isLoading = ref(false)
 const headers = ref([
   { title: '索引', key: 'id', nowrap: true, width: 90 },
   { title: '姓名', key: '姓名', nowrap: true, width: 90 },
   { title: '性别', key: '性别', nowrap: true, width: 90 },
   { title: '年龄', key: '年龄', nowrap: true, width: 90 },
   { title: '主诉', key: '主诉', nowrap: true },
+  { title: '教科书', key: 'book', nowrap: true },
+  { title: '章节', key: 'chapter', nowrap: true },
 ])
+
+async function selectAll() {
+  isLoading.value = true
+  await recordStore.database.selectAll()
+  isLoading.value = false
+}
+async function selectRecord() {
+  isLoading.value = true
+  const record = {
+    id: id.value[0],
+  }
+  await recordStore.database.select(record)
+  isLoading.value = false
+}
+
+async function deleteRecord() {
+  isLoading.value = true
+  const record = {
+    id: id.value[0],
+  }
+  await recordStore.database.delete(record)
+  isLoading.value = false
+}
 </script>

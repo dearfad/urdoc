@@ -1,8 +1,8 @@
 <template>
-  <v-sheet class="px-4" elevation="4" rounded="lg">
+  <v-card hover class="px-4" rounded="lg">
     <v-select
       v-model="stateStore.apiBaseUrl"
-      label="API Base URL"
+      label="接口地址"
       :items="providerStore.apiBaseUrls"
       item-title="name"
       item-value="url"
@@ -11,7 +11,7 @@
       hide-details="auto"
       density="comfortable"
     />
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup>

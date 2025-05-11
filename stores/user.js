@@ -17,26 +17,41 @@ export const useUserStore = defineStore(
     }
 
     const auth = {
-      async login(userData) {
+      async signUp(userData) {
         try {
-          const response = await userApi.auth('login', userData)
+          const response = await userApi.auth('signup', userData)
           if (response.error) {
-            stateStore.appInfos.push('登录错误: ' + response.error)
+            stateStore.appInfos.push('注册错误: ' + response.error.code)
           } else {
-            const { id, email } = response.data.user
-            user.value.id = id
-            user.value.email = email
-            await profile.retrieve(user.value)
+            user.value.id = response.data.user.id
+            user.value.email = response.data.user.email
+            const userProfile = await profile.insert(user.value)
+            user.value.name = userProfile.name
+          }
+        } catch (error) {
+          stateStore.appInfos.push('注册异常: ' + error)
+        }
+      },
+      async signIn(userData) {
+        try {
+          const response = await userApi.auth('signin', userData)
+          if (response.error) {
+            stateStore.appInfos.push('登录错误: ' + response.error.code)
+          } else {
+            user.value.id = response.data.user.id
+            user.value.email = response.data.user.email
+            const userProfile = await profile.select(user.value)
+            user.value.name = userProfile.name
           }
         } catch (error) {
           stateStore.appInfos.push('登录异常: ' + error)
         }
       },
-      async logout() {
+      async signOut() {
         try {
-          const response = await userApi.auth('logout')
+          const response = await userApi.auth('signout')
           if (response.error) {
-            stateStore.appInfos.push('退出登录错误: ' + response.error)
+            stateStore.appInfos.push('退出登录错误: ' + response.error.code)
           } else {
             $reset()
           }
@@ -44,23 +59,10 @@ export const useUserStore = defineStore(
           stateStore.appInfos.push('退出登录异常: ' + error)
         }
       },
-      async register(userData) {
+
+      async deleteUser(userData) {
         try {
-          const response = await userApi.auth('register', userData)
-          if (response.error) {
-            stateStore.appInfos.push('注册错误: ' + response.error.code)
-          } else {
-            user.value.id = response.data.user.id
-            user.value.email = response.data.user.email
-            await profile.create(user.value)
-          }
-        } catch (error) {
-          stateStore.appInfos.push('注册异常: ' + error)
-        }
-      },
-      async remove(userData) {
-        try {
-          const response = await userApi.auth('delete', userData)
+          const response = await userApi.auth('deleteuser', userData)
           if (response.error) {
             stateStore.appInfos.push('注销错误: ' + response.error.code)
           } else {
@@ -73,33 +75,33 @@ export const useUserStore = defineStore(
     }
 
     const profile = {
-      async create(userData) {
+      async insert(userData) {
         try {
-          const response = await userApi.profile('create', userData)
+          const response = await userApi.profile('insert', userData)
           if (response.error) {
             stateStore.appInfos.push('创建用户错误: ' + response.error.code)
           } else {
-            user.value.name = response.data[0].name
+            return response.data[0]
           }
         } catch (error) {
           stateStore.appInfos.push('创建用户异常: ' + error)
         }
       },
-      async retrieve(userData) {
+      async select(userData) {
         try {
-          const response = await userApi.profile('retrieve', userData)
+          const response = await userApi.profile('select', userData)
           if (response.error) {
             stateStore.appInfos.push('获取用户错误: ' + response.error.code)
           } else {
-            user.value.name = response.data[0].name
+            return response.data[0]
           }
         } catch (error) {
           stateStore.appInfos.push('获取用户异常: ' + error)
         }
       },
-      async update(userData) {
+      async updateName(userData) {
         try {
-          const response = await userApi.profile('update', userData)
+          const response = await userApi.profile('updateName', userData)
           if (response.error) {
             stateStore.appInfos.push('更新用户错误: ' + response.error.code)
           } else {

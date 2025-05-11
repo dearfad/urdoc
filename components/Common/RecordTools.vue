@@ -1,5 +1,10 @@
 <template>
-  <v-sheet class="d-flex justify-space-between font-weight-bold mx-4" elevation="4" rounded="lg">
+  <v-card
+    class="d-flex justify-space-between font-weight-bold mx-4"
+    hover
+    rounded="lg"
+    :loading="isLoading"
+  >
     <v-btn-toggle v-model="stateStore.recordShowContent" mandatory density="compact">
       <v-btn text="查看" :value="'markdown'" />
       <v-btn text="编辑" :value="'edit'" />
@@ -13,15 +18,55 @@
       />
     </div>
     <div v-if="recordStore.record.id">
-      <v-btn variant="plain" text="更新" class="font-weight-bold" @click="recordStore.update" />
+      <v-btn variant="plain" text="更新" class="font-weight-bold" @click="update()" />
     </div>
     <div v-else>
-      <v-btn variant="plain" text="保存" class="font-weight-bold" @click="recordStore.insert" />
+      <v-btn variant="plain" text="保存" class="font-weight-bold" @click="insert()" />
     </div>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup>
 const stateStore = useStateStore()
 const recordStore = useRecordStore()
+const userStore = useUserStore()
+const isLoading = ref(false)
+
+async function insert() {
+  if (!userStore.user.id) {
+    stateStore.appInfos.push('非注册用户无法保存')
+    return
+  }
+  isLoading.value = true
+  const recordData = {
+    record: {
+      case: recordStore.record.case,
+      story: recordStore.record.story,
+      test: recordStore.record.test,
+      scope: recordStore.record.scope,
+      tag: recordStore.record.tag,
+    },
+    author: userStore.user.id,
+    public: recordStore.record.public,
+  }
+  await recordStore.database.insert(recordData)
+  isLoading.value = false
+}
+
+async function update() {
+  isLoading.value = true
+  const recordData = {
+    id: recordStore.record.id,
+    record: {
+      case: recordStore.record.case,
+      story: recordStore.record.story,
+      test: recordStore.record.test,
+      scope: recordStore.record.scope,
+      tag: recordStore.record.tag,
+    },
+    public: recordStore.record.public,
+  }
+  await recordStore.database.update(recordData)
+  isLoading.value = false
+}
 </script>

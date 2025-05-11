@@ -1,3 +1,6 @@
+// https://supabase.nuxtjs.org/
+// https://supabase.com/docs/reference/javascript
+
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
@@ -5,13 +8,17 @@ export default defineEventHandler(async (event) => {
   const supabase = await serverSupabaseClient(event)
 
   switch (action) {
-    case 'create':
+    case 'insert':
       return await supabase.from('users').insert({ id: user.id, name: user.email }).select()
-    case 'update':
+    case 'updateName':
       return await supabase.from('users').update({ name: user.name }).eq('id', user.id).select()
-    case 'retrieve':
+    case 'select':
       return await supabase.from('users').select().eq('id', user.id)
     default:
-      return { error: '指令未注册' }
+      return {
+        status: 400,
+        statusText: 'Bad Request',
+        error: { code: 'Action Is Not Defined' },
+      }
   }
 })

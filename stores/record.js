@@ -3,11 +3,11 @@ export const useRecordStore = defineStore(
   () => {
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
-    const databaseApi = useDatabaseApi()
+    const recordApi = useRecordApi()
     const stateStore = useStateStore()
 
     // Medical Records
-    const record = ref<MedicalRecord>({
+    const record = ref({
       id: 0,
       case: {
         姓名: '',
@@ -57,11 +57,13 @@ export const useRecordStore = defineStore(
       face: '',
       pose: '',
       voice: '',
+      author: '',
+      public: true,
     })
-    const records = ref<MedicalRecords>([])
+    const records = ref([])
 
     // 观察字段，提示进度
-    const watchFields = ref<Fields>({
+    const watchFields = ref({
       case: Object.keys(record.value.case),
     })
 
@@ -203,6 +205,8 @@ export const useRecordStore = defineStore(
         face: '',
         voice: '',
         pose: '',
+        author: '',
+        public: true,
       }
       stateStore.isActing = false
       stateStore.isRating = false
@@ -210,20 +214,20 @@ export const useRecordStore = defineStore(
 
     async function getCase() {
       $reset()
-      const messages: Messages = promptStore.getSystemPrompt('case')
+      const messages = promptStore.getSystemPrompt('case')
       record.value.case = JSON.parse(await modelRouter.getCase(messages))
       record.value.scope = stateStore.scope
       record.value.tag.case = stateStore.tag.case
     }
 
     async function getStory() {
-      const messages: Messages = promptStore.getSystemPrompt('story')
+      const messages = promptStore.getSystemPrompt('story')
       record.value.story = JSON.parse(await modelRouter.getStory(messages))
       record.value.tag.story = stateStore.tag.story
     }
 
     async function getTest() {
-      const messages: Messages = promptStore.getSystemPrompt('test')
+      const messages = promptStore.getSystemPrompt('test')
       record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
       record.value.tag.test = stateStore.tag.test
     }
@@ -234,7 +238,7 @@ export const useRecordStore = defineStore(
       }
       record.value.act.push({ role: 'user', content: stateStore.userPrompt })
       record.value.act.push({
-        role: 'assistant' as Role,
+        role: 'assistant',
         content: await modelRouter.getAct(record.value.act),
       })
     }
@@ -245,97 +249,85 @@ export const useRecordStore = defineStore(
       }
       record.value.rate.push({ role: 'user', content: stateStore.userPrompt })
       record.value.rate.push({
-        role: 'assistant' as Role,
+        role: 'assistant',
         content: await modelRouter.getRate(record.value.rate),
       })
     }
 
-    async function insert() {
-      try {
-        type Result = { status: string; data: string }
-        const result = (await databaseApi.insertRecord()) as Result
-        if (result.status === 'OK') {
-          record.value.id = Number(result.data)
-          stateStore.appInfo = '保存成功'
-        } else {
-          stateStore.appInfo = '保存失败: ' + result.data
-        }
-      } catch (error) {
-        stateStore.appInfo = '插入错误: ' + error
-      }
-    }
-    async function update() {
-      try {
-        type Result = { status: string; data: string }
-        const result = (await databaseApi.updateRecord()) as Result
-        if (result.status === 'OK') {
-          stateStore.appInfo = '更新完毕'
-        } else {
-          stateStore.appInfo = '更新失败: ' + result.data
-        }
-      } catch (error) {
-        stateStore.appInfo = '更新错误: ' + error
-      }
-    }
-
-    async function list() {
-      try {
-        type Result = {
-          status: string
-          data: []
-        }
-        const result = (await databaseApi.listRecord()) as Result
-        if (result.status === 'OK') {
-          stateStore.listRecords = result.data
-          stateStore.appInfo = '列表完毕'
-        } else {
-          stateStore.appInfo = '列表失败: ' + result.data
-        }
-      } catch (error) {
-        stateStore.appInfo = '列表错误: ' + error
-      }
-    }
-
-    async function load() {
-      try {
-        type Result = {
-          status: string
-          data: { id: number; record: { case: Case; story: Story; test: Tests } }
-        }
-        const result = (await databaseApi.loadRecord()) as Result
-        if (result.status === 'OK') {
-          $reset()
-          record.value.id = result.data.id
-          for (const key in record.value.case) {
-            record.value.case[key as keyof typeof record.value.case] =
-              result.data.record.case[key as keyof typeof result.data.record.case] || ''
+    const database = {
+      async selectAll() {
+        try {
+          const response = await recordApi.database('selectAll')
+          if (response.error) {
+            stateStore.appInfos.push('记录列表错误', response.error.message)
+          } else {
+            stateStore.listRecords = response.data
           }
-          record.value.story = result.data.record.story
-          record.value.test = result.data.record.test
-          stateStore.appInfo = '读取完毕'
-        } else {
-          stateStore.appInfo = '读取失败: ' + result.data
+        } catch (error) {
+          stateStore.appInfos.push('记录列表异常: ' + error)
         }
-      } catch (error) {
-        stateStore.appInfo = '读取错误: ' + error
-      }
-    }
-    async function remove() {
-      try {
-        type Result = {
-          status: string
-          data: string
+      },
+
+      async insert(recordData) {
+        try {
+          const response = await recordApi.database('insert', recordData)
+          if (response.error) {
+            stateStore.appInfo = '记录添加错误: ' + response.error.message
+          } else {
+            record.value.id = response.data[0].id
+            record.value.author = response.data[0].author
+          }
+        } catch (error) {
+          stateStore.appInfos.push('记录填加异常: ' + error)
         }
-        const result = (await databaseApi.removeRecord()) as Result
-        if (result.status === 'OK') {
-          await list()
-          stateStore.appInfo = '列表完毕'
-        } else {
-          stateStore.appInfo = '列表失败: ' + result.data
+      },
+
+      async update(recordData) {
+        try {
+          const response = await recordApi.database('update', recordData)
+          if (response.error) {
+            stateStore.appInfos.push('记录更新错误' + response.error.message)
+          }
+        } catch (error) {
+          stateStore.appInfo = '更新错误: ' + error
         }
-      } catch (error) {
-        stateStore.appInfo = '列表错误: ' + error
-      }
+      },
+
+      async select(recordData) {
+        try {
+          const response = await recordApi.database('select', recordData)
+          if (response.error) {
+            stateStore.appInfos.push('记录读取错误: ' + response.error.message)
+          } else {
+            $reset()
+            record.value.id = response.data[0].id
+            for (const key in record.value.case) {
+              record.value.case[key] = response.data[0].record.case[key] || ''
+            }
+            record.value.story = response.data[0].record.story
+            record.value.test = response.data[0].record.test
+            record.value.scope = response.data[0].record.scope
+            record.value.tag = response.data[0].record.tag
+            record.value.author = response.data[0].record.author
+            record.value.public = response.data[0].record.public
+          }
+        } catch (error) {
+          stateStore.appInfos.push('记录读取异常: ' + error)
+        }
+      },
+
+      async delete(recordData) {
+        try {
+          const response = await recordApi.database('delete', recordData)
+          if (response.error) {
+            stateStore.appInfos.push('记录删除错误: ' + response.error.message)
+          } else {
+            await database.selectAll()
+          }
+        } catch (error) {
+          stateStore.appInfos.push('记录删除异常: ' + error)
+        }
+      },
     }
 
     async function newRecord() {
@@ -360,11 +352,7 @@ export const useRecordStore = defineStore(
       getRate,
       newRecord,
 
-      list,
-      insert,
-      remove,
-      load,
-      update,
+      database,
     }
   },
   {

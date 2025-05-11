@@ -30,7 +30,7 @@
       />
       <v-card-actions>
         <v-spacer />
-        <v-btn text="退出" @click="handleLogout" />
+        <v-btn text="退出" @click="handleSignOut" />
         <v-dialog max-width="400">
           <template #activator="{ props: activatorProps }">
             <v-btn text="注销" v-bind="activatorProps" color="error" />
@@ -41,7 +41,7 @@
               <v-card-actions>
                 <v-spacer />
                 <v-btn text="取消" @click="isActive.value = false" />
-                <v-btn text="确认" @click=";(isActive.value = false), handleRemoveUser()" />
+                <v-btn text="确认" @click=";(isActive.value = false), handleDeleteUser()" />
               </v-card-actions>
             </v-card>
           </template>
@@ -59,8 +59,8 @@
       />
       <v-card-actions>
         <v-spacer />
-        <v-btn size="large" @click="handleRegister"> 注册 </v-btn>
-        <v-btn size="large" @click="handleLogin"> 登录 </v-btn>
+        <v-btn size="large" @click="handleSignUp"> 注册 </v-btn>
+        <v-btn size="large" @click="handleSignIn"> 登录 </v-btn>
       </v-card-actions>
     </v-card>
   </v-sheet>
@@ -73,13 +73,7 @@ const password = ref('')
 
 const userStore = useUserStore()
 
-async function handleLogout() {
-  isLoading.value = true
-  await userStore.auth.logout()
-  isLoading.value = false
-}
-
-async function handleLogin() {
+async function handleSignUp() {
   isLoading.value = true
   const user = {
     id: '',
@@ -87,11 +81,11 @@ async function handleLogin() {
     password: password.value,
     name: '',
   }
-  await userStore.auth.login(user)
+  await userStore.auth.signUp(user)
   isLoading.value = false
 }
 
-async function handleRegister() {
+async function handleSignIn() {
   isLoading.value = true
   const user = {
     id: '',
@@ -99,13 +93,18 @@ async function handleRegister() {
     password: password.value,
     name: '',
   }
-  await userStore.auth.register(user)
+  await userStore.auth.signIn(user)
+  isLoading.value = false
+}
+async function handleSignOut() {
+  isLoading.value = true
+  await userStore.auth.signOut()
   isLoading.value = false
 }
 
-async function handleRemoveUser() {
+async function handleDeleteUser() {
   isLoading.value = true
-  await userStore.auth.remove(userStore.user)
+  await userStore.auth.deleteUser(userStore.user)
   isLoading.value = false
 }
 
@@ -116,7 +115,7 @@ async function handleUpdateName() {
     email: userStore.user.email,
     name: userStore.user.name,
   }
-  await userStore.profile.update(user)
+  await userStore.profile.updateName(user)
   isLoading.value = false
 }
 </script>

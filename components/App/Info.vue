@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 const snackbar = ref(false)
-const timeout = ref(1000)
+const timeout = ref(2000)
 const stateStore = useStateStore()
 watch(
   () => stateStore.appInfo,

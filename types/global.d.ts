@@ -69,6 +69,8 @@ interface MedicalRecord {
   face: string // 头像图片地址
   pose: string // 视频地址
   voice: string // 语言设置
+  author: string
+  public: boolean
 }
 type MedicalRecords = MedicalRecord[]
 

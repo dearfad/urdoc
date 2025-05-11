@@ -6,6 +6,9 @@
     <div v-if="stateStore.recordShowContent === 'edit'">
       <StoryContentEdit />
     </div>
+    <div v-if="stateStore.recordShowContent === 'list'">
+      <CaseContentList />
+    </div>
   </div>
 </template>
 

@@ -9,7 +9,7 @@ export const usePromptStore = defineStore(
   () => {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
-    const databaseApi = useDatabaseApi()
+    const promptApi = usePromptApi()
     const prompts = ref({
       system: {
         case: {
@@ -71,43 +71,73 @@ export const usePromptStore = defineStore(
       },
     })
 
-    async function managePrompt(action, prompt) {
-      let response
-      try {
-        switch (action) {
-          case 'list':
-            {
-              response = await databaseApi.operatePrompt('list')
+    const prompt = {
+      async selectAll() {
+        try {
+          const response = await promptApi.database('selectAll')
+          if (response.error) {
+            stateStore.appInfos.push('提示词列表错误', response.error.code)
+          } else {
+            const promptList = ['case', 'story', 'test', 'act', 'rate']
+            promptList.forEach((item) => {
+              prompts.value.user[item] = response.data.filter((i) => i.type === item)
+            })
+          }
+        } catch (error) {
+          stateStore.appInfos.push('提示词列表异常: ' + error)
+        }
+      },
 
-              if (response.status === 'OK') {
-                const promptList = ['case', 'story', 'test', 'act', 'rate']
-                promptList.forEach((item) => {
-                  prompts.value.user[item] = response.data.filter((i) => i.type === item)
-                })
-              }
-            }
-            break
-          case 'load':
-            response = await databaseApi.operatePrompt('fetch', prompt)
-            break
-          case 'insert':
-            response = await databaseApi.operatePrompt('insert', prompt)
-            break
-          case 'update':
-            response = await databaseApi.operatePrompt('update', prompt)
-            break
-          case 'delete':
-            response = await databaseApi.operatePrompt('delete', prompt)
-            break
+      async select(promptData) {
+        try {
+          const response = await promptApi.database('select', promptData)
+          if (response.error) {
+            stateStore.appInfos.push('提示词获取错误', response.error.code)
+          } else {
+            return response.data[0]
+          }
+        } catch (error) {
+          stateStore.appInfos.push('提示词获取异常: ' + error)
         }
-        return response.data
-      } catch (error) {
-        stateStore.appInfos.push('错误: ' + error.message)
-      } finally {
-        if (response.status != 'OK') {
-          stateStore.appInfos.push('失败: ' + response.data)
+      },
+      async insert(promptData) {
+        try {
+          const response = await promptApi.database('insert', promptData)
+          if (response.error) {
+            stateStore.appInfos.push('提示词填加错误', response.error.message)
+          } else {
+            return response.data[0]
+          }
+        } catch (error) {
+          stateStore.appInfos.push('提示词填加异常: ' + error)
         }
-      }
+      },
+
+      async update(promptData) {
+        try {
+          const response = await promptApi.database('update', promptData)
+          if (response.error) {
+            stateStore.appInfos.push('提示词更新错误', response.error.code)
+          } else {
+            return response.data[0]
+          }
+        } catch (error) {
+          stateStore.appInfos.push('提示词更新异常: ' + error)
+        }
+      },
+
+      async delete(promptData) {
+        try {
+          const response = await promptApi.database('delete', promptData)
+          if (response.error) {
+            stateStore.appInfos.push('提示词删除错误', response.error.code)
+          } else {
+            return response.data[0]
+          }
+        } catch (error) {
+          stateStore.appInfos.push('提示词删除异常: ' + error)
+        }
+      },
     }
 
     function getSystemPrompt(systemPromptType) {
@@ -147,7 +177,7 @@ export const usePromptStore = defineStore(
       ]
     }
 
-    return { prompts, getSystemPrompt, managePrompt, defaultCasePrompt }
+    return { prompts, prompt, getSystemPrompt }
   },
   {
     persist: true,

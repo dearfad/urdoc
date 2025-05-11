@@ -108,6 +108,10 @@
       variant="outlined"
       hide-details="auto"
     />
+    <div class="d-flex">
+      <v-spacer />
+      <v-switch v-model="recordStore.record.public" label="公开" color="primary" hide-details />
+    </div>
   </v-sheet>
 </template>
 
