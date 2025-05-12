@@ -30,15 +30,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/api/**': {
-      cors: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Allow-Methods': '*',
-        'Access-Control-Allow-Headers': '*',
-      },
-    },
+    '/api/**': { cors: true },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },
@@ -55,6 +47,5 @@ export default defineNuxtConfig({
 
   supabase: {
     redirect: false,
-    useSsrCookies: true,
   },
 })
