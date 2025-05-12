@@ -47,5 +47,6 @@ export default defineNuxtConfig({
 
   supabase: {
     redirect: false,
+    useSsrCookies: true,
   },
 })
