@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/api/**': { cors: true },
+    '/api/**': { cors: true, headers: { 'Access-Control-Allow-Credentials': 'true' } },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
     '/media/**': { ssr: false },

@@ -6,6 +6,7 @@ export default function () {
       method: 'POST',
       headers: useRequestHeaders(['cookie']),
       body: { action: action, user: user },
+      credentials: 'include',
     })
   }
 
