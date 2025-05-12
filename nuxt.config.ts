@@ -47,5 +47,9 @@ export default defineNuxtConfig({
 
   supabase: {
     redirect: false,
+    cookieOptions: {
+      sameSite: 'none',
+      secure: true,
+    },
   },
 })
