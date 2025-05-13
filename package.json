@@ -1,6 +1,6 @@
 {
   "name": "urdoc",
-  "version": "0.0.1",
+  "version": "2025.05.13",
   "type": "module",
   "scripts": {
     "build": "nuxt build",
