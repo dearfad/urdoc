@@ -27,6 +27,15 @@ export default withMermaid({
     },
 
     socialLinks: [{ icon: 'github', link: 'https://github.com/dearfad/urdoc' }],
+
+    editLink: {
+      pattern: 'https://github.com/dearfad/urdoc/edit/main/docs/:path',
+      text: '在 GitHub 上编辑此页面',
+    },
+
+    lastUpdated: {
+      text: '最后更新于',
+    },
   },
 
   // your existing vitepress config...
