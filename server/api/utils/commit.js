@@ -5,6 +5,7 @@ export default defineEventHandler(async () => {
       headers: {
         Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
+        'User-Agent': 'urdoc',
       },
     })
     return commitMain.commit.committer.date
