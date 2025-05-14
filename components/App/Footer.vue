@@ -13,6 +13,7 @@ onMounted(async () => {
   const data = await $fetch('/utils/commit', {
     baseURL: stateStore.apiBaseUrl,
   })
+  console.log(data)
   const utcDate = new Date(data)
   const beijingDateStr = utcDate.toLocaleDateString('zh-CN', {
     timeZone: 'Asia/Shanghai',
