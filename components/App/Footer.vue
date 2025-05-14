@@ -11,11 +11,14 @@ const stateStore = useStateStore()
 const badgeSrc = ref('')
 onMounted(async () => {
   const data = await $fetch('/api/utils/commit')
-  console.log(data)
-  const beijingTime = new Date(data).toISOString().replace('Z', '+08:00')
-  console.log(beijingTime)
-  const formattedBeijingTime = beijingTime.split('T')[0].replace(/-/g, '--')
-  console.log(formattedBeijingTime)
-  badgeSrc.value = `https://img.shields.io/badge/${formattedBeijingTime}-虚拟病例研究平台-blue?style=social&logo=github`
+  const utcDate = new Date(data)
+  const beijingDateStr = utcDate.toLocaleDateString('zh-CN', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+  const formattedDate = beijingDateStr.replace(/\//g, '--')
+  badgeSrc.value = `https://img.shields.io/badge/${formattedDate}-虚拟病例研究平台-blue?style=social&logo=github`
 })
 </script>
