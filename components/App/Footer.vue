@@ -10,7 +10,9 @@
 const stateStore = useStateStore()
 const badgeSrc = ref('')
 onMounted(async () => {
-  const data = await $fetch('/api/utils/commit')
+  const data = await $fetch('/api/utils/commit', {
+    baseURL: stateStore.apiBaseUrl,
+  })
   const utcDate = new Date(data)
   const beijingDateStr = utcDate.toLocaleDateString('zh-CN', {
     timeZone: 'Asia/Shanghai',
