@@ -10,7 +10,7 @@
 const stateStore = useStateStore()
 const badgeSrc = ref('')
 onMounted(async () => {
-  const data = await $fetch('/api/utils/commit', {
+  const data = await $fetch('/utils/commit', {
     baseURL: stateStore.apiBaseUrl,
   })
   const utcDate = new Date(data)
