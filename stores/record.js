@@ -254,6 +254,12 @@ export const useRecordStore = defineStore(
       })
     }
 
+    async function getFace() {
+      promptStore.prompts.images.photo = ''
+      const messages = promptStore.getSystemPrompt('face')
+      record.value.face = await modelRouter.getFace(messages)
+    }
+
     const database = {
       async selectAll() {
         try {
@@ -335,7 +341,7 @@ export const useRecordStore = defineStore(
       await getCase()
       await getStory()
       await getTest()
-      //   caseFaceUrl.value = await modelRouter.getFace()
+      await getFace()
     }
 
     return {
@@ -350,6 +356,7 @@ export const useRecordStore = defineStore(
       getTest,
       getAct,
       getRate,
+      getFace,
       newRecord,
 
       database,

@@ -95,6 +95,14 @@ export const useStateStore = defineStore(
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
+        face: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
       },
       images: {
         face: {

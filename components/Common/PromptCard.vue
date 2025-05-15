@@ -36,13 +36,7 @@
           :disabled="true"
         />
         <v-text-field v-model="item.title" variant="outlined" label="标题" />
-        <v-textarea
-          v-model="item.prompt"
-          variant="outlined"
-          hint="输出字段必须包含：姓名 性别 年龄 主诉 现病史 既往史 查体 专科查体 辅助检查 诊断 治疗 手术 病理"
-          label="内容"
-          auto-grow
-        />
+        <v-textarea v-model="item.prompt" variant="outlined" label="内容" auto-grow />
         <v-text-field
           v-if="stateStore.isDebug"
           v-model="item.authorId"

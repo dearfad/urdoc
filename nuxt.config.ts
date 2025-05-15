@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     '/api/**': { cors: true },
     '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
     '/cstar/**': { ssr: false },
-    '/media/**': { ssr: false },
+    '/images/**': { ssr: false },
     '/admin/**': { ssr: false },
     '/user/**': { ssr: false },
   },

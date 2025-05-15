@@ -69,6 +69,9 @@ export const usePromptStore = defineStore(
         rate: [],
         face: [],
       },
+      images: {
+        photo: '',
+      },
     })
 
     const prompt = {
@@ -78,7 +81,7 @@ export const usePromptStore = defineStore(
           if (response.error) {
             stateStore.appInfos.push('提示词列表错误', response.error.code)
           } else {
-            const promptList = ['case', 'story', 'test', 'act', 'rate']
+            const promptList = ['case', 'story', 'test', 'act', 'rate', 'face']
             promptList.forEach((item) => {
               prompts.value.user[item] = response.data.filter((i) => i.type === item)
             })
@@ -163,6 +166,9 @@ export const usePromptStore = defineStore(
           break
         case 'rate':
           content = `下面是用户提供的题库：\n${recordStore.view.test.markdown}`
+          break
+        case 'face':
+          content = `下面是用户提供的病历：\n${recordStore.view.case.markdown}`
           break
         default:
           content = '系统要点设定：无特殊要求'

@@ -21,10 +21,10 @@ export default function () {
     return params
   }
 
-  function getImageModelParams(modelUsage: keyof typeof stateStore.models.images) {
+  function getImageModelParams(modelUsage: keyof typeof stateStore.models.images, prompt: string) {
     const params: ModelParamsType = {
       model: stateStore.models.images[modelUsage],
-      prompt: `${recordStore.view.case.markdown}, ${promptStore.facePrompt}`,
+      prompt: prompt,
     }
     return params
   }
@@ -58,9 +58,12 @@ export default function () {
 
   // Image Model
 
-  async function getFace() {
-    const params = getImageModelParams('face')
-    return await imageModel.getResponse(params)
+  async function getFace(messages: Messages) {
+    const params = getChatModelParams('face', messages, ['特征提取中...'], { type: 'text' })
+    const prompt = await chatModel.getResponse(params)
+    promptStore.prompts.images.photo = prompt
+    const paramsImage = getImageModelParams('face', prompt)
+    return await imageModel.getResponse(paramsImage)
   }
 
   // Video Model
@@ -77,7 +80,7 @@ export default function () {
         body: {
           model: 'cogvideox-flash',
           prompt: '表情痛苦',
-          image_url: `${recordStore.caseFaceUrl}`,
+          image_url: `${recordStore.record.face}`,
         },
       }
     )

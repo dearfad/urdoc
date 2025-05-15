@@ -37,6 +37,9 @@ async function generate() {
     case 'test':
       await recordStore.getTest()
       break
+    case 'face':
+      await recordStore.getFace()
+      break
   }
   stateStore.isModelResponseStringShow = false
   isLoading.value = false
