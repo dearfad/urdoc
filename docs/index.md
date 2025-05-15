@@ -34,6 +34,6 @@ features:
     title: 能力评估 Rate
     details: 虚拟病例评价结合试题和问诊，试题评价客观、可自动生成结果，问诊评价需教师综合分析。
   - icon: 🤒
-    title: 特征呈现 Photo
+    title: 特征呈现 Face
     details: 根据病情通过多模态大模型生成患者身体特征，增加病例的真实感。
 ---

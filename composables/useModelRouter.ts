@@ -3,7 +3,7 @@ export default function () {
   const recordStore = useRecordStore()
   const chatModel = useChatModel()
   const imageModel = useImageModel()
-  // const videoModel = useVideoModel()
+  const videoModel = useVideoModel()
   const promptStore = usePromptStore()
 
   function getChatModelParams(
@@ -21,10 +21,19 @@ export default function () {
     return params
   }
 
-  function getImageModelParams(modelUsage: keyof typeof stateStore.models.images, prompt: string) {
+  function getImageModelParams(modelUsage: keyof typeof stateStore.models.image, prompt: string) {
     const params: ModelParamsType = {
-      model: stateStore.models.images[modelUsage],
+      model: stateStore.models.image[modelUsage],
       prompt: prompt,
+    }
+    return params
+  }
+
+  function getVideoModelParams(modelUsage: keyof typeof stateStore.models.video, prompt: string) {
+    const params: ModelParamsType = {
+      model: stateStore.models.video[modelUsage],
+      prompt: prompt,
+      image_url: recordStore.record.face,
     }
     return params
   }
@@ -59,51 +68,23 @@ export default function () {
   // Image Model
 
   async function getFace(messages: Messages) {
-    const params = getChatModelParams('face', messages, ['特征提取中...'], { type: 'text' })
+    const params = getChatModelParams('face', messages, [], { type: 'text' })
     const prompt = await chatModel.getResponse(params)
-    promptStore.prompts.images.photo = prompt
+    promptStore.prompts.image.face = prompt
     const paramsImage = getImageModelParams('face', prompt)
     return await imageModel.getResponse(paramsImage)
   }
 
   // Video Model
 
-  async function getPoseId() {
-    stateStore.modelResponseField = '视频'
-    const response: BigmodelCogvideoxResponse = await $fetch(
-      'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + import.meta.env.VITE_BIGMODEL_API_KEY,
-        },
-        body: {
-          model: 'cogvideox-flash',
-          prompt: '表情痛苦',
-          image_url: `${recordStore.record.face}`,
-        },
-      }
-    )
-    return response.id
+  async function getPose(messages: Messages) {
+    const params = getChatModelParams('pose', messages, [], { type: 'text' })
+    const prompt = await chatModel.getResponse(params)
+    promptStore.prompts.video.pose = prompt
+    const paramsVideo = getVideoModelParams('pose', prompt)
+    stateStore.poseId = await videoModel.getResponse(paramsVideo)
+    stateStore.appInfo = stateStore.poseId
   }
 
-  async function getPose() {
-    stateStore.modelResponseField = '获取视频'
-    const response: BigmodelCogvideoxResponse = await $fetch(
-      `https://open.bigmodel.cn/api/paas/v4/async-result/${recordStore.casePoseId}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + import.meta.env.VITE_BIGMODEL_API_KEY,
-        },
-      }
-    )
-    if (response.video_result) {
-      return response.video_result[0].url
-    } else {
-      return ''
-    }
-  }
-
-  return { getCase, getStory, getTest, getAct, getRate, getFace, getPoseId, getPose }
+  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose }
 }

@@ -4,6 +4,7 @@ import defaultTestPrompt from '@/assets/default/test/prompt.md?raw'
 import defaultActPrompt from '@/assets/default/act/prompt.md?raw'
 import defaultRatePrompt from '@/assets/default/rate/prompt.md?raw'
 import defaultFacePrompt from '@/assets/default/face/prompt.md?raw'
+import defaultPosePrompt from '@/assets/default/pose/prompt.md?raw'
 export const usePromptStore = defineStore(
   'prompt',
   () => {
@@ -60,6 +61,14 @@ export const usePromptStore = defineStore(
           author: '',
           public: true,
         },
+        pose: {
+          id: '',
+          type: 'face',
+          title: '默认',
+          prompt: defaultPosePrompt,
+          author: '',
+          public: true,
+        },
       },
       user: {
         case: [],
@@ -69,8 +78,11 @@ export const usePromptStore = defineStore(
         rate: [],
         face: [],
       },
-      images: {
-        photo: '',
+      image: {
+        face: '',
+      },
+      video: {
+        pose: '',
       },
     })
 
@@ -168,6 +180,9 @@ export const usePromptStore = defineStore(
           content = `下面是用户提供的题库：\n${recordStore.view.test.markdown}`
           break
         case 'face':
+          content = `下面是用户提供的病历：\n${recordStore.view.case.markdown}`
+          break
+        case 'pose':
           content = `下面是用户提供的病历：\n${recordStore.view.case.markdown}`
           break
         default:

@@ -103,8 +103,16 @@ export const useStateStore = defineStore(
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
+        pose: {
+          gateway: '直连',
+          provider: '智谱',
+          name: '智谱 GLM-4-Flash',
+          id: 'glm-4-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
       },
-      images: {
+      image: {
         face: {
           gateway: '直连',
           provider: '智谱',
@@ -114,7 +122,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
       },
-      videos: {
+      video: {
         pose: {
           gateway: '直连',
           provider: '智谱',
@@ -132,6 +140,9 @@ export const useStateStore = defineStore(
 
     // 输入框焦点状态
     const isInputFocused = ref(false)
+
+    // PoseId
+    const poseId = ref('')
 
     return {
       apiBaseUrl,
@@ -166,6 +177,8 @@ export const useStateStore = defineStore(
       userPrompt,
 
       isInputFocused,
+
+      poseId,
     }
   },
   {

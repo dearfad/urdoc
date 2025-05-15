@@ -40,6 +40,9 @@ async function generate() {
     case 'face':
       await recordStore.getFace()
       break
+    case 'pose':
+      await recordStore.getPose()
+      break
   }
   stateStore.isModelResponseStringShow = false
   isLoading.value = false

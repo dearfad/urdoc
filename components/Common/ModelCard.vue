@@ -56,7 +56,7 @@ const { modelType, modelUsage } = defineProps({
   modelUsage: { type: String, required: true },
 })
 const modelLabel = computed(() => {
-  return modelType === 'chat' ? '语言模型' : modelType === 'images' ? '图像模型' : '视频模型'
+  return modelType === 'chat' ? '语言模型' : modelType === 'image' ? '图像模型' : '视频模型'
 })
 
 const modelStore = useModelStore()
@@ -98,7 +98,9 @@ function handleModelChange() {
   let usages = []
   switch (modelType) {
     case 'chat':
-      usages = global.value ? ['case', 'story', 'test', 'act', 'rate', 'face'] : [modelUsage]
+      usages = global.value
+        ? ['case', 'story', 'test', 'act', 'rate', 'face', 'pose']
+        : [modelUsage]
       break
     case 'image':
       usages = global.value ? ['face'] : [modelUsage]

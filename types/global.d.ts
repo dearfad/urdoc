@@ -112,6 +112,7 @@ type ModelParamsType = {
   watchFields?: string[]
   responseFormat?: ResponseFormatType
   prompt?: string
+  image_url?: string
 }
 
 // SSE STREAM

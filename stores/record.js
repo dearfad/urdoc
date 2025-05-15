@@ -255,9 +255,15 @@ export const useRecordStore = defineStore(
     }
 
     async function getFace() {
-      promptStore.prompts.images.photo = ''
+      promptStore.prompts.image.face = ''
       const messages = promptStore.getSystemPrompt('face')
       record.value.face = await modelRouter.getFace(messages)
+    }
+
+    async function getPose() {
+      promptStore.prompts.image.pose = ''
+      const messages = promptStore.getSystemPrompt('pose')
+      record.value.pose = await modelRouter.getPose(messages)
     }
 
     const database = {
@@ -357,6 +363,7 @@ export const useRecordStore = defineStore(
       getAct,
       getRate,
       getFace,
+      getPose,
       newRecord,
 
       database,

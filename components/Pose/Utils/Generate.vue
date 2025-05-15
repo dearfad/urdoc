@@ -1,6 +1,10 @@
 <template>
-  <v-sheet class="d-flex flex-column mx-4">
-    <v-btn
+  <v-sheet class="d-flex flex-column mx-4 ga-4">
+    <CommonGenerateButton generate-type="pose" />
+    <CommonModelCard model-type="chat" model-usage="pose" />
+    <CommonModelCard model-type="video" model-usage="pose" />
+    <CommonPromptCard usage="pose" />
+    <!-- <v-btn
       size="x-large"
       class="font-weight-bold my-5"
       elevation="4"
@@ -20,24 +24,24 @@
       @click="getPose"
     />
     <pre>{{ caseStore.casePose }}</pre>
-    <CommonModelSelector model-type="videos" model-usage="pose" />
+    <CommonModelSelector model-type="video" model-usage="pose" /> -->
   </v-sheet>
 </template>
 
 <script lang="ts" setup>
-const isLoading = ref(false)
-const caseStore = useCaseStore()
-const modelRouter = useModelRouter()
+// const isLoading = ref(false)
+// const caseStore = useCaseStore()
+// const modelRouter = useModelRouter()
 
-async function getPoseId() {
-  isLoading.value = true
-  caseStore.casePoseId = await modelRouter.getPoseId()
-  isLoading.value = false
-}
+// async function getPoseId() {
+//   isLoading.value = true
+//   caseStore.casePoseId = await modelRouter.getPoseId()
+//   isLoading.value = false
+// }
 
-async function getPose() {
-  isLoading.value = true
-  caseStore.casePose = await modelRouter.getPose()
-  isLoading.value = false
-}
+// async function getPose() {
+//   isLoading.value = true
+//   caseStore.casePose = await modelRouter.getPose()
+//   isLoading.value = false
+// }
 </script>
