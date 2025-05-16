@@ -33,6 +33,11 @@ export const useStateStore = defineStore(
     const appInfo = ref('')
     const appInfos = ref([])
 
+    // 是否语音
+    const isVoice = ref(false)
+    const voiceId = ref(1)
+    const responseText = ref('')
+
     // 当前模型生成字段
     const modelResponseField = ref('')
 
@@ -166,6 +171,10 @@ export const useStateStore = defineStore(
 
       appInfo,
       appInfos,
+
+      isVoice,
+      voiceId,
+      responseText,
 
       scope,
       tag,

@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="d-flex flex-column ga-4">
     <v-text-field
-      v-if="recordStore.record[chatType  as 'act' | 'rate'].length > 0"
+      v-if="recordStore.record[chatType].length > 0"
       ref="inputPrompt'"
       v-model="stateStore.userPrompt"
       class="font-weight-bold my-5 elevation-4 rounded-lg"
@@ -19,7 +19,7 @@
       @blur="handleBlur"
     />
     <v-btn
-      v-if="recordStore.record[chatType as 'act' | 'rate'].length === 0"
+      v-if="recordStore.record[chatType].length === 0"
       size="x-large"
       class="font-weight-bold"
       block
@@ -37,12 +37,12 @@
       block
       rounded="lg"
       text="清空对话"
-      @click="recordStore.record[chatType as 'act' | 'rate'] = []"
+      @click="recordStore.record[chatType] = []"
     />
   </v-sheet>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 const stateStore = useStateStore()
 const recordStore = useRecordStore()
 const { chatType } = defineProps({
@@ -93,10 +93,17 @@ async function sendUserPrompt() {
   }
   chatMsgWatcher.pause()
   isLoading.value = true
+  // 获取语音播放会被回答覆盖
+  // if (stateStore.isVoice) {
+  //   await recordStore.getVoice(stateStore.userPrompt)
+  // }
   if (chatType === 'act') {
     await recordStore.getAct()
   } else {
     await recordStore.getRate()
+  }
+  if (stateStore.isVoice) {
+    await recordStore.getVoice(stateStore.responseText)
   }
   stateStore.userPrompt = ''
   isLoading.value = false

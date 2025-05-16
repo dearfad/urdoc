@@ -237,9 +237,10 @@ export const useRecordStore = defineStore(
         record.value.act = promptStore.getSystemPrompt('act')
       }
       record.value.act.push({ role: 'user', content: stateStore.userPrompt })
+      stateStore.responseText = await modelRouter.getAct(record.value.act)
       record.value.act.push({
         role: 'assistant',
-        content: await modelRouter.getAct(record.value.act),
+        content: stateStore.responseText,
       })
     }
 
@@ -248,9 +249,10 @@ export const useRecordStore = defineStore(
         record.value.rate = promptStore.getSystemPrompt('rate')
       }
       record.value.rate.push({ role: 'user', content: stateStore.userPrompt })
+      stateStore.responseText = await modelRouter.getRate(record.value.rate)
       record.value.rate.push({
         role: 'assistant',
-        content: await modelRouter.getRate(record.value.rate),
+        content: stateStore.responseText,
       })
     }
 
@@ -264,6 +266,15 @@ export const useRecordStore = defineStore(
       promptStore.prompts.image.pose = ''
       const messages = promptStore.getSystemPrompt('pose')
       record.value.pose = await modelRouter.getPose(messages)
+    }
+
+    async function getVoice(text) {
+      record.value.voice = ''
+      // id.value = Math.floor(Math.random() * 14) + 1
+      const response = await $fetch(
+        `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${text}`
+      )
+      record.value.voice = response.audio
     }
 
     const database = {
@@ -364,6 +375,7 @@ export const useRecordStore = defineStore(
       getRate,
       getFace,
       getPose,
+      getVoice,
       newRecord,
 
       database,

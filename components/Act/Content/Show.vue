@@ -26,7 +26,7 @@
         </v-list-item>
       </v-list>
     </div>
-    <div class="chatMsgBottom" />
+    <div class="chatMsgBottom my-4" />
   </v-sheet>
 </template>
 

@@ -40,9 +40,9 @@
         <v-list-item to="/video/pose">
           <v-list-item-title class="text-subtitle-2"> 视频生成 </v-list-item-title>
         </v-list-item>
-        <!--<v-list-item>
+        <v-list-item to="/audio/voice">
           <v-list-item-title class="text-subtitle-2"> 语音合成 </v-list-item-title>
-        </v-list-item> -->
+        </v-list-item>
       </v-list-group>
     </v-list>
   </v-navigation-drawer>

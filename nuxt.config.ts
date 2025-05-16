@@ -35,6 +35,7 @@ export default defineNuxtConfig({
     '/cstar/**': { ssr: false },
     '/image/**': { ssr: false },
     '/video/**': { ssr: false },
+    '/audio/**': { ssr: false },
     '/admin/**': { ssr: false },
     '/user/**': { ssr: false },
   },
