@@ -32,6 +32,17 @@ export default defineEventHandler(async (event) => {
         stream: true,
       },
     },
+    ModelScope: {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + gatewayApiKey,
+      },
+      body: {
+        model: model.id,
+        messages: params.messages,
+        stream: true,
+      },
+    },
     default: {
       headers: {
         'Content-Type': 'application/json',

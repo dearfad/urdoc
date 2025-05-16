@@ -141,7 +141,7 @@ async function update() {
 }
 async function handleDelete() {
   isLoading.value = true
-  if ([1, 2, 3, 4, 5].includes(promptStore.prompts.system[usage].id)) {
+  if ([1, 2, 3, 4, 5, 6, 7].includes(promptStore.prompts.system[usage].id)) {
     stateStore.appInfos.push('默认提示词不能删除')
   } else {
     const prompt = await promptStore.prompt.delete(promptStore.prompts.system[usage])

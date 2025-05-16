@@ -190,6 +190,24 @@ export const useModelStore = defineStore('model', () => {
             },
           ],
         },
+        {
+          name: 'ModelScope',
+          id: 'ModelScope',
+          url: 'https://api-inference.modelscope.cn/v1/chat/completions',
+          key: 'MODELSCOPE_API_KEY',
+          providers: [
+            {
+              name: '通义千问',
+              id: '通义千问',
+              url: '',
+              key: '',
+              models: [
+                { name: '通义千问 QwQ-32B', id: 'Qwen/QwQ-32B' },
+                { name: '通义千问3-0.6B', id: 'Qwen/Qwen3-0.6B' },
+              ],
+            },
+          ],
+        },
       ],
     },
     image: {

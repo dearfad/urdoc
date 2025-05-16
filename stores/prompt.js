@@ -10,6 +10,7 @@ export const usePromptStore = defineStore(
   () => {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
+    const userStore = useUserStore()
     const promptApi = usePromptApi()
     const prompts = ref({
       system: {
@@ -77,6 +78,7 @@ export const usePromptStore = defineStore(
         act: [],
         rate: [],
         face: [],
+        pose: [],
       },
       image: {
         face: '',
@@ -89,11 +91,11 @@ export const usePromptStore = defineStore(
     const prompt = {
       async selectAll() {
         try {
-          const response = await promptApi.database('selectAll')
+          const response = await promptApi.database('selectAll', '', userStore.user)
           if (response.error) {
             stateStore.appInfos.push('提示词列表错误', response.error.code)
           } else {
-            const promptList = ['case', 'story', 'test', 'act', 'rate', 'face']
+            const promptList = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose']
             promptList.forEach((item) => {
               prompts.value.user[item] = response.data.filter((i) => i.type === item)
             })

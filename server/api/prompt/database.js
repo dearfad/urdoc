@@ -4,12 +4,16 @@
 import { serverSupabaseClient } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-  const { action, prompt } = await readBody(event)
+  const { action, prompt, user } = await readBody(event)
   const supabase = await serverSupabaseClient(event)
 
   switch (action) {
     case 'selectAll':
-      return await supabase.from('prompts').select().order('id', { ascending: true })
+      return await supabase
+        .from('prompts')
+        .select()
+        .or(`public.eq.true,author.eq.${user.id}`)
+        .order('id', { ascending: true })
     case 'select':
       return await supabase.from('prompts').eq('id', prompt.id).select()
     case 'insert':
