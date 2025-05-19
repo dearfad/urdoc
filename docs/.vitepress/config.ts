@@ -18,7 +18,11 @@ export default withMermaid({
     sidebar: [
       {
         text: '简介',
-        items: [{ text: '什么是 CSTAR ?', link: '/cstar' }],
+        items: [
+          { text: '什么是 CSTAR ?', link: '/guide/what-is-cstar' },
+          { text: '什么是 URDOC ?', link: '/guide/what-is-urdoc' },
+          { text: '快速开始', link: '/guide/getting-started' },
+        ],
       },
     ],
 

@@ -12,10 +12,13 @@ hero:
   actions:
     - theme: brand
       text: 什么是 CSTAR ？
-      link: /cstar
-    # - theme: alt
-    #   text: 快速开始
-    #   link: /urdoc
+      link: /guide/what-is-cstar
+    - theme: alt
+      text: 快速开始
+      link: /guide/getting-started
+    - theme: alt
+      text: GitHub
+      link: https://github.com/dearfad/urdoc
 
 features:
   - icon: 💼
