@@ -15,7 +15,15 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
-  modules: ['@nuxt/eslint', '@nuxtjs/mdc', 'vuetify-nuxt-module', '@pinia/nuxt', 'pinia-plugin-persistedstate/nuxt', '@nuxtjs/seo', '@nuxtjs/supabase', '@vite-pwa/nuxt'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxtjs/mdc',
+    'vuetify-nuxt-module',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/seo',
+    '@nuxtjs/supabase',
+  ],
 
   piniaPluginPersistedstate: {
     storage: 'localStorage',
