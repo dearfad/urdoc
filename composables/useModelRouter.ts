@@ -9,14 +9,22 @@ export default function () {
   function getChatModelParams(
     modelUsage: keyof typeof stateStore.models.chat,
     messages: Messages,
-    watchFields: string[],
-    responseFormat: ResponseFormatType = { type: 'json_object' }
+    response_format: 'text' | 'json'
   ) {
-    const params: ModelParamsType = {
-      model: stateStore.models.chat[modelUsage],
-      messages: messages,
-      watchFields: watchFields,
-      responseFormat: responseFormat,
+    const model = stateStore.models.chat[modelUsage]
+    const params = {
+      url: model.url,
+      apiKeyName: model.key.gateway || model.key.provider,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ',
+      },
+      body: JSON.stringify({
+        model: model.id,
+        messages: messages,
+        stream: true,
+        response_format: response_format === 'text' ? { type: 'text' } : { type: 'json_object' },
+      }),
     }
     return params
   }
@@ -41,35 +49,35 @@ export default function () {
   // Chat Model
 
   async function getCase(messages: Messages) {
-    const params = getChatModelParams('case', messages, recordStore.watchFields.case)
-    return await chatModel.getResponse(params)
+    const params = getChatModelParams('case', messages, 'json')
+    return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
   }
 
   async function getStory(messages: Messages) {
-    const params = getChatModelParams('story', messages, [])
-    return await chatModel.getResponse(params)
+    const params = getChatModelParams('story', messages, 'json')
+    return await chatModel.getResponse(params, 'json', [])
   }
 
   async function getTest(messages: Messages) {
-    const params = getChatModelParams('test', messages, [])
-    return await chatModel.getResponse(params)
+    const params = getChatModelParams('test', messages, 'json')
+    return await chatModel.getResponse(params, 'json', [])
   }
 
   async function getAct(messages: Messages) {
-    const params = getChatModelParams('act', messages, [], { type: 'text' })
-    return await chatModel.getResponse(params)
+    const params = getChatModelParams('act', messages, 'text')
+    return await chatModel.getResponse(params, 'text', [])
   }
 
   async function getRate(messages: Messages) {
-    const params = getChatModelParams('rate', messages, [], { type: 'text' })
-    return await chatModel.getResponse(params)
+    const params = getChatModelParams('rate', messages, 'text')
+    return await chatModel.getResponse(params, 'text', [])
   }
 
   // Image Model
 
   async function getFace(messages: Messages) {
-    const params = getChatModelParams('face', messages, [], { type: 'text' })
-    const prompt = await chatModel.getResponse(params)
+    const params = getChatModelParams('face', messages, 'text')
+    const prompt = await chatModel.getResponse(params, 'text', [])
     promptStore.prompts.image.face = prompt
     const paramsImage = getImageModelParams('face', prompt)
     return await imageModel.getResponse(paramsImage)
@@ -78,8 +86,8 @@ export default function () {
   // Video Model
 
   async function getPose(messages: Messages) {
-    const params = getChatModelParams('pose', messages, [], { type: 'text' })
-    const prompt = await chatModel.getResponse(params)
+    const params = getChatModelParams('pose', messages, 'text')
+    const prompt = await chatModel.getResponse(params, 'text', [])
     promptStore.prompts.video.pose = prompt
     const paramsVideo = getVideoModelParams('pose', prompt)
     stateStore.poseId = await videoModel.getResponse(paramsVideo)

@@ -100,17 +100,10 @@ type SystemPromptType = 'case' | 'story' | 'test' | 'act' | 'rate' | 'face'
 type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
 
 type ModelParamsType = {
-  model: {
-    gateway: string
-    provider: string
-    name: string
-    id: string
-    url: string
-    key: { gateway: string; provider: string }
-  }
-  messages?: MessagesArray
-  watchFields?: string[]
-  responseFormat?: ResponseFormatType
+  url: string
+  apiKeyName: string
+  headers: { [key: string]: string }
+  body: string
   prompt?: string
   image_url?: string
 }

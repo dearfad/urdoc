@@ -1,6 +1,10 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-  async function getResponse(params: ModelParamsType) {
+  async function getResponse(
+    params: ModelParamsType,
+    format: 'text' | 'json',
+    watchFields: string[]
+  ) {
     const stateStore = useStateStore()
     stateStore.modelResponseStream = ''
     stateStore.modelResponseString = ''
@@ -60,9 +64,9 @@ export default function () {
           // 更新当前生成内容
           stateStore.modelResponseString += jsonData.choices[0].delta.content
           // 更新当前生成字段
-          if (params.watchFields.length > 0) {
-            if (stateStore.modelResponseString.includes(params.watchFields[dataFieldPointer])) {
-              stateStore.modelResponseField = params.watchFields[dataFieldPointer]
+          if (watchFields.length > 0) {
+            if (stateStore.modelResponseString.includes(watchFields[dataFieldPointer])) {
+              stateStore.modelResponseField = watchFields[dataFieldPointer]
               dataFieldPointer++
             }
           }
@@ -74,7 +78,7 @@ export default function () {
       })
     }
     // 解析modelResponseString的json问题
-    if (params.responseFormat.type === 'json_object') {
+    if (format === 'json') {
       try {
         dataString = stateStore.modelResponseString
         // 去除 baidu 最开始的 {

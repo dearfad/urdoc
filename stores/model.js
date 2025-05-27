@@ -83,21 +83,21 @@ export const useModelStore = defineStore('model', () => {
             },
           ],
         },
-        {
-          name: 'EdgeOne(Beta)',
-          id: 'EdgeOne',
-          url: 'https://ai-gateway.eo-edgefunctions7.com',
-          key: 'EDGEONE_AIGATEWAY_KEY',
-          providers: [
-            {
-              name: '阿里AI',
-              id: '阿里AI',
-              url: '',
-              key: 'ALIYUN_API_KEY',
-              models: [{ name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' }],
-            },
-          ],
-        },
+        // {
+        //   name: 'EdgeOne(Beta)',
+        //   id: 'EdgeOne',
+        //   url: 'https://ai-gateway.eo-edgefunctions7.com',
+        //   key: 'EDGEONE_AIGATEWAY_KEY',
+        //   providers: [
+        //     {
+        //       name: '阿里AI',
+        //       id: '阿里AI',
+        //       url: '',
+        //       key: 'ALIYUN_API_KEY',
+        //       models: [{ name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' }],
+        //     },
+        //   ],
+        // },
         {
           name: 'OpenRouter',
           id: 'OpenRouter',
@@ -190,24 +190,24 @@ export const useModelStore = defineStore('model', () => {
             },
           ],
         },
-        {
-          name: 'ModelScope',
-          id: 'ModelScope',
-          url: 'https://api-inference.modelscope.cn/v1/chat/completions',
-          key: 'MODELSCOPE_API_KEY',
-          providers: [
-            {
-              name: '通义千问',
-              id: '通义千问',
-              url: '',
-              key: '',
-              models: [
-                { name: '通义千问 QwQ-32B', id: 'Qwen/QwQ-32B' },
-                { name: '通义千问3-0.6B', id: 'Qwen/Qwen3-0.6B' },
-              ],
-            },
-          ],
-        },
+        // {
+        //   name: 'ModelScope',
+        //   id: 'ModelScope',
+        //   url: 'https://api-inference.modelscope.cn/v1/chat/completions',
+        //   key: 'MODELSCOPE_API_KEY',
+        //   providers: [
+        //     {
+        //       name: '通义千问',
+        //       id: '通义千问',
+        //       url: '',
+        //       key: '',
+        //       models: [
+        //         { name: '通义千问 QwQ-32B', id: 'Qwen/QwQ-32B' },
+        //         { name: '通义千问3-0.6B', id: 'Qwen/Qwen3-0.6B' },
+        //       ],
+        //     },
+        //   ],
+        // },
       ],
     },
     image: {
