@@ -3,7 +3,7 @@ export default function () {
   async function getResponse(
     params: ModelParamsType,
     format: 'text' | 'json',
-    watchFields: string[]
+    watchFields: string[] = []
   ) {
     const stateStore = useStateStore()
     stateStore.modelResponseStream = ''

@@ -4,6 +4,7 @@
     <CommonModelCard model-type="chat" model-usage="pose" />
     <CommonModelCard model-type="video" model-usage="pose" />
     <CommonPromptCard usage="pose" />
+    <CommonApiBaseUrlSelector />
     <!-- <v-btn
       size="x-large"
       class="font-weight-bold my-5"

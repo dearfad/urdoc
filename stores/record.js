@@ -210,6 +210,8 @@ export const useRecordStore = defineStore(
       }
       stateStore.isActing = false
       stateStore.isRating = false
+      promptStore.prompts.image.face = ''
+      promptStore.prompts.video.pose = ''
     }
 
     async function getCase() {
