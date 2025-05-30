@@ -1,8 +1,10 @@
 <template>
   <v-app>
-    <AppBar />
-    <AppNavDrawerLeft />
-    <AppNavDrawerRight />
+    <ClientOnly>
+      <AppBar />
+      <AppNavDrawerLeft />
+      <AppNavDrawerRight />
+    </ClientOnly>
     <AppFooter />
     <AppInfo />
     <v-main>

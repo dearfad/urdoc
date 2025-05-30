@@ -16,9 +16,6 @@ hero:
     - theme: alt
       text: 快速开始
       link: /guide/getting-started
-    - theme: alt
-      text: GitHub
-      link: https://github.com/dearfad/urdoc
 
 features:
   - icon: 💼

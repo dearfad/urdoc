@@ -112,5 +112,18 @@ export default function () {
     stateStore.appInfo = stateStore.poseId
   }
 
-  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose }
+  // Voice Model
+  async function getVoice(text: string) {
+    interface TextReadTTS {
+      code: number
+      message: string
+      audio: string
+    }
+    const response: TextReadTTS = await $fetch(
+      `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${text}`
+    )
+    return response.audio
+  }
+
+  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose, getVoice }
 }

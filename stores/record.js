@@ -272,11 +272,7 @@ export const useRecordStore = defineStore(
 
     async function getVoice(text) {
       record.value.voice = ''
-      // id.value = Math.floor(Math.random() * 14) + 1
-      const response = await $fetch(
-        `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${text}`
-      )
-      record.value.voice = response.audio
+      record.value.voice = await modelRouter.getVoice(text)
     }
 
     const database = {
