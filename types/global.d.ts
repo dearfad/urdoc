@@ -43,9 +43,11 @@ type Messages = Message[]
 // 教科书内容范围
 interface Scope {
   book: string | null
+  part: string | null
   chapter: string | null
   section: string | null
   subsection: string | null
+  topic: string | null
 }
 
 // 自定义标签

@@ -44,9 +44,11 @@ export const useStateStore = defineStore(
     // 当前章节选择
     const scope = ref<Scope>({
       book: '',
+      part: '',
       chapter: '',
       section: '',
       subsection: '',
+      topic: '',
     })
 
     // Tag
