@@ -24,6 +24,10 @@ export default withMermaid({
           { text: '快速开始', link: '/guide/getting-started' },
         ],
       },
+      {
+        text: '参考',
+        items: [{ text: '配置说明', link: '/reference/custom-config' }],
+      },
     ],
 
     docFooter: {
