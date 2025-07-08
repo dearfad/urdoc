@@ -56,8 +56,7 @@ export default function () {
           tempIncompleteLine = line
           return
         }
-        if (line === 'data: [DONE]') return
-
+        if (line === 'data: [DONE]' || line === 'data: [DONE]\n') return
         const jsonDataStr = line.split('data: ')[1]
         try {
           jsonData = JSON.parse(jsonrepair(jsonDataStr))

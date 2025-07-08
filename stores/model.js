@@ -81,6 +81,15 @@ export const useModelStore = defineStore('model', () => {
               key: 'HUNYUAN_API_KEY',
               models: [{ name: 'hunyuan-lite', id: 'hunyuan-lite' }],
             },
+
+            // 书生 书生·浦语 https://internlm.intern-ai.org.cn/
+            {
+              name: '书生·浦语',
+              id: '书生·浦语',
+              url: 'https://chat.intern-ai.org.cn/api/v1/chat/completions',
+              key: 'SHUSHENG_API_KEY',
+              models: [{ name: 'InternLM3', id: 'internlm3-latest' }],
+            },
           ],
         },
         // {
