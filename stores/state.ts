@@ -4,7 +4,7 @@ export const useStateStore = defineStore(
     //
     // API 地址设定
     //
-    const apiBaseUrl = ref('https://urdoc.pages.dev/api')
+    const apiBaseUrl = ref('https://urdoc.netlify.app/api')
 
     // AppBar
     // 左右侧边栏显示切换
