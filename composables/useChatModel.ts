@@ -61,6 +61,7 @@ export default function () {
         try {
           jsonData = JSON.parse(jsonrepair(jsonDataStr))
           // 更新当前生成内容
+          if (!jsonData.choices?.length) return
           stateStore.modelResponseString += jsonData.choices[0].delta.content
           // 更新当前生成字段
           if (watchFields.length > 0) {
@@ -70,6 +71,7 @@ export default function () {
             }
           }
         } catch (error) {
+          console.log('line: ', line)
           console.log('解析模型数据流失败：', jsonData)
           console.log('error: ', error)
           stateStore.appInfo = `解析模型数据流失败：${error}`

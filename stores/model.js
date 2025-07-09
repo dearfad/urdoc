@@ -199,6 +199,26 @@ export const useModelStore = defineStore('model', () => {
             },
           ],
         },
+        {
+          name: 'Pollinations',
+          id: 'Pollinations',
+          url: 'https://text.pollinations.ai/openai',
+          key: 'POLLINATIONS_API_KEY',
+          providers: [
+            {
+              name: 'OpenAI',
+              id: 'OpenAI',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'OpenAI GPT-4o Mini',
+                  id: 'openai',
+                },
+              ],
+            },
+          ],
+        },
         // {
         //   name: 'ModelScope',
         //   id: 'ModelScope',
