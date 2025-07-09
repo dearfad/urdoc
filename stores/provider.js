@@ -2,6 +2,10 @@ export const useProviderStore = defineStore('provider', () => {
   // 网址
   const sites = ref([
     {
+      name: 'Netlify',
+      url: 'https://urdoc.netlify.app',
+    },
+    {
       name: 'Cloudflare',
       url: 'https://urdoc.pages.dev',
     },
@@ -12,10 +16,6 @@ export const useProviderStore = defineStore('provider', () => {
     {
       name: 'Cloudflare(EdgeOne)',
       url: 'https://pages.dearfad.com',
-    },
-    {
-      name: 'Netlify',
-      url: 'https://urdoc.netlify.app',
     },
     {
       name: 'Netlify(EdgeOne)',
@@ -33,6 +33,10 @@ export const useProviderStore = defineStore('provider', () => {
   // API服务网址
   const apiBaseUrls = ref([
     {
+      name: 'Netlify',
+      url: 'https://urdoc.netlify.app/api',
+    },
+    {
       name: '本地接口 /api',
       url: '/api',
     },
@@ -43,10 +47,6 @@ export const useProviderStore = defineStore('provider', () => {
     {
       name: 'Cloudflare(EdgeOne)',
       url: 'https://pages.dearfad.com/api',
-    },
-    {
-      name: 'Netlify',
-      url: 'https://urdoc.netlify.app/api',
     },
     {
       name: 'Netlify(EdgeOne)',
