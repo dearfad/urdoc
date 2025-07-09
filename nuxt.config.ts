@@ -1,5 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  compatibilityDate: '2025-07-01',
+  nitro: {
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+    },
+  },
   site: {
     url: 'https://urdoc.dearfad.com',
     name: 'URDOC',
@@ -10,7 +17,6 @@ export default defineNuxtConfig({
         'URDOC Virtual Case Research Institute: Pioneering in AI-generated medical cases, storytelling, question formulation, and consultation simulation for comprehensive capability assessment in healthcare education and research.',
     },
   },
-  compatibilityDate: '2025-04-25',
   ssr: true,
   devtools: {
     enabled: false,
