@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
-    "@nuxt/eslint": "^1.5.2",
+    "@nuxt/eslint": "^1.6.0",
     "@nuxtjs/mdc": "^0.17.1",
     "@nuxtjs/seo": "^3.1.0",
     "@nuxtjs/supabase": "^1.5.3",
