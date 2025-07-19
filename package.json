@@ -15,10 +15,10 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.6.0",
-    "@nuxtjs/mdc": "^0.17.1",
+    "@nuxtjs/mdc": "^0.17.2",
     "@nuxtjs/seo": "^3.1.0",
     "@nuxtjs/supabase": "^1.5.3",
-    "@pinia/nuxt": "^0.11.1",
+    "@pinia/nuxt": "^0.11.2",
     "jsonrepair": "^3.13.0",
     "nuxt": "^4.0.0",
     "pinia": "^3.0.3",
