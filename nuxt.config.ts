@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     '/audio/**': { ssr: false },
     '/admin/**': { ssr: false },
     '/user/**': { ssr: false },
+    '/project/**': { ssr: false },
   },
 
   // EdgeOne Pages Dev

@@ -70,7 +70,10 @@ export const useModelStore = defineStore('model', () => {
               id: '阿里云百炼',
               url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
               key: 'ALIYUN_API_KEY',
-              models: [{ name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' }],
+              models: [
+                { name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' },
+                // { name: 'Moonshot-Kimi-K2-Instruct', id: 'Moonshot-Kimi-K2-Instruct' },
+              ],
             },
 
             // 腾讯云 混元大模型 https://cloud.tencent.com/product/hunyuan

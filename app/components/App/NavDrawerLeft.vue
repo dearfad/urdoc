@@ -6,10 +6,18 @@
     :disable-resize-watcher="true"
   >
     <v-list nav>
-      <!-- <v-list-item prepend-icon="mdi-account-injury-outline" class="font-weight-bold" to="/clinic">
-        开诊
-      </v-list-item>-->
-
+      <v-list-group>
+        <template #activator="{ props }">
+          <v-list-item v-bind="props" prepend-icon="mdi-account-injury-outline" density="compact">
+            <v-list-item-title class="font-weight-bold text-subtitle-1">
+              项目研究
+            </v-list-item-title>
+          </v-list-item>
+        </template>
+        <v-list-item to="/project/clinic">
+          <v-list-item-title class="text-subtitle-2">虚拟门诊</v-list-item-title>
+        </v-list-item>
+      </v-list-group>
       <v-list-group>
         <template #activator="{ props }">
           <v-list-item v-bind="props" prepend-icon="mdi-flask-empty-outline" density="compact">
