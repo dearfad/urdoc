@@ -1,5 +1,3 @@
-import OSS from 'ali-oss'
-
 export const useRecordStore = defineStore(
   'record',
   () => {
@@ -364,28 +362,14 @@ export const useRecordStore = defineStore(
     async function saveAvatar() {
       if (record.value.face) {
         console.log('开始上传头像')
-
-        const client = new OSS({
-          region: 'oss-cn-beijing',
-          // accessKeyId: process.env.OSS_ALIYUN_ACCESS_KEY_ID,
-          // accessKeySecret: process.env.OSS_ALIYUN_ACCESS_KEY_SECRET,
-          accessKeyId: '',
-          accessKeySecret: '',
-          bucket: 'urdoc-avatar',
+        const link = await $fetch('/utils/oss', {
+          baseURL: stateStore.apiBaseUrl,
+          method: 'POST',
+          body: JSON.stringify({
+            params: { url: record.value.face },
+          }),
         })
-        // 把 ossUrl 存数据库
-        const url = client.signatureUrl(record.value.face.split('/').pop(), {
-          method: 'PUT',
-          expires: 60,
-          'Content-Type': 'image/png', // 与前端一致
-        })
-        const blob = await fetch(record.value.face).then((res) => res.blob())
-        await fetch(url, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'image/png' },
-          body: blob,
-        })
-        console.log('像上头传成功: ' + url)
+        console.log('像上头传成功: ' + JSON.stringify(link))
       }
     }
 

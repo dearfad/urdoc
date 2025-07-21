@@ -21,7 +21,7 @@
     "@pinia/nuxt": "^0.11.2",
     "ali-oss": "^6.23.0",
     "jsonrepair": "^3.13.0",
-    "nuxt": "^4.0.0",
+    "nuxt": "^4.0.1",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
     "vite-plugin-vuetify": "^2.1.1",
