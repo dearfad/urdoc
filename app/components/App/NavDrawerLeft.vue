@@ -1,59 +1,61 @@
 <template>
-  <v-navigation-drawer
-    v-model="stateStore.isNavDrawerLeftShow"
-    class="pa-4"
-    location="left"
-    :disable-resize-watcher="true"
-  >
-    <v-list nav>
-      <v-list-group>
-        <template #activator="{ props }">
-          <v-list-item v-bind="props" prepend-icon="mdi-account-injury-outline" density="compact">
-            <v-list-item-title class="font-weight-bold text-subtitle-1">
-              项目研究
-            </v-list-item-title>
+  <ClientOnly>
+    <v-navigation-drawer v-model="stateStore.isNavDrawerLeftShow" location="left">
+      <v-list nav>
+        <v-list-group>
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" prepend-icon="mdi-account-injury-outline" density="compact">
+              <v-list-item-title class="font-weight-bold text-subtitle-1">
+                项目研究
+              </v-list-item-title>
+            </v-list-item>
+          </template>
+          <v-list-item to="/project/clinic">
+            <v-list-item-title class="text-subtitle-2">虚拟门诊</v-list-item-title>
           </v-list-item>
-        </template>
-        <v-list-item to="/project/clinic">
-          <v-list-item-title class="text-subtitle-2">虚拟门诊</v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-      <v-list-group>
-        <template #activator="{ props }">
-          <v-list-item v-bind="props" prepend-icon="mdi-flask-empty-outline" density="compact">
-            <v-list-item-title class="font-weight-bold text-subtitle-1">
-              单项研究
-            </v-list-item-title>
+        </v-list-group>
+        <v-list-group>
+          <template #activator="{ props }">
+            <v-list-item v-bind="props" prepend-icon="mdi-flask-empty-outline" density="compact">
+              <v-list-item-title class="font-weight-bold text-subtitle-1">
+                单项研究
+              </v-list-item-title>
+            </v-list-item>
+          </template>
+          <v-list-item to="/cstar/case">
+            <v-list-item-title class="text-subtitle-2"> 生成病例 </v-list-item-title>
           </v-list-item>
-        </template>
-        <v-list-item to="/cstar/case">
-          <v-list-item-title class="text-subtitle-2"> 生成病例 </v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/cstar/story">
-          <v-list-item-title class="text-subtitle-2"> 编写故事 </v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/cstar/test">
-          <v-list-item-title class="text-subtitle-2"> 设计问题 </v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/cstar/act">
-          <v-list-item-title class="text-subtitle-2"> 模拟问诊 </v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/cstar/rate">
-          <v-list-item-title class="text-subtitle-2"> 评估能力 </v-list-item-title>
-        </v-list-item>
-        <v-divider length="80" class="mx-13 my-2 border-opacity-30" thickness="1" />
-        <v-list-item to="/image/face">
-          <v-list-item-title class="text-subtitle-2"> 图像生成 </v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/video/pose">
-          <v-list-item-title class="text-subtitle-2"> 视频生成 </v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/audio/voice">
-          <v-list-item-title class="text-subtitle-2"> 语音合成 </v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-    </v-list>
-  </v-navigation-drawer>
+          <v-list-item to="/cstar/story">
+            <v-list-item-title class="text-subtitle-2"> 编写故事 </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/cstar/test">
+            <v-list-item-title class="text-subtitle-2"> 设计问题 </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/cstar/act">
+            <v-list-item-title class="text-subtitle-2"> 模拟问诊 </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/cstar/rate">
+            <v-list-item-title class="text-subtitle-2"> 评估能力 </v-list-item-title>
+          </v-list-item>
+          <v-divider length="80" class="mx-13 my-2 border-opacity-30" thickness="1" />
+          <v-list-item to="/image/face">
+            <v-list-item-title class="text-subtitle-2"> 图像生成 </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/video/pose">
+            <v-list-item-title class="text-subtitle-2"> 视频生成 </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/audio/voice">
+            <v-list-item-title class="text-subtitle-2"> 语音合成 </v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
+      <template #append>
+        <div class="pa-2">
+          <v-btn block elevation="0" to="/preferences"> 设置 </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
+  </ClientOnly>
 </template>
 
 <script setup>

@@ -8,9 +8,11 @@
     />
     <v-spacer />
     <v-btn text="文档" to="/docs" />
-    <v-btn v-if="!userStore.user.id" text="登录" to="/user/profile" />
-    <v-btn v-else-if="userStore.user.name" :text="userStore.user.name" to="/user/profile" />
-    <v-btn v-else :text="userStore.user.email" to="/user/profile" />
+    <ClientOnly>
+      <v-btn v-if="!userStore.user.id" text="登录" to="/user/profile" />
+      <v-btn v-else-if="userStore.user.name" :text="userStore.user.name" to="/user/profile" />
+      <v-btn v-else :text="userStore.user.email" to="/user/profile" />
+    </ClientOnly>
     <template #append>
       <v-btn
         icon="mdi-dots-vertical"
