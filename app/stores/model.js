@@ -16,6 +16,10 @@ export const useModelStore = defineStore('model', () => {
               key: 'ZHIPU_API_KEY',
               models: [
                 {
+                  name: 'GLM-4.5-Flash',
+                  id: 'glm-4.5-flash',
+                },
+                {
                   name: 'GLM-4-Flash-250414',
                   id: 'glm-4-flash-250414',
                 },
