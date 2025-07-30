@@ -1,8 +1,0 @@
-{
-  "caches": [
-    {
-      "source": "/function/*",
-      "cacheTtl": 0
-    }
-  ]
-}

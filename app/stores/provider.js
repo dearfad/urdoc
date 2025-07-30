@@ -33,6 +33,14 @@ export const useProviderStore = defineStore('provider', () => {
   // API服务网址
   const apiBaseUrls = ref([
     {
+      name: 'edge function',
+      url: 'http://urdoc-zone-3a1jc7cro7gc-1257866770.eo-edgefunctions.com',
+    },
+    {
+      name: '本地',
+      url: 'http://60.205.141.59',
+    },
+    {
       name: 'Netlify',
       url: 'https://urdoc.netlify.app/api',
     },
