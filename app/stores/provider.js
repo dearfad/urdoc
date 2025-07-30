@@ -34,7 +34,7 @@ export const useProviderStore = defineStore('provider', () => {
   const apiBaseUrls = ref([
     {
       name: 'edge function',
-      url: 'http://urdoc-zone-3a1jc7cro7gc-1257866770.eo-edgefunctions.com',
+      url: 'https://urdoc-zone-3a1jc7cro7gc-1257866770.eo-edgefunctions.com',
     },
     {
       name: '本地',
