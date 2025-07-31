@@ -8,8 +8,8 @@ export const useModelStore = defineStore('model', () => {
           url: '',
           key: '',
           providers: [
+            // BigModel 智谱AI大模型开放平台 https://bigmodel.cn
             {
-              // BigModel 智谱AI大模型开放平台 https://bigmodel.cn
               name: '智谱',
               id: '智谱',
               url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
@@ -24,26 +24,9 @@ export const useModelStore = defineStore('model', () => {
                   id: 'glm-4-flash-250414',
                 },
                 {
-                  name: 'GLM-Z1-Flash',
-                  id: 'glm-z1-flash',
-                },
-                {
                   name: 'GLM-4-Flash',
                   id: 'glm-4-flash',
                 },
-              ],
-            },
-            {
-              // 百度千帆大模型平台 https://cloud.baidu.com/product-s/qianfan_home
-              name: '百度千帆',
-              id: '百度千帆',
-              url: 'https://qianfan.baidubce.com/v2/chat/completions',
-              key: 'QIANFAN_API_KEY',
-              models: [
-                { name: 'ERNIE-Lite-8K', id: 'ernie-lite-8k' },
-                { name: 'ERNIE-Tiny-8K', id: 'ernie-tiny-8k' },
-                { name: 'ERNIE-Speed-8K', id: 'ernie-speed-8k' },
-                { name: 'ERNIE-Speed-128K', id: 'ernie-speed-128k' },
               ],
             },
             // 讯飞开放平台 星火大模型 https://www.xfyun.cn/
@@ -54,50 +37,68 @@ export const useModelStore = defineStore('model', () => {
               key: 'XFYUN_API_KEY',
               models: [{ name: '星火 Spark Lite', id: 'lite' }],
             },
-
-            // 火山方舟 豆包大模型 https://www.volcengine.com/product/ark
-            // 剩362,270/共50万tokens，其他模型免费50万tokens
-            {
-              name: '火山方舟',
-              id: '火山方舟',
-              url: 'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
-              key: 'DOUBAO_API_KEY',
-              models: [
-                { name: '豆包 Doubao-lite-4k|character-240828', id: 'ep-20241223143555-ms9k5' },
-              ],
-            },
-
-            // 阿里云百炼 通义大模型 https://www.aliyun.com/product/bailian
-            // 模型100万Tokens，到期时间：2025-10-26
-            {
-              name: '阿里云百炼',
-              id: '阿里云百炼',
-              url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-              key: 'ALIYUN_API_KEY',
-              models: [
-                { name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' },
-                // { name: 'Moonshot-Kimi-K2-Instruct', id: 'Moonshot-Kimi-K2-Instruct' },
-              ],
-            },
-
             // 腾讯云 混元大模型 https://cloud.tencent.com/product/hunyuan
             {
-              name: '腾讯混元大模型',
-              id: '腾讯混元大模型',
+              name: '腾讯混元',
+              id: '腾讯混元',
               url: 'https://api.hunyuan.cloud.tencent.com/v1/chat/completions',
               key: 'HUNYUAN_API_KEY',
               models: [{ name: 'hunyuan-lite', id: 'hunyuan-lite' }],
             },
-
             // 书生 书生·浦语 https://internlm.intern-ai.org.cn/
+            // 输入：9百万/月，输出：3百万/月
             {
               name: '书生·浦语',
               id: '书生·浦语',
               url: 'https://chat.intern-ai.org.cn/api/v1/chat/completions',
               key: 'SHUSHENG_API_KEY',
-              models: [{ name: 'InternLM3', id: 'internlm3-latest' }],
+              models: [
+                { name: 'Intern-latest', id: 'intern-latest' },
+                { name: 'InternLM3-latest', id: 'internlm3-latest' },
+                { name: 'InternLM2.5-latest', id: 'internlm2.5-latest' },
+                { name: 'InternVL3-latest', id: 'internvl3-latest' },
+              ],
             },
           ],
+          // 百度千帆大模型平台 https://cloud.baidu.com/product-s/qianfan_home
+          // 效果太差，免费，待后续版本完善
+          // {
+          //   name: '百度千帆',
+          //   id: '百度千帆',
+          //   url: 'https://qianfan.baidubce.com/v2/chat/completions',
+          //   key: 'QIANFAN_API_KEY',
+          //   models: [
+          //     { name: 'ERNIE-Tiny-8K', id: 'ernie-tiny-8k' },
+          //     { name: 'ERNIE-Lite-8K', id: 'ernie-lite-8k' },
+          //     { name: 'ERNIE-Speed-8K', id: 'ernie-speed-8k' },
+          //     { name: 'ERNIE-Speed-128K', id: 'ernie-speed-128k' },
+          //   ],
+          // },
+
+          // 火山方舟 豆包大模型 https://www.volcengine.com/product/ark
+          // 剩362,270/共50万tokens，其他模型免费50万tokens
+          // {
+          //   name: '火山方舟',
+          //   id: '火山方舟',
+          //   url: 'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
+          //   key: 'DOUBAO_API_KEY',
+          //   models: [
+          //     { name: '豆包 Doubao-lite-4k|character-240828', id: 'ep-20241223143555-ms9k5' },
+          //   ],
+          // },
+
+          // 阿里云百炼 通义大模型 https://www.aliyun.com/product/bailian
+          // 模型100万Tokens，到期时间：2025-10-26
+          // {
+          //   name: '阿里云百炼',
+          //   id: '阿里云百炼',
+          //   url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+          //   key: 'ALIYUN_API_KEY',
+          //   models: [
+          //     { name: '通义千问-Plus-2025-04-28', id: 'qwen-plus-2025-04-28' },
+          //     // { name: 'Moonshot-Kimi-K2-Instruct', id: 'Moonshot-Kimi-K2-Instruct' },
+          //   ],
+          // },
         },
         // {
         //   name: 'EdgeOne(Beta)',
@@ -150,6 +151,10 @@ export const useModelStore = defineStore('model', () => {
               url: '',
               key: '',
               models: [
+                {
+                  name: 'Moonshot AI: Kimi K2 (free)',
+                  id: 'moonshotai/kimi-k2:free',
+                },
                 {
                   name: 'Moonshot AI: Moonlight 16B A3B Instruct (free)',
                   id: 'moonshotai/moonlight-16b-a3b-instruct:free',
