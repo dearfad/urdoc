@@ -1,3 +1,5 @@
+import { jsonrepair } from 'jsonrepair'
+
 export const useRecordStore = defineStore(
   'record',
   () => {
@@ -217,9 +219,16 @@ export const useRecordStore = defineStore(
     async function getCase() {
       $reset()
       const messages = promptStore.getSystemPrompt('case')
-      record.value.case = JSON.parse(await modelRouter.getCase(messages))
-      record.value.scope = stateStore.scope
-      record.value.tag.case = stateStore.tag.case
+      const caseJson = await modelRouter.getCase(messages)
+      try {
+        const caseJsonRepaired = jsonrepair(caseJson)
+        const caseJsonParsed = JSON.parse(caseJsonRepaired)
+        record.value.case = caseJsonParsed
+        record.value.scope = stateStore.scope
+        record.value.tag.case = stateStore.tag.case
+      } catch (error) {
+        stateStore.appInfos.push('获取病例失败: ' + error)
+      }
     }
 
     async function getStory() {

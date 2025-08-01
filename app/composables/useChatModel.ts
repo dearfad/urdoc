@@ -23,14 +23,21 @@ export default function () {
     // https://nuxt.com/docs/getting-started/data-fetching
 
     // Make a POST request to the SSE endpoint
-    const response = await $fetch<ReadableStream>('/chat/completions', {
-      baseURL: stateStore.apiBaseUrl,
-      method: 'POST',
-      body: {
-        params: params,
-      },
-      responseType: 'stream',
-    })
+    let response: ReadableStream
+    try {
+      response = await $fetch<ReadableStream>('/chat/completions', {
+        baseURL: stateStore.apiBaseUrl,
+        method: 'POST',
+        body: {
+          params: params,
+        },
+        responseType: 'stream',
+      })
+    } catch (error) {
+      console.log('Error fetching SSE stream:', error)
+      stateStore.appInfo = '获取模型响应失败'
+      return ''
+    }
 
     // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
 
@@ -56,25 +63,31 @@ export default function () {
           tempIncompleteLine = line
           return
         }
-        if (line === 'data: [DONE]' || line === 'data: [DONE]\n') return
-        const jsonDataStr = line.split('data: ')[1]
+        if (line.trim() === 'data: [DONE]') return
+        const jsonDataStr = line.split('data: ')[1] || ''
         try {
-          jsonData = JSON.parse(jsonrepair(jsonDataStr))
+          // 尝试修复并解析 JSON 数据
+          const jsonRepaired = jsonrepair(jsonDataStr)
+          const jsonData = JSON.parse(jsonRepaired)
+
           // 更新当前生成内容
-          if (!jsonData.choices?.length) return
-          stateStore.modelResponseString += jsonData.choices[0].delta.content
+          stateStore.modelResponseString += jsonData.choices?.[0]?.delta?.content || ''
+
           // 更新当前生成字段
-          if (watchFields.length > 0) {
-            if (stateStore.modelResponseString.includes(watchFields[dataFieldPointer])) {
-              stateStore.modelResponseField = watchFields[dataFieldPointer]
-              dataFieldPointer++
-            }
+          const currentField = watchFields[dataFieldPointer]
+          if (
+            watchFields.length > 0 &&
+            currentField &&
+            stateStore.modelResponseString.includes(currentField)
+          ) {
+            stateStore.modelResponseField = currentField
+            dataFieldPointer++
           }
         } catch (error) {
-          console.log('line: ', line)
-          console.log('解析模型数据流失败：', jsonData)
-          console.log('error: ', error)
-          stateStore.appInfo = `解析模型数据流失败：${error}`
+          // 统一处理修复或解析失败的情况
+          console.log('处理JSON失败: ', jsonDataStr, error)
+          stateStore.appInfo = '处理JSON失败'
+          return
         }
       })
     }
