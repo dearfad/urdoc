@@ -50,9 +50,9 @@
         </v-list-group>
       </v-list>
       <template #append>
-        <div class="pa-2">
-          <v-btn block elevation="0" to="/preferences"> 设置 </v-btn>
-        </div>
+        <v-list-item class="mx-2 my-4" prepend-icon="mdi-cog-outline" to="/site/settings"
+          ><v-list-item-title class="font-weight-bold text-subtitle-1"> 设置 </v-list-item-title>
+        </v-list-item>
       </template>
     </v-navigation-drawer>
   </ClientOnly>

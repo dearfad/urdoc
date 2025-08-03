@@ -7,7 +7,6 @@
       :disable-resize-watcher="true"
       rail
     >
-      <v-btn v-tooltip="'首页'" to="/" icon="mdi-home" variant="plain" :ripple="false" />
       <v-btn
         v-tooltip="'主题'"
         icon="mdi-theme-light-dark"
@@ -22,34 +21,6 @@
         icon="mdi-github"
         variant="plain"
         :ripple="false"
-      />
-      <v-btn
-        v-tooltip="'debug'"
-        icon="mdi-bug-play-outline"
-        variant="plain"
-        :ripple="false"
-        @click="stateStore.isDebug = !stateStore.isDebug"
-      />
-      <v-btn
-        v-tooltip="'开关底部导航'"
-        icon="mdi-filter-variant"
-        variant="plain"
-        :ripple="false"
-        @click="stateStore.isBottomNavigationShow = !stateStore.isBottomNavigationShow"
-      />
-      <v-btn
-        v-tooltip="'开关应用页脚'"
-        icon="mdi-format-vertical-align-bottom"
-        variant="plain"
-        :ripple="false"
-        @click="stateStore.isAppFooterShow = !stateStore.isAppFooterShow"
-      />
-      <v-btn
-        v-tooltip="'镜像站点'"
-        icon="mdi-sitemap-outline"
-        variant="plain"
-        :ripple="false"
-        to="/utils/site"
       />
     </v-navigation-drawer>
   </ClientOnly>

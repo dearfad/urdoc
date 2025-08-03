@@ -2,7 +2,7 @@
   <v-app>
     <AppBar />
     <AppNavDrawerLeft />
-    <AppNavDrawerRight />
+    <!-- <AppNavDrawerRight /> -->
     <AppFooter />
     <AppInfo />
     <v-main>
