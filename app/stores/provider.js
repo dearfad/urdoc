@@ -10,7 +10,7 @@ export const useProviderStore = defineStore('provider', () => {
     //   url: 'https://urdoc.pages.dev',
     // },
     {
-      name: 'EdgeOne',
+      name: 'EdgeOne Pages',
       url: 'https://urdoc.dearfad.com',
     },
     // {
@@ -32,22 +32,23 @@ export const useProviderStore = defineStore('provider', () => {
   ])
   // API服务网址
   const apiBaseUrls = ref([
-    {
-      name: 'EdgeOne',
-      url: 'https://urdocs.dearfad.com/function',
-    },
-    {
-      name: 'Netlify',
-      url: 'https://urdoc.netlify.app/api',
-    },
+    // edgeone function
+    // {
+    //   name: 'EdgeOne',
+    //   url: 'https://urdocs.dearfad.com/function',
+    // },
+    // {
+    //   name: 'Netlify',
+    //   url: 'https://urdoc.netlify.app/api',
+    // },
     // {
     //   name: '本地',
     //   url: 'http://60.205.141.59',
     // },
-    {
-      name: '调试接口 /api',
-      url: '/api',
-    },
+    // {
+    //   name: '调试接口 /api',
+    //   url: '/api',
+    // },
     // {
     //   name: 'Cloudflare',
     //   url: 'https://urdoc.pages.dev/api',
@@ -68,10 +69,10 @@ export const useProviderStore = defineStore('provider', () => {
     //   name: 'EdgeOne',
     //   url: 'https://urdoc.dearfad.com/function',
     // },
-    // {
-    //   name: '本地 /function (EdgeOne)',
-    //   url: '/function',
-    // },
+    {
+      name: 'EdgeOne Pages',
+      url: '/function',
+    },
   ])
   return { sites, apiBaseUrls }
 })
