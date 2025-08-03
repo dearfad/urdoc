@@ -7,9 +7,8 @@ export const useStateStore = defineStore(
     const apiBaseUrl = ref('https://urdoc.netlify.app/api')
 
     // AppBar
-    // 左右侧边栏显示切换
-    const isNavDrawerLeftShow = ref(false)
-    const isNavDrawerRightShow = ref(false)
+    // 侧边栏显示切换
+    const isNavDrawerShow = ref(false)
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(true)
     const isAppFooterShow = ref(true)
@@ -154,8 +153,7 @@ export const useStateStore = defineStore(
     return {
       apiBaseUrl,
 
-      isNavDrawerLeftShow,
-      isNavDrawerRightShow,
+      isNavDrawerShow,
 
       isBottomNavigationShow,
       isAppFooterShow,

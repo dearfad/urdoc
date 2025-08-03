@@ -1,8 +1,7 @@
 <template>
   <v-app>
     <AppBar />
-    <AppNavDrawerLeft />
-    <!-- <AppNavDrawerRight /> -->
+    <AppNavDrawer />
     <AppFooter />
     <AppInfo />
     <v-main>
