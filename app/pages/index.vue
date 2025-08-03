@@ -1,5 +1,7 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto justify-center align-center pt-4 ga-4">
+  <v-container
+    class="d-flex flex-column w-100 w-md-75 mx-auto justify-center align-center pt-4 ga-4"
+  >
     <div class="text-h2 font-weight-bold text-blue">URDOC</div>
     <div class="text-h4 font-weight-bold">虚拟病例研究平台</div>
     <div class="d-flex w-100 justify-center">
@@ -20,5 +22,5 @@
     >
       创建病例
     </v-btn>
-  </v-sheet>
+  </v-container>
 </template>

@@ -4,7 +4,7 @@
       <v-list nav>
         <v-list-subheader class="font-weight-bold">项目研究</v-list-subheader>
         <v-list-item prepend-icon="mdi-account-injury" to="/project/clinic">
-          <v-list-item-title class="text-subtitle-2">虚拟门诊</v-list-item-title>
+          <v-list-item-title class="text-subtitle-1">虚拟门诊</v-list-item-title>
         </v-list-item>
       </v-list>
       <v-divider />
@@ -14,13 +14,15 @@
           <template #prepend>
             <v-icon :icon="item.icon" />
           </template>
-          <v-list-item-title class="text-subtitle-2">{{ item.text }}</v-list-item-title>
+          <v-list-item-title class="text-subtitle-1">{{ item.text }}</v-list-item-title>
         </v-list-item>
       </v-list>
       <template #append>
-        <v-list-item class="mx-2 my-4" prepend-icon="mdi-cog-outline" to="/site/settings"
-          ><v-list-item-title class="font-weight-bold text-subtitle-1"> 设置 </v-list-item-title>
-        </v-list-item>
+        <v-list nav>
+          <v-list-item prepend-icon="mdi-cog-outline" to="/site/settings"
+            ><v-list-item-title class="font-weight-bold text-subtitle-1">设置</v-list-item-title>
+          </v-list-item>
+        </v-list>
       </template>
     </v-navigation-drawer>
   </ClientOnly>
