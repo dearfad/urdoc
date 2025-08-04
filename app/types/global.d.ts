@@ -103,7 +103,8 @@ type ResponseFormatType = { type: 'text' } | { type: 'json_object' }
 
 type ModelParamsType = {
   url: string
-  apiKey: string
+  method: string
+  apiKeyName: string
   headers: { [key: string]: string }
   body: string
   prompt?: string

@@ -26,7 +26,11 @@ export default withMermaid({
       },
       {
         text: '参考',
-        items: [{ text: '配置说明', link: '/reference/custom-config' }],
+        items: [
+          { text: '配置说明', link: '/reference/custom-config' },
+          { text: '流程图', link: '/reference/fetch-sequence' },
+          { text: '服务器代码', link: '/reference/server-code' },
+        ],
       },
     ],
 

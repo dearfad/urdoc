@@ -1,4 +1,5 @@
 import defaultCasePrompt from '@/assets/default/case/prompt.md?raw'
+import defaultCheckPrompt from '@/assets/default/case/check.md?raw'
 import defaultStoryPrompt from '@/assets/default/story/prompt.md?raw'
 import defaultTestPrompt from '@/assets/default/test/prompt.md?raw'
 import defaultActPrompt from '@/assets/default/act/prompt.md?raw'
@@ -19,6 +20,14 @@ export const usePromptStore = defineStore(
           type: 'case',
           title: '默认',
           prompt: defaultCasePrompt,
+          author: '',
+          public: true,
+        },
+        check: {
+          id: '',
+          type: 'check',
+          title: '默认',
+          prompt: defaultCheckPrompt,
           author: '',
           public: true,
         },
@@ -164,6 +173,9 @@ export const usePromptStore = defineStore(
           content = `系统要点设定：${stateStore.tag.case?.join(' ')} ${Object.values(
             stateStore.scope
           ).join(' ')}\n`
+          break
+        case 'check':
+          content = `提供病例如下：${recordStore.view.case.markdown}`
           break
         case 'story':
           content = `系统要点设定：${stateStore.tag.story?.join(' ')} ${

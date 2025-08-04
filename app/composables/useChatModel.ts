@@ -55,7 +55,7 @@ export default function () {
 
       lines.forEach((line: string) => {
         if (line === '') return
-        // fix 单行不完整
+        // 修复单行不完整
         line = tempIncompleteLine + line
         if (lineRegex.test(line)) {
           tempIncompleteLine = ''

@@ -13,12 +13,18 @@ export default function () {
   ) {
     const model = stateStore.models.chat[modelUsage]
     const params = {
+      // 使用模型接入点url
       url: model.url,
-      apiKey: model.key.gateway || model.key.provider,
+      // 默认POST方法
+      method: 'POST',
+      // 添加apiKeyName，优先网关gateway，次选服务商provider
+      apiKeyName: model.key.gateway || model.key.provider,
+      // 服务器端根据apiKeyName添加
+      // Authorization: 'Bearer <apiKey>',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ',
       },
+      // 请求体 response_format 有区别，待规范化
       body: JSON.stringify({
         model: model.id,
         messages: messages,
@@ -68,6 +74,10 @@ export default function () {
 
   async function getCase(messages: Messages) {
     const params = getChatModelParams('case', messages, 'json')
+    return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
+  }
+  async function checkCase(messages: Messages) {
+    const params = getChatModelParams('check', messages, 'json')
     return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
   }
 
@@ -125,5 +135,5 @@ export default function () {
     return response.audio
   }
 
-  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose, getVoice }
+  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose, getVoice, checkCase }
 }

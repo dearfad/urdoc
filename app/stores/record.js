@@ -230,7 +230,11 @@ export const useRecordStore = defineStore(
         stateStore.appInfos.push('获取病例失败: ' + error)
       }
     }
-
+    async function checkCase() {
+      const messages = promptStore.getSystemPrompt('check')
+      const result = JSON.parse(await modelRouter.checkCase(messages))
+      console.log(result)
+    }
     async function getStory() {
       const messages = promptStore.getSystemPrompt('story')
       record.value.story = JSON.parse(await modelRouter.getStory(messages))
@@ -390,6 +394,7 @@ export const useRecordStore = defineStore(
 
       $reset,
       getCase,
+      checkCase,
       getStory,
       getTest,
       getAct,

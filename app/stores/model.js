@@ -27,6 +27,10 @@ export const useModelStore = defineStore('model', () => {
                   name: 'GLM-4-Flash',
                   id: 'glm-4-flash',
                 },
+                {
+                  name: 'GLM-Z1-Flash',
+                  id: 'glm-z1-flash',
+                },
               ],
             },
             // 讯飞开放平台 星火大模型 https://www.xfyun.cn/
@@ -116,102 +120,102 @@ export const useModelStore = defineStore('model', () => {
         //   ],
         // },
         // ===========================================================
-        // {
-        //   name: 'OpenRouter',
-        //   id: 'OpenRouter',
-        //   url: 'https://openrouter.ai/api/v1/chat/completions',
-        //   key: 'OPENROUTER_API_KEY',
-        //   providers: [
-        //     {
-        //       name: 'Qwen',
-        //       id: 'Qwen',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'Qwen: Qwen3 30B A3B (free)',
-        //           id: 'qwen/qwen3-30b-a3b:free',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       name: 'DeepSeek',
-        //       id: 'DeepSeek',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'DeepSeek: DeepSeek V3 0324 (free)',
-        //           id: 'deepseek/deepseek-chat-v3-0324:free',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       name: 'Moonshot',
-        //       id: 'Moonshot',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'Moonshot AI: Kimi K2 (free)',
-        //           id: 'moonshotai/kimi-k2:free',
-        //         },
-        //         {
-        //           name: 'Moonshot AI: Moonlight 16B A3B Instruct (free)',
-        //           id: 'moonshotai/moonlight-16b-a3b-instruct:free',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       name: 'Google',
-        //       id: 'Google',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'Google: Gemma 3 12B (free)',
-        //           id: 'google/gemma-3-12b-it:free',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       name: 'Mistral',
-        //       id: 'Mistral',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'Mistral: Mistral Small 3.1 24B (free)',
-        //           id: 'mistralai/mistral-small-3.1-24b-instruct:free',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       name: 'THUDM',
-        //       id: 'THUDM',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'THUDM: GLM 4 32B (free)',
-        //           id: 'thudm/glm-4-32b:free',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       name: 'NVIDIA',
-        //       id: 'NVIDIA',
-        //       url: '',
-        //       key: '',
-        //       models: [
-        //         {
-        //           name: 'NVIDIA: Llama 3.1 Nemotron Ultra 253B v1 (free)',
-        //           id: 'nvidia/llama-3.1-nemotron-ultra-253b-v1:free',
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
+        {
+          name: 'OpenRouter',
+          id: 'OpenRouter',
+          url: 'https://openrouter.ai/api/v1/chat/completions',
+          key: 'OPENROUTER_API_KEY',
+          providers: [
+            {
+              name: 'Qwen',
+              id: 'Qwen',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'Qwen: Qwen3 30B A3B (free)',
+                  id: 'qwen/qwen3-30b-a3b:free',
+                },
+              ],
+            },
+            {
+              name: 'DeepSeek',
+              id: 'DeepSeek',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'DeepSeek: DeepSeek V3 0324 (free)',
+                  id: 'deepseek/deepseek-chat-v3-0324:free',
+                },
+              ],
+            },
+            {
+              name: 'Moonshot',
+              id: 'Moonshot',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'Moonshot AI: Kimi K2 (free)',
+                  id: 'moonshotai/kimi-k2:free',
+                },
+                {
+                  name: 'Moonshot AI: Moonlight 16B A3B Instruct (free)',
+                  id: 'moonshotai/moonlight-16b-a3b-instruct:free',
+                },
+              ],
+            },
+            {
+              name: 'Google',
+              id: 'Google',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'Google: Gemma 3 12B (free)',
+                  id: 'google/gemma-3-12b-it:free',
+                },
+              ],
+            },
+            {
+              name: 'Mistral',
+              id: 'Mistral',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'Mistral: Mistral Small 3.1 24B (free)',
+                  id: 'mistralai/mistral-small-3.1-24b-instruct:free',
+                },
+              ],
+            },
+            {
+              name: 'THUDM',
+              id: 'THUDM',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'THUDM: GLM 4 32B (free)',
+                  id: 'thudm/glm-4-32b:free',
+                },
+              ],
+            },
+            {
+              name: 'NVIDIA',
+              id: 'NVIDIA',
+              url: '',
+              key: '',
+              models: [
+                {
+                  name: 'NVIDIA: Llama 3.1 Nemotron Ultra 253B v1 (free)',
+                  id: 'nvidia/llama-3.1-nemotron-ultra-253b-v1:free',
+                },
+              ],
+            },
+          ],
+        },
         // ===========================================================
         // {
         //   name: 'Pollinations',
