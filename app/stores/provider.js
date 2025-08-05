@@ -1,49 +1,29 @@
 export const useProviderStore = defineStore('provider', () => {
   // 网址
   const sites = ref([
-    // {
-    //   name: 'Netlify',
-    //   url: 'https://urdoc.netlify.app',
-    // },
+    // Production
+    // https://github.com/dearfad/urdoc/tree/main
     {
-      name: 'EdgeOne Pages',
+      name: '正式站 - https://urdoc.dearfad.com',
       url: 'https://urdoc.dearfad.com',
     },
-    // {
-    //   name: 'Netlify(EdgeOne)',
-    //   url: 'https://netlify.dearfad.com',
-    // },
-    // {
-    //   name: 'Vercel',
-    //   url: 'https://urdoc.vercel.app',
-    // },
-    // {
-    //   name: 'Vercel(CnameDNS)',
-    //   url: 'https://vercel.dearfad.com',
-    // },
+    // Development
+    // https://github.com/dearfad/urdoc/tree/develop
+    {
+      name: '测试站 - https://dev.urdoc.dearfad.com',
+      url: 'https://dev.urdoc.dearfad.com',
+    },
   ])
   // API服务网址
   const apiBaseUrls = ref([
     {
-      name: 'EdgeOne Pages',
+      name: 'EdgeOne Pages Functions',
       url: '/function',
     },
     {
-      name: 'Nuxt Server',
+      name: 'NUXT Server',
       url: '/api',
     },
-    // {
-    //   name: 'Netlify',
-    //   url: 'https://urdoc.netlify.app/api',
-    // },
-    // {
-    //   name: 'Netlify(EdgeOne)',
-    //   url: 'https://netlify.dearfad.com/api',
-    // },
-    // {
-    //   name: 'Vercel(CnameDNS)',
-    //   url: 'https://vercel.dearfad.com/api',
-    // },
   ])
   return { sites, apiBaseUrls }
 })
