@@ -5,11 +5,12 @@ export default function () {
     const response: BigmodelCogviewResponse = await $fetch('/images/generations', {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
-      body: JSON.stringify({
+      body: {
         params: params,
-      }),
+      },
     })
-    return response.data[0].url
+    console.log(response)
+    return response.data?.[0]?.url
   }
 
   return {

@@ -39,10 +39,10 @@ export default function () {
     const model = stateStore.models.image[modelUsage]
     const params = {
       url: model.url,
-      apiKey: model.key.gateway || model.key.provider,
+      method: 'POST',
+      apiKeyName: model.key.gateway || model.key.provider,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ',
       },
       body: JSON.stringify({
         model: model.id,
