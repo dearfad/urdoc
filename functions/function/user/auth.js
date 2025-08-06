@@ -4,8 +4,15 @@ import { createClient } from '@supabase/supabase-js'
 
 export async function onRequest({ request, env }) {
   const { action, user } = await request.json()
-  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY)
-  const supabaseService = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY)
+  const options = {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
+  }
+  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY, options)
+  const supabaseService = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY, options)
   console.log(action)
   switch (action) {
     case 'signin':
