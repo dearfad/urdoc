@@ -1,7 +1,7 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto py-2 ga-4">
-    <CommonSiteSelector />
+  <v-container class="d-flex flex-column w-100 w-md-75 py-4 ga-4">
     <CommonApiBaseUrlSelector />
+    <CommonSiteSelector />
     <!-- <v-btn
       v-tooltip="'debug'"
       icon="mdi-bug-play-outline"
@@ -23,7 +23,7 @@
       :ripple="false"
       @click="stateStore.isAppFooterShow = !stateStore.isAppFooterShow"
     /> -->
-  </v-sheet>
+  </v-container>
 </template>
 
 <script setup>

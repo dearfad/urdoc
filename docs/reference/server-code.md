@@ -2,7 +2,7 @@
 
 ## EdgeOne Pages Function
 
-- /functions/function/chat/completions.js
+- /functions/function/proxy/fetch.js
 
 ```js
 export async function onRequest({ request, env }) {
@@ -22,7 +22,7 @@ export async function onRequest({ request, env }) {
 
 ## NUXT -> Vercel, Netlify
 
-- /server/api/chat/completions.js
+- /server/api/proxy/fetch.js
 
 ```js
 export default defineEventHandler(async (event) => {

@@ -25,7 +25,7 @@
     />
     <v-btn icon>
       <v-avatar color="primary" icon="mdi-account-circle" variant="outlined" size="x-small" />
-      <v-menu activator="parent" origin="top">
+      <v-menu activator="parent" offset="8">
         <v-list>
           <v-list-item append-icon="mdi-cog-outline" to="/user/profile">
             <v-list-item-title class="font-weight-bold text-subtitle-2">

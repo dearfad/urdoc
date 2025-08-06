@@ -2,7 +2,7 @@
   <v-app>
     <AppBar />
     <AppNavDrawer />
-    <AppFooter />
+    <!-- <AppFooter /> -->
     <AppInfo />
     <v-main>
       <slot />

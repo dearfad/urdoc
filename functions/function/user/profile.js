@@ -1,11 +1,12 @@
 // https://supabase.nuxtjs.org/
 // https://supabase.com/docs/reference/javascript
 
-import { serverSupabaseClient } from '#supabase/server'
+import { createClient } from '@supabase/supabase-js'
 
-export default defineEventHandler(async (event) => {
-  const { action, user } = await readBody(event)
-  const supabase = await serverSupabaseClient(event)
+export async function onRequest({ request, env }) {
+  const { action, user } = await request.json()
+  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY)
+  const supabaseService = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_KEY)
 
   switch (action) {
     case 'insert':
@@ -21,4 +22,4 @@ export default defineEventHandler(async (event) => {
         error: { code: 'Action Is Not Defined' },
       }
   }
-})
+}

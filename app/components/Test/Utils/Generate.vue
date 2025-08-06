@@ -4,6 +4,5 @@
     <CommonTagInput tag-type="test" />
     <CommonModelCard model-type="chat" model-usage="test" />
     <CommonPromptCard usage="test" />
-    <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

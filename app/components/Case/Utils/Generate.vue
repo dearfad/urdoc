@@ -5,6 +5,5 @@
     <CommonScopeSelector />
     <CommonModelCard model-type="chat" model-usage="case" />
     <CommonPromptCard usage="case" />
-    <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

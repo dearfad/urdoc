@@ -4,14 +4,14 @@ export const useStateStore = defineStore(
     //
     // API 地址设定
     //
-    const apiBaseUrl = ref('https://urdoc.netlify.app/api')
+    const apiBaseUrl = ref('/function')
 
     // AppBar
     // 侧边栏显示切换
-    const isNavDrawerShow = ref(false)
+    const isNavDrawerShow = ref(true)
     // 底部导航栏显示切换
-    const isBottomNavigationShow = ref(true)
-    const isAppFooterShow = ref(true)
+    const isBottomNavigationShow = ref(false)
+    const isAppFooterShow = ref(false)
 
     // AppDebug
     // 是否开启调试模式以显示原始数据

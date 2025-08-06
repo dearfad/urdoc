@@ -1,26 +1,20 @@
 <template>
-  <v-sheet class="px-4 my-3" elevation="4" rounded="lg">
+  <v-card hover class="px-4" rounded="lg">
     <v-select
       v-model="selectedSite"
       label="镜像站点"
       :items="providerStore.sites"
       item-title="name"
       variant="outlined"
-      class="my-4"
       hide-details="auto"
       density="comfortable"
       return-object
+      class="mt-4"
     />
-    <v-btn
-      size="large"
-      class="font-weight-bold my-5"
-      elevation="4"
-      rounded="lg"
-      text="跳转"
-      block
-      :href="selectedSite.url"
-    />
-  </v-sheet>
+    <v-card-actions>
+      <v-btn class="ml-auto" text="访问" :href="selectedSite.url" />
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script setup>

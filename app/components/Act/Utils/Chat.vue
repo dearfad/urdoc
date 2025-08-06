@@ -4,6 +4,5 @@
     <CommonVoiceCard />
     <CommonModelCard model-type="chat" model-usage="act" />
     <CommonPromptCard usage="act" />
-    <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

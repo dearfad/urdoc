@@ -1,11 +1,12 @@
 // https://supabase.nuxtjs.org/
 // https://supabase.com/docs/reference/javascript
 
-import { serverSupabaseClient, serverSupabaseServiceRole } from '#supabase/server'
+import { createClient } from '@supabase/supabase-js'
 export default defineEventHandler(async (event) => {
   const { action, user } = await readBody(event)
-  const supabase = await serverSupabaseClient(event)
-  const supabaseService = serverSupabaseServiceRole(event)
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
+  const supabaseService = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
+
   switch (action) {
     case 'signin':
       return await supabase.auth.signInWithPassword({

@@ -25,7 +25,7 @@ export default function () {
     // Make a POST request to the SSE endpoint
     let response: ReadableStream
     try {
-      response = await $fetch<ReadableStream>('/proxy/fetch', {
+      response = await $fetch<ReadableStream>('/llm/fetch', {
         baseURL: stateStore.apiBaseUrl,
         method: 'POST',
         body: {
