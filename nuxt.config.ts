@@ -1,3 +1,5 @@
+import { zhCN } from '@clerk/localizations'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -23,7 +25,11 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/seo',
     '@nuxtjs/supabase',
+    '@clerk/nuxt',
   ],
+  clerk: {
+    localization: zhCN,
+  },
 
   piniaPluginPersistedstate: {
     storage: 'localStorage',
@@ -31,7 +37,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/api/**': { cors: true },
-    '/docs': { redirect: 'https://urdoc.dearfad.com/docs' },
+    '/docs/**': { static: true },
     '/cstar/**': { ssr: false },
     '/image/**': { ssr: false },
     '/video/**': { ssr: false },
@@ -45,6 +51,10 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/function': 'http://localhost:8088/function',
+      '/docs': 'http://localhost:5173/docs',
+    },
+    prerender: {
+      ignore: ['/docs'],
     },
   },
 

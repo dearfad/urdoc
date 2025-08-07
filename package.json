@@ -10,9 +10,11 @@
     "docs:dev": "vitepress dev docs --host",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "edgeone": "nuxt generate && vitepress build docs"
+    "edgeone": "vitepress build docs && nuxt generate"
   },
   "dependencies": {
+    "@clerk/localizations": "^3.20.7",
+    "@clerk/nuxt": "^1.8.2",
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.8.0",
     "@nuxtjs/mdc": "^0.17.2",

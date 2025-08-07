@@ -7,7 +7,7 @@
       @click="router.push('/')"
     />
     <v-spacer />
-    <v-btn text="文档" to="/docs" />
+
     <v-btn
       v-tooltip="'主题'"
       icon="mdi-theme-light-dark"
@@ -19,22 +19,27 @@
       v-tooltip="'GitHub'"
       href="https://github.com/dearfad/urdoc"
       target="_blank"
-      icon="mdi-github"
       variant="plain"
       :ripple="false"
+      icon="mdi-github"
     />
-    <v-btn icon>
-      <v-avatar color="primary" icon="mdi-account-circle" variant="outlined" size="x-small" />
-      <v-menu activator="parent" offset="8">
-        <v-list>
-          <v-list-item append-icon="mdi-cog-outline" to="/user/profile">
-            <v-list-item-title class="font-weight-bold text-subtitle-2">
-              账号设置
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
+    <v-btn
+      v-tooltip="'文档'"
+      target="_blank"
+      variant="plain"
+      :ripple="false"
+      icon="mdi-book-open-outline"
+      to="/docs"
+      aria-label="文档"
+    />
+    <div class="mx-2">
+      <SignedOut>
+        <SignInButton mode="modal"> <v-btn>登录</v-btn> </SignInButton>
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </div>
   </v-app-bar>
 </template>
 
