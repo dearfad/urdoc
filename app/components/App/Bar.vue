@@ -13,7 +13,7 @@
       icon="mdi-theme-light-dark"
       variant="plain"
       :ripple="false"
-      @click="toggleTheme"
+      @click="theme.toggle()"
     />
     <v-btn
       v-tooltip="'GitHub'"
@@ -25,12 +25,11 @@
     />
     <v-btn
       v-tooltip="'文档'"
+      href="https://urdoc.dearfad.com/docs"
       target="_blank"
       variant="plain"
       :ripple="false"
       icon="mdi-book-open-outline"
-      to="/docs"
-      aria-label="文档"
     />
     <div class="mx-2">
       <SignedOut>
@@ -49,9 +48,6 @@ const stateStore = useStateStore()
 const theme = useTheme()
 const toggleNavDrawer = () => {
   stateStore.isNavDrawerShow = !stateStore.isNavDrawerShow
-}
-const toggleTheme = () => {
-  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 </script>
 

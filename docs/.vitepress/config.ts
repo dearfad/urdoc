@@ -6,7 +6,7 @@ export default withMermaid({
   title: 'URDOC',
   description: '虚拟病例研究平台',
   base: '/docs/',
-  outDir: '../public/docs',
+  outDir: '../.output/public/docs',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',
