@@ -101,6 +101,7 @@ export const usePromptStore = defineStore(
       async selectAll() {
         try {
           const response = await promptApi.database('selectAll', '', userStore.user)
+          // console.log(response)
           if (response.error) {
             stateStore.appInfos.push('提示词列表错误', response.error.code)
           } else {

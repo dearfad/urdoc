@@ -7,7 +7,6 @@
       @click="router.push('/')"
     />
     <v-spacer />
-
     <v-btn
       v-tooltip="'主题'"
       icon="mdi-theme-light-dark"
@@ -46,12 +45,14 @@
 const router = useRouter()
 const stateStore = useStateStore()
 const theme = useTheme()
+
 const toggleNavDrawer = () => {
   stateStore.isNavDrawerShow = !stateStore.isNavDrawerShow
 }
 </script>
 
 <style scoped>
+/* 解决网站标题被截断的问题 */
 :deep(.v-toolbar-title__placeholder) {
   overflow: visible;
 }

@@ -3,7 +3,7 @@ import { zhCN } from '@clerk/localizations'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: '2025-08-08',
   // site: {
   //   url: 'https://urdoc.dearfad.com',
   //   name: 'URDOC',
@@ -24,15 +24,15 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     // '@nuxtjs/seo',
-    '@nuxtjs/supabase',
+    // '@nuxtjs/supabase',
     '@clerk/nuxt',
   ],
   clerk: {
     localization: zhCN,
   },
-  supabase: {
-    redirect: false,
-  },
+  // supabase: {
+  //   redirect: false,
+  // },
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
@@ -52,6 +52,12 @@ export default defineNuxtConfig({
   nitro: {
     devProxy: {
       '/function': 'http://localhost:8088/function',
+    },
+  },
+  runtimeConfig: {
+    public: {
+      supabaseUrl: '',
+      supabaseKey: '',
     },
   },
 })

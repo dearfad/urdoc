@@ -30,6 +30,7 @@
 
 <script setup>
 const stateStore = useStateStore()
+
 const items = [
   { text: '生成病例', icon: 'mdi-alpha-c-circle', link: '/cstar/case' },
   { text: '编写故事', icon: 'mdi-alpha-s-circle', link: '/cstar/story' },

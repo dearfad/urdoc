@@ -1,121 +1,130 @@
 export const useUserStore = defineStore(
   'user',
   () => {
-    const stateStore = useStateStore()
-    const userApi = useUserApi()
+    const isSignedIn = ref(false)
+    const session = ref()
+    const user = computed(() => session.value?.user || {})
 
-    const user = ref({
-      id: '',
-      name: '',
-      email: '',
+    // 在 store 中使用 useSession 来同步 Clerk 状态
+    const { isLoaded, isSignedIn: clerkIsSignedIn, session: clerkSession } = useSession()
+
+    // 监听 Clerk 状态变化并同步到 store
+    watchEffect(() => {
+      if (isLoaded.value) {
+        isSignedIn.value = clerkIsSignedIn.value
+        session.value = clerkSession.value
+      }
     })
 
-    function $reset() {
-      user.value.id = ''
-      user.value.name = ''
-      user.value.email = ''
-    }
+    // const stateStore = useStateStore()
+    // const userApi = useUserApi()
 
-    const auth = {
-      async signUp(userData) {
-        try {
-          const response = await userApi.auth('signup', userData)
-          if (response.error) {
-            stateStore.appInfos.push('注册错误: ' + response.error.code)
-          } else {
-            user.value.id = response.data.user.id
-            user.value.email = response.data.user.email
-            const userProfile = await profile.insert(user.value)
-            user.value.name = userProfile.name
-          }
-        } catch (error) {
-          stateStore.appInfos.push('注册异常: ' + error)
-        }
-      },
-      async signIn(userData) {
-        try {
-          const response = await userApi.auth('signin', userData)
-          if (response.error) {
-            stateStore.appInfos.push('登录错误: ' + response.error.code)
-          } else {
-            user.value.id = response.data.user.id
-            user.value.email = response.data.user.email
-            const userProfile = await profile.select(user.value)
-            user.value.name = userProfile.name
-          }
-        } catch (error) {
-          stateStore.appInfos.push('登录异常: ' + error)
-        }
-      },
-      async signOut() {
-        try {
-          const response = await userApi.auth('signout')
-          if (response.error) {
-            stateStore.appInfos.push('退出登录错误: ' + response.error.code)
-          } else {
-            $reset()
-          }
-        } catch (error) {
-          stateStore.appInfos.push('退出登录异常: ' + error)
-        }
-      },
+    // function $reset() {
+    //   user.value.id = ''
+    //   user.value.name = ''
+    //   user.value.email = ''
+    // }
 
-      async deleteUser(userData) {
-        try {
-          const response = await userApi.auth('deleteuser', userData)
-          if (response.error) {
-            stateStore.appInfos.push('注销错误: ' + response.error.code)
-          } else {
-            $reset()
-          }
-        } catch (error) {
-          stateStore.appInfos.push('注销异常: ' + error)
-        }
-      },
-    }
+    // const auth = {
+    //   async signUp(userData) {
+    //     try {
+    //       const response = await userApi.auth('signup', userData)
+    //       if (response.error) {
+    //         stateStore.appInfos.push('注册错误: ' + response.error.code)
+    //       } else {
+    //         user.value.id = response.data.user.id
+    //         user.value.email = response.data.user.email
+    //         const userProfile = await profile.insert(user.value)
+    //         user.value.name = userProfile.name
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('注册异常: ' + error)
+    //     }
+    //   },
+    //   async signIn(userData) {
+    //     try {
+    //       const response = await userApi.auth('signin', userData)
+    //       if (response.error) {
+    //         stateStore.appInfos.push('登录错误: ' + response.error.code)
+    //       } else {
+    //         user.value.id = response.data.user.id
+    //         user.value.email = response.data.user.email
+    //         const userProfile = await profile.select(user.value)
+    //         user.value.name = userProfile.name
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('登录异常: ' + error)
+    //     }
+    //   },
+    //   async signOut() {
+    //     try {
+    //       const response = await userApi.auth('signout')
+    //       if (response.error) {
+    //         stateStore.appInfos.push('退出登录错误: ' + response.error.code)
+    //       } else {
+    //         $reset()
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('退出登录异常: ' + error)
+    //     }
+    //   },
 
-    const profile = {
-      async insert(userData) {
-        try {
-          const response = await userApi.profile('insert', userData)
-          if (response.error) {
-            stateStore.appInfos.push('创建用户错误: ' + response.error.code)
-          } else {
-            return response.data[0]
-          }
-        } catch (error) {
-          stateStore.appInfos.push('创建用户异常: ' + error)
-        }
-      },
-      async select(userData) {
-        try {
-          const response = await userApi.profile('select', userData)
-          if (response.error) {
-            stateStore.appInfos.push('获取用户错误: ' + response.error.code)
-          } else {
-            return response.data[0]
-          }
-        } catch (error) {
-          stateStore.appInfos.push('获取用户异常: ' + error)
-        }
-      },
-      async updateName(userData) {
-        try {
-          const response = await userApi.profile('updateName', userData)
-          if (response.error) {
-            stateStore.appInfos.push('更新用户错误: ' + response.error.code)
-          } else {
-            user.value.name = response.data[0].name
-          }
-        } catch (error) {
-          stateStore.appInfos.push('更新用户异常: ' + error)
-        }
-      },
-    }
+    //   async deleteUser(userData) {
+    //     try {
+    //       const response = await userApi.auth('deleteuser', userData)
+    //       if (response.error) {
+    //         stateStore.appInfos.push('注销错误: ' + response.error.code)
+    //       } else {
+    //         $reset()
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('注销异常: ' + error)
+    //     }
+    //   },
+    // }
 
-    return { user, $reset, auth, profile }
-  },
-  {
-    persist: true,
+    // const profile = {
+    //   async insert(userData) {
+    //     try {
+    //       const response = await userApi.profile('insert', userData)
+    //       if (response.error) {
+    //         stateStore.appInfos.push('创建用户错误: ' + response.error.code)
+    //       } else {
+    //         return response.data[0]
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('创建用户异常: ' + error)
+    //     }
+    //   },
+    //   async select(userData) {
+    //     try {
+    //       const response = await userApi.profile('select', userData)
+    //       if (response.error) {
+    //         stateStore.appInfos.push('获取用户错误: ' + response.error.code)
+    //       } else {
+    //         return response.data[0]
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('获取用户异常: ' + error)
+    //     }
+    //   },
+    //   async updateName(userData) {
+    //     try {
+    //       const response = await userApi.profile('updateName', userData)
+    //       if (response.error) {
+    //         stateStore.appInfos.push('更新用户错误: ' + response.error.code)
+    //       } else {
+    //         user.value.name = response.data[0].name
+    //       }
+    //     } catch (error) {
+    //       stateStore.appInfos.push('更新用户异常: ' + error)
+    //     }
+    //   },
+    // }
+
+    return { isSignedIn, session, user }
   }
+  // {
+  //   persist: true,
+  // }
 )
