@@ -1,18 +1,20 @@
 import defaultCasePrompt from '@/assets/default/case/prompt.md?raw'
-import defaultCheckPrompt from '@/assets/default/case/check.md?raw'
 import defaultStoryPrompt from '@/assets/default/story/prompt.md?raw'
 import defaultTestPrompt from '@/assets/default/test/prompt.md?raw'
 import defaultActPrompt from '@/assets/default/act/prompt.md?raw'
 import defaultRatePrompt from '@/assets/default/rate/prompt.md?raw'
 import defaultFacePrompt from '@/assets/default/face/prompt.md?raw'
 import defaultPosePrompt from '@/assets/default/pose/prompt.md?raw'
+import defaultReviewPrompt from '@/assets/default/review/prompt.md?raw'
+import defaultVerifyPrompt from '@/assets/default/verify/prompt.md?raw'
+
 export const usePromptStore = defineStore(
   'prompt',
   () => {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
-    const userStore = useUserStore()
-    const promptApi = usePromptApi()
+    const promptDatabase = usePromptDatabase()
+    const promptType = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'review', 'verify']
     const prompts = ref({
       system: {
         case: {
@@ -20,14 +22,6 @@ export const usePromptStore = defineStore(
           type: 'case',
           title: '默认',
           prompt: defaultCasePrompt,
-          author: '',
-          public: true,
-        },
-        check: {
-          id: '',
-          type: 'check',
-          title: '默认',
-          prompt: defaultCheckPrompt,
           author: '',
           public: true,
         },
@@ -79,6 +73,22 @@ export const usePromptStore = defineStore(
           author: '',
           public: true,
         },
+        review: {
+          id: '',
+          type: 'check',
+          title: '默认',
+          prompt: defaultReviewPrompt,
+          author: '',
+          public: true,
+        },
+        verify: {
+          id: '',
+          type: 'check',
+          title: '默认',
+          prompt: defaultVerifyPrompt,
+          author: '',
+          public: true,
+        },
       },
       user: {
         case: [],
@@ -88,6 +98,8 @@ export const usePromptStore = defineStore(
         rate: [],
         face: [],
         pose: [],
+        review: [],
+        verify: [],
       },
       image: {
         face: '',
@@ -100,49 +112,47 @@ export const usePromptStore = defineStore(
     const prompt = {
       async selectAll() {
         try {
-          const response = await promptApi.database('selectAll', '', userStore.user)
-          // console.log(response)
+          const response = await promptDatabase.getData('selectAll')
           if (response.error) {
-            stateStore.appInfos.push('提示词列表错误', response.error.code)
+            stateStore.appInfos.push('刷新提示词错误: ' + JSON.stringify(response.error))
           } else {
-            const promptList = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose']
-            promptList.forEach((item) => {
+            promptType.forEach((item) => {
               prompts.value.user[item] = response.data.filter((i) => i.type === item)
             })
           }
         } catch (error) {
-          stateStore.appInfos.push('提示词列表异常: ' + error)
+          stateStore.appInfos.push('刷新提示词异常: ' + (error.message || error.toString()))
         }
       },
 
-      async select(promptData) {
-        try {
-          const response = await promptApi.database('select', promptData)
-          if (response.error) {
-            stateStore.appInfos.push('提示词获取错误', response.error.code)
-          } else {
-            return response.data[0]
-          }
-        } catch (error) {
-          stateStore.appInfos.push('提示词获取异常: ' + error)
-        }
-      },
+      // async select(promptData) {
+      //   try {
+      //     const response = await promptDatabase.getData('select', promptData)
+      //     if (response.error) {
+      //       stateStore.appInfos.push('提示词获取错误' + JSON.stringify(response.error))
+      //     } else {
+      //       return response.data[0]
+      //     }
+      //   } catch (error) {
+      //     stateStore.appInfos.push('提示词获取异常: ' + +(error.message || error.toString()))
+      //   }
+      // },
       async insert(promptData) {
         try {
-          const response = await promptApi.database('insert', promptData)
+          const response = await promptDatabase.getData('insert', promptData)
           if (response.error) {
-            stateStore.appInfos.push('提示词填加错误', response.error.message)
+            stateStore.appInfos.push('提示词填加错误' + JSON.stringify(response.error))
           } else {
             return response.data[0]
           }
         } catch (error) {
-          stateStore.appInfos.push('提示词填加异常: ' + error)
+          stateStore.appInfos.push('提示词填加异常: ' + (error.message || error.toString()))
         }
       },
 
       async update(promptData) {
         try {
-          const response = await promptApi.database('update', promptData)
+          const response = await promptDatabase.getData('update', promptData)
           if (response.error) {
             stateStore.appInfos.push('提示词更新错误', response.error.code)
           } else {
@@ -155,7 +165,7 @@ export const usePromptStore = defineStore(
 
       async delete(promptData) {
         try {
-          const response = await promptApi.database('delete', promptData)
+          const response = await promptDatabase.getData('delete', promptData)
           if (response.error) {
             stateStore.appInfos.push('提示词删除错误', response.error.code)
           } else {
@@ -175,7 +185,7 @@ export const usePromptStore = defineStore(
             stateStore.scope
           ).join(' ')}\n`
           break
-        case 'check':
+        case 'review':
           content = `提供病例如下：${recordStore.view.case.markdown}`
           break
         case 'story':

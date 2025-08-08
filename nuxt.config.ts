@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
+
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/mdc',
@@ -24,29 +25,26 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     // '@nuxtjs/seo',
-    // '@nuxtjs/supabase',
     '@clerk/nuxt',
   ],
+
   clerk: {
     localization: zhCN,
   },
-  // supabase: {
-  //   redirect: false,
-  // },
+
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
 
-  // routeRules: {
-  //   '/api/**': { cors: true },
-  //   '/cstar/**': { ssr: false },
-  //   '/image/**': { ssr: false },
-  //   '/video/**': { ssr: false },
-  //   '/audio/**': { ssr: false },
-  //   '/admin/**': { ssr: false },
-  //   '/user/**': { ssr: false },
-  //   '/project/**': { ssr: false },
-  // },
+  routeRules: {
+    '/cstar/**': { ssr: false },
+    '/image/**': { ssr: false },
+    '/video/**': { ssr: false },
+    '/audio/**': { ssr: false },
+    '/admin/**': { ssr: false },
+    '/user/**': { ssr: false },
+    '/project/**': { ssr: false },
+  },
 
   // EdgeOne Pages Functions Development
   nitro: {

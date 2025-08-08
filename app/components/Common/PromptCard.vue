@@ -98,14 +98,14 @@ function create() {
     type: usage,
     title: '新建',
     prompt: '',
-    author: userStore.user.id || '',
+    author: userStore.user?.username || '',
     public: true,
   }
   isPromptShow.value = true
 }
 
 async function insert() {
-  if (!userStore.user.id) {
+  if (!userStore.isSignedIn) {
     stateStore.appInfos.push('非注册用户无法保存')
     return
   }

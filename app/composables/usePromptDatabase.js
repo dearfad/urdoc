@@ -1,20 +1,22 @@
 import { createClient } from '@supabase/supabase-js'
 
 export default function () {
-  const userStore = useUserStore()
-  const config = useRuntimeConfig()
-  // https://clerk.com/docs/integrations/databases/supabase
-  async function database(action, prompt, user) {
+  async function getData(action, prompt = null) {
+    const userStore = useUserStore()
+    const config = useRuntimeConfig()
+
+    // https://clerk.com/docs/integrations/databases/supabase
     const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey, {
       async accessToken() {
         return userStore.session?.getToken() ?? null
       },
     })
+
     switch (action) {
       case 'selectAll':
         return await supabase.from('prompts').select().order('id', { ascending: true })
-      case 'select':
-        return await supabase.from('prompts').eq('id', prompt.id).select()
+      // case 'select':
+      //   return await supabase.from('prompts').eq('id', prompt.id).select()
       case 'insert':
         return await supabase.from('prompts').insert(prompt).select()
       case 'update':
@@ -29,7 +31,7 @@ export default function () {
         }
     }
   }
-  return { database }
+  return { getData }
 }
 
 // https://supabase.nuxtjs.org/

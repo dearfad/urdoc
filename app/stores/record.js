@@ -231,7 +231,7 @@ export const useRecordStore = defineStore(
       }
     }
     async function checkCase() {
-      const messages = promptStore.getSystemPrompt('check')
+      const messages = promptStore.getSystemPrompt('review')
       const result = JSON.parse(await modelRouter.checkCase(messages))
       console.log(result)
     }
