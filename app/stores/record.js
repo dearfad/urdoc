@@ -233,11 +233,12 @@ export const useRecordStore = defineStore(
     async function checkCase() {
       const messages = promptStore.getSystemPrompt('review')
       const result = JSON.parse(await modelRouter.checkCase(messages))
-      console.log(result)
+      // 计划中
+      stateStore.appInfos.push(result)
     }
     async function getStory() {
       const messages = promptStore.getSystemPrompt('story')
-      record.value.story = JSON.parse(await modelRouter.getStory(messages))
+      record.value.story.故事 = await modelRouter.getStory(messages)
       record.value.tag.story = stateStore.tag.story
     }
 

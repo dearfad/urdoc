@@ -85,7 +85,7 @@ const isLoading = ref(false)
 
 async function selectAll() {
   isLoading.value = true
-  await promptStore.prompt.selectAll()
+  await promptStore.database.selectAll()
   isLoading.value = false
   if (items.value.length != 0) {
     item.value = promptStore.prompts.user[usage][0]
@@ -117,7 +117,7 @@ async function insert() {
     author: item.value.author,
     public: item.value.public,
   }
-  const prompt = await promptStore.prompt.insert(promptData)
+  const prompt = await promptStore.database.insert(promptData)
   promptStore.prompts.user[usage].push(prompt)
   item.value = prompt
   isLoading.value = false
@@ -133,23 +133,28 @@ async function update() {
     public: item.value.public,
   }
   isLoading.value = true
-  const prompt = await promptStore.prompt.update(promptData)
-  promptStore.prompts.user[usage] = promptStore.prompts.user[usage].map((item) =>
-    item.id === prompt.id ? { ...item, ...prompt } : item
-  )
+  const prompt = await promptStore.database.update(promptData)
+  if (prompt) {
+    promptStore.prompts.user[usage] = promptStore.prompts.user[usage].map((item) =>
+      item.id === prompt.id ? { ...item, ...prompt } : item
+    )
+  }
   isLoading.value = false
 }
 async function handleDelete() {
   isLoading.value = true
-  if ([1, 2, 3, 4, 5, 6, 7].includes(promptStore.prompts.system[usage].id)) {
+  if ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(promptStore.prompts.system[usage].id)) {
     stateStore.appInfos.push('默认提示词不能删除')
   } else {
-    const prompt = await promptStore.prompt.delete(promptStore.prompts.system[usage])
-    promptStore.prompts.user[usage] = promptStore.prompts.user[usage].filter(
-      (item) => item.id !== prompt.id
-    )
-    if (item.value.id === prompt.id) {
-      item.value = promptStore.prompts.user[usage][0]
+    const prompt = await promptStore.database.delete(promptStore.prompts.system[usage])
+
+    if (prompt) {
+      promptStore.prompts.user[usage] = promptStore.prompts.user[usage].filter(
+        (item) => item.id !== prompt.id
+      )
+      if (item.value.id === prompt.id) {
+        item.value = promptStore.prompts.user[usage][0]
+      }
     }
   }
   isLoading.value = false

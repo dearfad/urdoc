@@ -82,8 +82,8 @@ export default function () {
   }
 
   async function getStory(messages: Messages) {
-    const params = getChatModelParams('story', messages, 'json')
-    return await chatModel.getResponse(params, 'json')
+    const params = getChatModelParams('story', messages, 'text')
+    return await chatModel.getResponse(params, 'text')
   }
 
   async function getTest(messages: Messages) {

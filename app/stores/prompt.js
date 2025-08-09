@@ -13,7 +13,7 @@ export const usePromptStore = defineStore(
   () => {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
-    const promptDatabase = usePromptDatabase()
+    const supabaseDatabase = useSupabaseDatabase()
     const promptType = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'review', 'verify']
     const prompts = ref({
       system: {
@@ -109,70 +109,51 @@ export const usePromptStore = defineStore(
       },
     })
 
-    const prompt = {
+    const database = {
       async selectAll() {
-        try {
-          const response = await promptDatabase.getData('selectAll')
-          if (response.error) {
-            stateStore.appInfos.push('刷新提示词错误: ' + JSON.stringify(response.error))
-          } else {
-            promptType.forEach((item) => {
-              prompts.value.user[item] = response.data.filter((i) => i.type === item)
-            })
-          }
-        } catch (error) {
-          stateStore.appInfos.push('刷新提示词异常: ' + (error.message || error.toString()))
+        const { data, error } = await supabaseDatabase.getData('prompts').selectAll()
+        if (!error) {
+          promptType.forEach((item) => {
+            prompts.value.user[item] = data.filter((i) => i.type === item)
+          })
         }
       },
 
-      // async select(promptData) {
-      //   try {
-      //     const response = await promptDatabase.getData('select', promptData)
-      //     if (response.error) {
-      //       stateStore.appInfos.push('提示词获取错误' + JSON.stringify(response.error))
-      //     } else {
-      //       return response.data[0]
-      //     }
-      //   } catch (error) {
-      //     stateStore.appInfos.push('提示词获取异常: ' + +(error.message || error.toString()))
-      //   }
-      // },
+      async select(promptData) {
+        const { data, error } = await supabaseDatabase.getData('prompts').select(promptData)
+        if (!error) {
+          return data[0]
+        }
+      },
+
       async insert(promptData) {
-        try {
-          const response = await promptDatabase.getData('insert', promptData)
-          if (response.error) {
-            stateStore.appInfos.push('提示词填加错误' + JSON.stringify(response.error))
-          } else {
-            return response.data[0]
-          }
-        } catch (error) {
-          stateStore.appInfos.push('提示词填加异常: ' + (error.message || error.toString()))
+        const { data, error } = await supabaseDatabase.getData('prompts').insert(promptData)
+        if (!error) {
+          return data[0]
         }
       },
 
       async update(promptData) {
-        try {
-          const response = await promptDatabase.getData('update', promptData)
-          if (response.error) {
-            stateStore.appInfos.push('提示词更新错误', response.error.code)
+        const { data, error } = await supabaseDatabase.getData('prompts').update(promptData)
+        if (!error) {
+          if (data.length > 0) {
+            stateStore.appInfos.push('更新成功')
           } else {
-            return response.data[0]
+            stateStore.appInfos.push('更新失败')
           }
-        } catch (error) {
-          stateStore.appInfos.push('提示词更新异常: ' + error)
+          return data[0]
         }
       },
 
       async delete(promptData) {
-        try {
-          const response = await promptDatabase.getData('delete', promptData)
-          if (response.error) {
-            stateStore.appInfos.push('提示词删除错误', response.error.code)
+        const { data, error } = await supabaseDatabase.getData('prompts').del(promptData)
+        if (!error) {
+          if (data.length > 0) {
+            stateStore.appInfos.push('删除成功')
           } else {
-            return response.data[0]
+            stateStore.appInfos.push('删除失败')
           }
-        } catch (error) {
-          stateStore.appInfos.push('提示词删除异常: ' + error)
+          return data[0]
         }
       },
     }
@@ -223,7 +204,7 @@ export const usePromptStore = defineStore(
       ]
     }
 
-    return { prompts, prompt, getSystemPrompt }
+    return { prompts, database, getSystemPrompt }
   },
   {
     persist: true,
