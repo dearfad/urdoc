@@ -5,7 +5,7 @@ export const useRecordStore = defineStore(
   () => {
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
-    const recordApi = useRecordApi()
+    const supabase = useSupabase()
     const stateStore = useStateStore()
 
     // Medical Records
@@ -45,9 +45,11 @@ export const useRecordStore = defineStore(
       rate: [],
       scope: {
         book: '',
+        part: '',
         chapter: '',
         section: '',
         subsection: '',
+        topic: '',
       },
       tag: {
         case: [],
@@ -193,9 +195,11 @@ export const useRecordStore = defineStore(
         rate: [],
         scope: {
           book: '',
+          part: '',
           chapter: '',
           section: '',
           subsection: '',
+          topic: '',
         },
         tag: {
           case: [],
@@ -291,16 +295,9 @@ export const useRecordStore = defineStore(
 
     const database = {
       async selectAll() {
-        try {
-          const response = await recordApi.database('selectAll')
-          if (response.error) {
-            stateStore.appInfos.push('记录列表错误', response.error.message)
-          } else {
-            stateStore.listRecords = response.data
-          }
-        } catch (error) {
-          stateStore.appInfos.push('记录列表异常: ' + error)
-        }
+        const { data, error } = await supabase.getData('records').selectAll()
+        error ? stateStore.appInfos.push('病例列表错误') : (stateStore.listRecords = data)
+        console.log(data)
       },
 
       async insert(recordData) {
@@ -330,7 +327,7 @@ export const useRecordStore = defineStore(
 
       async select(recordData) {
         try {
-          const response = await recordApi.database('select', recordData)
+          const response = await supabase.database('select', recordData)
           if (response.error) {
             stateStore.appInfos.push('记录读取错误: ' + response.error.message)
           } else {

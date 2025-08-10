@@ -1,8 +1,12 @@
 # 服务器代码
 
+## 功能
+
+- 通过后端环境获取 API Key，并添加到请求头中访问大模型，预防 API Key 泄漏
+
 ## EdgeOne Pages Function
 
-- /functions/function/proxy/fetch.js
+- /functions/function/fetch.js
 
 ```js
 export async function onRequest({ request, env }) {
@@ -18,22 +22,4 @@ export async function onRequest({ request, env }) {
     body: params.body,
   })
 }
-```
-
-## NUXT -> Vercel, Netlify
-
-- /server/api/proxy/fetch.js
-
-```js
-export default defineEventHandler(async (event) => {
-  const { params } = await readBody(event)
-  // 添加 API Key 到 Authorization 头
-  params.headers.Authorization = `Bearer ${process.env[params.apiKeyName]}`
-  // 直接转发请求并返回响应
-  return await fetch(params.url, {
-    method: params.method,
-    headers: params.headers,
-    body: params.body,
-  })
-})
 ```

@@ -1,10 +1,26 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto py-4 ga-4">
-    <CommonRecordTools />
-    <CaseContentShow />
-    <CaseUtilsCheck />
-    <CaseUtilsGenerate />
-  </v-sheet>
+  <v-container class="w-100 w-md-75">
+    <v-row>
+      <v-col>
+        <CommonRecordTools />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <CaseContentShow />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <CaseUtilsCheck />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <CaseUtilsGenerate />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>

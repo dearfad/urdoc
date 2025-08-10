@@ -19,17 +19,17 @@ export default function () {
 
     // 出现错误时，将错误信息推送到全局消息中，无论是否出错都返回原始响应
     const execute = (query) =>
-      query.then(
-        (response) => (response.error && stateStore.appInfos.push(response.error), response)
-      )
+      query.then((result) => (result.error && stateStore.appInfos.push(result.error), result))
 
-    const selectAll = () => execute(supabase.from(table).select().order('id', { ascending: true }))
     const select = (row) => execute(supabase.from(table).eq('id', row.id).select())
     const insert = (row) => execute(supabase.from(table).insert(row).select())
     const update = (row) => execute(supabase.from(table).update(row).eq('id', row.id).select())
-    const del = (row) => execute(supabase.from(table).delete().eq('id', row.id).select())
+    const remove = (row) => execute(supabase.from(table).delete().eq('id', row.id).select())
+    const selectAll = () => execute(supabase.from(table).select().order('id', { ascending: true }))
+    const selectByColumn = (column, value) =>
+      execute(supabase.from(table).select().eq(column, value).order('id', { ascending: true }))
 
-    return { selectAll, select, insert, update, del }
+    return { select, insert, update, remove, selectAll, selectByColumn }
   }
   return { getData }
 }

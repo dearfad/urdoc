@@ -22,6 +22,9 @@ export default withMermaid({
           { text: '什么是 CSTAR ?', link: '/guide/what-is-cstar' },
           { text: '什么是 URDOC ?', link: '/guide/what-is-urdoc' },
           { text: '快速开始', link: '/guide/getting-started' },
+          { text: '范围选择', link: '/guide/scope-select' },
+          { text: '模型管理', link: '/guide/model-card' },
+          { text: '提示词管理', link: '/guide/prompt-card' },
         ],
       },
       {

@@ -16,7 +16,7 @@
     <v-card-actions>
       <v-btn text="查看" @click="isPromptShow = !isPromptShow" />
       <v-spacer />
-      <v-btn text="刷新" @click="selectAll" />
+      <v-btn text="刷新" @click="selectByColumn" />
       <v-btn text="新建" @click="create" />
     </v-card-actions>
     <v-expand-transition class="mt-4">
@@ -59,7 +59,7 @@
                 <v-card-actions>
                   <v-spacer />
                   <v-btn text="取消" @click="isActive.value = false" />
-                  <v-btn text="确认" @click=";(isActive.value = false), handleDelete()" />
+                  <v-btn text="确认" @click=";(isActive.value = false), remove()" />
                 </v-card-actions>
               </v-card>
             </template>
@@ -83,9 +83,9 @@ const items = computed(() => promptStore.prompts.user[usage])
 
 const isLoading = ref(false)
 
-async function selectAll() {
+async function selectByColumn() {
   isLoading.value = true
-  await promptStore.database.selectAll()
+  await promptStore.database.selectByColumn('type', usage)
   isLoading.value = false
   if (items.value.length != 0) {
     item.value = promptStore.prompts.user[usage][0]
@@ -141,12 +141,12 @@ async function update() {
   }
   isLoading.value = false
 }
-async function handleDelete() {
+async function remove() {
   isLoading.value = true
   if ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(promptStore.prompts.system[usage].id)) {
     stateStore.appInfos.push('默认提示词不能删除')
   } else {
-    const prompt = await promptStore.database.delete(promptStore.prompts.system[usage])
+    const prompt = await promptStore.database.remove(promptStore.prompts.system[usage])
 
     if (prompt) {
       promptStore.prompts.user[usage] = promptStore.prompts.user[usage].filter(

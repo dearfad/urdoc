@@ -53,12 +53,12 @@ const id = ref([])
 const isLoading = ref(false)
 const headers = ref([
   { title: '索引', key: 'id', nowrap: true, width: 90 },
-  { title: '姓名', key: '姓名', nowrap: true, width: 90 },
-  { title: '性别', key: '性别', nowrap: true, width: 90 },
-  { title: '年龄', key: '年龄', nowrap: true, width: 90 },
-  { title: '主诉', key: '主诉', nowrap: true },
-  { title: '教科书', key: 'book', nowrap: true },
-  { title: '章节', key: 'chapter', nowrap: true },
+  { title: '姓名', key: 'record.case.姓名', nowrap: true, width: 90 },
+  { title: '性别', key: 'record.case.性别', nowrap: true, width: 90 },
+  { title: '年龄', key: 'record.case.年龄', nowrap: true, width: 90 },
+  { title: '主诉', key: 'record.case.主诉', nowrap: true },
+  { title: '教科书', key: 'record.scope.book', nowrap: true },
+  { title: '章节', key: 'record.scope.chapter', nowrap: true },
 ])
 
 async function selectAll() {

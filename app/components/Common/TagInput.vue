@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="px-4" elevation="4" rounded="lg">
+  <v-sheet class="px-4 py-1" elevation="4" rounded="lg">
     <v-text-field
       v-model="tagInput"
       class="my-4"

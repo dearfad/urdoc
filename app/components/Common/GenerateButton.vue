@@ -6,6 +6,7 @@
     rounded="lg"
     text="开始生成"
     :loading="isLoading"
+    block
     @click="generate"
   >
     <template #loader>

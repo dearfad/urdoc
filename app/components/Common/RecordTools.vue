@@ -33,20 +33,14 @@ const userStore = useUserStore()
 const isLoading = ref(false)
 
 async function insert() {
-  if (!userStore.user.id) {
+  if (!userStore.isSignedIn) {
     stateStore.appInfos.push('非注册用户无法保存')
     return
   }
   isLoading.value = true
   const recordData = {
-    record: {
-      case: recordStore.record.case,
-      story: recordStore.record.story,
-      test: recordStore.record.test,
-      scope: recordStore.record.scope,
-      tag: recordStore.record.tag,
-    },
-    author: userStore.user.id,
+    record: recordStore.record,
+    author: userStore.user.username,
     public: recordStore.record.public,
   }
   await recordStore.database.insert(recordData)

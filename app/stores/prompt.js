@@ -13,7 +13,7 @@ export const usePromptStore = defineStore(
   () => {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
-    const supabaseDatabase = useSupabaseDatabase()
+    const supabase = useSupabase()
     const promptType = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'review', 'verify']
     const prompts = ref({
       system: {
@@ -111,50 +111,40 @@ export const usePromptStore = defineStore(
 
     const database = {
       async selectAll() {
-        const { data, error } = await supabaseDatabase.getData('prompts').selectAll()
-        if (!error) {
+        const { data, error } = await supabase.getData('prompts').selectAll()
+        !error &&
           promptType.forEach((item) => {
             prompts.value.user[item] = data.filter((i) => i.type === item)
           })
-        }
+        // stateStore.appInfos.push(!error ? '刷新成功' : '刷新失败')
+      },
+      async selectByColumn(column, value) {
+        const { data, error } = await supabase.getData('prompts').selectByColumn(column, value)
+        !error && (prompts.value.user[value] = data)
+        // stateStore.appInfos.push(!error ? '刷新成功' : '刷新失败')
       },
 
       async select(promptData) {
-        const { data, error } = await supabaseDatabase.getData('prompts').select(promptData)
-        if (!error) {
-          return data[0]
-        }
+        const { data, error } = await supabase.getData('prompts').select(promptData)
+        return error ? undefined : data[0]
       },
 
       async insert(promptData) {
-        const { data, error } = await supabaseDatabase.getData('prompts').insert(promptData)
-        if (!error) {
-          return data[0]
-        }
+        const { data, error } = await supabase.getData('prompts').insert(promptData)
+        stateStore.appInfos.push(!error && data.length > 0 ? '添加成功' : '添加失败')
+        return error ? undefined : data[0]
       },
 
       async update(promptData) {
-        const { data, error } = await supabaseDatabase.getData('prompts').update(promptData)
-        if (!error) {
-          if (data.length > 0) {
-            stateStore.appInfos.push('更新成功')
-          } else {
-            stateStore.appInfos.push('更新失败')
-          }
-          return data[0]
-        }
+        const { data, error } = await supabase.getData('prompts').update(promptData)
+        stateStore.appInfos.push(!error && data.length > 0 ? '更新成功' : '更新失败')
+        return error ? undefined : data[0]
       },
 
-      async delete(promptData) {
-        const { data, error } = await supabaseDatabase.getData('prompts').del(promptData)
-        if (!error) {
-          if (data.length > 0) {
-            stateStore.appInfos.push('删除成功')
-          } else {
-            stateStore.appInfos.push('删除失败')
-          }
-          return data[0]
-        }
+      async remove(promptData) {
+        const { data, error } = await supabase.getData('prompts').remove(promptData)
+        stateStore.appInfos.push(!error && data.length > 0 ? '删除成功' : '删除失败')
+        return error ? undefined : data[0]
       },
     }
 
@@ -166,9 +156,7 @@ export const usePromptStore = defineStore(
             stateStore.scope
           ).join(' ')}\n`
           break
-        case 'review':
-          content = `提供病例如下：${recordStore.view.case.markdown}`
-          break
+
         case 'story':
           content = `系统要点设定：${stateStore.tag.story?.join(' ')} ${
             recordStore.view.case.markdown
@@ -190,6 +178,12 @@ export const usePromptStore = defineStore(
           break
         case 'pose':
           content = `下面是用户提供的病历：\n${recordStore.view.case.markdown}`
+          break
+        case 'review':
+          content = `提供病例如下：${recordStore.view.case.markdown}`
+          break
+        case 'verify':
+          content = `提供问题如下：${recordStore.view.case.markdown}`
           break
         default:
           content = '系统要点设定：无特殊要求'
