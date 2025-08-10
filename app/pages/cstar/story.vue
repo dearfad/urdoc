@@ -10,7 +10,7 @@
 import { StoryUtilsGenerate } from '#components'
 
 definePageMeta({
-  title: '编写故事',
+  title: '故事',
   layout: 'cstar',
 })
 </script>
