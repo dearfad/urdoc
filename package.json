@@ -13,8 +13,8 @@
     "edgeone": "nuxt generate && vitepress build docs"
   },
   "dependencies": {
-    "@clerk/localizations": "^3.20.7",
-    "@clerk/nuxt": "^1.8.2",
+    "@clerk/localizations": "^3.20.8",
+    "@clerk/nuxt": "^1.8.3",
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.8.0",
     "@nuxtjs/mdc": "^0.17.2",
