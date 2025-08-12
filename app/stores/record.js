@@ -297,67 +297,49 @@ export const useRecordStore = defineStore(
       async selectAll() {
         const { data, error } = await supabase.getData('records').selectAll()
         error ? stateStore.appInfos.push('病例列表错误') : (stateStore.listRecords = data)
-        console.log(data)
       },
 
       async insert(recordData) {
-        try {
-          const response = await recordApi.database('insert', recordData)
-          if (response.error) {
-            stateStore.appInfo = '记录添加错误: ' + response.error.message
-          } else {
-            record.value.id = response.data[0].id
-            record.value.author = response.data[0].author
-          }
-        } catch (error) {
-          stateStore.appInfos.push('记录填加异常: ' + error)
+        const { data, error } = await supabase.getData('records').insert(recordData)
+        if (error) {
+          stateStore.appInfos.push(!error && data.length > 0 ? '添加成功' : '添加失败')
+        } else {
+          record.value.id = data[0].id
+          record.value.author = data[0].author
         }
       },
 
       async update(recordData) {
-        try {
-          const response = await recordApi.database('update', recordData)
-          if (response.error) {
-            stateStore.appInfos.push('记录更新错误' + response.error.message)
-          }
-        } catch (error) {
-          stateStore.appInfo = '更新错误: ' + error
-        }
+        const { data, error } = await supabase.getData('records').update(recordData)
+        stateStore.appInfos.push(!error && data.length > 0 ? '更新成功' : '更新失败')
+        return error ? undefined : data[0]
       },
 
       async select(recordData) {
-        try {
-          const response = await supabase.database('select', recordData)
-          if (response.error) {
-            stateStore.appInfos.push('记录读取错误: ' + response.error.message)
-          } else {
-            $reset()
-            record.value.id = response.data[0].id
-            for (const key in record.value.case) {
-              record.value.case[key] = response.data[0].record.case[key] || ''
-            }
-            record.value.story = response.data[0].record.story
-            record.value.test = response.data[0].record.test
-            record.value.scope = response.data[0].record.scope
-            record.value.tag = response.data[0].record.tag
-            record.value.author = response.data[0].record.author
-            record.value.public = response.data[0].record.public
+        const { data, error } = await supabase.getData('records').select(recordData)
+        if (error) {
+          stateStore.appInfos.push('记录读取错误')
+        } else {
+          $reset()
+          record.value.id = data[0].id
+          for (const key in record.value.case) {
+            record.value.case[key] = data[0].record.case[key] || ''
           }
-        } catch (error) {
-          stateStore.appInfos.push('记录读取异常: ' + error)
+          record.value.story = data[0].record.story
+          record.value.test = data[0].record.test
+          record.value.scope = data[0].record.scope
+          record.value.tag = data[0].record.tag
+          record.value.author = data[0].record.author
+          record.value.public = data[0].record.public
         }
       },
 
       async delete(recordData) {
-        try {
-          const response = await recordApi.database('delete', recordData)
-          if (response.error) {
-            stateStore.appInfos.push('记录删除错误: ' + response.error.message)
-          } else {
-            await database.selectAll()
-          }
-        } catch (error) {
-          stateStore.appInfos.push('记录删除异常: ' + error)
+        const { error } = await supabase.getData('records').delete(recordData)
+        if (error) {
+          stateStore.appInfos.push('记录删除错误')
+        } else {
+          await database.selectAll()
         }
       },
     }
