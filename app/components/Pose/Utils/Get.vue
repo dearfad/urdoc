@@ -15,7 +15,7 @@
   </v-btn>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 const isLoading = ref(false)
 const recordStore = useRecordStore()
 const stateStore = useStateStore()

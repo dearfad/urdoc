@@ -1,8 +1,8 @@
 export default function () {
-  async function getResponse(params: ModelParamsType) {
+  async function getResponse(params) {
     const stateStore = useStateStore()
     stateStore.modelResponseField = '姿态'
-    const response: BigmodelCogvideoxIdResponse = await $fetch('/video/generations', {
+    const response = await $fetch('/fetch', {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {
@@ -12,13 +12,18 @@ export default function () {
     return response.id
   }
 
-  async function getUrl(id: string) {
+  async function getUrl(id) {
     const stateStore = useStateStore()
     stateStore.modelResponseField = '姿态'
     const params = {
-      id: id,
+      url: `https://open.bigmodel.cn/api/paas/v4/async-result/${id}`,
+      method: 'GET',
+      apiKeyName: 'ZHIPU_API_KEY',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }
-    const response: BigmodelCogvideoxResponse = await $fetch('/video/url', {
+    const response = await $fetch('/fetch', {
       baseURL: stateStore.apiBaseUrl,
       method: 'POST',
       body: {

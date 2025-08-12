@@ -4,6 +4,5 @@
     <CommonModelCard model-type="chat" model-usage="face" />
     <CommonModelCard model-type="image" model-usage="face" />
     <CommonPromptCard usage="face" />
-    <CommonApiBaseUrlSelector />
   </v-sheet>
 </template>

@@ -6,11 +6,7 @@ export default function () {
   const videoModel = useVideoModel()
   const promptStore = usePromptStore()
 
-  function getChatModelParams(
-    modelUsage: keyof typeof stateStore.models.chat,
-    messages: Messages,
-    response_format: 'text' | 'json'
-  ) {
+  function getChatModelParams(modelUsage, messages, response_format) {
     const model = stateStore.models.chat[modelUsage]
     const params = {
       // 使用模型接入点url
@@ -35,7 +31,7 @@ export default function () {
     return params
   }
 
-  function getImageModelParams(modelUsage: keyof typeof stateStore.models.image, prompt: string) {
+  function getImageModelParams(modelUsage, prompt) {
     const model = stateStore.models.image[modelUsage]
     const params = {
       url: model.url,
@@ -52,14 +48,14 @@ export default function () {
     return params
   }
 
-  function getVideoModelParams(modelUsage: keyof typeof stateStore.models.video, prompt: string) {
+  function getVideoModelParams(modelUsage, prompt) {
     const model = stateStore.models.video[modelUsage]
     const params = {
       url: model.url,
-      apiKey: model.key.gateway || model.key.provider,
+      method: 'POST',
+      apiKeyName: model.key.gateway || model.key.provider,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ',
       },
       body: JSON.stringify({
         model: model.id,
@@ -72,38 +68,38 @@ export default function () {
 
   // Chat Model
 
-  async function getCase(messages: Messages) {
+  async function getCase(messages) {
     const params = getChatModelParams('case', messages, 'json')
     return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
   }
-  async function checkCase(messages: Messages) {
+  async function checkCase(messages) {
     const params = getChatModelParams('check', messages, 'json')
     return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
   }
 
-  async function getStory(messages: Messages) {
+  async function getStory(messages) {
     const params = getChatModelParams('story', messages, 'text')
     return await chatModel.getResponse(params, 'text')
   }
 
-  async function getTest(messages: Messages) {
+  async function getTest(messages) {
     const params = getChatModelParams('test', messages, 'json')
     return await chatModel.getResponse(params, 'json')
   }
 
-  async function getAct(messages: Messages) {
+  async function getAct(messages) {
     const params = getChatModelParams('act', messages, 'text')
     return await chatModel.getResponse(params, 'text')
   }
 
-  async function getRate(messages: Messages) {
+  async function getRate(messages) {
     const params = getChatModelParams('rate', messages, 'text')
     return await chatModel.getResponse(params, 'text')
   }
 
   // Image Model
 
-  async function getFace(messages: Messages) {
+  async function getFace(messages) {
     const chatParams = getChatModelParams('face', messages, 'text')
     const prompt = await chatModel.getResponse(chatParams, 'text')
     promptStore.prompts.image.face = prompt
@@ -113,7 +109,7 @@ export default function () {
 
   // Video Model
 
-  async function getPose(messages: Messages) {
+  async function getPose(messages) {
     const chatParams = getChatModelParams('pose', messages, 'text')
     const prompt = await chatModel.getResponse(chatParams, 'text')
     promptStore.prompts.video.pose = prompt
@@ -123,13 +119,8 @@ export default function () {
   }
 
   // Voice Model
-  async function getVoice(text: string) {
-    interface TextReadTTS {
-      code: number
-      message: string
-      audio: string
-    }
-    const response: TextReadTTS = await $fetch(
+  async function getVoice(text) {
+    const response = await $fetch(
       `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${text}`
     )
     return response.audio
