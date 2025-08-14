@@ -1,5 +1,5 @@
 <template>
-  <v-card hover class="text-body-1 px-5 py-2 overflow-auto" rounded="lg" height="55vh">
+  <v-card class="text-body-1 px-4 py-2 overflow-auto" rounded="lg" height="55vh" elevation="4">
     <div v-if="stateStore.isModelResponseStringShow">
       {{ stateStore.modelResponseString }}
     </div>
