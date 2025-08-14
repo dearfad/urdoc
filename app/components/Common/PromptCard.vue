@@ -51,11 +51,11 @@
           <v-btn v-if="item.id ? true : false" text="更新" @click="update" />
           <v-dialog max-width="400">
             <template #activator="{ props: activatorProps }">
-              <v-btn text="删除" :disabled="item.id ? false : true" v-bind="activatorProps" />
+              <v-btn text="删除" v-bind="activatorProps" />
             </template>
             <template #default="{ isActive }">
               <v-card title="确认删除">
-                <v-card-text> 本操作将在数据库中删除该条记录，是否继续？ </v-card-text>
+                <v-card-text> 本操作将删除该条记录，是否继续？ </v-card-text>
                 <v-card-actions>
                   <v-spacer />
                   <v-btn text="取消" @click="isActive.value = false" />
@@ -101,6 +101,7 @@ function create() {
     author: userStore.user?.username || '',
     public: true,
   }
+  promptStore.prompts.user[usage].push(item.value)
   isPromptShow.value = true
 }
 
@@ -143,6 +144,13 @@ async function update() {
 }
 async function remove() {
   isLoading.value = true
+  if (promptStore.prompts.system[usage].id === 0) {
+    const index = promptStore.prompts.user[usage].indexOf(promptStore.prompts.system[usage])
+    if (index !== -1) promptStore.prompts.user[usage].splice(index, 1)
+    item.value = promptStore.prompts.user[usage][0]
+    isLoading.value = false
+    return
+  }
   if ([1, 2, 3, 4, 5, 6, 7, 8, 9].includes(promptStore.prompts.system[usage].id)) {
     stateStore.appInfos.push('默认提示词不能删除')
   } else {

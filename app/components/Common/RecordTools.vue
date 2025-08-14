@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="d-flex justify-space-between font-weight-bold mx-4"
+    class="d-flex justify-space-between font-weight-bold"
     hover
     rounded="lg"
     :loading="isLoading"

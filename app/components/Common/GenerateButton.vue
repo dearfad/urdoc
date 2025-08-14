@@ -1,8 +1,8 @@
 <template>
   <v-btn
+    hover
     size="x-large"
     class="font-weight-bold"
-    elevation="4"
     rounded="lg"
     text="开始生成"
     :loading="isLoading"

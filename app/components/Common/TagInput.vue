@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="px-4 py-1" elevation="4" rounded="lg">
+  <v-card class="px-4 py-1" hover rounded="lg">
     <v-text-field
       v-model="tagInput"
       class="my-4"
@@ -10,7 +10,7 @@
       density="comfortable"
       placeholder="多个要点请用空格隔开"
     />
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup>

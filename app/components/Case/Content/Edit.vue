@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="text-body-1 pa-5 overflow-auto mx-4" elevation="4" rounded="lg" height="55vh">
+  <v-card hover class="text-body-1 pa-5 overflow-auto" rounded="lg" height="55vh">
     <v-text-field
       v-model="recordStore.record.case.姓名"
       class="mt-0 mb-4"
@@ -112,7 +112,7 @@
       <v-spacer />
       <v-switch v-model="recordStore.record.public" label="公开" color="primary" hide-details />
     </div>
-  </v-sheet>
+  </v-card>
 </template>
 
 <script setup>

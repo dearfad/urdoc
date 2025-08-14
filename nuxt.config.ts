@@ -28,10 +28,6 @@ export default defineNuxtConfig({
     '@clerk/nuxt',
   ],
 
-  clerk: {
-    localization: zhCN,
-  },
-
   piniaPluginPersistedstate: {
     storage: 'localStorage',
   },
@@ -52,6 +48,13 @@ export default defineNuxtConfig({
       '/function': 'http://localhost:8088/function',
     },
   },
+
+  // Clerk Configuration
+  clerk: {
+    localization: zhCN,
+  },
+
+  // Supabase Runtime Configuration
   runtimeConfig: {
     public: {
       supabaseUrl: '',

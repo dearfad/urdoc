@@ -1,9 +1,9 @@
 <template>
-  <v-sheet class="d-flex flex-column ga-4 mx-4">
+  <v-sheet class="d-flex flex-column ga-2">
     <v-btn
       size="x-large"
       class="font-weight-bold"
-      elevation="4"
+      hover
       rounded="lg"
       text="模型校验"
       :loading="isLoading"

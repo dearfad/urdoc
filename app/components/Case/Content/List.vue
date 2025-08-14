@@ -1,7 +1,7 @@
 <template>
   <v-card
     hover
-    class="text-body-1 px-4 py-2 overflow-auto mx-4"
+    class="text-body-1 px-4 py-2 overflow-auto"
     rounded="lg"
     height="55vh"
     :loading="isLoading"

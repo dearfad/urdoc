@@ -6,12 +6,14 @@ export const useProviderStore = defineStore('provider', () => {
     {
       name: '正式站 - https://urdoc.dearfad.com',
       url: 'https://urdoc.dearfad.com',
+      branch: 'main',
     },
     // Development
     // https://github.com/dearfad/urdoc/tree/develop
     {
-      name: '测试站 - https://dev.urdoc.dearfad.com',
+      name: '开发站 - https://dev.urdoc.dearfad.com',
       url: 'https://dev.urdoc.dearfad.com',
+      branch: 'develop',
     },
   ])
   // API服务网址
