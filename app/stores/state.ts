@@ -21,6 +21,8 @@ export const useStateStore = defineStore(
     // 模型返回数据内容
     const modelResponseString = ref('')
     const isModelResponseStringShow = ref(false)
+    const isCaseModelResponseStringShow = ref(false)
+    const isStoryModelResponseStringShow = ref(false)
 
     // 是否编辑病例
     const recordShowContent = ref('markdown')
@@ -167,6 +169,8 @@ export const useStateStore = defineStore(
       isAppFooterShow,
 
       isModelResponseStringShow,
+      isCaseModelResponseStringShow,
+      isStoryModelResponseStringShow,
 
       isDebug,
       modelResponseStream,

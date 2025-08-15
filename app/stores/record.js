@@ -103,9 +103,10 @@ export const useRecordStore = defineStore(
     })
 
     const storyMarkdown = computed(() => {
-      return Object.entries(record.value.story)
-        .map(([key, value]) => `**${key}**:\n\n${value}`)
-        .join('\n\n')
+      // return Object.entries(record.value.story)
+      //   .map(([key, value]) => `**${key}**:\n\n${value}`)
+      //   .join('\n\n')
+      return record.value.story['故事']
     })
 
     const testText = computed(() => {

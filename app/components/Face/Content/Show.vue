@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="55vh">
+  <v-sheet :height="height">
     <v-img :src="recordStore.record.face" class="mx-auto" @click="openFaceWindow">
       <template #placeholder
         ><div v-if="recordStore.face" class="d-flex align-center justify-center fill-height">
@@ -11,7 +11,9 @@
 
 <script setup>
 const recordStore = useRecordStore()
-
+const { height } = defineProps({
+  height: { type: String, default: '50vh', required: false },
+})
 function openFaceWindow() {
   window.open(recordStore.record.face, '_blank')
 }

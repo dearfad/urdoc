@@ -3,7 +3,10 @@
     <v-navigation-drawer v-model="stateStore.isNavDrawerShow" location="left">
       <v-list nav>
         <v-list-subheader class="font-weight-bold">项目研究</v-list-subheader>
-        <v-list-item prepend-icon="mdi-account-injury" to="/project/clinic">
+        <v-list-item prepend-icon="mdi-account-injury" to="/project/narrative-medicine">
+          <v-list-item-title class="text-subtitle-1">叙事医学</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-show="false" prepend-icon="mdi-account-injury" to="/project/clinic">
           <v-list-item-title class="text-subtitle-1">虚拟门诊</v-list-item-title>
         </v-list-item>
       </v-list>

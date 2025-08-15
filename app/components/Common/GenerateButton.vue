@@ -30,10 +30,14 @@ async function generate() {
   stateStore.isModelResponseStringShow = true
   switch (generateType) {
     case 'case':
+      stateStore.isCaseModelResponseStringShow = true
       await recordStore.getCase()
+      stateStore.isCaseModelResponseStringShow = false
       break
     case 'story':
+      stateStore.isStoryModelResponseStringShow = true
       await recordStore.getStory()
+      stateStore.isStoryModelResponseStringShow = false
       break
     case 'test':
       await recordStore.getTest()
