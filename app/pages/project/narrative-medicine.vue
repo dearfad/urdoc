@@ -63,11 +63,11 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="4" class="d-flex flex-column">
+      <v-col cols="12" md="3">
         <FaceContentShow height="" />
-        <CaseContentMarkdown height="" />
       </v-col>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="9" class="d-flex flex-column ga-4">
+        <CaseContentMarkdown height="" />
         <StoryContentMarkdown height="" />
       </v-col>
     </v-row>
