@@ -3,12 +3,12 @@
     <v-text-field
       v-model="tagInput"
       class="my-4"
-      label="设定"
+      label="自定义设定"
       variant="outlined"
       hide-details="auto"
       clearable
       density="comfortable"
-      placeholder="多个要点请用空格隔开"
+      placeholder="请用空格分隔多个关键词"
     />
   </v-card>
 </template>

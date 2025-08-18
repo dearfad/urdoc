@@ -7,10 +7,8 @@
 </template>
 
 <script setup>
-import { StoryUtilsGenerate } from '#components'
-
 definePageMeta({
-  title: '故事',
+  title: '编写故事',
   layout: 'cstar',
 })
 </script>

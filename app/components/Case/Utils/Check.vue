@@ -1,6 +1,7 @@
 <template>
-  <v-sheet class="d-flex flex-column ga-2">
+  <v-sheet class="d-flex flex-column">
     <v-btn
+      disabled
       size="x-large"
       class="font-weight-bold"
       hover

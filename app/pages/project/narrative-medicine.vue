@@ -4,7 +4,7 @@
       <v-col cols="12" class="d-flex flex-column">
         <v-menu :close-on-content-click="false">
           <template #activator="{ props }">
-            <v-btn v-bind="props"> 选择疾病范围 </v-btn>
+            <v-btn v-bind="props"> 疾病范围 </v-btn>
           </template>
           <CommonScopeSelector />
         </v-menu>

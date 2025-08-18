@@ -16,7 +16,7 @@
     "@clerk/localizations": "^3.21.2",
     "@clerk/nuxt": "^1.8.7",
     "@mdi/font": "^7.4.47",
-    "@nuxt/eslint": "^1.8.0",
+    "@nuxt/eslint": "^1.9.0",
     "@nuxtjs/mdc": "^0.17.2",
     "@pinia/nuxt": "^0.11.2",
     "@supabase/supabase-js": "^2.55.0",

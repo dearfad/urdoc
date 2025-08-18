@@ -28,7 +28,7 @@
       target="_blank"
       variant="plain"
       :ripple="false"
-      icon="mdi-book-open-outline"
+      icon="mdi-file-document-outline"
     />
     <div class="mx-2">
       <SignedOut>

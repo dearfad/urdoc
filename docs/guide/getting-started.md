@@ -1,7 +1,15 @@
 # 快速开始
 
-1. 点击生成病例按钮，生成虚拟病例
-2. 底部切换到故事生成页面，点击生成故事
-3. 切换到测试题生成页面，点击生成测试题
-4. 底部切换到交互模拟页面，点击模拟交互
-5. 底部切换到评分页面，点击评分
+## 项目研究步骤
+
+### [**叙事医学**](https://urdoc.dearfad.com/project/narrative-medicine)
+
+- 选择 **疾病范围**
+- 点击 **开始生成**
+
+## 单项研究步骤
+
+- [首页](https://urdoc.dearfad.com) 点击 **创建病例** 跳转至 [生成病例](https://urdoc.dearfad.com/cstar/case) 页面
+- 在 [生成病例](https://urdoc.dearfad.com/cstar/case) 页面点击 **开始生成**
+- 耐心等待病例生成完毕后，访问 [编写故事](https://urdoc.dearfad.com/cstar/story) 页面
+- 在 [编写故事](https://urdoc.dearfad.com/cstar/case) 页面点击 **开始生成**
