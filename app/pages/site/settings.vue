@@ -2,6 +2,7 @@
   <div class="d-flex flex-column w-100 w-md-75 mx-auto my-4 px-2 ga-4">
     <CommonApiBaseUrlSelector />
     <CommonSiteSelector />
+    <v-btn block text="清除缓存" size="large" @click="clearLocalStorage" />
     <!-- <v-btn
       v-tooltip="'debug'"
       icon="mdi-bug-play-outline"
@@ -34,6 +35,10 @@
 definePageMeta({
   title: '站点设置',
 })
+
+function clearLocalStorage() {
+  localStorage.clear()
+}
 // const stateStore = useStateStore()
 // const badgeSrc = ref({
 //   main: '',
