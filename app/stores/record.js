@@ -224,23 +224,24 @@ export const useRecordStore = defineStore(
     async function getCase() {
       $reset()
       const messages = promptStore.getSystemPrompt('case')
-      const caseJson = await modelRouter.getCase(messages)
+      const caseJsonString = await modelRouter.getCase(messages)
       try {
-        const caseJsonRepaired = jsonrepair(caseJson)
-        const caseJsonParsed = JSON.parse(caseJsonRepaired)
-        record.value.case = caseJsonParsed
+        const caseJson = JSON.parse(caseJsonString)
+        record.value.case = caseJson
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case
       } catch (error) {
         stateStore.appInfos.push('获取病例失败: ' + error)
       }
     }
+
     async function checkCase() {
       const messages = promptStore.getSystemPrompt('review')
       const result = JSON.parse(await modelRouter.checkCase(messages))
       // 计划中
       stateStore.appInfos.push(result)
     }
+
     async function getStory() {
       const messages = promptStore.getSystemPrompt('story')
       record.value.story.故事 = await modelRouter.getStory(messages)
