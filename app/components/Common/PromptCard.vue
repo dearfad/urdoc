@@ -16,7 +16,7 @@
     <v-card-actions>
       <v-btn text="查看" @click="isPromptShow = !isPromptShow" />
       <v-spacer />
-      <v-btn disabled text="刷新" @click="selectByColumn" />
+      <v-btn text="刷新" @click="selectByColumn" />
       <v-btn text="新建" @click="create" />
     </v-card-actions>
     <v-expand-transition class="mt-4">
