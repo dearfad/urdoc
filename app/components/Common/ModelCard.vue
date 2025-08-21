@@ -1,112 +1,52 @@
 <template>
   <v-card hover class="px-4 py-2" rounded="lg">
-    <v-tabs v-model="tab">
-      <v-tab value="default">默认</v-tab>
-      <v-tab value="custom">自定义</v-tab>
-    </v-tabs>
-
-    <v-card-text>
-      <v-tabs-window v-model="tab">
-        <v-tabs-window-item value="default">
-          <v-select
-            v-model="gateway"
-            label="网关"
-            :items="gateways"
-            item-title="name"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            density="comfortable"
-            return-object
-            @update:model-value="handleGatewayChange"
-          />
-          <v-select
-            v-model="provider"
-            label="服务商"
-            :items="providers"
-            item-title="name"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            density="comfortable"
-            return-object
-            @update:model-value="handleProviderChange"
-          />
-          <v-select
-            v-model="model"
-            :label="modelLabel"
-            :items="models"
-            item-title="name"
-            variant="outlined"
-            class="mt-4"
-            hide-details="auto"
-            density="comfortable"
-            return-object
-            @update:model-value="handleModelChange"
-          />
-          <div class="d-flex flex-column align-end mt-2">
-            <v-checkbox
-              v-model="global"
-              v-tooltip:bottom="'更改模型后生效'"
-              max-width="70px"
-              label="全局"
-              density="compact"
-              hide-details
-              @update:model-value="handleModelChange"
-            />
-          </div>
-        </v-tabs-window-item>
-        <v-tabs-window-item value="custom">
-          <v-select
-            v-model="gateway"
-            label="网关"
-            :items="gateways"
-            item-title="name"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            density="comfortable"
-            return-object
-            @update:model-value="handleGatewayChange"
-          />
-          <v-select
-            v-model="provider"
-            label="服务商"
-            :items="providers"
-            item-title="name"
-            variant="outlined"
-            class="my-4"
-            hide-details="auto"
-            density="comfortable"
-            return-object
-            @update:model-value="handleProviderChange"
-          />
-          <v-select
-            v-model="model"
-            :label="modelLabel"
-            :items="models"
-            item-title="name"
-            variant="outlined"
-            class="mt-4"
-            hide-details="auto"
-            density="comfortable"
-            return-object
-            @update:model-value="handleModelChange"
-          />
-          <div class="d-flex flex-column align-end mt-2">
-            <v-checkbox
-              v-model="global"
-              v-tooltip:bottom="'更改模型后生效'"
-              max-width="70px"
-              label="全局"
-              density="compact"
-              hide-details
-              @update:model-value="handleModelChange"
-            />
-          </div>
-        </v-tabs-window-item>
-      </v-tabs-window>
-    </v-card-text>
+    <v-select
+      v-model="gateway"
+      label="网关"
+      :items="gateways"
+      item-title="name"
+      variant="outlined"
+      class="my-4"
+      hide-details="auto"
+      density="comfortable"
+      return-object
+      @update:model-value="handleGatewayChange"
+    />
+    <v-select
+      v-model="provider"
+      label="服务商"
+      :items="providers"
+      item-title="name"
+      variant="outlined"
+      class="my-4"
+      hide-details="auto"
+      density="comfortable"
+      return-object
+      @update:model-value="handleProviderChange"
+    />
+    <v-select
+      v-model="model"
+      :label="modelLabel"
+      :items="models"
+      item-title="name"
+      variant="outlined"
+      class="mt-4"
+      hide-details="auto"
+      density="comfortable"
+      return-object
+      @update:model-value="handleModelChange"
+    />
+    <div class="d-flex flex-column align-end mt-2">
+      <v-checkbox
+        v-model="global"
+        v-tooltip:bottom="'更改模型后生效'"
+        max-width="70px"
+        label="全局"
+        density="compact"
+        hide-details
+        @update:model-value="handleModelChange"
+      />
+    </div>
   </v-card>
 </template>
 
@@ -122,7 +62,6 @@ const modelLabel = computed(() => {
 const modelStore = useModelStore()
 const stateStore = useStateStore()
 const global = ref(false)
-const tab = ref('default')
 
 const gateways = modelStore.models[modelType].gateways
 const gateway = ref(
