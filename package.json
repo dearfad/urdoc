@@ -23,6 +23,7 @@
     "ali-oss": "^6.23.0",
     "jsonrepair": "^3.13.0",
     "nuxt": "^4.0.3",
+    "openai": "^5.13.1",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.5.0",
     "vite-plugin-vuetify": "^2.1.2",
