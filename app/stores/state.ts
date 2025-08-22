@@ -119,6 +119,14 @@ export const useStateStore = defineStore(
           url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
+        illustration: {
+          gateway: '直连',
+          provider: '智谱',
+          name: 'GLM-4-Flash-250414',
+          id: 'glm-4-flash-250414',
+          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
         pose: {
           gateway: '直连',
           provider: '智谱',
@@ -130,6 +138,14 @@ export const useStateStore = defineStore(
       },
       image: {
         face: {
+          gateway: '直连',
+          provider: '智谱',
+          name: 'CogView-3-Flash',
+          id: 'cogview-3-flash',
+          url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
+          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
+        },
+        illustration: {
           gateway: '直连',
           provider: '智谱',
           name: 'CogView-3-Flash',

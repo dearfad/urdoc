@@ -7,6 +7,7 @@ import defaultFacePrompt from '@/assets/default/face/prompt.md?raw'
 import defaultPosePrompt from '@/assets/default/pose/prompt.md?raw'
 import defaultReviewPrompt from '@/assets/default/review/prompt.md?raw'
 import defaultVerifyPrompt from '@/assets/default/verify/prompt.md?raw'
+import defaultIllustrationPrompt from '@/assets/default/illustration/prompt.md?raw'
 
 export const usePromptStore = defineStore(
   'prompt',
@@ -89,6 +90,14 @@ export const usePromptStore = defineStore(
           author: '',
           public: true,
         },
+        illustration: {
+          id: '',
+          type: 'illustration',
+          title: '默认',
+          prompt: defaultIllustrationPrompt,
+          author: '',
+          public: true,
+        },
       },
       user: {
         case: [],
@@ -103,6 +112,7 @@ export const usePromptStore = defineStore(
       },
       image: {
         face: '',
+        illustration: '',
       },
       video: {
         pose: '',
@@ -184,6 +194,9 @@ export const usePromptStore = defineStore(
           break
         case 'verify':
           content = `提供问题如下：${recordStore.view.case.markdown}`
+          break
+        case 'illustration':
+          content = `提供故事如下：${recordStore.view.story.markdown}`
           break
         default:
           content = '系统要点设定：无特殊要求'

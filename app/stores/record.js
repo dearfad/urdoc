@@ -1,5 +1,3 @@
-import { jsonrepair } from 'jsonrepair'
-
 export const useRecordStore = defineStore(
   'record',
   () => {
@@ -28,6 +26,7 @@ export const useRecordStore = defineStore(
       },
       story: {
         故事: '',
+        插图: [],
       },
       test: [
         {
@@ -179,6 +178,7 @@ export const useRecordStore = defineStore(
         },
         story: {
           故事: '',
+          插图: [],
         },
         test: [
           {
@@ -246,6 +246,12 @@ export const useRecordStore = defineStore(
       const messages = promptStore.getSystemPrompt('story')
       record.value.story.故事 = await modelRouter.getStory(messages)
       record.value.tag.story = stateStore.tag.story
+    }
+
+    async function getStoryIllustration() {
+      record.value.story.插图 = []
+      const messages = promptStore.getSystemPrompt('illustration')
+      await modelRouter.getStoryIllustration(messages)
     }
 
     async function getTest() {
@@ -399,6 +405,7 @@ export const useRecordStore = defineStore(
       getCase,
       checkCase,
       getStory,
+      getStoryIllustration,
       getTest,
       getAct,
       getRate,

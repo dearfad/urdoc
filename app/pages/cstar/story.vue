@@ -3,6 +3,7 @@
     <CommonRecordTools />
     <StoryContentShow />
     <StoryUtilsGenerate />
+    <StoryContentIllustration />
   </div>
 </template>
 

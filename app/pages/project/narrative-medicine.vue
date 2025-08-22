@@ -65,6 +65,7 @@
     <v-row>
       <v-col cols="12" md="3">
         <FaceContentShow height="" />
+        <StoryContentIllustration height="" />
       </v-col>
       <v-col cols="12" md="9" class="d-flex flex-column ga-4">
         <CaseContentMarkdown height="" />
@@ -96,6 +97,8 @@ async function generate() {
   stateStore.isStoryModelResponseStringShow = false
   field.value = '生成面部...'
   await recordStore.getFace()
+  field.value = '生成插图...'
+  await recordStore.getStoryIllustration()
   isLoading.value = false
 }
 </script>

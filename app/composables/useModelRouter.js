@@ -107,6 +107,26 @@ export default function () {
     return await imageModel.getResponse(imageParams)
   }
 
+  async function getStoryIllustration(messages) {
+    const illustrationParams = getChatModelParams('illustration', messages, 'text')
+    const prompt = await chatModel.getResponse(illustrationParams, 'text')
+    console.log(prompt)
+    // 使用正则表达式提取方括号内的内容
+    const content = prompt.match(/(?<=\[)(.*?)(?=\])/)[0]
+    // 将提取的内容按逗号分割并去除多余的空格
+    const result = content.split(',').map((item) => item.trim().replace(/'/g, ''))
+    // console.log(result)
+    for (const item of result) {
+      promptStore.prompts.image.illustration = item
+      const imageParams = getImageModelParams('illustration', item)
+      const url = await imageModel.getResponse(imageParams)
+      // console.log(url)
+      recordStore.record.story.插图.push(url)
+    }
+    // console.log(urls)
+    return
+  }
+
   // Video Model
 
   async function getPose(messages) {
@@ -126,5 +146,16 @@ export default function () {
     return response.audio
   }
 
-  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose, getVoice, checkCase }
+  return {
+    getCase,
+    getStory,
+    getTest,
+    getAct,
+    getRate,
+    getFace,
+    getPose,
+    getVoice,
+    checkCase,
+    getStoryIllustration,
+  }
 }
