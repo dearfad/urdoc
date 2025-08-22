@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@clerk/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   piniaPluginPersistedstate: {
@@ -48,5 +49,14 @@ export default defineNuxtConfig({
       supabaseUrl: '',
       supabaseKey: '',
     },
+  },
+
+  // Internationalization Configuration
+  i18n: {
+    defaultLocale: 'zh',
+    locales: [
+      { code: 'zh', name: '中文', file: 'zh.json' },
+      { code: 'en', name: 'English', file: 'en.json' },
+    ],
   },
 })

@@ -4,7 +4,7 @@
     <v-app-bar-title
       class="font-weight-bold cursor-pointer"
       text="URDOC"
-      @click="router.push('/')"
+      @click="router.push($localePath('index'))"
     />
     <v-spacer />
     <v-btn
