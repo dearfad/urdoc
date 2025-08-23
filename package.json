@@ -17,7 +17,6 @@
     "@clerk/nuxt": "^1.8.10",
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.9.0",
-    "@nuxtjs/i18n": "^10.0.6",
     "@nuxtjs/mdc": "^0.17.2",
     "@pinia/nuxt": "^0.11.2",
     "@supabase/supabase-js": "^2.56.0",
@@ -37,7 +36,7 @@
     "cookie": "1.0.2"
   },
   "devDependencies": {
-    "mermaid": "^11.10.0",
+    "mermaid": "^11.10.1",
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17"
   }

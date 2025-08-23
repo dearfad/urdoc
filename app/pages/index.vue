@@ -3,7 +3,7 @@
     class="d-flex flex-column w-100 w-md-75 mx-auto justify-center align-center pt-4 ga-4"
   >
     <div class="text-h2 font-weight-bold text-blue">URDOC</div>
-    <div class="text-h4 font-weight-bold">{{ $t('index.siteName') }}</div>
+    <div class="text-h4 font-weight-bold">虚拟病例研究平台</div>
     <div class="d-flex w-100 justify-center">
       <v-img max-width="640" src="/heroimage.png" />
     </div>

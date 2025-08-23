@@ -64,6 +64,7 @@ export const useStateStore = defineStore(
     const models = ref({
       chat: {
         case: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -72,6 +73,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         check: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -80,6 +82,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         story: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -88,6 +91,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         test: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -96,6 +100,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         act: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -104,6 +109,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         rate: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -112,6 +118,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         face: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -120,6 +127,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         illustration: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -128,6 +136,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         pose: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'GLM-4-Flash-250414',
@@ -138,6 +147,7 @@ export const useStateStore = defineStore(
       },
       image: {
         face: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'CogView-3-Flash',
@@ -146,6 +156,7 @@ export const useStateStore = defineStore(
           key: { gateway: '', provider: 'ZHIPU_API_KEY' },
         },
         illustration: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'CogView-3-Flash',
@@ -156,6 +167,7 @@ export const useStateStore = defineStore(
       },
       video: {
         pose: {
+          category: '默认',
           gateway: '直连',
           provider: '智谱',
           name: 'CogVideoX-Flash',

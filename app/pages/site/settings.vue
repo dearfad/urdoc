@@ -3,9 +3,6 @@
     <CommonApiBaseUrlSelector />
     <CommonSiteSelector />
     <v-btn block text="清除缓存" size="large" @click="clearLocalStorage" />
-    <v-btn v-for="locale in locales" :key="locale.code" @click="setLocale(locale.code)">
-      {{ locale.name }}
-    </v-btn>
     <!-- <v-btn
       v-tooltip="'debug'"
       icon="mdi-bug-play-outline"
@@ -38,7 +35,6 @@
 definePageMeta({
   title: '站点设置',
 })
-const { locales, setLocale } = useI18n()
 
 function clearLocalStorage() {
   localStorage.clear()
