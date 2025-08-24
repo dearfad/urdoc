@@ -26,5 +26,6 @@
   "[markdown]": {
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 120
-  }
+  },
+  "vue.autoInsert.dotValue": true
 }

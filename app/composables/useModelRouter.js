@@ -5,16 +5,17 @@ export default function () {
   const imageModel = useImageModel()
   const videoModel = useVideoModel()
   const promptStore = usePromptStore()
+  const modelStore = useModelStore()
 
   function getChatModelParams(modelUsage, messages, response_format) {
-    const model = stateStore.models.chat[modelUsage]
+    const chatModel = modelStore.activeModels.chat[modelUsage]
     const params = {
       // 使用模型接入点url
-      url: model.url,
+      url: chatModel.endpoint,
       // 默认POST方法
       method: 'POST',
       // 添加apiKeyName，优先网关gateway，次选服务商provider
-      apiKeyName: model.key.gateway || model.key.provider,
+      apiKeyName: chatModel.apiKeyName,
       // 服务器端根据apiKeyName添加
       // Authorization: 'Bearer <apiKey>',
       headers: {
@@ -22,7 +23,7 @@ export default function () {
       },
       // 请求体 response_format 有区别，待规范化
       body: JSON.stringify({
-        model: model.id,
+        model: chatModel.model,
         messages: messages,
         stream: true,
         response_format: response_format === 'text' ? { type: 'text' } : { type: 'json_object' },
@@ -32,16 +33,16 @@ export default function () {
   }
 
   function getImageModelParams(modelUsage, prompt) {
-    const model = stateStore.models.image[modelUsage]
+    const imageModel = modelStore.activeModels.image[modelUsage]
     const params = {
-      url: model.url,
+      url: imageModel.endpoint,
       method: 'POST',
-      apiKeyName: model.key.gateway || model.key.provider,
+      apiKeyName: imageModel.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: model.id,
+        model: imageModel.model,
         prompt: prompt,
       }),
     }
@@ -49,16 +50,16 @@ export default function () {
   }
 
   function getVideoModelParams(modelUsage, prompt) {
-    const model = stateStore.models.video[modelUsage]
+    const videoModel = modelStore.activeModels.video[modelUsage]
     const params = {
-      url: model.url,
+      url: videoModel.endpoint,
       method: 'POST',
-      apiKeyName: model.key.gateway || model.key.provider,
+      apiKeyName: videoModel.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: model.id,
+        model: videoModel.model,
         prompt: prompt,
         image_url: recordStore.record.face,
       }),
