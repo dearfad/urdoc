@@ -60,123 +60,7 @@ export const useStateStore = defineStore(
       act: [],
       rate: [],
     })
-    // 默认平台和模型
-    const models = ref({
-      chat: {
-        case: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        check: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        story: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        test: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        act: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        rate: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        face: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        illustration: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        pose: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'GLM-4-Flash-250414',
-          id: 'glm-4-flash-250414',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-      },
-      image: {
-        face: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'CogView-3-Flash',
-          id: 'cogview-3-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        illustration: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'CogView-3-Flash',
-          id: 'cogview-3-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-      },
-      video: {
-        pose: {
-          category: '默认',
-          gateway: '直连',
-          provider: '智谱',
-          name: 'CogVideoX-Flash',
-          id: 'cogvideox-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-      },
-    })
+
     // 聊天模式
     const isActing = ref(false)
     const isRating = ref(false)
@@ -218,8 +102,6 @@ export const useStateStore = defineStore(
 
       scope,
       tag,
-
-      models,
 
       isActing,
       isRating,

@@ -1,8 +1,8 @@
 <template>
   <v-sheet class="d-flex flex-column mx-4 ga-4">
     <CommonGenerateButton generate-type="pose" />
-    <CommonModelCard model-type="chat" model-usage="pose" />
-    <CommonModelCard model-type="video" model-usage="pose" />
+    <ModelCard model-type="chat" model-usage="pose" />
+    <ModelCard model-type="video" model-usage="pose" />
     <CommonPromptCard usage="pose" />
     <CommonApiBaseUrlSelector />
     <!-- <v-btn

@@ -300,6 +300,25 @@ export const useModelStore = defineStore(
     //   },
     // })
 
+    const DEFAULT_PROVIDER_ID = [
+      {
+        name: '智谱',
+        id: 'ZHIPU',
+      },
+      {
+        name: '讯飞',
+        id: 'XUNFEI',
+      },
+      {
+        name: '腾讯',
+        id: 'TENCENT',
+      },
+      {
+        name: '书生',
+        id: 'SHUSHENG',
+      },
+    ]
+
     const DEFAULT_ENDPOINT = {
       ZHIPU: {
         chat: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
@@ -378,53 +397,59 @@ export const useModelStore = defineStore(
     ])
     const customModels = ref([])
 
-    const models = computed(() => [...defaultModels.value, ...customModels.value])
-
     const activeModels = ref({
       chat: {
         case: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         story: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         test: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         act: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         rate: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         check: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         face: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
@@ -433,12 +458,14 @@ export const useModelStore = defineStore(
       },
       image: {
         face: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
@@ -447,6 +474,7 @@ export const useModelStore = defineStore(
       },
       video: {
         pose: {
+          source: 'default',
           provider: '智谱',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
           model: 'cogvideox-flash',
@@ -489,11 +517,18 @@ export const useModelStore = defineStore(
       //   return error ? undefined : data[0]
       // },
     }
-    return { defaultModels, customModels, models, activeModels, database }
+    return {
+      DEFAULT_PROVIDER_ID,
+      DEFAULT_ENDPOINT,
+      defaultModels,
+      customModels,
+      activeModels,
+      database,
+    }
   },
   {
     persist: {
-      pick: ['customModels'],
+      pick: ['customModels', 'activeModels'],
     },
   }
 )
