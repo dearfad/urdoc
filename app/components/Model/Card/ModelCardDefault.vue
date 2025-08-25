@@ -48,7 +48,7 @@ const modelStore = useModelStore()
 const setModelGlobal = ref(false)
 
 const provider = ref('')
-const model = ref('')
+const model = ref()
 
 // 筛选 modelType 'chat' 'image' 'video'
 const modelsByType = computed(() =>
@@ -87,8 +87,10 @@ function handleModelChange() {
       return
   }
   for (const usage of usages) {
-    model.value.source = 'default'
-    modelStore.activeModels[modelType][usage] = model.value
+    if (model.value) {
+      model.value.source = 'default'
+      modelStore.activeModels[modelType][usage] = model.value
+    }
   }
 }
 </script>

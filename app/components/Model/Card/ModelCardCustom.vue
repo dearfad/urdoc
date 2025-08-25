@@ -3,7 +3,6 @@
     <v-select
       v-model="provider"
       :items="providers"
-      item-title="provider"
       label="服务商"
       variant="outlined"
       class="my-4"
@@ -13,7 +12,7 @@
     />
     <v-select
       v-model="model"
-      :label="modelLabel"
+      label="模型"
       :items="modelsByProvider"
       item-title="model"
       variant="outlined"
@@ -25,7 +24,8 @@
     />
 
     <v-card-actions>
-      <v-btn text="管理" @click="isModelShow = !isModelShow" />
+      <v-btn text="管理" @click="isExpandShow = !isExpandShow" />
+      <v-btn text="删除" @click="handleModelDelete" />
       <v-spacer />
       <v-checkbox
         v-model="setModelGlobal"
@@ -36,11 +36,10 @@
         @update:model-value="handleModelChange"
       />
     </v-card-actions>
-
     <v-expand-transition>
-      <v-card v-if="isModelShow" class="my-2 py-2 d-flex flex-column ga-2" variant="flat">
-        {{ addModel }}
-        <v-select
+      <v-card v-if="isExpandShow" class="my-2 py-2 d-flex flex-column ga-2" variant="flat">
+        {{ customModel }}
+        <!-- <v-select
           v-model="defaultProvider"
           :items="modelStore.DEFAULT_PROVIDER_ID"
           item-title="name"
@@ -50,29 +49,33 @@
           label="选择服务商"
           return-object
           @update:model-value="selectProvider"
-        />
-        <v-text-field v-model="addModel.provider" variant="outlined" label="服务商" class="mt-4" />
-
+        /> -->
         <v-text-field
-          v-model="addModel.endpoint"
+          v-model="customModel.provider"
+          variant="outlined"
+          label="服务商"
+          class="mt-4"
+        />
+        <v-text-field
+          v-model="customModel.endpoint"
           variant="outlined"
           label="接口网址"
           hint="请填写接口网址, 例如'https://open.bigmodel.cn/api/paas/v4/chat/completions'"
         />
         <v-text-field
-          v-model="addModel.model"
+          v-model="customModel.model"
           variant="outlined"
           label="模型"
           hint="请填写模型id, 例如'glm-4-flash'"
         />
         <v-text-field
-          v-model="addModel.apiKeyName"
+          v-model="customModel.apiKeyName"
           variant="outlined"
           label="API密钥名称"
           hint="请填写API密钥名称, 例如'ZHIPU_API_KEY'"
         />
         <v-text-field
-          v-model="addModel.apiKey"
+          v-model="customModel.apiKey"
           variant="outlined"
           label="API密钥"
           hint="请填写API密钥, 密钥为本地浏览器保存"
@@ -90,30 +93,28 @@ const { modelType, modelUsage } = defineProps({
   modelType: { type: String, required: true },
   modelUsage: { type: String, required: true },
 })
-const modelLabel = computed(() => {
-  return modelType === 'chat' ? '语言模型' : modelType === 'image' ? '图像模型' : '视频模型'
-})
-
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const setModelGlobal = ref(false)
-const isModelShow = ref(false)
-const defaultProvider = ref()
+const isExpandShow = ref(false)
 
-const provider = ref(modelStore.activeModels[modelType][modelUsage].provider)
-const modelsByType = computed(() => modelStore.models.filter((model) => model.type === modelType))
-const providers = computed(() => [...new Set(modelsByType.value.map((model) => model.provider))])
-const model = ref(modelStore.activeModels[modelType][modelUsage].model)
-const modelsByProvider = computed(() =>
-  modelsByType.value.filter((model) => model.provider === provider.value)
-)
+const provider = ref('')
+const model = ref()
 
-function handleProviderChange() {
-  model.value = modelsByProvider.value[0]
-  handleModelChange()
-}
+const modelsByType =
+  modelStore.customModels.length > 0
+    ? computed(() => modelStore.customModels.filter((model) => model.type === modelType))
+    : computed(() => [])
+const providers =
+  modelsByType.value.length > 0
+    ? computed(() => [...new Set(modelsByType.value.map((model) => model.provider))])
+    : computed(() => [])
+const modelsByProvider =
+  modelsByType.value.length > 0
+    ? computed(() => modelsByType.value.filter((model) => model.provider === provider.value))
+    : computed(() => [])
 
-const addModel = ref({
+const customModel = ref({
   provider: '',
   type: modelType,
   endpoint: '',
@@ -121,6 +122,11 @@ const addModel = ref({
   apiKeyName: '',
   apiKey: '',
 })
+
+function handleProviderChange() {
+  model.value = modelsByProvider.value[0]
+  handleModelChange()
+}
 
 function handleModelChange() {
   // 设定模型全局应用
@@ -142,27 +148,50 @@ function handleModelChange() {
       return
   }
   for (const usage of usages) {
-    modelStore.activeModels[modelType][usage] = model.value
+    if (model.value) {
+      model.value.source = 'custom'
+      modelStore.activeModels[modelType][usage] = model.value
+    }
   }
 }
 
 function insertCustomModel() {
   if (
-    addModel.value.provider === '' ||
-    addModel.value.type === '' ||
-    addModel.value.endpoint === '' ||
-    addModel.value.model === '' ||
-    addModel.value.apiKeyName === '' ||
-    addModel.value.apiKey === ''
+    customModel.value.provider === '' ||
+    customModel.value.type === '' ||
+    customModel.value.endpoint === '' ||
+    customModel.value.model === '' ||
+    customModel.value.apiKeyName === '' ||
+    customModel.value.apiKey === ''
   ) {
     stateStore.appInfos.push('请填写所有项目信息')
   } else {
-    modelStore.customModels.push(JSON.parse(JSON.stringify(addModel.value)))
+    // 检查是否已存在相同的provider和model组合
+    const isDuplicate = modelStore.customModels.some(
+      (model) =>
+        model.provider === customModel.value.provider && model.model === customModel.value.model
+    )
+    if (isDuplicate) {
+      stateStore.appInfos.push('已存在相同的模型，请勿重复添加')
+    } else {
+      const addModel = { ...customModel.value }
+
+      modelStore.customModels.push(addModel)
+    }
   }
 }
 
-function selectProvider() {
-  addModel.value.provider = defaultProvider.value.name
-  addModel.value.endpoint = modelStore.DEFAULT_ENDPOINT[defaultProvider.value.id][modelType]
+function handleModelDelete() {
+  modelStore.customModels = modelStore.customModels.filter(
+    (deleteModel) =>
+      !(deleteModel.provider === model.value.provider && deleteModel.model === model.value.model)
+  )
+  model.value = null
+  provider.value = ''
 }
+
+// function selectProvider() {
+//   addModel.value.provider = defaultProvider.value.name
+//   addModel.value.endpoint = modelStore.DEFAULT_ENDPOINT[defaultProvider.value.id][modelType]
+// }
 </script>

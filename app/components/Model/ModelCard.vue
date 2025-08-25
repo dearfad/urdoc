@@ -1,7 +1,12 @@
 <template>
   <v-card hover rounded="lg">
-    <v-card-title>{{ model.provider }} - {{ model.model }}</v-card-title>
-    <v-card-subtitle>{{ model.endpoint }}</v-card-subtitle>
+    <template #prepend>
+      <v-icon size="48" class="mx-4">mdi-information-variant-box-outline</v-icon>
+    </template>
+    <template #title>{{ model.provider }}</template>
+    <template #subtitle>{{ model.model }}</template>
+
+    <v-divider />
     <v-tabs v-model="tab" grow density="compact">
       <v-tab value="default" text="默认" prepend-icon="mdi-check-circle-outline" />
       <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
