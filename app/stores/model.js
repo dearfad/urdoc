@@ -300,7 +300,7 @@ export const useModelStore = defineStore(
     //   },
     // })
 
-    const ENDPOINT = {
+    const DEFAULT_ENDPOINT = {
       ZHIPU: {
         chat: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
         image: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
@@ -318,7 +318,7 @@ export const useModelStore = defineStore(
       },
     }
 
-    const API_KEY_NAME = {
+    const DEFAULT_API_KEY_NAME = {
       ZHIPU: 'ZHIPU_API_KEY',
       XUNFEI: 'XFYUN_API_KEY',
       TENCENT: 'HUNYUAN_API_KEY',
@@ -329,51 +329,51 @@ export const useModelStore = defineStore(
       {
         provider: '智谱',
         type: 'chat',
-        endpoint: ENDPOINT.ZHIPU.chat,
+        endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4-flash-250414',
-        apiKeyName: API_KEY_NAME.ZHIPU,
+        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
         provider: '智谱',
         type: 'chat',
-        endpoint: ENDPOINT.ZHIPU.chat,
+        endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4.5-flash',
-        apiKeyName: API_KEY_NAME.ZHIPU,
+        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
         provider: '讯飞',
         type: 'chat',
-        endpoint: ENDPOINT.XUNFEI.chat,
+        endpoint: DEFAULT_ENDPOINT.XUNFEI.chat,
         model: 'lite',
-        apiKeyName: API_KEY_NAME.XUNFEI,
+        apiKeyName: DEFAULT_API_KEY_NAME.XUNFEI,
       },
       {
         provider: '腾讯',
         type: 'chat',
-        endpoint: ENDPOINT.TENCENT.chat,
+        endpoint: DEFAULT_ENDPOINT.TENCENT.chat,
         model: 'hunyuan-lite',
-        apiKeyName: API_KEY_NAME.TENCENT,
+        apiKeyName: DEFAULT_API_KEY_NAME.TENCENT,
       },
       {
         provider: '书生',
         type: 'chat',
-        endpoint: ENDPOINT.SHUSHENG.chat,
+        endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
         model: 'intern-latest',
-        apiKeyName: API_KEY_NAME.SHUSHENG,
+        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
         provider: '智谱',
         type: 'image',
-        endpoint: ENDPOINT.ZHIPU.image,
+        endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
         model: 'cogview-3-flash',
-        apiKeyName: API_KEY_NAME.ZHIPU,
+        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
         provider: '智谱',
         type: 'video',
-        endpoint: ENDPOINT.ZHIPU.video,
+        endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
         model: 'cogvideox-flash',
-        apiKeyName: API_KEY_NAME.ZHIPU,
+        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
     ])
     const customModels = ref([])
@@ -384,73 +384,73 @@ export const useModelStore = defineStore(
       chat: {
         case: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         story: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         test: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         act: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         rate: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         check: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         face: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.chat,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
       },
       image: {
         face: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.image,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.image,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
       },
       video: {
         pose: {
           provider: '智谱',
-          endpoint: ENDPOINT.ZHIPU.video,
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
           model: 'cogvideox-flash',
-          apiKeyName: API_KEY_NAME.ZHIPU,
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
       },
     })
