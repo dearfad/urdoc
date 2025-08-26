@@ -317,6 +317,10 @@ export const useModelStore = defineStore(
         name: '书生',
         id: 'SHUSHENG',
       },
+      {
+        name: 'OpenRouter',
+        id: 'OPENROUTER',
+      },
     ]
 
     const DEFAULT_ENDPOINT = {
@@ -334,6 +338,9 @@ export const useModelStore = defineStore(
       },
       SHUSHENG: {
         chat: 'https://chat.intern-ai.org.cn/api/v1/chat/completions',
+      },
+      OPENROUTER: {
+        chat: 'https://openrouter.ai/api/v1/chat/completions',
       },
     }
 
