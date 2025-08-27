@@ -367,6 +367,13 @@ export const useModelStore = defineStore(
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
+        provider: '智谱',
+        type: 'chat',
+        endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
+        model: 'glm-z1-flash',
+        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+      },
+      {
         provider: '讯飞',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.XUNFEI.chat,
@@ -384,7 +391,28 @@ export const useModelStore = defineStore(
         provider: '书生',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
-        model: 'intern-latest',
+        model: 'internlm3-8b-instruct',
+        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
+      },
+      {
+        provider: '书生',
+        type: 'chat',
+        endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
+        model: 'intern-s1',
+        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
+      },
+      {
+        provider: '书生',
+        type: 'chat',
+        endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
+        model: 'intern-s1-mini',
+        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
+      },
+      {
+        provider: '书生',
+        type: 'chat',
+        endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
+        model: 'internlm2.5-latest',
         apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
