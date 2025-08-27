@@ -14,9 +14,10 @@ export default function () {
       url: chatModel.endpoint,
       // 默认POST方法
       method: 'POST',
-      // 添加apiKeyName，优先网关gateway，次选服务商provider
+      // 如果存在apiKey不为''，优先使用apiKey，否则查看环境变量apiKeyName
+      apiKey: '',
       apiKeyName: chatModel.apiKeyName,
-      // 服务器端根据apiKeyName添加
+      // 服务器端根据apiKeyName或者apiKey添加
       // Authorization: 'Bearer <apiKey>',
       headers: {
         'Content-Type': 'application/json',
@@ -37,6 +38,7 @@ export default function () {
     const params = {
       url: imageModel.endpoint,
       method: 'POST',
+      apiKey: '',
       apiKeyName: imageModel.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
@@ -54,6 +56,7 @@ export default function () {
     const params = {
       url: videoModel.endpoint,
       method: 'POST',
+      apiKey: '',
       apiKeyName: videoModel.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
