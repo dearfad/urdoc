@@ -28,6 +28,8 @@
     <v-card-actions>
       <v-btn text="管理" @click="isExpandShow = !isExpandShow" />
       <v-btn text="删除" @click="handleModelDelete" />
+      <v-btn text="获取" @click="getCustomModels" />
+      <v-btn text="上传" @click="uploadCustomModels" />
       <v-spacer />
       <v-checkbox
         v-model="setModelGlobal"
@@ -63,23 +65,20 @@
           label="接口网址"
           hint="请填写接口网址, 例如'https://open.bigmodel.cn/api/paas/v4/chat/completions'"
         />
+        <v-select
+          v-model="customModel.apiKeyName"
+          :items="Object.keys(apiKeyStore.apiKeys)"
+          variant="outlined"
+          hide-details="auto"
+          density="comfortable"
+          label="密钥"
+          no-data-text="请先在设置中添加密钥"
+        />
         <v-text-field
           v-model="customModel.model"
           variant="outlined"
           label="模型"
           hint="请填写模型id, 例如'glm-4-flash'"
-        />
-        <v-text-field
-          v-model="customModel.apiKeyName"
-          variant="outlined"
-          label="API密钥名称"
-          hint="请填写API密钥名称, 例如'ZHIPU_API_KEY'"
-        />
-        <v-text-field
-          v-model="customModel.apiKey"
-          variant="outlined"
-          label="API密钥"
-          hint="请填写API密钥, 密钥为本地浏览器保存"
         />
         <v-card-actions density="compact">
           <v-btn text="添加" @click="insertCustomModel" />
@@ -96,6 +95,8 @@ const { modelType, modelUsage } = defineProps({
 })
 const stateStore = useStateStore()
 const modelStore = useModelStore()
+const apiKeyStore = useApiKeyStore()
+const userStore = useUserStore()
 const setModelGlobal = ref(false)
 const isExpandShow = ref(false)
 
@@ -122,7 +123,6 @@ const customModel = ref({
   endpoint: '',
   model: '',
   apiKeyName: '',
-  apiKey: '',
 })
 
 function handleProviderChange() {
@@ -163,8 +163,7 @@ function insertCustomModel() {
     customModel.value.type === '' ||
     customModel.value.endpoint === '' ||
     customModel.value.model === '' ||
-    customModel.value.apiKeyName === '' ||
-    customModel.value.apiKey === ''
+    customModel.value.apiKeyName === ''
   ) {
     stateStore.appInfos.push('请填写所有项目信息')
   } else {
@@ -178,7 +177,10 @@ function insertCustomModel() {
     } else {
       const addModel = { ...customModel.value }
       modelStore.customModels.push(addModel)
+      provider.value = customModel.value.provider
+      model.value.model = customModel.value.model
       handleProviderChange()
+      isExpandShow.value = false
     }
   }
 }
@@ -201,5 +203,21 @@ function handleModelDelete() {
 function selectPredefinedProvider() {
   customModel.value.provider = predefinedProvider.value.name
   customModel.value.endpoint = modelStore.DEFAULT_ENDPOINT[predefinedProvider.value.id][modelType]
+}
+
+async function getCustomModels() {
+  if (userStore.isSignedIn) {
+    await modelStore.database.selectAll()
+  } else {
+    stateStore.appInfos.push('请先登录')
+  }
+}
+
+async function uploadCustomModels() {
+  if (userStore.isSignedIn) {
+    await modelStore.database.upsert()
+  } else {
+    stateStore.appInfos.push('请先登录')
+  }
 }
 </script>

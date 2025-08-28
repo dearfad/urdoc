@@ -53,6 +53,7 @@ async function addApiKey() {
   isLoading.value = true
   await apiKeyStore.add(newApiKeyName.value, newApiKey.value)
   isLoading.value = false
+  isExpandShow.value = false
 }
 
 function delApiKey() {

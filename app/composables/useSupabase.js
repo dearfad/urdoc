@@ -29,7 +29,10 @@ export default function () {
     const selectByColumn = (column, value) =>
       execute(supabase.from(table).select().eq(column, value).order('id', { ascending: true }))
 
-    return { select, insert, update, remove, selectAll, selectByColumn }
+    const upsert = (row, conflict) =>
+      execute(supabase.from(table).upsert(row, { onConflict: conflict }).select())
+
+    return { select, insert, update, remove, selectAll, selectByColumn, upsert }
   }
   return { getData }
 }

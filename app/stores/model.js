@@ -1,6 +1,9 @@
 export const useModelStore = defineStore(
   'model',
   () => {
+    const stateStore = useStateStore()
+    const supabase = useSupabase()
+    const userStore = useUserStore()
     // const tempDefaultModels = ref({
     //   chat: {
     //     gateways: [
@@ -519,39 +522,51 @@ export const useModelStore = defineStore(
     })
 
     const database = {
-      // async selectAll() {
-      //   const { data, error } = await supabase.getData('prompts').selectAll()
-      //   !error &&
-      //     promptType.forEach((item) => {
-      //       prompts.value.user[item] = data.filter((i) => i.type === item)
-      //     })
-      //   // stateStore.appInfos.push(!error ? '刷新成功' : '刷新失败')
-      // },
-      // async selectByColumn(column, value) {
-      //   const { data, error } = await supabase.getData('prompts').selectByColumn(column, value)
-      //   !error && (prompts.value.user[value] = data)
-      //   // stateStore.appInfos.push(!error ? '刷新成功' : '刷新失败')
-      // },
-      // async select(promptData) {
-      //   const { data, error } = await supabase.getData('prompts').select(promptData)
-      //   return error ? undefined : data[0]
-      // },
-      // async insert(promptData) {
-      //   const { data, error } = await supabase.getData('prompts').insert(promptData)
-      //   stateStore.appInfos.push(!error && data.length > 0 ? '添加成功' : '添加失败')
-      //   return error ? undefined : data[0]
-      // },
-      // async update(promptData) {
-      //   const { data, error } = await supabase.getData('prompts').update(promptData)
-      //   stateStore.appInfos.push(!error && data.length > 0 ? '更新成功' : '更新失败')
-      //   return error ? undefined : data[0]
-      // },
-      // async remove(promptData) {
-      //   const { data, error } = await supabase.getData('prompts').remove(promptData)
-      //   stateStore.appInfos.push(!error && data.length > 0 ? '删除成功' : '删除失败')
-      //   return error ? undefined : data[0]
-      // },
+      async selectAll() {
+        const { data, error } = await supabase.getData('models').selectAll()
+        if (!error) {
+          customModels.value = data
+        }
+      },
+
+      async upsert() {
+        const { error } = await supabase.getData('models').upsert(
+          {
+            model: customModels.value,
+            user_id: userStore.user.id,
+          },
+          'user_id'
+        )
+        if (!error) {
+          stateStore.appInfos.push(!error ? '更新成功' : '更新失败')
+        }
+      },
     }
+    // async selectByColumn(column, value) {
+    //   const { data, error } = await supabase.getData('prompts').selectByColumn(column, value)
+    //   !error && (prompts.value.user[value] = data)
+    //   // stateStore.appInfos.push(!error ? '刷新成功' : '刷新失败')
+    // },
+    // async select(promptData) {
+    //   const { data, error } = await supabase.getData('prompts').select(promptData)
+    //   return error ? undefined : data[0]
+    // },
+    // async insert(promptData) {
+    //   const { data, error } = await supabase.getData('prompts').insert(promptData)
+    //   stateStore.appInfos.push(!error && data.length > 0 ? '添加成功' : '添加失败')
+    //   return error ? undefined : data[0]
+    // },
+    // async update(promptData) {
+    //   const { data, error } = await supabase.getData('prompts').update(promptData)
+    //   stateStore.appInfos.push(!error && data.length > 0 ? '更新成功' : '更新失败')
+    //   return error ? undefined : data[0]
+    // },
+    // async remove(promptData) {
+    //   const { data, error } = await supabase.getData('prompts').remove(promptData)
+    //   stateStore.appInfos.push(!error && data.length > 0 ? '删除成功' : '删除失败')
+    //   return error ? undefined : data[0]
+    // },
+
     return {
       DEFAULT_PROVIDER_ID,
       DEFAULT_ENDPOINT,

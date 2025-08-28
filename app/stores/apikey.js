@@ -5,20 +5,29 @@ export const useApiKeyStore = defineStore(
     // 键值唯一
     const apiKeys = ref({})
     const add = async (key, value) => {
-      const maskedValue = await $fetch('/api/mask', {
-        baseURL: stateStore.apiBaseUrl,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: {
-          params: {
-            mask: true,
-            apiKey: value,
+      if (!value || value === '') {
+        apiKeys.value[key] = ''
+        return
+      }
+      try {
+        const maskedValue = await $fetch('/api/mask', {
+          baseURL: stateStore.apiBaseUrl,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        },
-      })
-      apiKeys.value[key] = maskedValue
+          body: {
+            params: {
+              mask: true,
+              apiKey: value,
+            },
+          },
+        })
+        apiKeys.value[key] = maskedValue
+      } catch (error) {
+        console.error(error)
+        stateStore.appInfos.push('添加失败: ', error)
+      }
     }
     return { apiKeys, add }
   },

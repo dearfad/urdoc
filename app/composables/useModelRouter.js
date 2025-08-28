@@ -6,6 +6,7 @@ export default function () {
   const videoModel = useVideoModel()
   const promptStore = usePromptStore()
   const modelStore = useModelStore()
+  const apiKeyStore = useApiKeyStore()
 
   function getChatModelParams(modelUsage, messages, response_format) {
     const chatModel = modelStore.activeModels.chat[modelUsage]
@@ -15,7 +16,7 @@ export default function () {
       // 默认POST方法
       method: 'POST',
       // 如果存在apiKey不为''，优先使用apiKey，否则查看环境变量apiKeyName
-      apiKey: '',
+      apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
       apiKeyName: chatModel.apiKeyName,
       // 服务器端根据apiKeyName或者apiKey添加
       // Authorization: 'Bearer <apiKey>',
