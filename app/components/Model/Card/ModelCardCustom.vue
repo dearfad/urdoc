@@ -178,7 +178,6 @@ function insertCustomModel() {
       const addModel = { ...customModel.value }
       modelStore.customModels.push(addModel)
       provider.value = customModel.value.provider
-      model.value.model = customModel.value.model
       handleProviderChange()
       isExpandShow.value = false
     }
