@@ -1,5 +1,5 @@
 <template>
-  <v-card hover class="text-body-1 px-4 py-2 overflow-auto mx-4" rounded="lg">
+  <v-card hover class="text-body-1 px-4 py-2 overflow-auto" rounded="lg">
     {{ promptStore.prompts.image.face }}
   </v-card>
 </template>

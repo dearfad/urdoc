@@ -25,7 +25,7 @@
       @update:model-value="handleModelChange"
     />
 
-    <v-card-actions>
+    <v-card-actions class="px-0 ga-0">
       <v-btn text="管理" @click="isExpandShow = !isExpandShow" />
       <v-btn text="删除" @click="handleModelDelete" />
       <v-btn text="获取" @click="getCustomModels" />
@@ -207,6 +207,8 @@ function selectPredefinedProvider() {
 async function getCustomModels() {
   if (userStore.isSignedIn) {
     await modelStore.database.selectAll()
+    provider.value = providers.value[0]
+    handleProviderChange()
   } else {
     stateStore.appInfos.push('请先登录')
   }
@@ -215,6 +217,8 @@ async function getCustomModels() {
 async function uploadCustomModels() {
   if (userStore.isSignedIn) {
     await modelStore.database.upsert()
+    provider.value = providers.value[0]
+    handleProviderChange()
   } else {
     stateStore.appInfos.push('请先登录')
   }

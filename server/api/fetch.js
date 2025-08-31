@@ -7,9 +7,17 @@ export default defineEventHandler(async (event) => {
     : process.env[params.apiKeyName]
   params.headers.Authorization = `Bearer ${apiKey}`
   // 直接转发请求并返回响应
-  return fetch(params.url, {
-    method: params.method,
-    headers: params.headers,
-    body: params.body,
-  })
+  if (params.url === 'https://open.bigmodel.cn/api/paas/v4/images/generations') {
+    return $fetch(params.url, {
+      method: params.method,
+      headers: params.headers,
+      body: params.body,
+    })
+  } else {
+    return fetch(params.url, {
+      method: params.method,
+      headers: params.headers,
+      body: params.body,
+    })
+  }
 })

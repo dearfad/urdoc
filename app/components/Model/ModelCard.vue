@@ -1,12 +1,17 @@
 <template>
   <v-card hover rounded="lg">
     <template #prepend>
-      <v-icon size="48" class="mx-4"> mdi-brain</v-icon>
+      <v-icon size="48" class="mx-0"> mdi-brain</v-icon>
     </template>
     <template #title>{{ model.provider }}</template>
     <template #subtitle>{{ model.model }}</template>
     <template #append>
-      <v-btn text="选择模型" variant="text" @click="isCardShow = !isCardShow" />
+      <v-btn
+        icon="mdi-chevron-down"
+        class="mx-0 px-0"
+        variant="flat"
+        @click="isCardShow = !isCardShow"
+      />
     </template>
     <v-expand-transition>
       <div v-if="isCardShow">

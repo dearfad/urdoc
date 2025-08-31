@@ -39,7 +39,7 @@ export default function () {
     const params = {
       url: imageModel.endpoint,
       method: 'POST',
-      apiKey: '',
+      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
       apiKeyName: imageModel.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
