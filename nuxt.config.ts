@@ -1,4 +1,4 @@
-import { zhCN } from '@clerk/localizations'
+// import { zhCN, enUs } from '@clerk/localizations'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@clerk/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   piniaPluginPersistedstate: {
@@ -38,15 +39,31 @@ export default defineNuxtConfig({
   },
 
   // Clerk Configuration
-  clerk: {
-    localization: zhCN,
-  },
+  // clerk: {
+  //   localization: zhCN,
+  // },
 
   // Supabase Runtime Configuration
   runtimeConfig: {
     public: {
       supabaseUrl: '',
       supabaseKey: '',
+    },
+  },
+
+  // Nuxt i18n Configuration
+  i18n: {
+    defaultLocale: 'zh',
+    locales: [
+      { code: 'zh', name: '中文', file: 'zh/index.ts' },
+      { code: 'en', name: 'English', file: 'en/index.ts' },
+    ],
+    langDir: 'locales/',
+    vueI18n: './i18n.config.ts',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root', // recommended
     },
   },
 })
