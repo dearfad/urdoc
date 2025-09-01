@@ -13,6 +13,12 @@
       "documents": "文档",
       "language": "语言",
       "sign-in": "登录"
+    },
+    "drawer": {
+      "narrative-medicine": "叙事医学",
+      "case": "生成病例",
+      "story": "编写故事",
+      "settings": "设置"
     }
   }
 }

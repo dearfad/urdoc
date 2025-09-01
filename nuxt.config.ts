@@ -58,8 +58,6 @@ export default defineNuxtConfig({
       { code: 'zh', name: '中文', file: 'zh/index.ts' },
       { code: 'en', name: 'English', file: 'en/index.ts' },
     ],
-    langDir: 'locales/',
-    vueI18n: './i18n.config.ts',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',

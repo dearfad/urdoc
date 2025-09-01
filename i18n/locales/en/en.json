@@ -13,6 +13,12 @@
       "documents": "Documents",
       "language": "Language",
       "sign-in": "Sign In"
+    },
+    "drawer": {
+      "narrative-medicine": "NarrativeMed",
+      "case": "Case",
+      "story": "Story",
+      "settings": "Settings"
     }
   }
 }
