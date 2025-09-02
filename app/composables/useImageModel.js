@@ -1,6 +1,7 @@
 export default function () {
   async function getResponse(params) {
     const stateStore = useStateStore()
+    const recordStore = useRecordStore()
     stateStore.modelResponseField = '头像'
     const body = params.body ? JSON.parse(params.body) : {}
     console.log(body.model)
@@ -25,7 +26,15 @@ export default function () {
         messages: [
           {
             role: 'user',
-            content: '必须生成一张图片，根据下面的文字，' + body.prompt,
+            content: [
+              { type: 'text', text: '生成一张符合下面描述图片，' + body.prompt },
+              {
+                type: 'image_url',
+                image_url: {
+                  url: recordStore.record.face,
+                },
+              },
+            ],
           },
         ],
         modalities: ['image', 'text'],
