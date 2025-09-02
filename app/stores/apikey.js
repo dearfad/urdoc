@@ -10,7 +10,7 @@ export const useApiKeyStore = defineStore(
         return
       }
       try {
-        const maskedValue = await $fetch('/api/mask', {
+        const maskedValue = await $fetch('/utils/mask', {
           baseURL: stateStore.apiBaseUrl,
           method: 'POST',
           headers: {

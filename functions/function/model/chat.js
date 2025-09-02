@@ -1,4 +1,4 @@
-import { unmask } from './mask.js'
+import { unmask } from '../utils/mask.js'
 export async function onRequest({ request, env }) {
   // 检查请求来源，防止跨域访问
   // if (request.headers.get('origin') !== env.ALLOWED_ORIGINS) {

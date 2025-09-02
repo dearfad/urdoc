@@ -36,6 +36,9 @@ export default defineNuxtConfig({
     devProxy: {
       '/function': 'http://localhost:8088/function',
     },
+    prerender: {
+      ignore: ['/i18n/**', '/_i18n/**'],
+    },
   },
 
   // Clerk Configuration
@@ -54,6 +57,7 @@ export default defineNuxtConfig({
   // Nuxt i18n Configuration
   i18n: {
     defaultLocale: 'zh',
+    langDir: 'locales/',
     locales: [
       { code: 'zh', name: '中文', file: 'zh/index.ts' },
       { code: 'en', name: 'English', file: 'en/index.ts' },

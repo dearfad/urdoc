@@ -66,6 +66,7 @@ export const useModelStore = defineStore(
       },
       OPENROUTER: {
         chat: 'https://openrouter.ai/api/v1/chat/completions',
+        image: 'https://openrouter.ai/api/v1/chat/completions',
       },
       POLLINATIONS: {
         chat: 'https://text.pollinations.ai/openai',

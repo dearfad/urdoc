@@ -1,4 +1,4 @@
-import { unmask } from './mask.js'
+import { unmask } from '../utils/mask.js'
 export default defineEventHandler(async (event) => {
   const { params } = await readBody(event)
   // 添加 API Key 到 Authorization 头

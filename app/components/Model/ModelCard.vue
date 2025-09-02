@@ -1,7 +1,7 @@
 <template>
   <v-card hover rounded="lg">
     <template #prepend>
-      <v-icon size="48" class="mx-0"> mdi-brain</v-icon>
+      <v-icon size="48" class="mx-0">{{ modelIcon[modelType] }}</v-icon>
     </template>
     <template #title>{{ model.provider }}</template>
     <template #subtitle>{{ model.model }}</template>
@@ -42,4 +42,9 @@ const tab = ref('default')
 const isCardShow = ref(false)
 const modelStore = useModelStore()
 const model = computed(() => modelStore.activeModels[modelType][modelUsage])
+const modelIcon = ref({
+  chat: 'mdi-message-text-outline',
+  image: 'mdi-image-outline',
+  video: 'mdi-video-outline',
+})
 </script>
