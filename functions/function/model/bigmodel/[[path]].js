@@ -1,3 +1,4 @@
 export async function onRequest({ request, env }) {
-  return new Response(JSON.stringify(request))
+  const { pathname } = new URL(request.url)
+  return new Response(JSON.stringify(pathname))
 }
