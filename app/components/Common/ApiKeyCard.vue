@@ -10,7 +10,6 @@
       class="my-4"
       hide-details="auto"
       density="comfortable"
-      no-data-text="暂无可用密钥"
     />
     <v-card-actions>
       <v-btn text="管理" @click="isExpandShow = !isExpandShow" />

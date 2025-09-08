@@ -16,6 +16,7 @@ const { height } = defineProps({
   height: { type: String, default: '50vh', required: false },
 })
 function openFaceWindow() {
-  window.open(recordStore.record.face, '_blank')
+  // 点击下载，待处理点击开新窗口显示图片
+  // window.open(recordStore.record.face, '_blank')
 }
 </script>

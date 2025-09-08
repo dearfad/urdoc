@@ -22,6 +22,7 @@ const { height } = defineProps({
   height: { type: String, default: '50vh', required: false },
 })
 function openIllustrationWindow(illustration) {
-  window.open(illustration, '_blank')
+  // 点击下载，待定
+  // window.open(illustration, '_blank')
 }
 </script>
