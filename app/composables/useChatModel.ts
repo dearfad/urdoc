@@ -25,7 +25,7 @@ export default function () {
     // Make a POST request to the SSE endpoint
     let response: ReadableStream
     try {
-      response = await $fetch<ReadableStream>('/model/chat', {
+      response = await $fetch<ReadableStream>('/model/bigmodel/chat', {
         baseURL: stateStore.apiBaseUrl,
         method: 'POST',
         body: {
