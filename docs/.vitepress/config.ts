@@ -31,6 +31,7 @@ export default withMermaid({
           { text: '提示词管理', link: '/guide/prompt-card' },
           { text: '配置说明', link: '/reference/custom-config' },
           { text: '流程图', link: '/reference/fetch-sequence' },
+          { text: '请求载荷', link: '/reference/payload-field' },
         ],
       },
     ],
