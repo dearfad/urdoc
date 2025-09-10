@@ -6,14 +6,6 @@ import { unmask } from '../../utils/mask.js'
 
 // 路由前缀
 const PATH_PREFIX = '/function/model/bigmodel'
-export async function onRequest({ request, env }) {
-  const { pathname } = new URL(request.url)
-  const route = pathname.slice(PATH_PREFIX.length) || '/'
-
-  if (route.startsWith('/chat')) return chatCompletions(request, env)
-
-  return sendErrorResponse(ROUTE_NOT_FOUND_ERROR)
-}
 
 // 接口
 const API_BASE = 'https://open.bigmodel.cn/api'
@@ -60,20 +52,46 @@ const NO_FREE_MODEL_ERROR = {
   },
 }
 
+const INVALID_JSON_RESPONSE_ERROR = {
+  error: {
+    code: 502,
+    message: 'Bad Response: Invalid JSON in SSE stream',
+  },
+}
+
+const SSE_PROCESSING_ERROR = {
+  error: {
+    code: 500,
+    message: 'Error processing SSE stream',
+  },
+}
+// 处理请求
+export async function onRequest({ request, env }) {
+  const { pathname } = new URL(request.url)
+  const route = pathname.slice(PATH_PREFIX.length) || '/'
+  const payload = await request.json()
+  // 删除 accept-encoding 头避免压缩影响 SSE 流
+  request.headers.delete('accept-encoding')
+
+  if (!validateFreeModel(payload)) return sendErrorResponse(NO_FREE_MODEL_ERROR)
+  if (route.startsWith('/chat')) return chatCompletions(payload, env)
+
+  return sendErrorResponse(ROUTE_NOT_FOUND_ERROR)
+}
+
 function validateFreeModel(payload) {
   // 如果提供了API密钥或API密钥名称，则可以使用任意模型
   if (payload.apiKey || payload.apiKeyName) {
     return true
   }
-
   // 否则检查模型是否在免费列表中
   return FREE_MODELS.includes(payload.model)
 }
 
 function getToken(payload, env) {
-  // 判断1：提供apiKey可使用任意模型，否则仅可使用免费模型
+  // 解码apiKey
   if (payload.apiKey) return unmask(env['NUXT_URDOC_SECRET_KEY'], payload.apiKey) || ''
-  // 判断2：如果存在且不为空则使用，否则使用默认apiKeyName
+  // 根据环境变量apiKey名称获取apiKey
   if (payload.apiKeyName) return env[payload.apiKeyName] || ''
   // 默认使用智谱apiKey
   return env['ZHIPU_API_KEY'] || ''
@@ -94,21 +112,13 @@ function sendErrorResponse(errorResponse) {
 }
 
 // 对话补全 文本模型
-async function chatCompletions(request, env) {
-  const payload = await request.json()
-
-  if (!validateFreeModel(payload)) return sendErrorResponse(NO_FREE_MODEL_ERROR)
-
-  // 删除 accept-encoding 头避免压缩影响 SSE 流
-  request.headers.delete('accept-encoding')
-
+async function chatCompletions(payload, env) {
   const url = `${API_BASE}${CHAT_COMPLETIONS}`
   const token = getToken(payload, env)
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   }
-
   const body = {
     model: payload.model || '',
     messages: payload.messages || '',
@@ -137,10 +147,10 @@ async function chatCompletions(request, env) {
     return sendErrorResponse(errorFromModel)
   }
 
-  return sendResponse(response)
+  return sendChatResponse(response)
 }
 
-async function sendResponse(response) {
+async function sendChatResponse(response) {
   // 检查是否为SSE流
   const contentType = response.headers.get('Content-Type') || ''
   if (contentType.includes('text/event-stream')) {
@@ -162,7 +172,9 @@ async function sendResponse(response) {
     })
   } else {
     // 非SSE流直接返回
-    return new Response(response.body, {
+    const res = await response.json()
+    const content = extractContent(res)
+    return new Response(JSON.stringify(content), {
       status: response.status,
       headers: {
         'Content-Type': response.headers.get('Content-Type'),
@@ -180,132 +192,53 @@ async function processSSEStream(stream, writer, encoder) {
   try {
     while (true) {
       const { done, value } = await reader.read()
-
-      if (done) {
-        break
-      }
+      if (done) break
 
       buffer += decoder.decode(value, { stream: true })
-      const lines = buffer.split('\n')
-
+      console.log('start: ', buffer)
+      const lines = buffer.split('\n\n')
+      console.log('lines: ', lines)
       // 保留最后一行不完整的数据
       buffer = lines.pop() || ''
-
+      console.log('end: ', buffer)
       for (const line of lines) {
-        // 提取data部分
-        if (line.startsWith('data:')) {
-          const data = line.slice(5).trim() // 移除 'data:' 前缀
-          if (data === '[DONE]') {
-            // 流结束标记
-            writer.close()
-            return
-          }
+        const data = line.slice(5).trim()
+        if (data === '[DONE]') return
 
-          try {
-            const parsed = JSON.parse(data)
-            // 提取内容并重新格式化
-            const content = extractContent(parsed)
-            if (content) {
-              writer.write(encoder.encode(`data: ${JSON.stringify(content)}\n\n`))
-            }
-          } catch (e) {
-            // 如果不是JSON，直接转发
-            writer.write(encoder.encode(`${line}\n\n`))
-          }
-        } else if (line.startsWith('event:') || line.startsWith('id:')) {
-          // 转发事件类型和ID行
-          writer.write(encoder.encode(`${line}\n\n`))
-        }
-      }
-    }
-
-    // 处理剩余缓冲区数据
-    if (buffer) {
-      if (buffer.startsWith('data:')) {
-        const data = buffer.slice(5).trim()
         try {
           const parsed = JSON.parse(data)
+          // 提取内容并重新格式化
           const content = extractContent(parsed)
           if (content) {
             writer.write(encoder.encode(`data: ${JSON.stringify(content)}\n\n`))
           }
-        } catch (e) {
-          writer.write(encoder.encode(`${buffer}\n\n`))
+        } catch {
+          return sendErrorResponse(INVALID_JSON_RESPONSE_ERROR)
         }
-      } else {
-        writer.write(encoder.encode(`${buffer}\n\n`))
       }
     }
-
-    writer.close()
-  } catch (error) {
-    console.error('Error processing SSE stream:', error)
-    writer.close()
+  } catch {
+    return sendErrorResponse(SSE_PROCESSING_ERROR)
   } finally {
+    writer.close()
     reader.releaseLock()
   }
 }
 
 function extractContent(data) {
-  // 根据智谱AI API响应格式提取内容
-  if (data.choices && data.choices.length > 0) {
-    const choice = data.choices[0]
-    if (choice.delta) {
-      // 流式响应
-      //
-      // return {
-      //   id: data.id,
-      //   created: data.created,
-      //   model: data.model,
-      //   choices: [
-      //     {
-      //       index: choice.index,
-      //       delta: {
-      //         role: choice.delta.role,
-      //         content: choice.delta.content || '',
-      //         reasoning_content: choice.delta.reasoning_content || '',
-      //       },
-      //     },
-      //   ],
-      // }
-      //
-      return {
-        content: choice.delta.content || '',
-        reasoning_content: choice.delta.reasoning_content || '',
-      }
-    } else if (choice.message) {
-      // 非流式响应
-      // return {
-      //   id: data.id,
-      //   created: data.created,
-      //   model: data.model,
-      //   request_id: data.request_id,
-      //   usage: {
-      //     completion_tokens: data.usage.completion_tokens,
-      //     prompt_tokens: data.usage.prompt_tokens,
-      //     total_tokens: data.usage.total_tokens,
-      //     prompt_tokens_details: data.usage.prompt_tokens_details || '',
-      //   },
-      //   choices: [
-      //     {
-      //       index: choice.index,
-      //       finish_reason: choice.finish_reason,
-      //       message: {
-      //         role: choice.message.role,
-      //         content: choice.message.content || '',
-      //         reasoning_content: choice.message.reasoning_content || '',
-      //       },
-      //     },
-      //   ],
-      // }
-      //
-      return {
-        content: choice.message.content || '',
-        reasoning_content: choice.message.reasoning_content || '',
-      }
-    }
-  }
+  const choice = data.choices[0]
 
-  // 如果没有匹配的格式，返回原始数据
-  return data
+  // 流式响应格式
+  if (choice.delta)
+    return {
+      content: choice.delta.content || '',
+      reasoning_content: choice.delta.reasoning_content || '',
+    }
+
+  // 非流式响应格式
+  if (choice.message)
+    return {
+      content: choice.message.content || '',
+      reasoning_content: choice.message.reasoning_content || '',
+    }
 }
