@@ -252,37 +252,56 @@ function extractContent(data) {
     const choice = data.choices[0]
     if (choice.delta) {
       // 流式响应
+      //
+      // return {
+      //   id: data.id,
+      //   created: data.created,
+      //   model: data.model,
+      //   choices: [
+      //     {
+      //       index: choice.index,
+      //       delta: {
+      //         role: choice.delta.role,
+      //         content: choice.delta.content || '',
+      //         reasoning_content: choice.delta.reasoning_content || '',
+      //       },
+      //     },
+      //   ],
+      // }
+      //
       return {
-        id: data.id,
-        object: data.object,
-        created: data.created,
-        model: data.model,
-        choices: [
-          {
-            index: choice.index,
-            delta: {
-              content: choice.delta.content || '',
-              role: choice.delta.role,
-            },
-          },
-        ],
+        content: choice.delta.content || '',
+        reasoning_content: choice.delta.reasoning_content || '',
       }
     } else if (choice.message) {
       // 非流式响应
+      // return {
+      //   id: data.id,
+      //   created: data.created,
+      //   model: data.model,
+      //   request_id: data.request_id,
+      //   usage: {
+      //     completion_tokens: data.usage.completion_tokens,
+      //     prompt_tokens: data.usage.prompt_tokens,
+      //     total_tokens: data.usage.total_tokens,
+      //     prompt_tokens_details: data.usage.prompt_tokens_details || '',
+      //   },
+      //   choices: [
+      //     {
+      //       index: choice.index,
+      //       finish_reason: choice.finish_reason,
+      //       message: {
+      //         role: choice.message.role,
+      //         content: choice.message.content || '',
+      //         reasoning_content: choice.message.reasoning_content || '',
+      //       },
+      //     },
+      //   ],
+      // }
+      //
       return {
-        id: data.id,
-        object: data.object,
-        created: data.created,
-        model: data.model,
-        choices: [
-          {
-            index: choice.index,
-            message: {
-              content: choice.message.content || '',
-              role: choice.message.role,
-            },
-          },
-        ],
+        content: choice.message.content || '',
+        reasoning_content: choice.message.reasoning_content || '',
       }
     }
   }
