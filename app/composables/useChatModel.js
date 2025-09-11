@@ -30,9 +30,13 @@ export default function () {
       }),
     })
 
-    // Create a new ReadableStream from the response with TextDecoderStream to get the data as text
+    if (response.status !== 200) {
+      const errorFromFunction = await response.json()
+      stateStore.appInfos.push(errorFromFunction.error.message)
+      return
+    }
 
-    const reader = response.pipeThrough(new TextDecoderStream()).getReader()
+    const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
 
     while (true) {
       const { value, done } = await reader.read()
@@ -54,15 +58,12 @@ export default function () {
           tempIncompleteLine = line
           return
         }
-        if (line.trim() === 'data: [DONE]') return
-        const jsonDataStr = line.split('data: ')[1] || ''
         try {
-          // 尝试修复并解析 JSON 数据
-          const jsonRepaired = jsonrepair(jsonDataStr)
-          const jsonData = JSON.parse(jsonRepaired)
+          const message = JSON.parse(line)
+          console.log(message)
 
           // 更新当前生成内容
-          stateStore.modelResponseString += jsonData.choices?.[0]?.delta?.content || ''
+          stateStore.modelResponseString += message.content || ''
 
           // 更新当前生成字段
           const currentField = watchFields[dataFieldPointer]
@@ -76,36 +77,37 @@ export default function () {
           }
         } catch (error) {
           // 统一处理修复或解析失败的情况
-          console.log('处理JSON失败: ', jsonDataStr, error)
-          stateStore.appInfo = '处理JSON失败'
+          // console.log('处理JSON失败: ', jsonDataStr, error)
+          // stateStore.appInfo = '处理JSON失败'
           return
         }
       })
     }
     // 解析modelResponseString的json问题
-    if (format === 'json') {
-      try {
-        dataString = stateStore.modelResponseString
-        // 去除 baidu 最开始的 {
-        const baiduJson = dataString.match(baiduRegex)
-        if (baiduJson) dataString = baiduJson[0]
-        // 去除 ```json ``` 框架
-        const matchJson = dataString.match(jsonRegex)
-        if (matchJson) dataString = matchJson[0]
-        // 替换中文字符 引号 “” 和 逗号 ，
-        dataString = dataString.replace(/“/g, '"').replace(/”/g, '"')
-        dataString = dataString.replace(/，/g, ',')
-        // 其他修复
-        dataString = jsonrepair(dataString)
+    // if (format === 'json') {
+    //   try {
+    //     dataString = stateStore.modelResponseString
+    //     // 去除 baidu 最开始的 {
+    //     const baiduJson = dataString.match(baiduRegex)
+    //     if (baiduJson) dataString = baiduJson[0]
+    //     // 去除 ```json ``` 框架
+    //     const matchJson = dataString.match(jsonRegex)
+    //     if (matchJson) dataString = matchJson[0]
+    //     // 替换中文字符 引号 “” 和 逗号 ，
+    //     dataString = dataString.replace(/“/g, '"').replace(/”/g, '"')
+    //     dataString = dataString.replace(/，/g, ',')
+    //     // 其他修复
+    //     dataString = jsonrepair(dataString)
 
-        stateStore.modelResponseString = dataString
-      } catch (error) {
-        console.log('修复json格式失败: ', dataString)
-        stateStore.appInfo = `修复json格式失败: ${error}`
-        stateStore.modelResponseString = `{'status':'error', 'data':'${dataString.slice(1, -1)}'}`
-      }
-    }
+    //     stateStore.modelResponseString = dataString
+    //   } catch (error) {
+    //     console.log('修复json格式失败: ', dataString)
+    //     stateStore.appInfo = `修复json格式失败: ${error}`
+    //     stateStore.modelResponseString = `{'status':'error', 'data':'${dataString.slice(1, -1)}'}`
+    //   }
+    // }
     // console.log(responseDataStream.value)
+    console.log('modelResponseString: ', stateStore.modelResponseString)
     return stateStore.modelResponseString
   }
 

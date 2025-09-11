@@ -195,12 +195,9 @@ async function processSSEStream(stream, writer, encoder) {
       if (done) break
 
       buffer += decoder.decode(value, { stream: true })
-      console.log('start: ', buffer)
       const lines = buffer.split('\n\n')
-      console.log('lines: ', lines)
       // 保留最后一行不完整的数据
       buffer = lines.pop() || ''
-      console.log('end: ', buffer)
       for (const line of lines) {
         const data = line.slice(5).trim()
         if (data === '[DONE]') return

@@ -94,21 +94,21 @@ export const useModelStore = defineStore(
 
     const defaultModels = ref([
       {
-        provider: '智谱',
+        provider: 'bigmodel',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4-flash-250414',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
-        provider: '智谱',
+        provider: 'bigmodel',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4.5-flash',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
-        provider: '智谱',
+        provider: 'bigmodel',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-z1-flash',
@@ -157,14 +157,14 @@ export const useModelStore = defineStore(
         apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
-        provider: '智谱',
+        provider: 'bigmodel',
         type: 'image',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
         model: 'cogview-3-flash',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
-        provider: '智谱',
+        provider: 'bigmodel',
         type: 'video',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
         model: 'cogvideox-flash',
@@ -178,56 +178,56 @@ export const useModelStore = defineStore(
       chat: {
         case: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         story: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         test: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         act: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         rate: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         check: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         face: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
@@ -236,14 +236,14 @@ export const useModelStore = defineStore(
       image: {
         face: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
@@ -252,7 +252,7 @@ export const useModelStore = defineStore(
       video: {
         pose: {
           source: 'default',
-          provider: '智谱',
+          provider: 'bigmodel',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
           model: 'cogvideox-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,

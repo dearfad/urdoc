@@ -8,30 +8,19 @@ export default function () {
   const modelStore = useModelStore()
   const apiKeyStore = useApiKeyStore()
 
-  function getChatModelParams(modelUsage, messages, response_format) {
+  function getChatModelParams(modelUsage, messages, format) {
     const chatModel = modelStore.activeModels.chat[modelUsage]
-    const params = {
-      // 使用模型接入点url
-      url: chatModel.endpoint,
-      // 默认POST方法
-      method: 'POST',
-      // 如果存在apiKey不为''，优先使用apiKey，否则查看环境变量apiKeyName
+    const payload = {
+      provider: chatModel.provider,
+      usage: 'chat',
       apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
-      apiKeyName: chatModel.apiKeyName,
-      // 服务器端根据apiKeyName或者apiKey添加
-      // Authorization: 'Bearer <apiKey>',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // 请求体 response_format 有区别，待规范化
-      body: JSON.stringify({
-        model: chatModel.model,
-        messages: messages,
-        stream: true,
-        response_format: response_format === 'text' ? { type: 'text' } : { type: 'json_object' },
-      }),
+      apiKeyName: chatModel.apiKeyName || '',
+      model: chatModel.model,
+      messages: messages,
+      stream: true,
+      format: format === 'json' ? 'json' : 'text',
     }
-    return params
+    return payload
   }
 
   function getImageModelParams(modelUsage, prompt) {
@@ -74,8 +63,8 @@ export default function () {
   // Chat Model
 
   async function getCase(messages) {
-    const params = getChatModelParams('case', messages, 'json')
-    return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
+    const payload = getChatModelParams('case', messages, 'json')
+    return await chatModel.getResponse(payload, 'json', recordStore.watchFields.case)
   }
   async function checkCase(messages) {
     const params = getChatModelParams('check', messages, 'json')
