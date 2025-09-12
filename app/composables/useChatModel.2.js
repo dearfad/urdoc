@@ -1,26 +1,31 @@
-import { jsonrepair } from 'jsonrepair'
+// import { jsonrepair } from 'jsonrepair'
 export default function () {
   async function getResponse(payload, format, watchFields) {
     const stateStore = useStateStore()
     stateStore.modelResponseStream = ''
-    stateStore.modelResponseString = ''
+    stateStore.modelResponseString = {
+      content: '',
+      reasoning_content: '',
+    }
     stateStore.modelResponseField = ''
     // 匹配以 data: 开头，后面跟着一个 JSON 格式的数组或对象的字符串
-    const lineRegex = /data: (?:\[.*\]|\{.*\})/
+    // const lineRegex = /data: (?:\[.*\]|\{.*\})/
     // 匹配以 { 开头、以 } 结尾的 JSON 对象格式的内容，并且会匹配其中的所有字符，包括换行符
-    const jsonRegex = /\{.*\}/s
-    const baiduRegex = /```json.*/s
+    // const jsonRegex = /\{.*\}/s
+    // const baiduRegex = /```json.*/s
     let dataFieldPointer = 0
-    let tempIncompleteLine = ''
-    let dataString = ''
+    // let tempIncompleteLine = ''
+    // let dataString = ''
 
-    const url = `${stateStore.apiBaseUrl}/model/${payload.provider}/${payload.usage}`
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        provider: payload.provider,
+        usage: payload.usage,
         apiKey: payload.apiKey,
         apiKeyName: payload.apiKeyName,
         model: payload.model,
@@ -41,45 +46,42 @@ export default function () {
     while (true) {
       const { value, done } = await reader.read()
       if (done) break
+      //   // DEBUG页面 原始信息流
+      //   stateStore.modelResponseStream += value
 
-      // DEBUG页面 原始信息流
-      stateStore.modelResponseStream += value
-
-      // 解析模型响应数据流
-      const lines = value.split('\n\n')
+      //   // 解析模型响应数据流
+      const lines = value.split('\n')
 
       lines.forEach((line) => {
-        if (line === '') return
-        // 修复单行不完整
-        line = tempIncompleteLine + line
-        if (lineRegex.test(line)) {
-          tempIncompleteLine = ''
-        } else {
-          tempIncompleteLine = line
-          return
-        }
+        //     if (line === '') return
+        //     // 修复单行不完整
+        //     line = tempIncompleteLine + line
+        //     if (lineRegex.test(line)) {
+        //       tempIncompleteLine = ''
+        //     } else {
+        //       tempIncompleteLine = line
+        //       return
+        //     }
         try {
           const message = JSON.parse(line)
-          console.log(message)
-
           // 更新当前生成内容
-          stateStore.modelResponseString += message.content || ''
-
+          stateStore.modelResponseString.content += message.content || ''
+          stateStore.modelResponseString.reasoning_content += message.reasoning_content || ''
           // 更新当前生成字段
           const currentField = watchFields[dataFieldPointer]
           if (
             watchFields.length > 0 &&
             currentField &&
-            stateStore.modelResponseString.includes(currentField)
+            stateStore.modelResponseString.content.includes(currentField)
           ) {
             stateStore.modelResponseField = currentField
             dataFieldPointer++
           }
         } catch (error) {
-          // 统一处理修复或解析失败的情况
-          // console.log('处理JSON失败: ', jsonDataStr, error)
-          // stateStore.appInfo = '处理JSON失败'
-          return
+          //       // 统一处理修复或解析失败的情况
+          //       // console.log('处理JSON失败: ', jsonDataStr, error)
+          //       // stateStore.appInfo = '处理JSON失败'
+          //       return
         }
       })
     }
@@ -107,7 +109,9 @@ export default function () {
     //   }
     // }
     // console.log(responseDataStream.value)
-    console.log('modelResponseString: ', stateStore.modelResponseString)
+    stateStore.modelResponseString.content = stateStore.modelResponseString.content.trim()
+    stateStore.modelResponseString.reasoning_content =
+      stateStore.modelResponseString.reasoning_content.trim()
     return stateStore.modelResponseString
   }
 

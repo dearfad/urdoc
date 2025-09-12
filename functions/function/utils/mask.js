@@ -1,8 +1,8 @@
 export async function onRequest({ request, env }) {
-  const { params } = await request.json()
+  const { payload } = await request.json()
   const maskKey = env['NUXT_URDOC_SECRET_KEY']
-  const apiKey = params.apiKey
-  return new Response(params.mask ? mask(maskKey, apiKey) : unmask(maskKey, apiKey))
+  const apiKey = payload.apiKey
+  return new Response(payload.mask ? mask(maskKey, apiKey) : unmask(maskKey, apiKey))
 }
 
 export const mask = (maskKey, apiKey) => btoa(maskKey + apiKey)

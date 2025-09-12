@@ -207,7 +207,7 @@ async function processSSEStream(stream, writer, encoder) {
           // 提取内容并重新格式化
           const content = extractContent(parsed)
           if (content) {
-            writer.write(encoder.encode(`data: ${JSON.stringify(content)}\n\n`))
+            writer.write(encoder.encode(`${JSON.stringify(content)}\n`))
           }
         } catch {
           return sendErrorResponse(INVALID_JSON_RESPONSE_ERROR)

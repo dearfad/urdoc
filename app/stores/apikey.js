@@ -17,7 +17,7 @@ export const useApiKeyStore = defineStore(
             'Content-Type': 'application/json',
           },
           body: {
-            params: {
+            payload: {
               mask: true,
               apiKey: value,
             },

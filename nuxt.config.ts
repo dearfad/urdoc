@@ -68,4 +68,8 @@ export default defineNuxtConfig({
       redirectOn: 'root', // recommended
     },
   },
+
+  imports: {
+    dirs: ['~/composables/**'],
+  },
 })

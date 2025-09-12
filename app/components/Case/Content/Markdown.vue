@@ -1,7 +1,11 @@
 <template>
   <v-card class="text-body-1 px-4 py-2 overflow-auto" rounded="lg" :height="height" elevation="4">
     <div v-if="stateStore.isCaseModelResponseStringShow">
-      {{ stateStore.modelResponseString }}
+      <details>
+        <summary>🤔 思考过程（点击展开）</summary>
+        <MDC :value="stateStore.modelResponseString.reasoning_content" />
+      </details>
+      <MDC :value="`${stateStore.modelResponseString.content}`" />
     </div>
     <div v-else>
       <MDC :value="recordStore.view.case.markdown" />

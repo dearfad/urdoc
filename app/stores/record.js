@@ -226,7 +226,7 @@ export const useRecordStore = defineStore(
       const messages = promptStore.getSystemPrompt('case')
       const caseJsonString = await modelRouter.getCase(messages)
       try {
-        const caseJson = JSON.parse(caseJsonString)
+        const caseJson = JSON.parse(caseJsonString.content)
         record.value.case = caseJson
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case

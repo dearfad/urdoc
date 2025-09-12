@@ -19,7 +19,10 @@ export const useStateStore = defineStore(
     // 模型返回数据流
     const modelResponseStream = ref('')
     // 模型返回数据内容
-    const modelResponseString = ref('')
+    const modelResponseString = ref({
+      content: '',
+      reasoning_content: '',
+    })
     const isModelResponseStringShow = ref(false)
     const isCaseModelResponseStringShow = ref(false)
     const isStoryModelResponseStringShow = ref(false)

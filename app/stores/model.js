@@ -1,3 +1,5 @@
+import useBigmodel from '~/composables/Model/useBigmodel'
+
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -281,6 +283,14 @@ export const useModelStore = defineStore(
       },
     }
 
+    const PROVIDERS = {
+      bigmodel: useBigmodel(),
+    }
+
+    function getModel(modelType, modelUsage) {
+      return PROVIDERS[activeModels.value[modelType][modelUsage].provider]
+    }
+
     return {
       DEFAULT_PROVIDER_ID,
       DEFAULT_ENDPOINT,
@@ -288,6 +298,7 @@ export const useModelStore = defineStore(
       customModels,
       activeModels,
       database,
+      getModel,
     }
   },
   {
