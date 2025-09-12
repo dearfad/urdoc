@@ -283,12 +283,12 @@ export const useModelStore = defineStore(
       },
     }
 
-    const PROVIDERS = {
+    const PROVIDERS_MODULE_MAP = {
       bigmodel: useBigmodel(),
     }
 
     function getModel(modelType, modelUsage) {
-      return PROVIDERS[activeModels.value[modelType][modelUsage].provider]
+      return PROVIDERS_MODULE_MAP[activeModels.value[modelType][modelUsage].provider]
     }
 
     return {

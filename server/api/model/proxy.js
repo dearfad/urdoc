@@ -1,6 +1,6 @@
 import { unmask } from '../utils/mask.js'
 export default defineEventHandler(async (event) => {
-  const { payload } = await readBody(event)
+  const payload = await readBody(event)
   const token = getToken(payload, process.env)
   payload.headers.Authorization = `Bearer ${token}`
   const response = await fetch(payload.url, {

@@ -7,7 +7,7 @@ export async function onRequest({ request, env }) {
   // 删除 accept-encoding 头避免压缩影响 SSE 流
   request.headers.delete('accept-encoding')
 
-  const { payload } = await request.json()
+  const payload = await request.json()
   const token = getToken(payload, env)
   payload.headers.Authorization = `Bearer ${token}`
   const response = await fetch(payload.url, {
