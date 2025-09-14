@@ -16,7 +16,6 @@
       :timeout="timeout"
       timer="true"
       closable="true"
-      close-text="关闭"
     />
   </v-sheet>
 </template>

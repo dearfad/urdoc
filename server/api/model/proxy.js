@@ -3,16 +3,25 @@ export default defineEventHandler(async (event) => {
   const payload = await readBody(event)
   const token = getToken(payload, process.env)
   payload.headers.Authorization = `Bearer ${token}`
-  const response = await fetch(payload.url, {
-    method: payload.method,
-    headers: payload.headers,
-    body: payload.body,
-  })
+  try {
+    const response = await fetch(payload.url, {
+      method: payload.method,
+      headers: payload.headers,
+      body: payload.body,
+    })
 
-  return new Response(response.body, {
-    status: response.status,
-    headers: response.headers,
-  })
+    return new Response(response.body, {
+      status: response.status,
+      headers: response.headers,
+    })
+  } catch (error) {
+    return sendErrorResponse({
+      error: {
+        code: 500,
+        message: error.message,
+      },
+    })
+  }
 })
 
 const API_KEY_ERROR = {
