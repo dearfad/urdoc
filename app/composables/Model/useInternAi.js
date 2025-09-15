@@ -2,7 +2,7 @@ export default function () {
   const API_BASE = 'https://chat.intern-ai.org.cn/api/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
   const FREE_MODELS = ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest']
-  const THINKING_MODELS = []
+  const THINKING_MODELS = ['intern-s1', 'intern-s1-mini']
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -51,9 +51,7 @@ export default function () {
     if (!validateFreeModel(payload)) return
 
     if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking = {
-        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
-      }
+      payload.body.thinking_mode = stateStore.isModelThinking
     }
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -67,7 +65,9 @@ export default function () {
 
     if (response.status !== 200) {
       const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.error.message)
+      stateStore.appInfos.push(
+        errorFromModel.error ? errorFromModel.error.message : errorFromModel.msg
+      )
       return
     }
     await getContent(response)
@@ -104,6 +104,13 @@ export default function () {
         }
       }
     }
+
+    let content = stateStore.modelResponseString.content
+    const jsonRegex = /\{.*\}/s
+    const matchJson = content.match(jsonRegex)
+    if (matchJson) content = matchJson[0]
+    stateStore.modelResponseString.content = content
+
     return stateStore.modelResponseString
   }
 
