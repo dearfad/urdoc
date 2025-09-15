@@ -45,6 +45,9 @@ export const useStateStore = defineStore(
     // 当前模型生成字段
     const modelResponseField = ref('')
 
+    // 思考模型是否思考
+    const isModelThinking = ref(false)
+
     // 当前章节选择
     const scope = ref<Scope>({
       book: '',
@@ -91,6 +94,7 @@ export const useStateStore = defineStore(
       modelResponseStream,
       modelResponseString,
       modelResponseField,
+      isModelThinking,
 
       recordShowContent,
       listRecords,

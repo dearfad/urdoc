@@ -26,6 +26,14 @@
     <v-card-actions>
       <v-spacer />
       <v-checkbox
+        v-model="setModelThinking"
+        max-width="70px"
+        label="思考"
+        density="compact"
+        hide-details
+        @update:model-value="handleModelThinking"
+      />
+      <v-checkbox
         v-model="setModelGlobal"
         max-width="70px"
         label="全局"
@@ -46,6 +54,7 @@ const { modelType, modelUsage } = defineProps({
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const setModelGlobal = ref(false)
+const setModelThinking = ref(false)
 
 const provider = ref('')
 const model = ref()
@@ -92,5 +101,9 @@ function handleModelChange() {
       modelStore.activeModels[modelType][usage] = model.value
     }
   }
+}
+
+function handleModelThinking() {
+  stateStore.isModelThinking = setModelThinking.value
 }
 </script>

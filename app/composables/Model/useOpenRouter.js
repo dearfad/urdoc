@@ -1,18 +1,14 @@
 export default function () {
   const { NO_FREE_MODEL_ERROR } = useErrorConstants
-  const API_BASE = 'https://open.bigmodel.cn/api'
-  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
+  const API_BASE = 'https://openrouter.ai/api/v1'
+  const CHAT_COMPLETIONS = '/chat/completions'
   const FREE_MODELS = [
-    'glm-4.5-flash',
-    'glm-4.1v-thinking-flash',
-    'glm-4-flash-250414',
-    'glm-4v-flash',
-    'glm-z1-flash',
-    'cogview-3-flash',
-    'cogvideox-flash',
+    'deepseek/deepseek-chat-v3.1:free',
+    'moonshotai/kimi-k2:free',
+    'deepseek/deepseek-r1-0528:free',
   ]
 
-  const THINKING_MODELS = ['glm-4.5-flash']
+  const THINKING_MODELS = ['deepseek/deepseek-r1-0528:free']
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -54,7 +50,7 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
@@ -107,7 +103,7 @@ export default function () {
           const message = JSON.parse(data)
           const choice = message.choices[0]
           stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
+          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning || ''
         } catch (error) {
           console.log('error: ', error.message)
           continue

@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     '/admin/**': { ssr: false },
     '/user/**': { ssr: false },
     '/project/**': { ssr: false },
+    '/site/**': { ssr: false },
   },
 
   // EdgeOne Pages Functions Development

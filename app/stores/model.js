@@ -1,4 +1,5 @@
-import useBigmodel from '~/composables/Model/useBigmodel'
+import useBigModel from '~/composables/Model/useBigModel'
+import useOpenRouter from '~/composables/Model/useOpenRouter'
 
 export const useModelStore = defineStore(
   'model',
@@ -107,13 +108,6 @@ export const useModelStore = defineStore(
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4.5-flash',
-        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
-      },
-      {
-        provider: 'bigmodel',
-        type: 'chat',
-        endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
-        model: 'glm-z1-flash',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
@@ -284,7 +278,8 @@ export const useModelStore = defineStore(
     }
 
     const PROVIDERS_MODULE_MAP = {
-      bigmodel: useBigmodel(),
+      bigmodel: useBigModel(),
+      OpenRouter: useOpenRouter(),
     }
 
     function getModel(modelType, modelUsage) {

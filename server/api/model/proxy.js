@@ -2,12 +2,13 @@ import { unmask } from '../utils/mask.js'
 export default defineEventHandler(async (event) => {
   const payload = await readBody(event)
   const token = getToken(payload, process.env)
+  if (!token) return sendErrorResponse(API_KEY_ERROR)
   payload.headers.Authorization = `Bearer ${token}`
   try {
     const response = await fetch(payload.url, {
       method: payload.method,
       headers: payload.headers,
-      body: payload.body,
+      body: JSON.stringify(payload.body),
     })
 
     return new Response(response.body, {
@@ -34,7 +35,7 @@ const API_KEY_ERROR = {
 function getToken(payload, env) {
   if (payload.apiKey) return unmask(env['NUXT_URDOC_SECRET_KEY'], payload.apiKey)
   if (payload.apiKeyName) return env[payload.apiKeyName]
-  return sendErrorResponse(API_KEY_ERROR)
+  return ''
 }
 
 function sendErrorResponse(errorResponse) {
