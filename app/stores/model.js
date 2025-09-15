@@ -1,8 +1,8 @@
-import useBigModel from '~/composables/Model/useBigModel'
 import useOpenRouter from '~/composables/Model/useOpenRouter'
 import useXfYun from '~/composables/Model/useXfYun'
 import useTenCent from '~/composables/Model/useTenCent'
 import useInternAi from '~/composables/Model/useInternAi'
+import useBigModel from '~/composables/Model/useBigModel'
 
 export const useModelStore = defineStore(
   'model',
