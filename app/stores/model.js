@@ -275,11 +275,11 @@ export const useModelStore = defineStore(
     }
 
     const PROVIDERS_MODULE_MAP = {
-      BIGMODEL: useBigModel(),
-      OPENROUTER: useOpenRouter(),
-      TENCENT: useTenCent(),
-      XFYUN: useXfYun(),
-      INTERNAI: useInternAi(),
+      BIGMODEL: useModelBigModel(),
+      OPENROUTER: useModelOpenRouter(),
+      TENCENT: useModelTenCent(),
+      XFYUN: useModelXfYun(),
+      INTERNAI: useModelInternAi(),
     }
 
     function getModel(modelType, modelUsage) {

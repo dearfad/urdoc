@@ -8,7 +8,6 @@
       class="my-4"
       hide-details="auto"
       density="comfortable"
-      no-data-text="暂无可用服务商"
       @update:model-value="handleProviderChange"
     />
     <v-select
@@ -21,7 +20,6 @@
       hide-details="auto"
       density="comfortable"
       return-object
-      no-data-text="暂无可用模型"
       @update:model-value="handleModelChange"
     />
 

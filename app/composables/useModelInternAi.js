@@ -1,16 +1,8 @@
 export default function () {
-  const API_BASE = 'https://open.bigmodel.cn/api'
-  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
-  const FREE_MODELS = [
-    'glm-4.5-flash',
-    'glm-4.1v-thinking-flash',
-    'glm-4-flash-250414',
-    'glm-4v-flash',
-    'glm-z1-flash',
-    'cogview-3-flash',
-    'cogvideox-flash',
-  ]
-  const THINKING_MODELS = ['glm-4.5-flash']
+  const API_BASE = 'https://chat.intern-ai.org.cn/api/v1'
+  const CHAT_COMPLETIONS = '/chat/completions'
+  const FREE_MODELS = ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest']
+  const THINKING_MODELS = ['intern-s1', 'intern-s1-mini']
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -52,16 +44,14 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
     if (!validateFreeModel(payload)) return
 
     if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking = {
-        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
-      }
+      payload.body.thinking_mode = stateStore.isModelThinking
     }
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -75,7 +65,9 @@ export default function () {
 
     if (response.status !== 200) {
       const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.error.message)
+      stateStore.appInfos.push(
+        errorFromModel.error ? errorFromModel.error.message : errorFromModel.msg
+      )
       return
     }
     await getContent(response)
@@ -95,7 +87,7 @@ export default function () {
       buffer = lines.pop() || ''
       let data = ''
       for (const line of lines) {
-        if (line.startsWith('data: [DONE]')) return
+        if (line.startsWith('data: [DONE]')) break
         if (line.startsWith('data: ')) {
           data = line.slice(6)
         } else {
@@ -112,6 +104,13 @@ export default function () {
         }
       }
     }
+
+    let content = stateStore.modelResponseString.content
+    const jsonRegex = /\{.*\}/s
+    const matchJson = content.match(jsonRegex)
+    if (matchJson) content = matchJson[0]
+    stateStore.modelResponseString.content = content
+
     return stateStore.modelResponseString
   }
 

@@ -1,8 +1,8 @@
 export default function () {
-  const API_BASE = 'https://chat.intern-ai.org.cn/api/v1'
+  const API_BASE = 'https://api.hunyuan.cloud.tencent.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest']
-  const THINKING_MODELS = ['intern-s1', 'intern-s1-mini']
+  const FREE_MODELS = ['hunyuan-lite']
+  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -44,14 +44,16 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
     if (!validateFreeModel(payload)) return
 
     if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking_mode = stateStore.isModelThinking
+      payload.body.thinking = {
+        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
+      }
     }
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -65,9 +67,7 @@ export default function () {
 
     if (response.status !== 200) {
       const errorFromModel = await response.json()
-      stateStore.appInfos.push(
-        errorFromModel.error ? errorFromModel.error.message : errorFromModel.msg
-      )
+      stateStore.appInfos.push(errorFromModel.error.message)
       return
     }
     await getContent(response)
@@ -87,7 +87,7 @@ export default function () {
       buffer = lines.pop() || ''
       let data = ''
       for (const line of lines) {
-        if (line.startsWith('data: [DONE]')) return
+        if (line.startsWith('data: [DONE]')) break
         if (line.startsWith('data: ')) {
           data = line.slice(6)
         } else {
@@ -96,8 +96,9 @@ export default function () {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
+          stateStore.modelResponseString.content += choice.delta.content.trim() || ''
+          stateStore.modelResponseString.reasoning_content +=
+            choice.delta.reasoning_content.trim() || ''
         } catch (error) {
           console.log('error: ', error.message)
           continue
@@ -110,7 +111,6 @@ export default function () {
     const matchJson = content.match(jsonRegex)
     if (matchJson) content = matchJson[0]
     stateStore.modelResponseString.content = content
-
     return stateStore.modelResponseString
   }
 

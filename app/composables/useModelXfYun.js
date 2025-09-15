@@ -1,16 +1,8 @@
 export default function () {
-  const API_BASE = 'https://open.bigmodel.cn/api'
-  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
-  const FREE_MODELS = [
-    'glm-4.5-flash',
-    'glm-4.1v-thinking-flash',
-    'glm-4-flash-250414',
-    'glm-4v-flash',
-    'glm-z1-flash',
-    'cogview-3-flash',
-    'cogvideox-flash',
-  ]
-  const THINKING_MODELS = ['glm-4.5-flash']
+  const API_BASE = 'https://spark-api-open.xf-yun.com/v1'
+  const CHAT_COMPLETIONS = '/chat/completions'
+  const FREE_MODELS = ['lite']
+  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -95,7 +87,7 @@ export default function () {
       buffer = lines.pop() || ''
       let data = ''
       for (const line of lines) {
-        if (line.startsWith('data: [DONE]')) return
+        if (line.startsWith('data: [DONE]')) break
         if (line.startsWith('data: ')) {
           data = line.slice(6)
         } else {
@@ -112,6 +104,13 @@ export default function () {
         }
       }
     }
+
+    let content = stateStore.modelResponseString.content
+    const jsonRegex = /\{.*\}/s
+    const matchJson = content.match(jsonRegex)
+    if (matchJson) content = matchJson[0]
+    stateStore.modelResponseString.content = content
+
     return stateStore.modelResponseString
   }
 
