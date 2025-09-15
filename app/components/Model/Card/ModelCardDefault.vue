@@ -15,6 +15,7 @@
       label="模型"
       :items="modelsByProvider"
       item-title="model"
+      item-value="id"
       variant="outlined"
       class="mt-4"
       hide-details="auto"

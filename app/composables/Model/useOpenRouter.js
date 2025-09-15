@@ -1,5 +1,4 @@
 export default function () {
-  const { NO_FREE_MODEL_ERROR } = useErrorConstants
   const API_BASE = 'https://openrouter.ai/api/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
   const FREE_MODELS = [
@@ -7,7 +6,6 @@ export default function () {
     'moonshotai/kimi-k2:free',
     'deepseek/deepseek-r1-0528:free',
   ]
-
   const THINKING_MODELS = ['deepseek/deepseek-r1-0528:free']
 
   const stateStore = useStateStore()

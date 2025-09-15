@@ -1,5 +1,8 @@
 import useBigModel from '~/composables/Model/useBigModel'
 import useOpenRouter from '~/composables/Model/useOpenRouter'
+import useXfYun from '~/composables/Model/useXfYun'
+import useTenCent from '~/composables/Model/useTenCent'
+import useInternAi from '~/composables/Model/useInternAi'
 
 export const useModelStore = defineStore(
   'model',
@@ -11,7 +14,7 @@ export const useModelStore = defineStore(
     const DEFAULT_PROVIDER_ID = [
       {
         name: '智谱',
-        id: 'ZHIPU',
+        id: 'BIGMODEL',
       },
       {
         name: '讯飞',
@@ -97,70 +100,70 @@ export const useModelStore = defineStore(
 
     const defaultModels = ref([
       {
-        provider: 'bigmodel',
+        provider: 'BIGMODEL',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4-flash-250414',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
-        provider: 'bigmodel',
+        provider: 'BIGMODEL',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
         model: 'glm-4.5-flash',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
-        provider: '讯飞',
+        provider: 'XFYUN',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.XUNFEI.chat,
         model: 'lite',
         apiKeyName: DEFAULT_API_KEY_NAME.XUNFEI,
       },
       {
-        provider: '腾讯',
+        provider: 'TENCENT',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.TENCENT.chat,
         model: 'hunyuan-lite',
         apiKeyName: DEFAULT_API_KEY_NAME.TENCENT,
       },
       {
-        provider: '书生',
+        provider: 'INTERNAI',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
         model: 'internlm3-8b-instruct',
         apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
-        provider: '书生',
+        provider: 'INTERNAI',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
         model: 'intern-s1',
         apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
-        provider: '书生',
+        provider: 'INTERNAI',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
         model: 'intern-s1-mini',
         apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
-        provider: '书生',
+        provider: 'INTERNAI',
         type: 'chat',
         endpoint: DEFAULT_ENDPOINT.SHUSHENG.chat,
         model: 'internlm2.5-latest',
         apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
       },
       {
-        provider: 'bigmodel',
+        provider: 'BIGMODEL',
         type: 'image',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
         model: 'cogview-3-flash',
         apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
       },
       {
-        provider: 'bigmodel',
+        provider: 'BIGMODEL',
         type: 'video',
         endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
         model: 'cogvideox-flash',
@@ -174,56 +177,56 @@ export const useModelStore = defineStore(
       chat: {
         case: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         story: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         test: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         act: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         rate: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         check: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         face: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
@@ -232,14 +235,14 @@ export const useModelStore = defineStore(
       image: {
         face: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
         illustration: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.image,
           model: 'cogview-3-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
@@ -248,7 +251,7 @@ export const useModelStore = defineStore(
       video: {
         pose: {
           source: 'default',
-          provider: 'bigmodel',
+          provider: 'BIGMODEL',
           endpoint: DEFAULT_ENDPOINT.ZHIPU.video,
           model: 'cogvideox-flash',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
@@ -278,8 +281,11 @@ export const useModelStore = defineStore(
     }
 
     const PROVIDERS_MODULE_MAP = {
-      bigmodel: useBigModel(),
-      OpenRouter: useOpenRouter(),
+      BIGMODEL: useBigModel(),
+      OPENROUTER: useOpenRouter(),
+      TENCENT: useTenCent(),
+      XFYUN: useXfYun(),
+      INTERNAI: useInternAi(),
     }
 
     function getModel(modelType, modelUsage) {

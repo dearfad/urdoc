@@ -46,6 +46,7 @@
           v-model="predefinedProvider"
           :items="modelStore.DEFAULT_PROVIDER_ID"
           item-title="name"
+          item-value="id"
           variant="outlined"
           hide-details="auto"
           density="comfortable"

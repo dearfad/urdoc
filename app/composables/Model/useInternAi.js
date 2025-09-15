@@ -1,16 +1,8 @@
 export default function () {
-  const API_BASE = 'https://open.bigmodel.cn/api'
-  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
-  const FREE_MODELS = [
-    'glm-4.5-flash',
-    'glm-4.1v-thinking-flash',
-    'glm-4-flash-250414',
-    'glm-4v-flash',
-    'glm-z1-flash',
-    'cogview-3-flash',
-    'cogvideox-flash',
-  ]
-  const THINKING_MODELS = ['glm-4.5-flash']
+  const API_BASE = 'https://chat.intern-ai.org.cn/api/v1'
+  const CHAT_COMPLETIONS = '/chat/completions'
+  const FREE_MODELS = ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest']
+  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -52,7 +44,7 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
