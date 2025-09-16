@@ -46,6 +46,10 @@ export const useModelStore = defineStore(
         name: '阿里云',
         id: 'ALIYUN',
       },
+      {
+        name: 'Gitee',
+        id: 'GITEE',
+      },
     ]
 
     const DEFAULT_ENDPOINT = {
@@ -82,6 +86,9 @@ export const useModelStore = defineStore(
       },
       ALIYUN: {
         chat: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+      },
+      GITEE: {
+        chat: 'https://ai.gitee.com/v1/chat/completions',
       },
     }
 
@@ -280,6 +287,8 @@ export const useModelStore = defineStore(
       TENCENT: useModelTenCent(),
       XFYUN: useModelXfYun(),
       INTERNAI: useModelInternAi(),
+      MODELSCOPE: useModelModelScope(),
+      GITEE: useModelGitee(),
     }
 
     function getModel(modelType, modelUsage) {

@@ -1,3 +1,4 @@
+import { jsonrepair } from 'jsonrepair'
 export default function () {
   const API_BASE = 'https://open.bigmodel.cn/api'
   const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
@@ -95,7 +96,7 @@ export default function () {
       buffer = lines.pop() || ''
       let data = ''
       for (const line of lines) {
-        if (line.startsWith('data: [DONE]')) return
+        if (line.startsWith('data: [DONE]')) break
         if (line.startsWith('data: ')) {
           data = line.slice(6)
         } else {
@@ -112,6 +113,11 @@ export default function () {
         }
       }
     }
+
+    if (stateStore.modelResponseString.content) {
+      stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
+    }
+
     return stateStore.modelResponseString
   }
 

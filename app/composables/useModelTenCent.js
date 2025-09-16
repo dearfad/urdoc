@@ -1,3 +1,4 @@
+import { jsonrepair } from 'jsonrepair'
 export default function () {
   const API_BASE = 'https://api.hunyuan.cloud.tencent.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
@@ -106,11 +107,10 @@ export default function () {
       }
     }
 
-    let content = stateStore.modelResponseString.content
-    const jsonRegex = /\{.*\}/s
-    const matchJson = content.match(jsonRegex)
-    if (matchJson) content = matchJson[0]
-    stateStore.modelResponseString.content = content
+    if (stateStore.modelResponseString.content) {
+      stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
+    }
+
     return stateStore.modelResponseString
   }
 

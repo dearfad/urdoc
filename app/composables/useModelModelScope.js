@@ -1,13 +1,9 @@
 import { jsonrepair } from 'jsonrepair'
 export default function () {
-  const API_BASE = 'https://openrouter.ai/api/v1'
+  const API_BASE = 'https://api-inference.modelscope.cn/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = [
-    'deepseek/deepseek-chat-v3.1:free',
-    'moonshotai/kimi-k2:free',
-    'deepseek/deepseek-r1-0528:free',
-  ]
-  const THINKING_MODELS = ['deepseek/deepseek-r1-0528:free']
+  const FREE_MODELS = ['deepseek-ai/DeepSeek-V3.1', 'Qwen/Qwen3-Next-80B-A3B-Instruct']
+  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -102,14 +98,13 @@ export default function () {
           const message = JSON.parse(data)
           const choice = message.choices[0]
           stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning || ''
+          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
         } catch (error) {
           console.log('error: ', error.message)
           continue
         }
       }
     }
-
     if (stateStore.modelResponseString.content) {
       stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
     }

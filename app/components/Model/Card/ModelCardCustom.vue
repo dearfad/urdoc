@@ -199,7 +199,7 @@ function handleModelDelete() {
 }
 
 function selectPredefinedProvider() {
-  customModel.value.provider = predefinedProvider.value.name
+  customModel.value.provider = predefinedProvider.value.id
   customModel.value.endpoint = modelStore.DEFAULT_ENDPOINT[predefinedProvider.value.id][modelType]
 }
 
