@@ -5,6 +5,7 @@ export const useRecordStore = defineStore(
     const modelRouter = useModelRouter()
     const supabase = useSupabase()
     const stateStore = useStateStore()
+    const modelStore = useModelStore()
 
     // Medical Records
     const record = ref({
@@ -225,10 +226,9 @@ export const useRecordStore = defineStore(
       $reset()
       const messages = promptStore.getSystemPrompt('case')
       await modelRouter.getCase(messages)
-      const content = stateStore.modelResponseString.content
-      if (!content) return
+      if (!modelStore.modelResponse.content) return
       try {
-        const caseJson = JSON.parse(content)
+        const caseJson = modelStore.modelResponse.content
         record.value.case = caseJson
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case

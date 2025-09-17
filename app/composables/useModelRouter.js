@@ -69,10 +69,10 @@ export default function () {
   //   return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
   // }
 
-  // async function getStory(messages) {
-  //   const params = getChatModelParams('story', messages, 'text')
-  //   return await chatModel.getResponse(params, 'text')
-  // }
+  async function getStory(messages) {
+    const model = modelStore.getModel('chat', 'story')
+    return await model.getResponse('chat', 'story', messages)
+  }
 
   // async function getTest(messages) {
   //   const params = getChatModelParams('test', messages, 'json')
@@ -140,7 +140,7 @@ export default function () {
 
   return {
     getCase,
-    // getStory,
+    getStory,
     // getTest,
     // getAct,
     // getRate,

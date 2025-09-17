@@ -45,7 +45,7 @@ export const useProviderTencent = () => {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
@@ -97,9 +97,8 @@ export const useProviderTencent = () => {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          stateStore.modelResponseString.content += choice.delta.content.trim() || ''
-          stateStore.modelResponseString.reasoning_content +=
-            choice.delta.reasoning_content.trim() || ''
+          stateStore.modelResponseString.content += choice.delta.content || ''
+          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
         } catch (error) {
           console.log('error: ', error.message)
           continue

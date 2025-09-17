@@ -295,6 +295,10 @@ export const useModelStore = defineStore(
       return PROVIDERS_MODULE_MAP[activeModels.value[modelType][modelUsage].provider]
     }
 
+    const modelResponse = ref({
+      content: '',
+      reasoning_content: '',
+    })
     return {
       DEFAULT_PROVIDER_ID,
       DEFAULT_ENDPOINT,
@@ -303,6 +307,7 @@ export const useModelStore = defineStore(
       activeModels,
       database,
       getModel,
+      modelResponse,
     }
   },
   {

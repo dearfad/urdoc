@@ -28,13 +28,9 @@ export const useProviderBigModel = () => {
   }
 
   async function getResponse(modelType, modelUsage, messages) {
-    stateStore.modelResponseString = {
-      content: '',
-      reasoning_content: '',
-    }
-
+    modelStore.modelResponse.content = ''
+    modelStore.modelResponse.reasoning_content = ''
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
-
     stateStore.appInfos.push('Model Type NOT Supported')
     return
   }
@@ -80,11 +76,15 @@ export const useProviderBigModel = () => {
       stateStore.appInfos.push(errorFromModel.error.message)
       return
     }
-    await getContent(response)
+    await getContent(modelUsage, response)
     return
   }
 
-  async function getContent(response) {
+  async function getContent(modelUsage, response) {
+    const modelResponseStream = {
+      content: '',
+      reasoning_content: '',
+    }
     const stateStore = useStateStore()
     const reader = response.body.getReader()
     const decoder = new TextDecoder('utf-8')
@@ -106,9 +106,14 @@ export const useProviderBigModel = () => {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
-          console.log(parse(stateStore.modelResponseString.content))
+          modelResponseStream.content += choice.delta.content || ''
+          modelResponseStream.reasoning_content += choice.delta.reasoning_content || ''
+          if (modelUsage === 'case') {
+            if (modelResponseStream.content) {
+              modelStore.modelResponse.content = parse(modelResponseStream.content)
+            }
+            modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
+          }
         } catch (error) {
           console.log('error: ', error.message)
           continue
@@ -116,11 +121,11 @@ export const useProviderBigModel = () => {
       }
     }
 
-    if (stateStore.modelResponseString.content) {
-      stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
-    }
+    // if (stateStore.modelResponseString.content) {
+    //   stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
+    // }
 
-    return stateStore.modelResponseString
+    return modelStore.modelResponse
   }
 
   return {
