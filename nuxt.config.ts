@@ -63,10 +63,6 @@ export default defineNuxtConfig({
       { code: 'zh', name: '中文', file: 'zh/index.ts' },
       { code: 'en', name: 'English', file: 'en/index.ts' },
     ],
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root', // recommended
-    },
+    strategy: 'no_prefix',
   },
 })
