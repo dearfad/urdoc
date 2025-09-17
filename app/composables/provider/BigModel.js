@@ -1,8 +1,8 @@
-import { jsonrepair } from 'jsonrepair'
 import { parse } from 'partial-json'
 export const useProviderBigModel = () => {
-  const API_BASE = 'https://open.bigmodel.cn/api'
-  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
+  const API_BASE = 'https://open.bigmodel.cn/api/paas/v4'
+  const CHAT_COMPLETIONS = '/chat/completions'
+  const IMAGES_GENERATIONS = '/images/generations'
   const FREE_MODELS = [
     'glm-4.5-flash',
     'glm-4.1v-thinking-flash',
@@ -31,8 +31,49 @@ export const useProviderBigModel = () => {
     modelStore.modelResponse.content = ''
     modelStore.modelResponse.reasoning_content = ''
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
+    if (modelType === 'image') return await getImageResponse(modelUsage, messages)
     stateStore.appInfos.push('Model Type NOT Supported')
     return
+  }
+
+  async function getImageResponse(modelUsage, messages) {
+    const imageModel = modelStore.activeModels.image[modelUsage]
+    const payload = {
+      url: `${API_BASE}${IMAGES_GENERATIONS}`,
+      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
+      apiKeyName: imageModel.apiKeyName || '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: {
+        model: imageModel.model,
+        prompt: messages,
+        // quality: 'standard',
+        // size: '1024x1024',
+        // watermark_enabled: true,
+      },
+    }
+    if (!validateFreeModel(payload)) return
+
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (response.status !== 200) {
+      const errorFromModel = await response.json()
+      stateStore.appInfos.push(errorFromModel.error.message)
+      return
+    }
+    const content = await response.json()
+    console.log('content: ', content)
+    const imageUrl = content.data[0].url || ''
+    return imageUrl
   }
 
   async function getChatResponse(modelUsage, messages) {
@@ -76,16 +117,15 @@ export const useProviderBigModel = () => {
       stateStore.appInfos.push(errorFromModel.error.message)
       return
     }
-    await getContent(modelUsage, response)
-    return
+
+    await getStreamContent(modelUsage, response)
   }
 
-  async function getContent(modelUsage, response) {
+  async function getStreamContent(modelUsage, response) {
     const modelResponseStream = {
       content: '',
       reasoning_content: '',
     }
-    const stateStore = useStateStore()
     const reader = response.body.getReader()
     const decoder = new TextDecoder('utf-8')
     let buffer = ''
@@ -113,6 +153,9 @@ export const useProviderBigModel = () => {
               modelStore.modelResponse.content = parse(modelResponseStream.content)
             }
             modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
+          } else {
+            modelStore.modelResponse.content = modelResponseStream.content
+            modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
           }
         } catch (error) {
           console.log('error: ', error.message)
@@ -120,10 +163,6 @@ export const useProviderBigModel = () => {
         }
       }
     }
-
-    // if (stateStore.modelResponseString.content) {
-    //   stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
-    // }
 
     return modelStore.modelResponse
   }

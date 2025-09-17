@@ -3,42 +3,9 @@ export default function () {
   // const recordStore = useRecordStore()
   // const imageModel = useImageModel()
   // const videoModel = useVideoModel()
-  // const promptStore = usePromptStore()
+  const promptStore = usePromptStore()
   const modelStore = useModelStore()
   // const apiKeyStore = useApiKeyStore()
-
-  // function getChatModelParams(modelUsage, messages, responseFormat) {
-  //   const chatModel = modelStore.activeModels.chat[modelUsage]
-  //   const payload = {
-  //     provider: chatModel.provider,
-  //     usage: 'chat',
-  //     apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
-  //     apiKeyName: chatModel.apiKeyName || '',
-  //     model: chatModel.model,
-  //     messages: messages,
-  //     stream: true,
-  //     format: responseFormat === 'json' ? 'json' : 'text',
-  //   }
-  //   return payload
-  // }
-
-  // function getImageModelParams(modelUsage, prompt) {
-  //   const imageModel = modelStore.activeModels.image[modelUsage]
-  //   const params = {
-  //     url: imageModel.endpoint,
-  //     method: 'POST',
-  //     apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
-  //     apiKeyName: imageModel.apiKeyName,
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       model: imageModel.model,
-  //       prompt: prompt,
-  //     }),
-  //   }
-  //   return params
-  // }
 
   // function getVideoModelParams(modelUsage, prompt) {
   //   const videoModel = modelStore.activeModels.video[modelUsage]
@@ -91,13 +58,16 @@ export default function () {
 
   // Image Model
 
-  // async function getFace(messages) {
-  //   const chatParams = getChatModelParams('face', messages, 'text')
-  //   const prompt = await chatModel.getResponse(chatParams, 'text')
-  //   promptStore.prompts.image.face = prompt
-  //   const imageParams = getImageModelParams('face', prompt)
-  //   return await imageModel.getResponse(imageParams)
-  // }
+  async function getFace(messages) {
+    // const chatParams = getChatModelParams('face', messages, 'text')
+    // const prompt = await chatModel.getResponse(chatParams, 'text')
+    const chatModel = modelStore.getModel('chat', 'face')
+    await chatModel.getResponse('chat', 'face', messages)
+    promptStore.prompts.image.face = modelStore.modelResponse.content
+    // const imageParams = getImageModelParams('face', prompt)
+    const imageModel = modelStore.getModel('image', 'face')
+    return await imageModel.getResponse('image', 'face', promptStore.prompts.image.face)
+  }
 
   // async function getStoryIllustration(messages) {
   //   const illustrationParams = getChatModelParams('illustration', messages, 'text')
@@ -144,7 +114,7 @@ export default function () {
     // getTest,
     // getAct,
     // getRate,
-    // getFace,
+    getFace,
     // getPose,
     // getVoice,
     // checkCase,

@@ -246,7 +246,8 @@ export const useRecordStore = defineStore(
 
     async function getStory() {
       const messages = promptStore.getSystemPrompt('story')
-      record.value.story.故事 = await modelRouter.getStory(messages)
+      await modelRouter.getStory(messages)
+      record.value.story.故事 = modelStore.modelResponse.content
       record.value.tag.story = stateStore.tag.story
     }
 

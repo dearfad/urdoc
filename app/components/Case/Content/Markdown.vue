@@ -24,7 +24,6 @@ const { height } = defineProps({
 })
 
 const caseMarkdown = computed(() => {
-  console.log(modelStore.modelResponse.content)
   return Object.entries(modelStore.modelResponse.content)
     .map(([key, value]) => `**${key}**: ${value}`)
     .join('\n\n')

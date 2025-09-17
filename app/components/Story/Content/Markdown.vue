@@ -8,7 +8,13 @@
   >
     <v-divider class="mb-2" />
     <div v-if="stateStore.isStoryModelResponseStringShow">
-      {{ stateStore.modelResponseString }}
+      <div v-if="modelStore.modelResponse.reasoning_content" class="px-4">
+        <details open>
+          <summary>🤔 思考过程</summary>
+          <MDC :value="modelStore.modelResponse.reasoning_content" />
+        </details>
+      </div>
+      <MDC :value="`${modelStore.modelResponse.content}`" />
     </div>
     <div v-else>
       <p><MDC :value="recordStore.view.story.markdown" /></p>
@@ -18,6 +24,7 @@
 
 <script setup>
 const stateStore = useStateStore()
+const modelStore = useModelStore()
 const recordStore = useRecordStore()
 
 const { height } = defineProps({
