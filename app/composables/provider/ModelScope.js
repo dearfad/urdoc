@@ -1,8 +1,8 @@
 import { jsonrepair } from 'jsonrepair'
-export default function () {
-  const API_BASE = 'https://spark-api-open.xf-yun.com/v1'
+export const useProviderModelScope = () => {
+  const API_BASE = 'https://api-inference.modelscope.cn/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = ['lite']
+  const FREE_MODELS = ['deepseek-ai/DeepSeek-V3.1', 'Qwen/Qwen3-Next-80B-A3B-Instruct']
   const THINKING_MODELS = []
 
   const stateStore = useStateStore()
@@ -45,7 +45,7 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
@@ -105,7 +105,6 @@ export default function () {
         }
       }
     }
-
     if (stateStore.modelResponseString.content) {
       stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
     }

@@ -1,9 +1,9 @@
 import { jsonrepair } from 'jsonrepair'
-export default function () {
-  const API_BASE = 'https://chat.intern-ai.org.cn/api/v1'
+export const useProviderGitee = () => {
+  const API_BASE = 'https://ai.gitee.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest']
-  const THINKING_MODELS = ['intern-s1', 'intern-s1-mini']
+  const FREE_MODELS = ['DeepSeek-R1', 'Qwen3-Next-80B-A3B-Thinking']
+  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -52,7 +52,9 @@ export default function () {
     if (!validateFreeModel(payload)) return
 
     if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking_mode = stateStore.isModelThinking
+      payload.body.thinking = {
+        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
+      }
     }
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -66,9 +68,7 @@ export default function () {
 
     if (response.status !== 200) {
       const errorFromModel = await response.json()
-      stateStore.appInfos.push(
-        errorFromModel.error ? errorFromModel.error.message : errorFromModel.msg
-      )
+      stateStore.appInfos.push(errorFromModel.error.message)
       return
     }
     await getContent(response)
@@ -105,7 +105,6 @@ export default function () {
         }
       }
     }
-
     if (stateStore.modelResponseString.content) {
       stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
     }

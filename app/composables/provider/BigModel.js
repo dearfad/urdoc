@@ -1,9 +1,18 @@
 import { jsonrepair } from 'jsonrepair'
-export default function () {
-  const API_BASE = 'https://api-inference.modelscope.cn/v1'
-  const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = ['deepseek-ai/DeepSeek-V3.1', 'Qwen/Qwen3-Next-80B-A3B-Instruct']
-  const THINKING_MODELS = []
+import { parse } from 'partial-json'
+export const useProviderBigModel = () => {
+  const API_BASE = 'https://open.bigmodel.cn/api'
+  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
+  const FREE_MODELS = [
+    'glm-4.5-flash',
+    'glm-4.1v-thinking-flash',
+    'glm-4-flash-250414',
+    'glm-4v-flash',
+    'glm-z1-flash',
+    'cogview-3-flash',
+    'cogvideox-flash',
+  ]
+  const THINKING_MODELS = ['glm-4.5-flash']
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -45,7 +54,7 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
@@ -99,12 +108,14 @@ export default function () {
           const choice = message.choices[0]
           stateStore.modelResponseString.content += choice.delta.content || ''
           stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
+          console.log(parse(stateStore.modelResponseString.content))
         } catch (error) {
           console.log('error: ', error.message)
           continue
         }
       }
     }
+
     if (stateStore.modelResponseString.content) {
       stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
     }

@@ -1,8 +1,8 @@
 import { jsonrepair } from 'jsonrepair'
-export default function () {
-  const API_BASE = 'https://ai.gitee.com/v1'
+export const useProviderTencent = () => {
+  const API_BASE = 'https://api.hunyuan.cloud.tencent.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = ['DeepSeek-R1', 'Qwen3-Next-80B-A3B-Thinking']
+  const FREE_MODELS = ['hunyuan-lite']
   const THINKING_MODELS = []
 
   const stateStore = useStateStore()
@@ -45,7 +45,7 @@ export default function () {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
 
@@ -97,14 +97,16 @@ export default function () {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
+          stateStore.modelResponseString.content += choice.delta.content.trim() || ''
+          stateStore.modelResponseString.reasoning_content +=
+            choice.delta.reasoning_content.trim() || ''
         } catch (error) {
           console.log('error: ', error.message)
           continue
         }
       }
     }
+
     if (stateStore.modelResponseString.content) {
       stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
     }

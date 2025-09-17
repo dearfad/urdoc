@@ -1,13 +1,9 @@
 import { jsonrepair } from 'jsonrepair'
-export default function () {
-  const API_BASE = 'https://openrouter.ai/api/v1'
+export const useProviderInternAi = () => {
+  const API_BASE = 'https://chat.intern-ai.org.cn/api/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = [
-    'deepseek/deepseek-chat-v3.1:free',
-    'moonshotai/kimi-k2:free',
-    'deepseek/deepseek-r1-0528:free',
-  ]
-  const THINKING_MODELS = ['deepseek/deepseek-r1-0528:free']
+  const FREE_MODELS = ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest']
+  const THINKING_MODELS = ['intern-s1', 'intern-s1-mini']
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -56,9 +52,7 @@ export default function () {
     if (!validateFreeModel(payload)) return
 
     if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking = {
-        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
-      }
+      payload.body.thinking_mode = stateStore.isModelThinking
     }
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -72,7 +66,9 @@ export default function () {
 
     if (response.status !== 200) {
       const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.error.message)
+      stateStore.appInfos.push(
+        errorFromModel.error ? errorFromModel.error.message : errorFromModel.msg
+      )
       return
     }
     await getContent(response)
@@ -102,7 +98,7 @@ export default function () {
           const message = JSON.parse(data)
           const choice = message.choices[0]
           stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning || ''
+          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
         } catch (error) {
           console.log('error: ', error.message)
           continue

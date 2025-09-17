@@ -1,17 +1,9 @@
 import { jsonrepair } from 'jsonrepair'
-export default function () {
-  const API_BASE = 'https://open.bigmodel.cn/api'
-  const CHAT_COMPLETIONS = '/paas/v4/chat/completions'
-  const FREE_MODELS = [
-    'glm-4.5-flash',
-    'glm-4.1v-thinking-flash',
-    'glm-4-flash-250414',
-    'glm-4v-flash',
-    'glm-z1-flash',
-    'cogview-3-flash',
-    'cogvideox-flash',
-  ]
-  const THINKING_MODELS = ['glm-4.5-flash']
+export const useProviderXfYun = () => {
+  const API_BASE = 'https://spark-api-open.xf-yun.com/v1'
+  const CHAT_COMPLETIONS = '/chat/completions'
+  const FREE_MODELS = ['lite']
+  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
