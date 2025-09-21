@@ -10,11 +10,14 @@ export default defineEventHandler(async (event) => {
       headers: payload.headers,
       body: JSON.stringify(payload.body),
     })
-
-    return new Response(response.body, {
-      status: response.status,
-      headers: response.headers,
-    })
+    if (response.headers.get('content-type')?.includes('stream')) {
+      return new Response(response.body, {
+        status: response.status,
+        headers: response.headers,
+      })
+    } else {
+      return await response.json()
+    }
   } catch (error) {
     return sendErrorResponse({
       error: {
