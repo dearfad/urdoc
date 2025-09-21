@@ -77,6 +77,7 @@ export const useModelStore = defineStore(
       },
       MODELSCOPE: {
         chat: 'https://api-inference.modelscope.cn/v1/chat/completions',
+        image: 'https://api-inference.modelscope.cn/v1/images/generations',
       },
       BAIDU: {
         chat: 'https://qianfan.baidubce.com/v2/chat/completions',
