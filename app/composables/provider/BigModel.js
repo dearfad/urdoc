@@ -32,93 +32,9 @@ export const useProviderBigModel = () => {
     modelStore.modelResponse.reasoning_content = ''
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
     if (modelType === 'image') return await getImageResponse(modelUsage, messages)
+    if (modelType === 'video') return await getVideoResponse(modelUsage, messages)
     stateStore.appInfos.push('Model Type NOT Supported')
     return
-  }
-
-  async function getImageResponse(modelUsage, messages) {
-    const imageModel = modelStore.activeModels.image[modelUsage]
-    const payload = {
-      url: `${API_BASE}${IMAGES_GENERATIONS}`,
-      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
-      apiKeyName: imageModel.apiKeyName || '',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: {
-        model: imageModel.model,
-        prompt: messages,
-        // quality: 'standard',
-        // size: '1024x1024',
-        // watermark_enabled: true,
-      },
-    }
-    if (!validateFreeModel(payload)) return
-
-    const url = `${stateStore.apiBaseUrl}/model/proxy`
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-
-    if (response.status !== 200) {
-      const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.error.message)
-      return
-    }
-    const content = await response.json()
-    console.log('content: ', content)
-    const imageUrl = content.data[0].url || ''
-    return imageUrl
-  }
-
-  async function getChatResponse(modelUsage, messages) {
-    const chatModel = modelStore.activeModels.chat[modelUsage]
-
-    const payload = {
-      url: `${API_BASE}${CHAT_COMPLETIONS}`,
-      apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
-      apiKeyName: chatModel.apiKeyName || '',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: {
-        model: chatModel.model,
-        messages: messages,
-        stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
-      },
-    }
-
-    if (!validateFreeModel(payload)) return
-
-    if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking = {
-        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
-      }
-    }
-
-    const url = `${stateStore.apiBaseUrl}/model/proxy`
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-
-    if (response.status !== 200) {
-      const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.error.message)
-      return
-    }
-
-    await getStreamContent(modelUsage, response)
   }
 
   async function getStreamContent(modelUsage, response) {
@@ -166,6 +82,93 @@ export const useProviderBigModel = () => {
 
     return modelStore.modelResponse
   }
+
+  async function getChatResponse(modelUsage, messages) {
+    const chatModel = modelStore.activeModels.chat[modelUsage]
+
+    const payload = {
+      url: `${API_BASE}${CHAT_COMPLETIONS}`,
+      apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
+      apiKeyName: chatModel.apiKeyName || '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: {
+        model: chatModel.model,
+        messages: messages,
+        stream: true,
+        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+      },
+    }
+
+    if (!validateFreeModel(payload)) return
+
+    if (THINKING_MODELS.includes(chatModel.model)) {
+      payload.body.thinking = {
+        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
+      }
+    }
+
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (response.status !== 200) {
+      const errorFromModel = await response.json()
+      stateStore.appInfos.push(errorFromModel.error.message)
+      return
+    }
+
+    await getStreamContent(modelUsage, response)
+  }
+
+  async function getImageResponse(modelUsage, messages) {
+    const imageModel = modelStore.activeModels.image[modelUsage]
+    const payload = {
+      url: `${API_BASE}${IMAGES_GENERATIONS}`,
+      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
+      apiKeyName: imageModel.apiKeyName || '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: {
+        model: imageModel.model,
+        prompt: messages,
+        // quality: 'standard',
+        // size: '1024x1024',
+        // watermark_enabled: true,
+      },
+    }
+    if (!validateFreeModel(payload)) return
+
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (response.status !== 200) {
+      const errorFromModel = await response.json()
+      stateStore.appInfos.push(errorFromModel.error.message)
+      return
+    }
+    const content = await response.json()
+    console.log('content: ', content)
+    const imageUrl = content.data[0].url || ''
+    return imageUrl
+  }
+
+  async function getVideoResponse(modelUsage, messages) {}
 
   return {
     getResponse,
