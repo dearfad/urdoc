@@ -3,6 +3,9 @@ export const useProviderBigModel = () => {
   const API_BASE = 'https://open.bigmodel.cn/api/paas/v4'
   const CHAT_COMPLETIONS = '/chat/completions'
   const IMAGES_GENERATIONS = '/images/generations'
+  const VIDEOS_GENERATIONS = '/videos/generations'
+  const ASYNC_RESULT = '/async-result'
+
   const FREE_MODELS = [
     'glm-4.5-flash',
     'glm-4.1v-thinking-flash',
@@ -17,6 +20,7 @@ export const useProviderBigModel = () => {
   const stateStore = useStateStore()
   const modelStore = useModelStore()
   const apiKeyStore = useApiKeyStore()
+  const recordStore = useRecordStore()
 
   function validateFreeModel(payload) {
     // 如果提供了API密钥或API密钥名称，则可以使用任意模型
@@ -28,8 +32,6 @@ export const useProviderBigModel = () => {
   }
 
   async function getResponse(modelType, modelUsage, messages) {
-    modelStore.modelResponse.content = ''
-    modelStore.modelResponse.reasoning_content = ''
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
     if (modelType === 'image') return await getImageResponse(modelUsage, messages)
     if (modelType === 'video') return await getVideoResponse(modelUsage, messages)
@@ -38,6 +40,8 @@ export const useProviderBigModel = () => {
   }
 
   async function getStreamContent(modelUsage, response) {
+    modelStore.modelResponse.chat.content = ''
+    modelStore.modelResponse.chat.reasoning_content = ''
     const modelResponseStream = {
       content: '',
       reasoning_content: '',
@@ -66,12 +70,12 @@ export const useProviderBigModel = () => {
           modelResponseStream.reasoning_content += choice.delta.reasoning_content || ''
           if (modelUsage === 'case') {
             if (modelResponseStream.content) {
-              modelStore.modelResponse.content = parse(modelResponseStream.content)
+              modelStore.modelResponse.chat.content = parse(modelResponseStream.content)
             }
-            modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
+            modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
           } else {
-            modelStore.modelResponse.content = modelResponseStream.content
-            modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
+            modelStore.modelResponse.chat.content = modelResponseStream.content
+            modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
           }
         } catch (error) {
           console.log('error: ', error.message)
@@ -129,6 +133,7 @@ export const useProviderBigModel = () => {
   }
 
   async function getImageResponse(modelUsage, messages) {
+    modelStore.modelResponse.image.url = ''
     const imageModel = modelStore.activeModels.image[modelUsage]
     const payload = {
       url: `${API_BASE}${IMAGES_GENERATIONS}`,
@@ -163,12 +168,86 @@ export const useProviderBigModel = () => {
       return
     }
     const content = await response.json()
-    console.log('content: ', content)
-    const imageUrl = content.data[0].url || ''
-    return imageUrl
+    modelStore.modelResponse.image.url = content.data[0].url || ''
+    return modelStore.modelResponse.image.url
   }
 
-  async function getVideoResponse(modelUsage, messages) {}
+  async function getVideoResponse(modelUsage, messages) {
+    modelStore.modelResponse.video.url = ''
+    const videoModel = modelStore.activeModels.video[modelUsage]
+    const payload = {
+      url: `${API_BASE}${VIDEOS_GENERATIONS}`,
+      apiKey: apiKeyStore.apiKeys[videoModel.apiKeyName] || '',
+      apiKeyName: videoModel.apiKeyName || '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: {
+        model: videoModel.model,
+        prompt: messages,
+        image_url: recordStore.record.face,
+      },
+    }
+    if (!validateFreeModel(payload)) return
+
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (response.status !== 200) {
+      const errorFromModel = await response.json()
+      stateStore.appInfos.push(errorFromModel.error.message)
+      return
+    }
+    const content = await response.json()
+    const taskId = content.id || ''
+    if (!taskId) {
+      stateStore.appInfos.push(content.error.message)
+      return
+    }
+    const taskUrl = `${API_BASE}${ASYNC_RESULT}/${taskId}`
+    while (true) {
+      const result = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: taskUrl,
+          apiKey: apiKeyStore.apiKeys[videoModel.apiKeyName] || '',
+          apiKeyName: videoModel.apiKeyName || '',
+          method: 'GET',
+          headers: {},
+        }),
+      })
+      const data = await result.json()
+
+      if (data['task_status'] === 'SUCCESS') {
+        modelStore.modelResponse.video.url = data.video_result[0].url
+        modelStore.modelResponse.video.cover_image_url = data.video_result[0].cover_image_url
+        break
+      }
+
+      if (data['task_status'] === 'FAIL') {
+        console.log('Image Generation Failed.')
+        break
+      }
+
+      if (data['error']) {
+        stateStore.appInfos.push(data.error.message)
+        break
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 5000))
+    }
+    return modelStore.modelResponse.video
+  }
 
   return {
     getResponse,

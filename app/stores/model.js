@@ -233,6 +233,13 @@ export const useModelStore = defineStore(
           model: 'glm-4-flash-250414',
           apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
         },
+        pose: {
+          source: 'default',
+          provider: 'BIGMODEL',
+          endpoint: DEFAULT_ENDPOINT.ZHIPU.chat,
+          model: 'glm-4-flash-250414',
+          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+        },
       },
       image: {
         face: {
@@ -297,9 +304,19 @@ export const useModelStore = defineStore(
     }
 
     const modelResponse = ref({
-      content: '',
-      reasoning_content: '',
+      chat: {
+        content: '',
+        reasoning_content: '',
+      },
+      image: {
+        url: '',
+      },
+      video: {
+        url: '',
+        cover_image_url: '',
+      },
     })
+
     return {
       DEFAULT_PROVIDER_ID,
       DEFAULT_ENDPOINT,

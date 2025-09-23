@@ -226,9 +226,9 @@ export const useRecordStore = defineStore(
       $reset()
       const messages = promptStore.getSystemPrompt('case')
       await modelRouter.getCase(messages)
-      if (!modelStore.modelResponse.content) return
+      if (!modelStore.modelResponse.chat.content) return
       try {
-        const caseJson = modelStore.modelResponse.content
+        const caseJson = modelStore.modelResponse.chat.content
         record.value.case = caseJson
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case
@@ -247,7 +247,7 @@ export const useRecordStore = defineStore(
     async function getStory() {
       const messages = promptStore.getSystemPrompt('story')
       await modelRouter.getStory(messages)
-      record.value.story.故事 = modelStore.modelResponse.content
+      record.value.story.故事 = modelStore.modelResponse.chat.content
       record.value.tag.story = stateStore.tag.story
     }
 

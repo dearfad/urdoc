@@ -1,10 +1,10 @@
 <template>
   <v-card class="text-body-1 px-4 py-2 overflow-auto" rounded="lg" :height="height" elevation="4">
     <div v-if="stateStore.isCaseModelResponseStringShow">
-      <div v-if="modelStore.modelResponse.reasoning_content" class="px-4">
+      <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
         <details open>
           <summary>🤔 思考过程</summary>
-          <MDC :value="modelStore.modelResponse.reasoning_content" />
+          <MDC :value="modelStore.modelResponse.chat.reasoning_content" />
         </details>
       </div>
       <MDC :value="`${caseMarkdown}`" />
@@ -24,7 +24,7 @@ const { height } = defineProps({
 })
 
 const caseMarkdown = computed(() => {
-  return Object.entries(modelStore.modelResponse.content)
+  return Object.entries(modelStore.modelResponse.chat.content)
     .map(([key, value]) => `**${key}**: ${value}`)
     .join('\n\n')
 })

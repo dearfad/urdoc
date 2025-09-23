@@ -41,7 +41,7 @@ export default function () {
   async function getFace(messages) {
     const chatModel = modelStore.getModel('chat', 'face')
     await chatModel.getResponse('chat', 'face', messages)
-    promptStore.prompts.image.face = modelStore.modelResponse.content
+    promptStore.prompts.image.face = modelStore.modelResponse.chat.content
     const imageModel = modelStore.getModel('image', 'face')
     return await imageModel.getResponse('image', 'face', promptStore.prompts.image.face)
   }
@@ -71,7 +71,7 @@ export default function () {
   async function getPose(messages) {
     const chatModel = modelStore.getModel('chat', 'pose')
     await chatModel.getResponse('chat', 'pose', messages)
-    promptStore.prompts.video.pose = modelStore.modelResponse.content
+    promptStore.prompts.video.pose = modelStore.modelResponse.chat.content
     const videoModel = modelStore.getModel('video', 'pose')
     return await videoModel.getResponse('video', 'pose', promptStore.prompts.video.pose)
   }

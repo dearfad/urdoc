@@ -20,83 +20,62 @@ export const useProviderModelScope = () => {
   }
 
   async function getResponse(modelType, modelUsage, messages) {
-    modelStore.modelResponse.content = ''
-    modelStore.modelResponse.reasoning_content = ''
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
     if (modelType === 'image') return await getImageResponse(modelUsage, messages)
     stateStore.appInfos.push('Model Type NOT Supported')
     return
   }
 
-  async function getImageResponse(modelUsage, messages) {
-    const imageModel = modelStore.activeModels.image[modelUsage]
-    const payload = {
-      url: `${API_BASE}${IMAGES_GENERATIONS}`,
-      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
-      apiKeyName: imageModel.apiKeyName || '',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-ModelScope-Async-Mode': 'true',
-      },
-      method: 'POST',
-      body: {
-        model: imageModel.model,
-        prompt: messages,
-        // quality: 'standard',
-        // size: '1024x1024',
-        // watermark_enabled: true,
-      },
+  async function getStreamContent(modelUsage, response) {
+    modelStore.modelResponse.chat.content = ''
+    modelStore.modelResponse.chat.reasoning_content = ''
+    const modelResponseStream = {
+      content: '',
+      reasoning_content: '',
     }
-    if (!validateFreeModel(payload)) return
-
-    const url = `${stateStore.apiBaseUrl}/model/proxy`
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-
-    if (response.status !== 200) {
-      const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.errors.message)
-      return
-    }
-    const task = await response.json()
-    console.log('task: ', task)
-    const taskId = task.task_id
-    const taskUrl = `${API_BASE}/tasks/${taskId}`
-    let imageUrl = ''
+    const reader = response.body.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let buffer = ''
     while (true) {
-      const result = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: taskUrl,
-          apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
-          apiKeyName: imageModel.apiKeyName || '',
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-ModelScope-Task-Type': 'image_generation',
-          },
-        }),
-      })
-      const data = await result.json()
-      if (data['task_status'] === 'SUCCEED') {
-        imageUrl = data['output_images'][0]
-        break
+      const { done, value } = await reader.read()
+      if (done) break
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split('\n\n')
+      buffer = lines.pop() || ''
+      let data = ''
+      for (const line of lines) {
+        if (line.startsWith('data: [DONE]')) break
+        if (line.startsWith('data: ')) {
+          data = line.slice(6)
+        } else {
+          continue
+        }
+        try {
+          const message = JSON.parse(data)
+          const choice = message.choices[0]
+          modelResponseStream.content += choice.delta.content || ''
+          modelResponseStream.reasoning_content += choice.delta.reasoning_content || ''
+          /// ```json ``` 去除
+          modelResponseStream.content = modelResponseStream.content
+            .replace(/^```json\n?/, '')
+            .replace(/\n?```$/, '')
+          if (modelUsage === 'case') {
+            if (modelResponseStream.content) {
+              modelStore.modelResponse.chat.content = parse(modelResponseStream.content)
+            }
+            modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+          } else {
+            modelStore.modelResponse.chat.content = modelResponseStream.content
+            modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+          }
+        } catch (error) {
+          console.log('error: ', error.message)
+          continue
+        }
       }
-      if (data['task_status'] == 'FAILED') {
-        console.log('Image Generation Failed.')
-        break
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000))
     }
-    return imageUrl
+    console.log('modelResponse: ', modelStore.modelResponse)
+    return modelStore.modelResponse
   }
 
   async function getChatResponse(modelUsage, messages) {
@@ -144,55 +123,77 @@ export const useProviderModelScope = () => {
     return
   }
 
-  async function getStreamContent(modelUsage, response) {
-    const modelResponseStream = {
-      content: '',
-      reasoning_content: '',
+  async function getImageResponse(modelUsage, messages) {
+    modelStore.modelResponse.image.url = ''
+    const imageModel = modelStore.activeModels.image[modelUsage]
+    const payload = {
+      url: `${API_BASE}${IMAGES_GENERATIONS}`,
+      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
+      apiKeyName: imageModel.apiKeyName || '',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-ModelScope-Async-Mode': 'true',
+      },
+      method: 'POST',
+      body: {
+        model: imageModel.model,
+        prompt: messages,
+        // quality: 'standard',
+        // size: '1024x1024',
+        // watermark_enabled: true,
+      },
     }
-    const reader = response.body.getReader()
-    const decoder = new TextDecoder('utf-8')
-    let buffer = ''
+    if (!validateFreeModel(payload)) return
+
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (response.status !== 200) {
+      const errorFromModel = await response.json()
+      stateStore.appInfos.push(errorFromModel.errors.message)
+      return
+    }
+    const task = await response.json()
+    console.log('task: ', task)
+    const taskId = task.task_id
+    const taskUrl = `${API_BASE}/tasks/${taskId}`
     while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      buffer += decoder.decode(value, { stream: true })
-      const lines = buffer.split('\n\n')
-      buffer = lines.pop() || ''
-      let data = ''
-      for (const line of lines) {
-        if (line.startsWith('data: [DONE]')) break
-        if (line.startsWith('data: ')) {
-          data = line.slice(6)
-        } else {
-          continue
-        }
-        try {
-          const message = JSON.parse(data)
-          const choice = message.choices[0]
-          modelResponseStream.content += choice.delta.content || ''
-          modelResponseStream.reasoning_content += choice.delta.reasoning_content || ''
-          /// ```json ``` 去除
-          modelResponseStream.content = modelResponseStream.content
-            .replace(/^```json\n?/, '')
-            .replace(/\n?```$/, '')
-          if (modelUsage === 'case') {
-            if (modelResponseStream.content) {
-              modelStore.modelResponse.content = parse(modelResponseStream.content)
-            }
-            modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
-          } else {
-            modelStore.modelResponse.content = modelResponseStream.content
-            modelStore.modelResponse.reasoning_content = modelResponseStream.reasoning_content
-          }
-        } catch (error) {
-          console.log('error: ', error.message)
-          continue
-        }
+      const result = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: taskUrl,
+          apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
+          apiKeyName: imageModel.apiKeyName || '',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-ModelScope-Task-Type': 'image_generation',
+          },
+        }),
+      })
+      const data = await result.json()
+      if (data['task_status'] === 'SUCCEED') {
+        modelStore.modelResponse.image.url = data['output_images'][0]
+        break
       }
+      if (data['task_status'] == 'FAILED') {
+        console.log('Image Generation Failed.')
+        break
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     }
-    console.log('modelResponse: ', modelStore.modelResponse)
-    return modelStore.modelResponse
+    return modelStore.modelResponse.image.url
   }
+
   return {
     getResponse,
   }

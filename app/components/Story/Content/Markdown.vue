@@ -8,13 +8,13 @@
   >
     <v-divider class="mb-2" />
     <div v-if="stateStore.isStoryModelResponseStringShow">
-      <div v-if="modelStore.modelResponse.reasoning_content" class="px-4">
+      <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
         <details open>
           <summary>🤔 思考过程</summary>
-          <MDC :value="modelStore.modelResponse.reasoning_content" />
+          <MDC :value="modelStore.modelResponse.chat.reasoning_content" />
         </details>
       </div>
-      <MDC :value="`${modelStore.modelResponse.content}`" />
+      <MDC :value="`${modelStore.modelResponse.chat.content}`" />
     </div>
     <div v-else>
       <p><MDC :value="recordStore.view.story.markdown" /></p>
