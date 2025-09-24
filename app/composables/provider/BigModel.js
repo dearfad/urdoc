@@ -1,4 +1,5 @@
-import { parse } from 'partial-json'
+// Website: https://bigmodel.cn
+// Docs: https://docs.bigmodel.cn
 export const useProviderBigModel = () => {
   const API_BASE = 'https://open.bigmodel.cn/api/paas/v4'
   const CHAT_COMPLETIONS = '/chat/completions'
@@ -40,6 +41,7 @@ export const useProviderBigModel = () => {
   }
 
   async function getStreamContent(modelUsage, response) {
+    const { parse } = await import('partial-json')
     modelStore.modelResponse.chat.content = ''
     modelStore.modelResponse.chat.reasoning_content = ''
     const modelResponseStream = {

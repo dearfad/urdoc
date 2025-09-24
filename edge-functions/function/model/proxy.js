@@ -1,9 +1,10 @@
 import { unmask } from '../utils/mask.js'
 export async function onRequest({ request, env }) {
   // 检查请求来源，防止跨域访问
-  // if (request.headers.get('origin') !== env.ALLOWED_ORIGINS) {
-  //   return new Response('Forbidden', { status: 403 })
-  // }
+  if (env.NODE_ENV === 'production' && request.headers.get('origin') !== env.ALLOWED_ORIGINS) {
+    return sendErrorResponse(CORS_FORBIDDEN)
+  }
+
   // 删除 accept-encoding 头避免压缩影响 SSE 流
   request.headers.delete('accept-encoding')
 
@@ -39,6 +40,12 @@ const API_KEY_ERROR = {
   },
 }
 
+const CORS_FORBIDDEN = {
+  error: {
+    code: 403,
+    message: 'CORS Forbidden',
+  },
+}
 function getToken(payload, env) {
   if (payload.apiKey) return unmask(env['NUXT_URDOC_SECRET_KEY'], payload.apiKey)
   if (payload.apiKeyName) return env[payload.apiKeyName]
