@@ -289,7 +289,7 @@ export const useModelStore = defineStore(
       },
     }
 
-    const PROVIDERS_MODULE_MAP = {
+    const PROVIDER_COMPOSABLES_MAP = {
       BIGMODEL: useProviderBigModel(),
       OPENROUTER: useProviderOpenRouter(),
       TENCENT: useProviderTencent(),
@@ -299,8 +299,8 @@ export const useModelStore = defineStore(
       GITEE: useProviderGitee(),
     }
 
-    function getModel(modelType, modelUsage) {
-      return PROVIDERS_MODULE_MAP[activeModels.value[modelType][modelUsage].provider]
+    function getProviderComposable(modelType, modelUsage) {
+      return PROVIDER_COMPOSABLES_MAP[activeModels.value[modelType][modelUsage].provider]
     }
 
     const modelResponse = ref({
@@ -324,7 +324,7 @@ export const useModelStore = defineStore(
       customModels,
       activeModels,
       database,
-      getModel,
+      getProviderComposable,
       modelResponse,
     }
   },

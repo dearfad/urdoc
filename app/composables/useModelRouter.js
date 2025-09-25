@@ -9,8 +9,8 @@ export default function () {
 
   // Chat Model
   async function getCase(messages) {
-    const model = modelStore.getModel('chat', 'case')
-    return await model.getResponse('chat', 'case', messages)
+    const provider = modelStore.getProviderComposable('chat', 'case')
+    return await provider.getResponse('chat', 'case', messages)
   }
   // async function checkCase(messages) {
   //   const params = getChatModelParams('check', messages, 'json')
@@ -18,8 +18,8 @@ export default function () {
   // }
 
   async function getStory(messages) {
-    const model = modelStore.getModel('chat', 'story')
-    return await model.getResponse('chat', 'story', messages)
+    const provider = modelStore.getProviderComposable('chat', 'story')
+    return await provider.getResponse('chat', 'story', messages)
   }
 
   // async function getTest(messages) {
@@ -39,11 +39,11 @@ export default function () {
 
   // Image Model
   async function getFace(messages) {
-    const chatModel = modelStore.getModel('chat', 'face')
-    await chatModel.getResponse('chat', 'face', messages)
+    const chatProvider = modelStore.getProviderComposable('chat', 'face')
+    await chatProvider.getResponse('chat', 'face', messages)
     promptStore.prompts.image.face = modelStore.modelResponse.chat.content
-    const imageModel = modelStore.getModel('image', 'face')
-    return await imageModel.getResponse('image', 'face', promptStore.prompts.image.face)
+    const imageProvider = modelStore.getProviderComposable('image', 'face')
+    return await imageProvider.getResponse('image', 'face', promptStore.prompts.image.face)
   }
 
   // async function getStoryIllustration(messages) {
@@ -69,11 +69,11 @@ export default function () {
   // Video Model
 
   async function getPose(messages) {
-    const chatModel = modelStore.getModel('chat', 'pose')
-    await chatModel.getResponse('chat', 'pose', messages)
+    const chatProvier = modelStore.getProviderComposable('chat', 'pose')
+    await chatProvier.getResponse('chat', 'pose', messages)
     promptStore.prompts.video.pose = modelStore.modelResponse.chat.content
-    const videoModel = modelStore.getModel('video', 'pose')
-    return await videoModel.getResponse('video', 'pose', promptStore.prompts.video.pose)
+    const videoProvider = modelStore.getProviderComposable('video', 'pose')
+    return await videoProvider.getResponse('video', 'pose', promptStore.prompts.video.pose)
   }
 
   // Voice Model

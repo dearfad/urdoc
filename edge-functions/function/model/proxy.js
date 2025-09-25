@@ -48,7 +48,7 @@ const CORS_FORBIDDEN = {
 }
 function getToken(payload, env) {
   if (payload.apiKey) return unmask(env['NUXT_URDOC_SECRET_KEY'], payload.apiKey)
-  if (payload.apiKeyName) return env[payload.apiKeyName]
+  if (payload.apiKeyName) return env[payload.apiKeyName] || ''
   return ''
 }
 

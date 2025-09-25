@@ -11,18 +11,7 @@ export const useStateStore = defineStore(
     const isNavDrawerShow = ref(true)
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(false)
-    const isAppFooterShow = ref(false)
 
-    // AppDebug
-    // 是否开启调试模式以显示原始数据
-    const isDebug = ref(false)
-    // 模型返回数据流
-    const modelResponseStream = ref('')
-    // 模型返回数据内容
-    const modelResponseString = ref({
-      content: '',
-      reasoning_content: '',
-    })
     const isModelResponseStringShow = ref(false)
     const isCaseModelResponseStringShow = ref(false)
     const isStoryModelResponseStringShow = ref(false)
@@ -84,15 +73,11 @@ export const useStateStore = defineStore(
       isNavDrawerShow,
 
       isBottomNavigationShow,
-      isAppFooterShow,
 
       isModelResponseStringShow,
       isCaseModelResponseStringShow,
       isStoryModelResponseStringShow,
 
-      isDebug,
-      modelResponseStream,
-      modelResponseString,
       modelResponseField,
       isModelThinking,
 
