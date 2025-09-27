@@ -1,36 +1,41 @@
 <template>
-  <v-card hover rounded="lg">
-    <template #prepend>
-      <v-icon size="48" class="mx-0">{{ modelIcon[modelType] }}</v-icon>
-    </template>
-    <template #title>{{ model.provider }}</template>
-    <template #subtitle>{{ model.model }}</template>
-    <template #append>
-      <v-btn
-        icon="mdi-chevron-down"
-        class="mx-0 px-0"
-        variant="flat"
-        @click="isCardShow = !isCardShow"
-      />
-    </template>
-    <v-expand-transition>
-      <div v-if="isCardShow">
-        <v-divider />
-        <v-tabs v-model="tab" grow density="compact">
-          <v-tab value="free" text="默认" prepend-icon="mdi-check-circle-outline" />
-          <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
-        </v-tabs>
-        <v-tabs-window v-model="tab">
-          <v-tabs-window-item value="free">
-            <ModelCardFree :model-type="modelType" :model-usage="modelUsage" />
-          </v-tabs-window-item>
-          <v-tabs-window-item value="custom">
-            <ModelCardCustom :model-type="modelType" :model-usage="modelUsage" />
-          </v-tabs-window-item>
-        </v-tabs-window>
-      </div>
-    </v-expand-transition>
-  </v-card>
+  <ClientOnly>
+    <v-card hover rounded="lg">
+      <template #prepend>
+        <v-icon size="36" class="mx-0">{{ modelTypeIcon[modelType] }}</v-icon>
+      </template>
+      <template #title>{{ model.provider }}</template>
+      <template #subtitle>
+        {{ model.model }}
+        <v-icon>{{ thinking }}</v-icon>
+      </template>
+      <template #append>
+        <v-btn
+          icon="mdi-chevron-down"
+          class="mx-0 px-0"
+          variant="flat"
+          @click="isCardShow = !isCardShow"
+        />
+      </template>
+      <v-expand-transition>
+        <div v-if="isCardShow">
+          <v-divider />
+          <v-tabs v-model="tab" grow density="compact">
+            <v-tab value="free" text="默认" prepend-icon="mdi-check-circle-outline" />
+            <!-- <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" /> -->
+          </v-tabs>
+          <v-tabs-window v-model="tab">
+            <v-tabs-window-item value="free">
+              <ModelCardFree :model-type="modelType" :model-usage="modelUsage" />
+            </v-tabs-window-item>
+            <!-- <v-tabs-window-item value="custom">
+              <ModelCardCustom :model-type="modelType" :model-usage="modelUsage" />
+            </v-tabs-window-item> -->
+          </v-tabs-window>
+        </div>
+      </v-expand-transition>
+    </v-card>
+  </ClientOnly>
 </template>
 
 <script setup>
@@ -42,7 +47,8 @@ const tab = ref('free')
 const isCardShow = ref(false)
 const modelStore = useModelStore()
 const model = computed(() => modelStore.activeModels[modelType][modelUsage])
-const modelIcon = ref({
+const thinking = computed(() => (model.value.thinking ? 'mdi-brain' : ''))
+const modelTypeIcon = ref({
   chat: 'mdi-message-text-outline',
   image: 'mdi-image-outline',
   video: 'mdi-video-outline',

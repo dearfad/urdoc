@@ -11,7 +11,6 @@
       density="comfortable"
       class="mt-4"
       return-object
-      no-data-text="读取后可选择"
     />
     <v-card-actions>
       <v-btn text="查看" @click="isPromptShow = !isPromptShow" />

@@ -1,82 +1,27 @@
-import { jsonrepair } from 'jsonrepair'
 export const useProviderTencent = () => {
+  const FREE_API_KEY_NAME = 'HUNYUAN_API_KEY'
+  const USER_API_KEY_NAME = 'USER_HUNYUAN_API_KEY'
   const API_BASE = 'https://api.hunyuan.cloud.tencent.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const FREE_MODELS = ['hunyuan-lite']
-  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
   const apiKeyStore = useApiKeyStore()
 
-  function validateFreeModel(payload) {
-    // 如果提供了API密钥或API密钥名称，则可以使用任意模型
-    if (payload.apiKey || payload.apiKeyName) {
-      return true
-    }
-    // 否则检查模型是否在免费列表中
-    return FREE_MODELS.includes(payload.model)
-  }
-
   async function getResponse(modelType, modelUsage, messages) {
-    stateStore.modelResponseString = {
-      content: '',
-      reasoning_content: '',
-    }
-
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
-
     stateStore.appInfos.push('Model Type NOT Supported')
     return
   }
 
-  async function getChatResponse(modelUsage, messages) {
-    const chatModel = modelStore.activeModels.chat[modelUsage]
-
-    const payload = {
-      url: `${API_BASE}${CHAT_COMPLETIONS}`,
-      apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
-      apiKeyName: chatModel.apiKeyName || '',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      body: {
-        model: chatModel.model,
-        messages: messages,
-        stream: true,
-        // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
-      },
+  async function getStreamContent(modelUsage, response) {
+    const { parse } = await import('partial-json')
+    modelStore.modelResponse.chat.content = ''
+    modelStore.modelResponse.chat.reasoning_content = ''
+    const modelResponseStream = {
+      content: '',
+      reasoning_content: '',
     }
-
-    if (!validateFreeModel(payload)) return
-
-    if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking = {
-        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
-      }
-    }
-
-    const url = `${stateStore.apiBaseUrl}/model/proxy`
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-
-    if (response.status !== 200) {
-      const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.error.message)
-      return
-    }
-    await getContent(response)
-    return
-  }
-
-  async function getContent(response) {
-    const stateStore = useStateStore()
     const reader = response.body.getReader()
     const decoder = new TextDecoder('utf-8')
     let buffer = ''
@@ -97,8 +42,23 @@ export const useProviderTencent = () => {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          stateStore.modelResponseString.content += choice.delta.content || ''
-          stateStore.modelResponseString.reasoning_content += choice.delta.reasoning_content || ''
+          modelResponseStream.content += choice.delta.content ? choice.delta.content : ''
+          modelResponseStream.reasoning_content += choice.delta.reasoning_content
+            ? choice.delta.reasoning_content
+            : ''
+          if (modelUsage === 'case') {
+            modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+              ? modelResponseStream.reasoning_content
+              : ''
+            modelStore.modelResponse.chat.content = modelResponseStream.content
+              .split('```json')[1]
+              .trim()
+              ? parse(modelResponseStream.content.split('```json')[1].trim())
+              : ''
+          } else {
+            modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+            modelStore.modelResponse.chat.content = modelResponseStream.content
+          }
         } catch (error) {
           console.log('error: ', error.message)
           continue
@@ -106,11 +66,48 @@ export const useProviderTencent = () => {
       }
     }
 
-    if (stateStore.modelResponseString.content) {
-      stateStore.modelResponseString.content = jsonrepair(stateStore.modelResponseString.content)
+    return modelStore.modelResponse
+  }
+
+  async function getChatResponse(modelUsage, messages) {
+    const chatModel = modelStore.activeModels.chat[modelUsage]
+    const payload = {
+      url: `${API_BASE}${CHAT_COMPLETIONS}`,
+      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME],
+      apiKeyName: chatModel.source === 'free' ? FREE_API_KEY_NAME : '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: {
+        model: chatModel.model,
+        messages: messages,
+        stream: true,
+        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+      },
+    }
+    // if (chatModel.thinking) {
+    //   payload.body.thinking = {
+    //     type: stateStore.isModelThinking ? 'enabled' : 'disabled',
+    //   }
+    // }
+
+    const url = `${stateStore.apiBaseUrl}/model/proxy`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (response.status !== 200) {
+      const errorFromModel = await response.json()
+      stateStore.appInfos.push(errorFromModel.error.message)
+      return
     }
 
-    return stateStore.modelResponseString
+    await getStreamContent(modelUsage, response)
   }
 
   return {

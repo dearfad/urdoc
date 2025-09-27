@@ -2,6 +2,7 @@
 // Docs: https://docs.bigmodel.cn
 export const useProviderBigModel = () => {
   const FREE_API_KEY_NAME = 'ZHIPU_API_KEY'
+  const USER_API_KEY_NAME = 'USER_BIGMODEL_API_KEY'
   const API_BASE = 'https://open.bigmodel.cn/api/paas/v4'
   const CHAT_COMPLETIONS = '/chat/completions'
   const IMAGES_GENERATIONS = '/images/generations'
@@ -49,16 +50,20 @@ export const useProviderBigModel = () => {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          modelResponseStream.content += choice.delta.content || ''
-          modelResponseStream.reasoning_content += choice.delta.reasoning_content || ''
+          modelResponseStream.content += choice.delta.content ? choice.delta.content : ''
+          modelResponseStream.reasoning_content += choice.delta.reasoning_content
+            ? choice.delta.reasoning_content
+            : ''
           if (modelUsage === 'case') {
-            if (modelResponseStream.content) {
-              modelStore.modelResponse.chat.content = parse(modelResponseStream.content)
-            }
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+              ? modelResponseStream.reasoning_content
+              : ''
+            modelStore.modelResponse.chat.content = modelResponseStream.content.trim()
+              ? parse(modelResponseStream.content)
+              : ''
           } else {
-            modelStore.modelResponse.chat.content = modelResponseStream.content
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+            modelStore.modelResponse.chat.content = modelResponseStream.content
           }
         } catch (error) {
           console.log('error: ', error.message)
@@ -74,7 +79,7 @@ export const useProviderBigModel = () => {
     const chatModel = modelStore.activeModels.chat[modelUsage]
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
-      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys['USER_BIGMODEL_API_KEY'],
+      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME],
       apiKeyName: chatModel.source === 'free' ? FREE_API_KEY_NAME : '',
       headers: {
         'Content-Type': 'application/json',
@@ -87,8 +92,7 @@ export const useProviderBigModel = () => {
         response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
-
-    if (chatModel.model.thinking) {
+    if (chatModel.thinking) {
       payload.body.thinking = {
         type: stateStore.isModelThinking ? 'enabled' : 'disabled',
       }

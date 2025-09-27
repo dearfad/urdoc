@@ -35,12 +35,12 @@ export const useModelStore = defineStore(
         {
           provider: 'INTERNAI',
           model: 'intern-s1',
-          thinking: false,
+          thinking: true,
         },
         {
           provider: 'INTERNAI',
           model: 'intern-s1-mini',
-          thinking: false,
+          thinking: true,
         },
         {
           provider: 'INTERNAI',
