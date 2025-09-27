@@ -17,12 +17,12 @@
       <div v-if="isCardShow">
         <v-divider />
         <v-tabs v-model="tab" grow density="compact">
-          <v-tab value="default" text="默认" prepend-icon="mdi-check-circle-outline" />
+          <v-tab value="free" text="默认" prepend-icon="mdi-check-circle-outline" />
           <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
         </v-tabs>
         <v-tabs-window v-model="tab">
-          <v-tabs-window-item value="default">
-            <ModelCardDefault :model-type="modelType" :model-usage="modelUsage" />
+          <v-tabs-window-item value="free">
+            <ModelCardFree :model-type="modelType" :model-usage="modelUsage" />
           </v-tabs-window-item>
           <v-tabs-window-item value="custom">
             <ModelCardCustom :model-type="modelType" :model-usage="modelUsage" />
@@ -38,7 +38,7 @@ const { modelType, modelUsage } = defineProps({
   modelType: { type: String, required: true },
   modelUsage: { type: String, required: true },
 })
-const tab = ref('default')
+const tab = ref('free')
 const isCardShow = ref(false)
 const modelStore = useModelStore()
 const model = computed(() => modelStore.activeModels[modelType][modelUsage])

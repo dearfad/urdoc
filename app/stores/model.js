@@ -5,246 +5,147 @@ export const useModelStore = defineStore(
     const supabase = useSupabase()
     const userStore = useUserStore()
 
-    const DEFAULT_PROVIDER_ID = [
-      {
-        name: '智谱',
-        id: 'BIGMODEL',
-      },
-      {
-        name: '讯飞',
-        id: 'XUNFEI',
-      },
-      {
-        name: '腾讯',
-        id: 'TENCENT',
-      },
-      {
-        name: '书生',
-        id: 'SHUSHENG',
-      },
-      {
-        name: 'OpenRouter',
-        id: 'OPENROUTER',
-      },
-      {
-        name: 'Pollinations',
-        id: 'POLLINATIONS',
-      },
-      {
-        name: 'ModelScope',
-        id: 'MODELSCOPE',
-      },
-      {
-        name: 'Baidu',
-        id: 'BAIDU',
-      },
-      {
-        name: '豆包',
-        id: 'DOUBAO',
-      },
-      {
-        name: '阿里云',
-        id: 'ALIYUN',
-      },
-      {
-        name: 'Gitee',
-        id: 'GITEE',
-      },
-    ]
-
-    const DEFAULT_ENDPOINT = {
-      ZHIPU: {
-        chat: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-        image: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-        video: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-        result: 'https://open.bigmodel.cn/api/paas/v4/async-result/',
-      },
-      XUNFEI: {
-        chat: 'https://spark-api-open.xf-yun.com/v1/chat/completions',
-      },
-      TENCENT: {
-        chat: 'https://api.hunyuan.cloud.tencent.com/v1/chat/completions',
-      },
-      SHUSHENG: {
-        chat: 'https://chat.intern-ai.org.cn/api/v1/chat/completions',
-      },
-      OPENROUTER: {
-        chat: 'https://openrouter.ai/api/v1/chat/completions',
-        image: 'https://openrouter.ai/api/v1/chat/completions',
-      },
-      POLLINATIONS: {
-        chat: 'https://text.pollinations.ai/openai',
-      },
-      MODELSCOPE: {
-        chat: 'https://api-inference.modelscope.cn/v1/chat/completions',
-        image: 'https://api-inference.modelscope.cn/v1/images/generations',
-      },
-      BAIDU: {
-        chat: 'https://qianfan.baidubce.com/v2/chat/completions',
-      },
-      DOUBAO: {
-        chat: 'https://ark.cn-beijing.volces.com/api/v3/chat/completions',
-      },
-      ALIYUN: {
-        chat: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
-      },
-      GITEE: {
-        chat: 'https://ai.gitee.com/v1/chat/completions',
-      },
-    }
-
-    const DEFAULT_API_KEY_NAME = {
-      ZHIPU: 'ZHIPU_API_KEY',
-      XUNFEI: 'XFYUN_API_KEY',
-      TENCENT: 'HUNYUAN_API_KEY',
-      SHUSHENG: 'SHUSHENG_API_KEY',
-    }
-
-    const defaultModels = ref([
-      {
-        provider: 'BIGMODEL',
-        type: 'chat',
-        model: 'glm-4-flash-250414',
-        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
-      },
-      {
-        provider: 'BIGMODEL',
-        type: 'chat',
-        model: 'glm-4.5-flash',
-        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
-      },
-      {
-        provider: 'XFYUN',
-        type: 'chat',
-        model: 'lite',
-        apiKeyName: DEFAULT_API_KEY_NAME.XUNFEI,
-      },
-      {
-        provider: 'TENCENT',
-        type: 'chat',
-        model: 'hunyuan-lite',
-        apiKeyName: DEFAULT_API_KEY_NAME.TENCENT,
-      },
-      {
-        provider: 'INTERNAI',
-        type: 'chat',
-        model: 'internlm3-8b-instruct',
-        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
-      },
-      {
-        provider: 'INTERNAI',
-        type: 'chat',
-        model: 'intern-s1',
-        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
-      },
-      {
-        provider: 'INTERNAI',
-        type: 'chat',
-        model: 'intern-s1-mini',
-        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
-      },
-      {
-        provider: 'INTERNAI',
-        type: 'chat',
-        model: 'internlm2.5-latest',
-        apiKeyName: DEFAULT_API_KEY_NAME.SHUSHENG,
-      },
-      {
-        provider: 'BIGMODEL',
-        type: 'image',
-        model: 'cogview-3-flash',
-        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
-      },
-      {
-        provider: 'BIGMODEL',
-        type: 'video',
-        model: 'cogvideox-flash',
-        apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
-      },
-    ])
-
-    const customModels = ref([])
+    const freeModels = ref({
+      chat: [
+        {
+          provider: 'BIGMODEL',
+          model: 'glm-4-flash-250414',
+          thinking: false,
+        },
+        {
+          provider: 'BIGMODEL',
+          model: 'glm-4.5-flash',
+          thinking: true,
+        },
+        {
+          provider: 'XFYUN',
+          model: 'lite',
+          thinking: false,
+        },
+        {
+          provider: 'TENCENT',
+          model: 'hunyuan-lite',
+          thinking: false,
+        },
+        {
+          provider: 'INTERNAI',
+          model: 'internlm3-8b-instruct',
+          thinking: false,
+        },
+        {
+          provider: 'INTERNAI',
+          model: 'intern-s1',
+          thinking: false,
+        },
+        {
+          provider: 'INTERNAI',
+          model: 'intern-s1-mini',
+          thinking: false,
+        },
+        {
+          provider: 'INTERNAI',
+          model: 'internlm2.5-latest',
+          thinking: false,
+        },
+      ],
+      image: [
+        {
+          provider: 'BIGMODEL',
+          model: 'cogview-3-flash',
+          thinking: false,
+        },
+      ],
+      video: [
+        {
+          provider: 'BIGMODEL',
+          model: 'cogvideox-flash',
+          thinking: false,
+        },
+      ],
+    })
 
     const activeModels = ref({
       chat: {
         case: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         story: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         test: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         act: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         rate: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         check: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         face: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         illustration: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         pose: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'glm-4-flash-250414',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
       },
       image: {
         face: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'cogview-3-flash',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
         illustration: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'cogview-3-flash',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
       },
       video: {
         pose: {
-          source: 'default',
+          source: 'free',
           provider: 'BIGMODEL',
           model: 'cogvideox-flash',
-          apiKeyName: DEFAULT_API_KEY_NAME.ZHIPU,
+          thinking: false,
         },
       },
     })
+
+    const customModels = ref([])
 
     const database = {
       async selectAll() {
@@ -296,11 +197,9 @@ export const useModelStore = defineStore(
     })
 
     return {
-      DEFAULT_PROVIDER_ID,
-      DEFAULT_ENDPOINT,
-      defaultModels,
-      customModels,
+      freeModels,
       activeModels,
+      customModels,
       database,
       getProviderComposable,
       modelResponse,
@@ -308,7 +207,7 @@ export const useModelStore = defineStore(
   },
   {
     persist: {
-      pick: ['customModels', 'activeModels'],
+      pick: ['activeModels', 'customModels'],
     },
   }
 )

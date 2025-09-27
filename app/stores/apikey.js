@@ -3,7 +3,9 @@ export const useApiKeyStore = defineStore(
   () => {
     const stateStore = useStateStore()
     // 键值唯一
-    const apiKeys = ref({})
+    const apiKeys = ref({
+      USER_BIGMODEL_API_KEY: '',
+    })
     const add = async (key, value) => {
       if (!value || value === '') {
         apiKeys.value[key] = ''

@@ -1,36 +1,17 @@
 // Website: https://bigmodel.cn
 // Docs: https://docs.bigmodel.cn
 export const useProviderBigModel = () => {
+  const FREE_API_KEY_NAME = 'ZHIPU_API_KEY'
   const API_BASE = 'https://open.bigmodel.cn/api/paas/v4'
   const CHAT_COMPLETIONS = '/chat/completions'
   const IMAGES_GENERATIONS = '/images/generations'
   const VIDEOS_GENERATIONS = '/videos/generations'
   const ASYNC_RESULT = '/async-result'
 
-  const FREE_MODELS = [
-    'glm-4.5-flash',
-    'glm-4.1v-thinking-flash',
-    'glm-4-flash-250414',
-    'glm-4v-flash',
-    'glm-z1-flash',
-    'cogview-3-flash',
-    'cogvideox-flash',
-  ]
-  const THINKING_MODELS = ['glm-4.5-flash']
-
   const stateStore = useStateStore()
   const modelStore = useModelStore()
   const apiKeyStore = useApiKeyStore()
   const recordStore = useRecordStore()
-
-  function validateFreeModel(payload) {
-    // 如果提供了API密钥或API密钥名称，则可以使用任意模型
-    if (payload.apiKey || payload.apiKeyName) {
-      return true
-    }
-    // 否则检查模型是否在免费列表中
-    return FREE_MODELS.includes(payload.model)
-  }
 
   async function getResponse(modelType, modelUsage, messages) {
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
@@ -91,11 +72,10 @@ export const useProviderBigModel = () => {
 
   async function getChatResponse(modelUsage, messages) {
     const chatModel = modelStore.activeModels.chat[modelUsage]
-
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
-      apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
-      apiKeyName: chatModel.apiKeyName || '',
+      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys['USER_BIGMODEL_API_KEY'],
+      apiKeyName: chatModel.source === 'free' ? FREE_API_KEY_NAME : '',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -108,9 +88,7 @@ export const useProviderBigModel = () => {
       },
     }
 
-    if (!validateFreeModel(payload)) return
-
-    if (THINKING_MODELS.includes(chatModel.model)) {
+    if (chatModel.model.thinking) {
       payload.body.thinking = {
         type: stateStore.isModelThinking ? 'enabled' : 'disabled',
       }
@@ -153,7 +131,6 @@ export const useProviderBigModel = () => {
         // watermark_enabled: true,
       },
     }
-    if (!validateFreeModel(payload)) return
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
     const response = await fetch(url, {
@@ -191,7 +168,6 @@ export const useProviderBigModel = () => {
         image_url: recordStore.record.face,
       },
     }
-    if (!validateFreeModel(payload)) return
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
     const response = await fetch(url, {

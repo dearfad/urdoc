@@ -1,14 +1,12 @@
 import { unmask } from '../utils/mask.js'
 export async function onRequest({ request, env }) {
+  const payload = await request.json()
   // 检查请求来源，防止跨域访问
   if (env.NODE_ENV === 'production' && request.headers.get('origin') !== env.ALLOWED_ORIGINS) {
     return sendErrorResponse(CORS_FORBIDDEN)
   }
-
   // 删除 accept-encoding 头避免压缩影响 SSE 流
   request.headers.delete('accept-encoding')
-
-  const payload = await request.json()
 
   const token = getToken(payload, env)
   if (!token) return sendErrorResponse(API_KEY_ERROR)
@@ -51,6 +49,9 @@ const CORS_FORBIDDEN = {
 
 const FREE_MODELS_MAP = {
   ZHIPU_API_KEY: ['glm-4.5-flash', 'glm-4-flash-250414', 'cogview-3-flash', 'cogvideox-flash'],
+  XFYUN_API_KEY: ['lite'],
+  HUNYUAN_API_KEY: ['hunyuan-lite'],
+  SHUSHENG_API_KEY: ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest'],
 }
 
 function getToken(payload, env) {
