@@ -17,20 +17,38 @@
           @click="isCardShow = !isCardShow"
         />
       </template>
+      <v-card-actions>
+        <v-spacer />
+        <v-checkbox
+          v-model="stateStore.isModelThinking"
+          max-width="70px"
+          label="思考"
+          density="compact"
+          hide-details
+        />
+        <v-checkbox
+          v-model="isModelGlobal"
+          max-width="70px"
+          label="全局"
+          density="compact"
+          hide-details
+          @update:model-value="handleModelGlobal"
+        />
+      </v-card-actions>
       <v-expand-transition>
         <div v-if="isCardShow">
           <v-divider />
           <v-tabs v-model="tab" grow density="compact">
-            <v-tab value="free" text="默认" prepend-icon="mdi-check-circle-outline" />
-            <!-- <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" /> -->
+            <v-tab value="free" text="免费" prepend-icon="mdi-check-circle-outline" />
+            <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
           </v-tabs>
           <v-tabs-window v-model="tab">
             <v-tabs-window-item value="free">
               <ModelCardFree :model-type="modelType" :model-usage="modelUsage" />
             </v-tabs-window-item>
-            <!-- <v-tabs-window-item value="custom">
+            <v-tabs-window-item value="custom">
               <ModelCardCustom :model-type="modelType" :model-usage="modelUsage" />
-            </v-tabs-window-item> -->
+            </v-tabs-window-item>
           </v-tabs-window>
         </div>
       </v-expand-transition>
@@ -43,8 +61,10 @@ const { modelType, modelUsage } = defineProps({
   modelType: { type: String, required: true },
   modelUsage: { type: String, required: true },
 })
-const tab = ref('free')
 const isCardShow = ref(false)
+const isModelGlobal = ref(false)
+const tab = ref()
+const stateStore = useStateStore()
 const modelStore = useModelStore()
 const model = computed(() => modelStore.activeModels[modelType][modelUsage])
 const thinking = computed(() => (model.value.thinking ? 'mdi-brain' : ''))
@@ -53,4 +73,33 @@ const modelTypeIcon = ref({
   image: 'mdi-image-outline',
   video: 'mdi-video-outline',
 })
+
+onMounted(() => {
+  // 模型全局应用
+  tab.value = model.value.source
+})
+function handleModelGlobal() {
+  // 设定模型全局应用
+  if (!isModelGlobal.value) return
+  let usages = []
+  switch (modelType) {
+    case 'chat':
+      usages = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'check', 'illustration']
+      break
+    case 'image':
+      usages = ['face', 'illustration']
+      break
+    case 'video':
+      usages = ['pose']
+      break
+    default:
+      stateStore.appInfos.push('未知模型类型')
+      return
+  }
+  for (const usage of usages) {
+    if (model.value) {
+      modelStore.activeModels[modelType][usage] = model.value
+    }
+  }
+}
 </script>

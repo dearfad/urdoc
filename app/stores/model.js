@@ -145,7 +145,11 @@ export const useModelStore = defineStore(
       },
     })
 
-    const customModels = ref([])
+    const customModels = ref({
+      chat: [],
+      image: [],
+      video: [],
+    })
 
     const database = {
       async selectAll() {
@@ -168,12 +172,22 @@ export const useModelStore = defineStore(
       },
     }
 
+    const PROVIDERS = [
+      { name: '智谱', id: 'BIGMODEL' },
+      { name: '腾讯混元', id: 'TENCENT' },
+      { name: '讯飞云', id: 'XFYUN' },
+      { name: '书生', id: 'INTERNAI' },
+      { name: 'OPENROUTER', id: 'OPENROUTER' },
+      { name: 'MODELSCOPE', id: 'MODELSCOPE' },
+      { name: 'GITEE', id: 'GITEE' },
+    ]
+
     const PROVIDER_COMPOSABLES_MAP = {
       BIGMODEL: useProviderBigModel(),
-      OPENROUTER: useProviderOpenRouter(),
       TENCENT: useProviderTencent(),
       XFYUN: useProviderXfYun(),
       INTERNAI: useProviderInternAi(),
+      OPENROUTER: useProviderOpenRouter(),
       MODELSCOPE: useProviderModelScope(),
       GITEE: useProviderGitee(),
     }
@@ -200,6 +214,7 @@ export const useModelStore = defineStore(
       freeModels,
       activeModels,
       customModels,
+      PROVIDERS,
       database,
       getProviderComposable,
       modelResponse,

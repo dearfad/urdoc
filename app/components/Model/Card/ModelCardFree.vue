@@ -23,25 +23,6 @@
         return-object
         @update:model-value="handleModelChange"
       />
-      <v-card-actions>
-        <v-spacer />
-        <v-checkbox
-          v-model="isModelThinking"
-          max-width="70px"
-          label="思考"
-          density="compact"
-          hide-details
-          @update:model-value="handleModelThinking"
-        />
-        <v-checkbox
-          v-model="setModelGlobal"
-          max-width="70px"
-          label="全局"
-          density="compact"
-          hide-details
-          @update:model-value="handleModelChange"
-        />
-      </v-card-actions>
     </v-card>
   </ClientOnly>
 </template>
@@ -52,13 +33,24 @@ const { modelType, modelUsage } = defineProps({
   modelUsage: { type: String, required: true },
 })
 
-const stateStore = useStateStore()
 const modelStore = useModelStore()
-const setModelGlobal = ref(false)
-const isModelThinking = ref(false)
 
-const provider = ref('')
+const provider = ref()
 const model = ref()
+
+watch(
+  () => modelStore.activeModels[modelType][modelUsage],
+  (newActiveModel) => {
+    if (newActiveModel && newActiveModel.source === 'free') {
+      model.value = newActiveModel
+      provider.value = newActiveModel.provider
+    } else {
+      model.value = null
+      provider.value = null
+    }
+  },
+  { immediate: true }
+)
 
 // 筛选 modelType 'chat' 'image' 'video'
 const modelsByType = computed(() => modelStore.freeModels[modelType])
@@ -76,37 +68,9 @@ function handleProviderChange() {
 }
 
 function handleModelChange() {
-  // 设定模型全局应用
-  let usages = []
-  switch (modelType) {
-    case 'chat':
-      usages = setModelGlobal.value
-        ? ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'check', 'illustration']
-        : [modelUsage]
-      break
-    case 'image':
-      usages = setModelGlobal.value ? ['face', 'illustration'] : [modelUsage]
-      break
-    case 'video':
-      usages = setModelGlobal.value ? ['pose'] : [modelUsage]
-      break
-    default:
-      stateStore.appInfos.push('未知模型类型')
-      return
-  }
-  for (const usage of usages) {
-    if (model.value) {
-      model.value.source = 'free'
-      modelStore.activeModels[modelType][usage] = model.value
-    }
+  if (model.value) {
+    model.value.source = 'free'
+    modelStore.activeModels[modelType][modelUsage] = model.value
   }
 }
-
-function handleModelThinking() {
-  stateStore.isModelThinking = isModelThinking.value
-}
-
-onMounted(() => {
-  isModelThinking.value = stateStore.isModelThinking
-})
 </script>
