@@ -19,21 +19,12 @@
       </template>
       <v-card-actions>
         <v-spacer />
-        <v-checkbox
-          v-model="stateStore.isModelThinking"
-          max-width="70px"
-          label="思考"
-          density="compact"
-          hide-details
+        <v-btn
+          text="思考"
+          :prepend-icon="stateStore.isModelThinking ? 'mdi-check-circle' : 'mdi-alert-circle'"
+          @click="stateStore.isModelThinking = !stateStore.isModelThinking"
         />
-        <v-checkbox
-          v-model="isModelGlobal"
-          max-width="70px"
-          label="全局"
-          density="compact"
-          hide-details
-          @update:model-value="handleModelGlobal"
-        />
+        <v-btn text="设为全局" @click="handleModelGlobal" />
       </v-card-actions>
       <v-expand-transition>
         <div v-if="isCardShow">

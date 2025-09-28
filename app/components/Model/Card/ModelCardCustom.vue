@@ -61,6 +61,7 @@
         />
 
         <v-card-actions density="compact">
+          <v-spacer />
           <v-btn text="添加" @click="insertCustomModel" />
         </v-card-actions>
       </v-card>
@@ -145,7 +146,6 @@ function insertCustomModel() {
       modelStore.customModels[modelType].push(customModel.value)
       customModel.value.source = 'custom'
       modelStore.activeModels[modelType][modelUsage] = customModel.value
-      nextTick()
       isExpandShow.value = false
     }
   }
