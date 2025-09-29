@@ -17,7 +17,7 @@
         :items="modelsByProvider"
         item-title="model"
         variant="outlined"
-        class="mt-4"
+        class="my-4"
         hide-details="auto"
         density="comfortable"
         return-object

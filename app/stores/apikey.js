@@ -3,35 +3,47 @@ export const useApiKeyStore = defineStore(
   () => {
     const stateStore = useStateStore()
     // 键值唯一
-    const apiKeys = ref({
-      USER_BIGMODEL_API_KEY: '',
-    })
-    const add = async (key, value) => {
-      if (!value || value === '') {
-        apiKeys.value[key] = ''
-        return
+    const apiKeys = ref({})
+    const add = async (userApiKeyName, apiKey, apiKeyName) => {
+      apiKeys.value[userApiKeyName] = {
+        apiKey: '',
+        apiKeyName: '',
       }
       try {
-        const maskedValue = await $fetch('/utils/mask', {
-          baseURL: stateStore.apiBaseUrl,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: {
-            payload: {
-              mask: true,
-              apiKey: value,
+        if (apiKey) {
+          const maskedValue = await $fetch('/utils/mask', {
+            baseURL: stateStore.apiBaseUrl,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
             },
-          },
-        })
-        apiKeys.value[key] = maskedValue
+            body: {
+              payload: {
+                mask: true,
+                apiKey: apiKey,
+              },
+            },
+          })
+          apiKeys.value[userApiKeyName].apiKey = maskedValue
+        } else {
+          apiKeys.value[userApiKeyName].apiKey = ''
+        }
+
+        apiKeys.value[userApiKeyName].apiKeyName = apiKeyName
       } catch (error) {
         console.error(error)
         stateStore.appInfos.push('添加失败: ', error)
       }
     }
-    return { apiKeys, add }
+
+    const del = (userApiKeyName) => {
+      apiKeys.value[userApiKeyName] = {
+        apiKey: '',
+        apiKeyName: '',
+      }
+    }
+
+    return { apiKeys, add, del }
   },
   {
     persist: true,

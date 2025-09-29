@@ -20,7 +20,7 @@
       hide-details="auto"
       density="comfortable"
       return-object
-      @update:model-value="handleModelChange"
+      @update:model-value="setActiveModel"
     />
 
     <v-card-actions class="px-0 ga-0">
@@ -117,10 +117,10 @@ const customModel = ref({
 
 function handleProviderChange() {
   model.value = modelsByProvider.value[0]
-  handleModelChange()
+  setActiveModel()
 }
 
-function handleModelChange() {
+function setActiveModel() {
   if (model.value) {
     model.value.source = 'custom'
     modelStore.activeModels[modelType][modelUsage] = model.value
@@ -133,8 +133,8 @@ function insertCustomModel() {
   } else {
     // 检查是否已存在相同的provider和model组合
     const isDuplicate =
-      modelStore.customModels.length > 0
-        ? modelStore.customModels.some(
+      modelStore.customModels[modelType].length > 0
+        ? modelStore.customModels[modelType].some(
             (model) =>
               model.provider === customModel.value.provider &&
               model.model === customModel.value.model
@@ -143,26 +143,37 @@ function insertCustomModel() {
     if (isDuplicate) {
       stateStore.appInfos.push('已存在相同的模型，请勿重复添加')
     } else {
-      modelStore.customModels[modelType].push(customModel.value)
-      customModel.value.source = 'custom'
-      modelStore.activeModels[modelType][modelUsage] = customModel.value
+      modelStore.customModels[modelType].push({
+        provider: customModel.value.provider,
+        model: customModel.value.model,
+        thinking: customModel.value.thinking,
+      })
+      modelStore.activeModels[modelType][modelUsage] = {
+        provider: customModel.value.provider,
+        model: customModel.value.model,
+        thinking: customModel.value.thinking,
+        source: 'custom',
+      }
       isExpandShow.value = false
     }
   }
 }
 
 function handleModelDelete() {
-  modelStore.customModels = modelStore.customModels.filter(
+  modelStore.customModels[modelType] = modelStore.customModels[modelType].filter(
     (deleteModel) =>
       !(deleteModel.provider === model.value.provider && deleteModel.model === model.value.model)
   )
   if (providers.value.length > 0) {
     provider.value = providers.value[0]
     model.value = modelsByProvider.value[0]
-    handleModelChange()
+    setActiveModel()
   } else {
-    provider.value = ''
+    provider.value = null
     model.value = null
+    const defaultModel = modelStore.freeModels[modelType][0]
+    defaultModel.source = 'free'
+    modelStore.activeModels[modelType][modelUsage] = defaultModel
   }
 }
 

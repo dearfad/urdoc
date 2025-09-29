@@ -82,8 +82,11 @@ export const useProviderInternAi = () => {
     const chatModel = modelStore.activeModels.chat[modelUsage]
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
-      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME],
-      apiKeyName: chatModel.source === 'free' ? FREE_API_KEY_NAME : '',
+      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+      apiKeyName:
+        chatModel.source === 'free'
+          ? FREE_API_KEY_NAME
+          : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
       },

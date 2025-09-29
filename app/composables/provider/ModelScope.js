@@ -1,23 +1,13 @@
-import { parse } from 'partial-json'
 export const useProviderModelScope = () => {
+  const FREE_API_KEY_NAME = 'ZHIPU_API_KEY'
+  const USER_API_KEY_NAME = 'USER_MODELSCOPE_API_KEY'
   const API_BASE = 'https://api-inference.modelscope.cn/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
   const IMAGES_GENERATIONS = '/images/generations'
-  const FREE_MODELS = ['deepseek-ai/DeepSeek-V3.1', 'Qwen/Qwen3-Next-80B-A3B-Instruct']
-  const THINKING_MODELS = []
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
   const apiKeyStore = useApiKeyStore()
-
-  function validateFreeModel(payload) {
-    // 如果提供了API密钥或API密钥名称，则可以使用任意模型
-    if (payload.apiKey || payload.apiKeyName) {
-      return true
-    }
-    // 否则检查模型是否在免费列表中
-    return FREE_MODELS.includes(payload.model)
-  }
 
   async function getResponse(modelType, modelUsage, messages) {
     if (modelType === 'chat') return await getChatResponse(modelUsage, messages)
@@ -27,6 +17,7 @@ export const useProviderModelScope = () => {
   }
 
   async function getStreamContent(modelUsage, response) {
+    const { parse } = await import('partial-json')
     modelStore.modelResponse.chat.content = ''
     modelStore.modelResponse.chat.reasoning_content = ''
     const modelResponseStream = {
@@ -53,20 +44,20 @@ export const useProviderModelScope = () => {
         try {
           const message = JSON.parse(data)
           const choice = message.choices[0]
-          modelResponseStream.content += choice.delta.content || ''
-          modelResponseStream.reasoning_content += choice.delta.reasoning_content || ''
-          /// ```json ``` 去除
-          modelResponseStream.content = modelResponseStream.content
-            .replace(/^```json\n?/, '')
-            .replace(/\n?```$/, '')
+          modelResponseStream.content += choice.delta.content ? choice.delta.content : ''
+          modelResponseStream.reasoning_content += choice.delta.reasoning_content
+            ? choice.delta.reasoning_content
+            : ''
           if (modelUsage === 'case') {
-            if (modelResponseStream.content) {
-              modelStore.modelResponse.chat.content = parse(modelResponseStream.content)
-            }
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+              ? modelResponseStream.reasoning_content
+              : ''
+            modelStore.modelResponse.chat.content = modelResponseStream.content.trim()
+              ? parse(modelResponseStream.content)
+              : ''
           } else {
-            modelStore.modelResponse.chat.content = modelResponseStream.content
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
+            modelStore.modelResponse.chat.content = modelResponseStream.content
           }
         } catch (error) {
           console.log('error: ', error.message)
@@ -74,17 +65,19 @@ export const useProviderModelScope = () => {
         }
       }
     }
-    console.log('modelResponse: ', modelStore.modelResponse)
+
     return modelStore.modelResponse
   }
 
   async function getChatResponse(modelUsage, messages) {
     const chatModel = modelStore.activeModels.chat[modelUsage]
-
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
-      apiKey: apiKeyStore.apiKeys[chatModel.apiKeyName] || '',
-      apiKeyName: chatModel.apiKeyName || '',
+      apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+      apiKeyName:
+        chatModel.source === 'free'
+          ? FREE_API_KEY_NAME
+          : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -96,14 +89,11 @@ export const useProviderModelScope = () => {
         // response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
       },
     }
-
-    if (!validateFreeModel(payload)) return
-
-    if (THINKING_MODELS.includes(chatModel.model)) {
-      payload.body.thinking = {
-        type: stateStore.isModelThinking ? 'enabled' : 'disabled',
-      }
-    }
+    // if (chatModel.thinking) {
+    //   payload.body.thinking = {
+    //     type: stateStore.isModelThinking ? 'enabled' : 'disabled',
+    //   }
+    // }
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
     const response = await fetch(url, {
@@ -119,8 +109,8 @@ export const useProviderModelScope = () => {
       stateStore.appInfos.push(errorFromModel.error.message)
       return
     }
+
     await getStreamContent(modelUsage, response)
-    return
   }
 
   async function getImageResponse(modelUsage, messages) {
@@ -143,7 +133,6 @@ export const useProviderModelScope = () => {
         // watermark_enabled: true,
       },
     }
-    if (!validateFreeModel(payload)) return
 
     const url = `${stateStore.apiBaseUrl}/model/proxy`
     const response = await fetch(url, {
