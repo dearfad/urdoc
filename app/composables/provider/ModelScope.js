@@ -118,8 +118,11 @@ export const useProviderModelScope = () => {
     const imageModel = modelStore.activeModels.image[modelUsage]
     const payload = {
       url: `${API_BASE}${IMAGES_GENERATIONS}`,
-      apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
-      apiKeyName: imageModel.apiKeyName || '',
+      apiKey: imageModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+      apiKeyName:
+        imageModel.source === 'free'
+          ? FREE_API_KEY_NAME
+          : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
         'X-ModelScope-Async-Mode': 'true',
@@ -160,8 +163,12 @@ export const useProviderModelScope = () => {
         },
         body: JSON.stringify({
           url: taskUrl,
-          apiKey: apiKeyStore.apiKeys[imageModel.apiKeyName] || '',
-          apiKeyName: imageModel.apiKeyName || '',
+          apiKey:
+            imageModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+          apiKeyName:
+            imageModel.source === 'free'
+              ? FREE_API_KEY_NAME
+              : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
