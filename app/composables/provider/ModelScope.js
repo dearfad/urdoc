@@ -18,8 +18,6 @@ export const useProviderModelScope = () => {
 
   async function getStreamContent(modelUsage, response) {
     const { parse } = await import('partial-json')
-    modelStore.modelResponse.chat.content = ''
-    modelStore.modelResponse.chat.reasoning_content = ''
     const modelResponseStream = {
       content: '',
       reasoning_content: '',
@@ -70,6 +68,8 @@ export const useProviderModelScope = () => {
   }
 
   async function getChatResponse(modelUsage, messages) {
+    modelStore.modelResponse.chat.content = ''
+    modelStore.modelResponse.chat.reasoning_content = ''
     const chatModel = modelStore.activeModels.chat[modelUsage]
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
@@ -148,11 +148,10 @@ export const useProviderModelScope = () => {
 
     if (response.status !== 200) {
       const errorFromModel = await response.json()
-      stateStore.appInfos.push(errorFromModel.errors.message)
+      stateStore.appInfos.push(errorFromModel.error.message)
       return
     }
     const task = await response.json()
-    console.log('task: ', task)
     const taskId = task.task_id
     const taskUrl = `${API_BASE}/tasks/${taskId}`
     while (true) {

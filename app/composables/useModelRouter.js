@@ -1,6 +1,6 @@
 export default function () {
   // const stateStore = useStateStore()
-  // const recordStore = useRecordStore()
+  const recordStore = useRecordStore()
   // const imageModel = useImageModel()
   // const videoModel = useVideoModel()
   const promptStore = usePromptStore()
@@ -46,25 +46,30 @@ export default function () {
     return await imageProvider.getResponse('image', 'face', promptStore.prompts.image.face)
   }
 
-  // async function getStoryIllustration(messages) {
-  //   const illustrationParams = getChatModelParams('illustration', messages, 'text')
-  //   const prompt = await chatModel.getResponse(illustrationParams, 'text')
-  //   console.log(prompt)
-  //   // 使用正则表达式提取方括号内的内容
-  //   const content = prompt.match(/(?<=\[)(.*?)(?=\])/)[0]
-  //   // 将提取的内容按逗号分割并去除多余的空格
-  //   const result = content.split(',').map((item) => item.trim().replace(/'/g, ''))
-  //   // console.log(result)
-  //   for (const item of result) {
-  //     promptStore.prompts.image.illustration = item
-  //     const imageParams = getImageModelParams('illustration', item)
-  //     const url = await imageModel.getResponse(imageParams)
-  //     // console.log(url)
-  //     recordStore.record.story.插图.push(url)
-  //   }
-  //   // console.log(urls)
-  //   return
-  // }
+  async function getStoryIllustration(messages) {
+    const chatProvider = modelStore.getProviderComposable('chat', 'illustration')
+    await chatProvider.getResponse('chat', 'illustration', messages)
+    const prompt = modelStore.modelResponse.chat.content
+    console.log(prompt)
+    // 使用正则表达式提取方括号内的内容
+    const content = prompt.match(/(?<=\[)(.*?)(?=\])/)[0]
+    // 将提取的内容按逗号分割并去除多余的空格
+    const result = content.split(',').map((item) => item.trim().replace(/'/g, ''))
+    // console.log(result)
+    for (const item of result) {
+      promptStore.prompts.image.illustration = item
+      const imageProvider = modelStore.getProviderComposable('image', 'illustration')
+      const url = await imageProvider.getResponse(
+        'image',
+        'illustration',
+        promptStore.prompts.image.illustration
+      )
+      // console.log(url)
+      recordStore.record.story.插图.push(url)
+    }
+    // console.log(urls)
+    return
+  }
 
   // Video Model
 
@@ -94,6 +99,6 @@ export default function () {
     getPose,
     // getVoice,
     // checkCase,
-    // getStoryIllustration,
+    getStoryIllustration,
   }
 }

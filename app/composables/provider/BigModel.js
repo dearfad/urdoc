@@ -24,8 +24,6 @@ export const useProviderBigModel = () => {
 
   async function getStreamContent(modelUsage, response) {
     const { parse } = await import('partial-json')
-    modelStore.modelResponse.chat.content = ''
-    modelStore.modelResponse.chat.reasoning_content = ''
     const modelResponseStream = {
       content: '',
       reasoning_content: '',
@@ -76,6 +74,8 @@ export const useProviderBigModel = () => {
   }
 
   async function getChatResponse(modelUsage, messages) {
+    modelStore.modelResponse.chat.content = ''
+    modelStore.modelResponse.chat.reasoning_content = ''
     const chatModel = modelStore.activeModels.chat[modelUsage]
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
@@ -166,8 +166,11 @@ export const useProviderBigModel = () => {
     const videoModel = modelStore.activeModels.video[modelUsage]
     const payload = {
       url: `${API_BASE}${VIDEOS_GENERATIONS}`,
-      apiKey: apiKeyStore.apiKeys[videoModel.apiKeyName] || '',
-      apiKeyName: videoModel.apiKeyName || '',
+      apiKey: videoModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+      apiKeyName:
+        videoModel.source === 'free'
+          ? FREE_API_KEY_NAME
+          : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -208,10 +211,15 @@ export const useProviderBigModel = () => {
         },
         body: JSON.stringify({
           url: taskUrl,
-          apiKey: apiKeyStore.apiKeys[videoModel.apiKeyName] || '',
-          apiKeyName: videoModel.apiKeyName || '',
+          apiKey:
+            videoModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+          apiKeyName:
+            videoModel.source === 'free'
+              ? FREE_API_KEY_NAME
+              : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
           method: 'GET',
           headers: {},
+          body: { model: videoModel.model },
         }),
       })
       const data = await result.json()

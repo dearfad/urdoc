@@ -81,11 +81,13 @@ definePageMeta({
 })
 const stateStore = useStateStore()
 const recordStore = useRecordStore()
+const modelStore = useModelStore()
 const isLoading = ref(false)
 const field = ref('')
 
 async function generate() {
   isLoading.value = true
+  recordStore.$reset()
   stateStore.recordShowContent = 'markdown'
   stateStore.isCaseModelResponseStringShow = true
   field.value = '生成病例...'

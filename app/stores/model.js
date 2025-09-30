@@ -210,6 +210,22 @@ export const useModelStore = defineStore(
       },
     })
 
+    function resetResponse() {
+      modelResponse.value = {
+        chat: {
+          content: '',
+          reasoning_content: '',
+        },
+        image: {
+          url: '',
+        },
+        video: {
+          url: '',
+          cover_image_url: '',
+        },
+      }
+    }
+
     return {
       freeModels,
       activeModels,
@@ -218,6 +234,7 @@ export const useModelStore = defineStore(
       database,
       getProviderComposable,
       modelResponse,
+      resetResponse,
     }
   },
   {

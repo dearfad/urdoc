@@ -37,6 +37,9 @@ const API_KEY_ERROR = {
 
 const FREE_MODELS_MAP = {
   ZHIPU_API_KEY: ['glm-4.5-flash', 'glm-4-flash-250414', 'cogview-3-flash', 'cogvideox-flash'],
+  XFYUN_API_KEY: ['lite'],
+  HUNYUAN_API_KEY: ['hunyuan-lite'],
+  SHUSHENG_API_KEY: ['internlm3-8b-instruct', 'intern-s1', 'intern-s1-mini', 'internlm2.5-latest'],
 }
 function getToken(payload, env) {
   if (payload.apiKey) return unmask(env['NUXT_URDOC_SECRET_KEY'], payload.apiKey)

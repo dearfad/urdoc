@@ -17,8 +17,6 @@ export const useProviderGitee = () => {
 
   async function getStreamContent(modelUsage, response) {
     const { parse } = await import('partial-json')
-    modelStore.modelResponse.chat.content = ''
-    modelStore.modelResponse.chat.reasoning_content = ''
     const modelResponseStream = {
       content: '',
       reasoning_content: '',
@@ -69,6 +67,8 @@ export const useProviderGitee = () => {
   }
 
   async function getChatResponse(modelUsage, messages) {
+    modelStore.modelResponse.chat.content = ''
+    modelStore.modelResponse.chat.reasoning_content = ''
     const chatModel = modelStore.activeModels.chat[modelUsage]
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
