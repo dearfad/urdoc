@@ -8,17 +8,17 @@ export async function onRequest({ request, env }) {
   // 删除 accept-encoding 头避免压缩影响 SSE 流
   request.headers.delete('accept-encoding')
 
-  const token = getToken(payload, env)
-  if (!token) return sendErrorResponse(API_KEY_ERROR)
-  payload.headers.Authorization = `Bearer ${token}`
-
+  if (payload.source != 'local') {
+    const token = getToken(payload, env)
+    if (!token) return sendErrorResponse(API_KEY_ERROR)
+    payload.headers.Authorization = `Bearer ${token}`
+  }
   try {
     const response = await fetch(payload.url, {
       method: payload.method,
       headers: payload.headers,
       body: JSON.stringify(payload.body),
     })
-
     return new Response(response.body, {
       status: response.status,
       headers: response.headers,

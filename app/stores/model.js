@@ -180,6 +180,7 @@ export const useModelStore = defineStore(
       { name: 'OPENROUTER', id: 'OPENROUTER' },
       { name: 'MODELSCOPE', id: 'MODELSCOPE' },
       { name: 'GITEE', id: 'GITEE' },
+      { name: 'OLLAMA', id: 'OLLAMA' },
     ]
 
     const PROVIDER_COMPOSABLES_MAP = {
@@ -190,6 +191,7 @@ export const useModelStore = defineStore(
       OPENROUTER: useProviderOpenRouter(),
       MODELSCOPE: useProviderModelScope(),
       GITEE: useProviderGitee(),
+      OLLAMA: useProviderOllama(),
     }
 
     function getProviderComposable(modelType, modelUsage) {
@@ -239,7 +241,7 @@ export const useModelStore = defineStore(
   },
   {
     persist: {
-      pick: ['activeModels', 'customModels'],
+      pick: ['activeModels', 'customModels', 'localModels'],
     },
   }
 )

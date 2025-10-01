@@ -1,16 +1,22 @@
 import { unmask } from '../utils/mask.js'
 export default defineEventHandler(async (event) => {
   const payload = await readBody(event)
-  const token = getToken(payload, process.env)
-  if (!token) return sendErrorResponse(API_KEY_ERROR)
-  payload.headers.Authorization = `Bearer ${token}`
+  if (payload.source != 'local') {
+    const token = getToken(payload, process.env)
+    if (!token) return sendErrorResponse(API_KEY_ERROR)
+    payload.headers.Authorization = `Bearer ${token}`
+  }
   try {
     const response = await fetch(payload.url, {
       method: payload.method,
       headers: payload.headers,
       body: JSON.stringify(payload.body),
     })
-    if (response.headers.get('content-type')?.includes('stream')) {
+    // console.log(response)
+    if (
+      response.headers.get('content-type')?.includes('stream') ||
+      response.headers.get('content-type')?.includes('application/x-ndjson')
+    ) {
       return new Response(response.body, {
         status: response.status,
         headers: response.headers,

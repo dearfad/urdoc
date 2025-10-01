@@ -32,6 +32,7 @@
           <v-tabs v-model="tab" grow density="compact">
             <v-tab value="free" text="免费" prepend-icon="mdi-check-circle-outline" />
             <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
+            <v-tab value="local" text="本地" prepend-icon="mdi-home" />
           </v-tabs>
           <v-tabs-window v-model="tab">
             <v-tabs-window-item value="free">
@@ -39,6 +40,9 @@
             </v-tabs-window-item>
             <v-tabs-window-item value="custom">
               <ModelCardCustom :model-type="modelType" :model-usage="modelUsage" />
+            </v-tabs-window-item>
+            <v-tabs-window-item value="local">
+              <ModelCardLocal :model-type="modelType" :model-usage="modelUsage" />
             </v-tabs-window-item>
           </v-tabs-window>
         </div>
