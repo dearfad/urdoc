@@ -22,6 +22,16 @@ export default function () {
     return await provider.getResponse('chat', 'story', messages)
   }
 
+  async function getConversation(messages) {
+    const provider = modelStore.getProviderComposable('chat', 'conversation')
+    return await provider.getResponse('chat', 'conversation', messages)
+  }
+
+  async function getDiscussion(messages) {
+    const provider = modelStore.getProviderComposable('chat', 'discussion')
+    return await provider.getResponse('chat', 'discussion', messages)
+  }
+
   // async function getTest(messages) {
   //   const params = getChatModelParams('test', messages, 'json')
   //   return await chatModel.getResponse(params, 'json')
@@ -92,6 +102,9 @@ export default function () {
   return {
     getCase,
     getStory,
+    getConversation,
+    getDiscussion,
+
     // getTest,
     // getAct,
     // getRate,

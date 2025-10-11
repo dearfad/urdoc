@@ -8,6 +8,8 @@ import defaultPosePrompt from '@/assets/default/pose/prompt.md?raw'
 import defaultReviewPrompt from '@/assets/default/review/prompt.md?raw'
 import defaultVerifyPrompt from '@/assets/default/verify/prompt.md?raw'
 import defaultIllustrationPrompt from '@/assets/default/illustration/prompt.md?raw'
+import defaultConversationPrompt from '@/assets/default/conversation/prompt.md?raw'
+import defaultDiscussionPrompt from '@/assets/default/discussion/prompt.md?raw'
 
 export const usePromptStore = defineStore(
   'prompt',
@@ -15,7 +17,19 @@ export const usePromptStore = defineStore(
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
     const supabase = useSupabase()
-    const promptType = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'review', 'verify']
+    const promptType = [
+      'case',
+      'story',
+      'test',
+      'act',
+      'rate',
+      'face',
+      'pose',
+      'review',
+      'verify',
+      'conversation',
+      'discussion',
+    ]
     const prompts = ref({
       system: {
         case: {
@@ -98,6 +112,22 @@ export const usePromptStore = defineStore(
           author: '',
           public: true,
         },
+        conversation: {
+          id: '',
+          type: 'conversation',
+          title: '默认',
+          prompt: defaultConversationPrompt,
+          author: '',
+          public: true,
+        },
+        discussion: {
+          id: '',
+          type: 'discussion',
+          title: '默认',
+          prompt: defaultDiscussionPrompt,
+          author: '',
+          public: true,
+        },
       },
       user: {
         case: [],
@@ -109,6 +139,8 @@ export const usePromptStore = defineStore(
         pose: [],
         review: [],
         verify: [],
+        conversation: [],
+        discussion: [],
       },
       image: {
         face: '',
@@ -197,6 +229,12 @@ export const usePromptStore = defineStore(
           break
         case 'illustration':
           content = `提供故事如下：${recordStore.view.story.markdown}`
+          break
+        case 'conversation':
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}`
+          break
+        case 'discussion':
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation.markdown}`
           break
         default:
           content = '系统要点设定：无特殊要求'

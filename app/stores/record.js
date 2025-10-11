@@ -29,6 +29,8 @@ export const useRecordStore = defineStore(
         故事: '',
         插图: [],
       },
+      conversation: '',
+      discussion: '',
       test: [
         {
           问题: '',
@@ -149,6 +151,8 @@ export const useRecordStore = defineStore(
           text: storyText.value,
           markdown: storyMarkdown.value,
         },
+        conversation: record.value.conversation,
+        discussion: record.value.discussion,
         test: {
           json: record.value.test,
           text: testText.value,
@@ -181,6 +185,8 @@ export const useRecordStore = defineStore(
           故事: '',
           插图: [],
         },
+        conversation: '',
+        discussion: '',
         test: [
           {
             问题: '',
@@ -251,6 +257,19 @@ export const useRecordStore = defineStore(
       record.value.tag.story = stateStore.tag.story
     }
 
+    async function getConversation() {
+      const messages = promptStore.getSystemPrompt('conversation')
+      await modelRouter.getConversation(messages)
+      record.value.conversation = modelStore.modelResponse.chat.content
+      // record.value.tag.story = stateStore.tag.story
+    }
+
+    async function getDiscussion() {
+      const messages = promptStore.getSystemPrompt('discussion')
+      await modelRouter.getDiscussion(messages)
+      record.value.discussion = modelStore.modelResponse.chat.content
+      // record.value.tag.story = stateStore.tag.story
+    }
     async function getStoryIllustration() {
       record.value.story.插图 = []
       const messages = promptStore.getSystemPrompt('illustration')
@@ -408,6 +427,8 @@ export const useRecordStore = defineStore(
       getCase,
       checkCase,
       getStory,
+      getConversation,
+      getDiscussion,
       getStoryIllustration,
       getTest,
       getAct,

@@ -3,8 +3,8 @@
     <CommonRecordTools />
     <StoryContentShow />
     <StoryUtilsGenerate />
-    <StoryContentConverstion />
-    <StoryUtilsGenerateConversaion />
+    <StoryContentConversation />
+    <StoryUtilsGenerateConversation />
     <StoryContentDiscussion />
     <StoryUtilsGenerateDiscussion />
   </div>

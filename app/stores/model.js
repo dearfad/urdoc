@@ -120,6 +120,18 @@ export const useModelStore = defineStore(
           model: 'glm-4-flash-250414',
           thinking: false,
         },
+        conversation: {
+          source: 'free',
+          provider: 'BIGMODEL',
+          model: 'glm-4-flash-250414',
+          thinking: false,
+        },
+        discussion: {
+          source: 'free',
+          provider: 'BIGMODEL',
+          model: 'glm-4-flash-250414',
+          thinking: false,
+        },
       },
       image: {
         face: {

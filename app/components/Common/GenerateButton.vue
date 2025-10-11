@@ -48,6 +48,12 @@ async function generate() {
     case 'pose':
       await recordStore.getPose()
       break
+    case 'conversation':
+      await recordStore.getConversation()
+      break
+    case 'discussion':
+      await recordStore.getDiscussion()
+      break
   }
   stateStore.isModelResponseStringShow = false
   isLoading.value = false
