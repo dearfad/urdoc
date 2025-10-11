@@ -3,6 +3,10 @@
     <CommonRecordTools />
     <StoryContentShow />
     <StoryUtilsGenerate />
+    <StoryContentConverstion />
+    <StoryUtilsGenerateConversaion />
+    <StoryContentDiscussion />
+    <StoryUtilsGenerateDiscussion />
   </div>
 </template>
 
