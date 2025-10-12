@@ -15,6 +15,8 @@ export const useStateStore = defineStore(
     const isModelResponseStringShow = ref(false)
     const isCaseModelResponseStringShow = ref(false)
     const isStoryModelResponseStringShow = ref(false)
+    const isConversationModelResponseStringShow = ref(false)
+    const isDiscussionModelResponseStringShow = ref(false)
 
     // 是否编辑病例
     const recordShowContent = ref('markdown')
@@ -77,6 +79,8 @@ export const useStateStore = defineStore(
       isModelResponseStringShow,
       isCaseModelResponseStringShow,
       isStoryModelResponseStringShow,
+      isConversationModelResponseStringShow,
+      isDiscussionModelResponseStringShow,
 
       modelResponseField,
       isModelThinking,

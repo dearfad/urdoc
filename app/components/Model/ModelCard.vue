@@ -57,7 +57,6 @@ const { modelType, modelUsage } = defineProps({
   modelUsage: { type: String, required: true },
 })
 const isCardShow = ref(false)
-const isModelGlobal = ref(false)
 const tab = ref()
 const stateStore = useStateStore()
 const modelStore = useModelStore()
@@ -75,11 +74,22 @@ onMounted(() => {
 })
 function handleModelGlobal() {
   // 设定模型全局应用
-  if (!isModelGlobal.value) return
   let usages = []
   switch (modelType) {
     case 'chat':
-      usages = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'check', 'illustration']
+      usages = [
+        'case',
+        'story',
+        'test',
+        'act',
+        'rate',
+        'face',
+        'pose',
+        'check',
+        'illustration',
+        'conversation',
+        'discussion',
+      ]
       break
     case 'image':
       usages = ['face', 'illustration']

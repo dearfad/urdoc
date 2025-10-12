@@ -49,10 +49,14 @@ async function generate() {
       await recordStore.getPose()
       break
     case 'conversation':
+      stateStore.isConversationModelResponseStringShow = true
       await recordStore.getConversation()
+      stateStore.isConversationModelResponseStringShow = false
       break
     case 'discussion':
+      stateStore.isDiscussionModelResponseStringShow = true
       await recordStore.getDiscussion()
+      stateStore.isDiscussionModelResponseStringShow = false
       break
   }
   stateStore.isModelResponseStringShow = false

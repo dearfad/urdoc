@@ -7,7 +7,7 @@
     title="对话内容"
   >
     <v-divider class="mb-2" />
-    <div v-if="stateStore.isStoryModelResponseStringShow">
+    <div v-if="stateStore.isConversationModelResponseStringShow">
       <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
         <details open>
           <summary>🤔 思考过程</summary>

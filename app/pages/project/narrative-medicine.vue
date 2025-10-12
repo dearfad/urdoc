@@ -70,6 +70,8 @@
       <v-col cols="12" md="9" class="d-flex flex-column ga-4">
         <CaseContentMarkdown height="" />
         <StoryContentMarkdown height="" />
+        <StoryContentConversation height="" />
+        <StoryContentDiscussion height="" />
       </v-col>
     </v-row>
   </v-container>
@@ -93,10 +95,22 @@ async function generate() {
   field.value = '生成病例...'
   await recordStore.getCase()
   stateStore.isCaseModelResponseStringShow = false
+  // 故事
   stateStore.isStoryModelResponseStringShow = true
   field.value = '生成故事...'
   await recordStore.getStory()
   stateStore.isStoryModelResponseStringShow = false
+  // 对话
+  stateStore.isConversationModelResponseStringShow = true
+  field.value = '生成对话...'
+  await recordStore.getConversation()
+  stateStore.isConversationModelResponseStringShow = false
+  // 讨论
+  stateStore.isDiscussionModelResponseStringShow = true
+  field.value = '生成讨论...'
+  await recordStore.getDiscussion()
+  stateStore.isDiscussionModelResponseStringShow = false
+  //
   field.value = '生成面部...'
   await recordStore.getFace()
   field.value = '生成插图...'
