@@ -32,7 +32,7 @@
     "vue-json-pretty": "^2.5.0",
     "vue-router": "^4.5.1",
     "vuetify": "^3.10.5",
-    "vuetify-nuxt-module": "^0.18.7"
+    "vuetify-nuxt-module": "^0.18.8"
   },
   "overrides": {
     "cookie": "1.0.2"

@@ -7,11 +7,14 @@ export default defineEventHandler(async (event) => {
     payload.headers.Authorization = `Bearer ${token}`
   }
   try {
-    const response = await fetch(payload.url, {
+    const params = {
       method: payload.method,
       headers: payload.headers,
-      body: JSON.stringify(payload.body),
-    })
+    }
+    if (payload.method === 'POST') {
+      params.body = JSON.stringify(payload.body)
+    }
+    const response = await fetch(payload.url, params)
     // console.log(response)
     if (
       response.headers.get('content-type')?.includes('stream') ||

@@ -14,11 +14,14 @@ export async function onRequest({ request, env }) {
     payload.headers.Authorization = `Bearer ${token}`
   }
   try {
-    const response = await fetch(payload.url, {
+    const params = {
       method: payload.method,
       headers: payload.headers,
-      body: JSON.stringify(payload.body),
-    })
+    }
+    if (payload.method === 'POST') {
+      params.body = JSON.stringify(payload.body)
+    }
+    const response = await fetch(payload.url, params)
     return new Response(response.body, {
       status: response.status,
       headers: response.headers,
