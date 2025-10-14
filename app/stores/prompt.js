@@ -11,9 +11,12 @@ import defaultIllustrationPrompt from '@/assets/default/illustration/prompt.md?r
 import defaultConversationPrompt from '@/assets/default/conversation/prompt.md?raw'
 import defaultDiscussionPrompt from '@/assets/default/discussion/prompt.md?raw'
 
+const CURRENT_VERSION = '2025-10-14'
+
 export const usePromptStore = defineStore(
   'prompt',
   () => {
+    const version = ref(CURRENT_VERSION)
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
     const supabase = useSupabase()
@@ -249,9 +252,21 @@ export const usePromptStore = defineStore(
       ]
     }
 
-    return { prompts, database, getSystemPrompt }
+    return { version, prompts, database, getSystemPrompt }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('prompt')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )

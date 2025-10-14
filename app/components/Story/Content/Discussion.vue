@@ -17,7 +17,12 @@
       <MDC :value="`${modelStore.modelResponse.chat.content}`" />
     </div>
     <div v-else>
-      <p><MDC :value="recordStore.view.discussion" /></p>
+      <!-- <p><MDC :value="recordStore.view.discussion" /></p> -->
+
+      <div v-for="(line, index) in recordStore.view.discussion.split('\n\n')" :key="index">
+        <MDC :value="line" />
+        <v-divider v-if="(index + 1) % 2 === 0" class="my-2" />
+      </div>
     </div>
   </v-card>
 </template>
@@ -30,10 +35,8 @@ const recordStore = useRecordStore()
 const { height } = defineProps({
   height: { type: String, default: '55vh', required: false },
 })
-</script>
 
-<style scoped>
-p {
-  text-indent: 2em;
-}
-</style>
+// const lines = computed(() => {
+//   return recordStore.view.discussion.split('\n\n').length
+// })
+</script>

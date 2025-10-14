@@ -1,6 +1,8 @@
+const CURRENT_VERSION = '2025-10-14'
 export const useModelStore = defineStore(
   'model',
   () => {
+    const version = ref(CURRENT_VERSION)
     const stateStore = useStateStore()
     const supabase = useSupabase()
     const userStore = useUserStore()
@@ -241,6 +243,7 @@ export const useModelStore = defineStore(
     }
 
     return {
+      version,
       freeModels,
       activeModels,
       customModels,
@@ -253,7 +256,18 @@ export const useModelStore = defineStore(
   },
   {
     persist: {
-      pick: ['activeModels', 'customModels', 'localModels'],
+      pick: ['version', 'activeModels', 'customModels', 'localModels'],
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('model')
+          } else {
+            return data
+          }
+        },
+      },
     },
   }
 )

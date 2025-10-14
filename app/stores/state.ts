@@ -1,6 +1,8 @@
+const CURRENT_VERSION = '2025-10-14'
 export const useStateStore = defineStore(
   'state',
   () => {
+    const version = ref(CURRENT_VERSION)
     //
     // API 地址设定
     //
@@ -70,6 +72,7 @@ export const useStateStore = defineStore(
     const poseId = ref('')
 
     return {
+      version,
       apiBaseUrl,
 
       isNavDrawerShow,
@@ -109,6 +112,18 @@ export const useStateStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('state')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )

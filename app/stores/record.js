@@ -1,6 +1,8 @@
+const CURRENT_VERSION = '2025-10-14'
 export const useRecordStore = defineStore(
   'record',
   () => {
+    const version = ref(CURRENT_VERSION)
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
     const supabase = useSupabase()
@@ -418,6 +420,7 @@ export const useRecordStore = defineStore(
     // })
 
     return {
+      version,
       record,
       records,
       watchFields,
@@ -444,6 +447,18 @@ export const useRecordStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('record')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )
