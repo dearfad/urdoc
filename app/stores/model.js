@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-10-14'
+const CURRENT_VERSION = '2025-10-15'
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -154,6 +154,14 @@ export const useModelStore = defineStore(
           source: 'free',
           provider: 'BIGMODEL',
           model: 'cogvideox-flash',
+          thinking: false,
+        },
+      },
+      audio: {
+        dialogue: {
+          source: 'custom',
+          provider: 'GITEE',
+          model: 'MOSS-TTSD-v0.5',
           thinking: false,
         },
       },

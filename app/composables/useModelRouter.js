@@ -60,13 +60,23 @@ export default function () {
     const chatProvider = modelStore.getProviderComposable('chat', 'illustration')
     await chatProvider.getResponse('chat', 'illustration', messages)
     const prompt = modelStore.modelResponse.chat.content
-    console.log(prompt)
     // 使用正则表达式提取方括号内的内容
     const content = prompt.match(/(?<=\[)(.*?)(?=\])/)[0]
     // 将提取的内容按逗号分割并去除多余的空格
     const result = content.split(',').map((item) => item.trim().replace(/'/g, ''))
-    // console.log(result)
-    for (const item of result) {
+
+    // for (const item of result) {
+    //   promptStore.prompts.image.illustration = item
+    //   const imageProvider = modelStore.getProviderComposable('image', 'illustration')
+    //   const url = await imageProvider.getResponse(
+    //     'image',
+    //     'illustration',
+    //     promptStore.prompts.image.illustration
+    //   )
+    //   recordStore.record.story.插图.push(url)
+    // }
+    // 并发执行所有插图生成任务
+    const illustrationPromises = result.map(async (item) => {
       promptStore.prompts.image.illustration = item
       const imageProvider = modelStore.getProviderComposable('image', 'illustration')
       const url = await imageProvider.getResponse(
@@ -74,10 +84,14 @@ export default function () {
         'illustration',
         promptStore.prompts.image.illustration
       )
-      // console.log(url)
-      recordStore.record.story.插图.push(url)
-    }
-    // console.log(urls)
+      return url
+    })
+
+    // 等待所有插图生成完成并收集结果
+    const urls = await Promise.all(illustrationPromises)
+
+    // 将所有生成的插图URL添加到记录中
+    recordStore.record.story.插图.push(...urls)
     return
   }
 

@@ -108,11 +108,14 @@ async function generate() {
   // 讨论
   stateStore.isDiscussionModelResponseStringShow = true
   field.value = '生成讨论...'
-  await recordStore.getDiscussion()
+  await Promise.all([recordStore.getDiscussion(), recordStore.getFace()])
+  // await recordStore.getDiscussion()
+  // await recordStore.getFace()
   stateStore.isDiscussionModelResponseStringShow = false
   //
-  field.value = '生成面部...'
-  await recordStore.getFace()
+  // field.value = '生成面部...'
+  // await recordStore.getFace()
+
   field.value = '生成插图...'
   await recordStore.getStoryIllustration()
   isLoading.value = false
