@@ -56,6 +56,11 @@ const items = [
   { text: '评估能力', icon: 'mdi-alpha-r-circle', link: '/cstar/rate', disabled: true },
   { text: '图像生成', icon: 'mdi-image-outline', link: '/image/face', disabled: false },
   { text: '视频生成', icon: 'mdi-video-outline', link: '/video/pose', disabled: false },
-  { text: '语音合成', icon: 'mdi-account-tie-voice-outline', link: '/audio/voice', disabled: true },
+  {
+    text: '语音合成',
+    icon: 'mdi-account-tie-voice-outline',
+    link: '/audio/voice',
+    disabled: false,
+  },
 ]
 </script>

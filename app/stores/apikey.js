@@ -1,6 +1,8 @@
+const CURRENT_VERSION = '2025-10-20'
 export const useApiKeyStore = defineStore(
   'apikey',
   () => {
+    const version = ref(CURRENT_VERSION)
     const stateStore = useStateStore()
     // 键值唯一
     const apiKeys = ref({})
@@ -43,9 +45,21 @@ export const useApiKeyStore = defineStore(
       }
     }
 
-    return { apiKeys, add, del }
+    return { version, apiKeys, add, del }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('apikey')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )

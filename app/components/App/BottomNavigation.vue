@@ -10,17 +10,17 @@
       <span>故事</span>
     </v-btn>
 
-    <v-btn to="/cstar/test">
+    <v-btn to="/cstar/test" :disabled="true">
       <v-icon>mdi-ab-testing</v-icon>
       <span>问题</span>
     </v-btn>
 
-    <v-btn to="/cstar/act">
+    <v-btn to="/cstar/act" :disabled="true">
       <v-icon>mdi-account-outline</v-icon>
       <span>问诊</span>
     </v-btn>
 
-    <v-btn to="/cstar/rate">
+    <v-btn to="/cstar/rate" :disabled="true">
       <v-icon>mdi-shield-star-outline</v-icon>
       <span>评价</span>
     </v-btn>

@@ -65,6 +65,7 @@ export const useRecordStore = defineStore(
       face: '',
       pose: '',
       voice: '',
+      dialogue: '',
       author: '',
       public: true,
     })
@@ -220,6 +221,7 @@ export const useRecordStore = defineStore(
         },
         face: '',
         voice: '',
+        dialogue: '',
         pose: '',
         author: '',
         public: true,
@@ -323,6 +325,11 @@ export const useRecordStore = defineStore(
     async function getVoice(text) {
       record.value.voice = ''
       record.value.voice = await modelRouter.getVoice(text)
+    }
+
+    async function getDialogue() {
+      record.value.dialogue = ''
+      record.value.dialogue = await modelRouter.getDialogue(record.value.conversation)
     }
 
     const database = {
@@ -439,6 +446,7 @@ export const useRecordStore = defineStore(
       getFace,
       getPose,
       getVoice,
+      getDialogue,
       newRecord,
 
       database,

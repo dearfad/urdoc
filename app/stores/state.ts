@@ -12,7 +12,7 @@ export const useStateStore = defineStore(
     // 侧边栏显示切换
     const isNavDrawerShow = ref(true)
     // 底部导航栏显示切换
-    const isBottomNavigationShow = ref(false)
+    const isBottomNavigationShow = ref(true)
 
     const isModelResponseStringShow = ref(false)
     const isCaseModelResponseStringShow = ref(false)

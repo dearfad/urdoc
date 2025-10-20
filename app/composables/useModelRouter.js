@@ -1,5 +1,5 @@
 export default function () {
-  // const stateStore = useStateStore()
+  const stateStore = useStateStore()
   const recordStore = useRecordStore()
   // const imageModel = useImageModel()
   // const videoModel = useVideoModel()
@@ -106,12 +106,17 @@ export default function () {
   }
 
   // Voice Model
-  // async function getVoice(text) {
-  //   const response = await $fetch(
-  //     `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${text}`
-  //   )
-  //   return response.audio
-  // }
+  async function getVoice(messages) {
+    const response = await $fetch(
+      `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${messages}`
+    )
+    return response.audio
+  }
+
+  async function getDialogue(messages) {
+    const provider = modelStore.getProviderComposable('audio', 'dialogue')
+    return await provider.getResponse('audio', 'dialogue', messages)
+  }
 
   return {
     getCase,
@@ -124,7 +129,8 @@ export default function () {
     // getRate,
     getFace,
     getPose,
-    // getVoice,
+    getVoice,
+    getDialogue,
     // checkCase,
     getStoryIllustration,
   }

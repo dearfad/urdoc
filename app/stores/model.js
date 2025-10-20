@@ -232,6 +232,9 @@ export const useModelStore = defineStore(
         url: '',
         cover_image_url: '',
       },
+      audio: {
+        url: '',
+      },
     })
 
     function resetResponse() {
