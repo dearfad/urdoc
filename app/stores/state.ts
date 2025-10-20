@@ -15,10 +15,28 @@ export const useStateStore = defineStore(
     const isBottomNavigationShow = ref(true)
 
     const isModelResponseStringShow = ref(false)
+
     const isCaseModelResponseStringShow = ref(false)
     const isStoryModelResponseStringShow = ref(false)
     const isConversationModelResponseStringShow = ref(false)
     const isDiscussionModelResponseStringShow = ref(false)
+
+    const setModelResponseStringShow = (modelUsage: string, show: boolean) => {
+      switch (modelUsage) {
+        case 'case':
+          isCaseModelResponseStringShow.value = show
+          break
+        case 'story':
+          isStoryModelResponseStringShow.value = show
+          break
+        case 'conversation':
+          isConversationModelResponseStringShow.value = show
+          break
+        case 'discussion':
+          isDiscussionModelResponseStringShow.value = show
+          break
+      }
+    }
 
     // 是否编辑病例
     const recordShowContent = ref('markdown')
@@ -84,6 +102,7 @@ export const useStateStore = defineStore(
       isStoryModelResponseStringShow,
       isConversationModelResponseStringShow,
       isDiscussionModelResponseStringShow,
+      setModelResponseStringShow,
 
       modelResponseField,
       isModelThinking,

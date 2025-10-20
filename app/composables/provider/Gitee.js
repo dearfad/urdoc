@@ -222,7 +222,8 @@ export const useProviderGitee = () => {
     // 执行替换
     let result = dialogue
     speakerList.forEach((speaker) => {
-      const regex = new RegExp(speaker.replace(/[()]/g, '\\$&'), 'g')
+      // const regex = new RegExp(speaker.replace(/[()]/g, '\\$&'), 'g')
+      const regex = new RegExp(speaker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')
       result = result.replace(regex, speakerMap[speaker])
     })
 

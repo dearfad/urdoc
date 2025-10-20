@@ -1,17 +1,26 @@
 <template>
-  <v-card class="text-body-1 px-4 py-2 overflow-auto" rounded="lg" :height="height" elevation="4">
-    <div v-if="stateStore.isCaseModelResponseStringShow">
-      <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
-        <details open>
-          <summary>🤔 思考过程</summary>
-          <MDC :value="modelStore.modelResponse.chat.reasoning_content" />
-        </details>
+  <v-card class="overflow-auto" rounded="lg" :height="height" hover>
+    <v-card-item class="bg-surface-light">
+      <template #prepend>
+        <v-icon icon="mdi-alpha-c-circle" />
+      </template>
+      <v-card-title class="font-weight-bold">病历</v-card-title>
+    </v-card-item>
+    <v-divider />
+    <v-card-text class="text-body-1">
+      <div v-if="stateStore.isCaseModelResponseStringShow" class="case">
+        <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
+          <details open>
+            <summary>🤔 思考过程</summary>
+            <MDC :value="modelStore.modelResponse.chat.reasoning_content" />
+          </details>
+        </div>
+        <MDC :value="caseMarkdown" />
       </div>
-      <MDC :value="`${caseMarkdown}`" />
-    </div>
-    <div v-else>
-      <MDC :value="recordStore.view.case.markdown" />
-    </div>
+      <div class="case">
+        <MDC :value="recordStore.view.case.markdown" />
+      </div>
+    </v-card-text>
   </v-card>
 </template>
 

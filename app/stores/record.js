@@ -233,6 +233,7 @@ export const useRecordStore = defineStore(
     }
 
     async function getCase() {
+      stateStore.setModelResponseStringShow('case', true)
       $reset()
       const messages = promptStore.getSystemPrompt('case')
       await modelRouter.getCase(messages)
@@ -242,9 +243,11 @@ export const useRecordStore = defineStore(
         record.value.case = caseJson
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case
+        modelStore.resetResponse()
       } catch (error) {
         stateStore.appInfos.push('获取病例失败: ' + error)
       }
+      stateStore.setModelResponseStringShow('case', false)
     }
 
     async function checkCase() {
@@ -255,23 +258,32 @@ export const useRecordStore = defineStore(
     }
 
     async function getStory() {
+      stateStore.setModelResponseStringShow('story', true)
       const messages = promptStore.getSystemPrompt('story')
       await modelRouter.getStory(messages)
       record.value.story.故事 = modelStore.modelResponse.chat.content
       record.value.tag.story = stateStore.tag.story
+      modelStore.resetResponse()
+      stateStore.setModelResponseStringShow('story', false)
     }
 
     async function getConversation() {
+      stateStore.setModelResponseStringShow('conversation', true)
       const messages = promptStore.getSystemPrompt('conversation')
       await modelRouter.getConversation(messages)
       record.value.conversation = modelStore.modelResponse.chat.content
+      modelStore.resetResponse()
+      stateStore.setModelResponseStringShow('conversation', false)
       // record.value.tag.story = stateStore.tag.story
     }
 
     async function getDiscussion() {
+      stateStore.setModelResponseStringShow('discussion', true)
       const messages = promptStore.getSystemPrompt('discussion')
       await modelRouter.getDiscussion(messages)
       record.value.discussion = modelStore.modelResponse.chat.content
+      modelStore.resetResponse()
+      stateStore.setModelResponseStringShow('discussion', false)
       // record.value.tag.story = stateStore.tag.story
     }
     async function getStoryIllustration() {
