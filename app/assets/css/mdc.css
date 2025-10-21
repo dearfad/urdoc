@@ -3,7 +3,7 @@
 .case p {
   margin-top: 0; /* 段前间距 */
   margin-bottom: 0.9em; /* 段后间距 */
-  text-indent: 2em;
+  text-indent: 0em;
   line-height: 1.8;
 }
 
