@@ -1,6 +1,15 @@
 /* 调整段落之间的间距 */
 
+.reasoning p {
+  font-size: 1em;
+  margin-top: 0; /* 段前间距 */
+  margin-bottom: 0.8em; /* 段后间距 */
+  text-indent: 2em;
+  line-height: 1.6;
+}
+
 .case p {
+  font-size: 1.2em;
   margin-top: 0; /* 段前间距 */
   margin-bottom: 0.9em; /* 段后间距 */
   text-indent: 0em;
@@ -8,6 +17,7 @@
 }
 
 .story p {
+  font-size: 1.2em;
   margin-top: 0; /* 段前间距 */
   margin-bottom: 0.9em; /* 段后间距 */
   text-indent: 2em;

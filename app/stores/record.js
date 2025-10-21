@@ -33,6 +33,12 @@ export const useRecordStore = defineStore(
       },
       conversation: '',
       discussion: '',
+      reasoning: {
+        case: '',
+        story: '',
+        conversation: '',
+        discussion: '',
+      },
       test: [
         {
           问题: '',
@@ -190,6 +196,12 @@ export const useRecordStore = defineStore(
         },
         conversation: '',
         discussion: '',
+        reasoning: {
+          case: '',
+          story: '',
+          conversation: '',
+          discussion: '',
+        },
         test: [
           {
             问题: '',
@@ -233,21 +245,19 @@ export const useRecordStore = defineStore(
     }
 
     async function getCase() {
-      stateStore.setModelResponseStringShow('case', true)
       $reset()
       const messages = promptStore.getSystemPrompt('case')
       await modelRouter.getCase(messages)
       if (!modelStore.modelResponse.chat.content) return
       try {
-        const caseJson = modelStore.modelResponse.chat.content
-        record.value.case = caseJson
+        record.value.case = modelStore.modelResponse.chat.content
+        record.value.reasoning.case = modelStore.modelResponse.chat.reasoning_content
+        modelStore.resetResponse()
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case
-        modelStore.resetResponse()
       } catch (error) {
         stateStore.appInfos.push('获取病例失败: ' + error)
       }
-      stateStore.setModelResponseStringShow('case', false)
     }
 
     async function checkCase() {
@@ -258,13 +268,13 @@ export const useRecordStore = defineStore(
     }
 
     async function getStory() {
-      stateStore.setModelResponseStringShow('story', true)
       const messages = promptStore.getSystemPrompt('story')
       await modelRouter.getStory(messages)
+      if (!modelStore.modelResponse.chat.content) return
       record.value.story.故事 = modelStore.modelResponse.chat.content
-      record.value.tag.story = stateStore.tag.story
+      record.value.reasoning.story = modelStore.modelResponse.chat.reasoning_content
       modelStore.resetResponse()
-      stateStore.setModelResponseStringShow('story', false)
+      record.value.tag.story = stateStore.tag.story
     }
 
     async function getConversation() {

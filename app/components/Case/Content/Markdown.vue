@@ -1,26 +1,37 @@
 <template>
-  <v-card class="overflow-auto" rounded="lg" :height="height" hover>
-    <v-card-item class="bg-surface-light">
-      <template #prepend>
-        <v-icon icon="mdi-alpha-c-circle" />
-      </template>
-      <v-card-title class="font-weight-bold">病历</v-card-title>
-    </v-card-item>
-    <v-divider />
-    <v-card-text class="text-body-1">
-      <div v-if="stateStore.isCaseModelResponseStringShow" class="case">
-        <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
+  <v-card class="overflow-auto" rounded="lg" hover>
+    <ClientOnly>
+      <v-card-item class="bg-surface-light">
+        <template #prepend>
+          <v-icon icon="mdi-alpha-c-circle" />
+        </template>
+        <template #append>
+          <v-icon
+            :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+            @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
+          />
+        </template>
+        <v-card-title class="font-weight-bold">病历</v-card-title>
+      </v-card-item>
+      <v-divider />
+      <v-card-text>
+        <div v-if="isReasoningContentShow" class="reasoning my-4">
           <details open>
-            <summary>🤔 思考过程</summary>
-            <MDC :value="modelStore.modelResponse.chat.reasoning_content" />
+            <summary class="font-weight-bold">思考过程</summary>
+            <v-divider class="my-2" />
+            <MDC :value="reasoning" />
+            <v-divider class="my-2" />
           </details>
         </div>
-        <MDC :value="caseMarkdown" />
-      </div>
-      <div class="case">
-        <MDC :value="recordStore.view.case.markdown" />
-      </div>
-    </v-card-text>
+
+        <div v-if="isStreamContentShow" class="case">
+          <MDC :value="streamContentMarkdown" />
+        </div>
+        <div v-else class="case">
+          <MDC :value="recordStore.view.case.markdown" />
+        </div>
+      </v-card-text>
+    </ClientOnly>
   </v-card>
 </template>
 
@@ -28,11 +39,25 @@
 const recordStore = useRecordStore()
 const stateStore = useStateStore()
 const modelStore = useModelStore()
-const { height } = defineProps({
-  height: { type: String, default: '55vh', required: false },
-})
 
-const caseMarkdown = computed(() => {
+// 是否显示思考过程
+const isReasoningContentShowSwitches = ref(true)
+const isReasoningContentShow = computed(
+  () =>
+    (isReasoningContentShowSwitches.value || stateStore.isModelResponseShow.case) &&
+    (modelStore.modelResponse.chat.reasoning_content || recordStore.record.reasoning.case)
+)
+
+// 思考内容
+const reasoning = computed(
+  () => recordStore.record.reasoning.case || modelStore.modelResponse.chat.reasoning_content
+)
+
+// 是否显示流式内容
+const isStreamContentShow = computed(
+  () => stateStore.isModelResponseShow.case && modelStore.modelResponse.chat.content
+)
+const streamContentMarkdown = computed(() => {
   return Object.entries(modelStore.modelResponse.chat.content)
     .map(([key, value]) => `**${key}**: ${value}`)
     .join('\n\n')

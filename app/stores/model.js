@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-10-15'
+const CURRENT_VERSION = '2025-10-21'
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -267,7 +267,7 @@ export const useModelStore = defineStore(
   },
   {
     persist: {
-      pick: ['version', 'activeModels', 'customModels', 'localModels'],
+      pick: ['version', 'activeModels', 'customModels', 'localModels', 'modelResponse'],
       serializer: {
         serialize: JSON.stringify,
         deserialize: (str) => {

@@ -69,10 +69,10 @@
           <StoryContentIllustration height="" />
         </v-col>
         <v-col cols="12" md="9" class="d-flex flex-column ga-4">
-          <CaseContentMarkdown height="" />
-          <StoryContentMarkdown height="" />
-          <StoryContentConversation height="" />
-          <StoryContentDiscussion height="" />
+          <CaseContentMarkdown />
+          <StoryContentMarkdown />
+          <!-- <StoryContentConversation height="" />
+          <StoryContentDiscussion height="" /> -->
         </v-col>
       </v-row>
     </ClientOnly>
@@ -93,16 +93,20 @@ async function generate() {
   isLoading.value = true
   // 病例
   field.value = '生成病例...'
+  stateStore.isModelResponseShow.case = true
   await recordStore.getCase()
+  stateStore.isModelResponseShow.case = false
   // 故事
   field.value = '生成故事...'
+  stateStore.isModelResponseShow.story = true
   await recordStore.getStory()
+  stateStore.isModelResponseShow.story = false
   // 对话
-  field.value = '生成对话&头像...'
-  await Promise.all([recordStore.getConversation(), recordStore.getFace()])
+  // field.value = '生成对话&头像...'
+  // await Promise.all([recordStore.getConversation(), recordStore.getFace()])
   // 讨论
-  field.value = '生成讨论$插图...'
-  await Promise.all([recordStore.getDiscussion(), recordStore.getStoryIllustration()])
+  // field.value = '生成讨论$插图...'
+  // await Promise.all([recordStore.getDiscussion(), recordStore.getStoryIllustration()])
   //
   isLoading.value = false
 }

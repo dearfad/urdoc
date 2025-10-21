@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-10-14'
+const CURRENT_VERSION = '2025-10-21'
 export const useStateStore = defineStore(
   'state',
   () => {
@@ -14,29 +14,12 @@ export const useStateStore = defineStore(
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(true)
 
-    const isModelResponseStringShow = ref(false)
-
-    const isCaseModelResponseStringShow = ref(false)
-    const isStoryModelResponseStringShow = ref(false)
-    const isConversationModelResponseStringShow = ref(false)
-    const isDiscussionModelResponseStringShow = ref(false)
-
-    const setModelResponseStringShow = (modelUsage: string, show: boolean) => {
-      switch (modelUsage) {
-        case 'case':
-          isCaseModelResponseStringShow.value = show
-          break
-        case 'story':
-          isStoryModelResponseStringShow.value = show
-          break
-        case 'conversation':
-          isConversationModelResponseStringShow.value = show
-          break
-        case 'discussion':
-          isDiscussionModelResponseStringShow.value = show
-          break
-      }
-    }
+    const isModelResponseShow = ref({
+      case: false,
+      story: false,
+      conversation: false,
+      discussion: false,
+    })
 
     // 是否编辑病例
     const recordShowContent = ref('markdown')
@@ -97,12 +80,7 @@ export const useStateStore = defineStore(
 
       isBottomNavigationShow,
 
-      isModelResponseStringShow,
-      isCaseModelResponseStringShow,
-      isStoryModelResponseStringShow,
-      isConversationModelResponseStringShow,
-      isDiscussionModelResponseStringShow,
-      setModelResponseStringShow,
+      isModelResponseShow,
 
       modelResponseField,
       isModelThinking,
