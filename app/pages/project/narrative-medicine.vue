@@ -3,58 +3,7 @@
     <ClientOnly>
       <v-row>
         <v-col cols="12" class="d-flex flex-column">
-          <v-menu :close-on-content-click="false">
-            <template #activator="{ props }">
-              <v-btn v-bind="props"> 疾病范围 </v-btn>
-            </template>
-            <CommonScopeSelector />
-          </v-menu>
-          <div class="px-4 py-1 border-dotted border-thin border-t-0">
-            <v-chip-group>
-              <v-chip
-                v-if="stateStore.scope.book"
-                prepend-icon="mdi-book-open-variant-outline"
-                variant="outlined"
-              >
-                {{ stateStore.scope.book }}
-              </v-chip>
-              <v-chip
-                v-if="stateStore.scope.part"
-                prepend-icon="mdi-bookmark-multiple-outline"
-                variant="outlined"
-              >
-                {{ stateStore.scope.part }}
-              </v-chip>
-              <v-chip
-                v-if="stateStore.scope.chapter"
-                prepend-icon="mdi-bookmark-multiple-outline"
-                variant="outlined"
-              >
-                {{ stateStore.scope.chapter }}
-              </v-chip>
-              <v-chip
-                v-if="stateStore.scope.section"
-                prepend-icon="mdi-book-outline"
-                variant="outlined"
-              >
-                {{ stateStore.scope.section }}
-              </v-chip>
-              <v-chip
-                v-if="stateStore.scope.subsection"
-                prepend-icon="mdi-bookmark-outline"
-                variant="outlined"
-              >
-                {{ stateStore.scope.subsection }}
-              </v-chip>
-              <v-chip
-                v-if="stateStore.scope.topic"
-                prepend-icon="mdi-bookmark-outline"
-                variant="outlined"
-              >
-                {{ stateStore.scope.topic }}
-              </v-chip>
-            </v-chip-group>
-          </div>
+          <CommonScopeSelector />
           <v-btn block text="开始生成" :loading="isLoading" @click="generate">
             <template #loader>
               <v-progress-circular indeterminate color="white" class="mr-4" />
@@ -96,11 +45,13 @@ async function generate() {
   stateStore.isModelResponseShow.case = true
   await recordStore.getCase()
   stateStore.isModelResponseShow.case = false
+  await nextTick()
   // 故事
   field.value = '生成故事...'
   stateStore.isModelResponseShow.story = true
   await recordStore.getStory()
   stateStore.isModelResponseShow.story = false
+  await nextTick()
   // 对话
   // field.value = '生成对话&头像...'
   // await Promise.all([recordStore.getConversation(), recordStore.getFace()])

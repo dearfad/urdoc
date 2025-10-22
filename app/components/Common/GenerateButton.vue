@@ -27,17 +27,16 @@ const isLoading = ref(false)
 async function generate() {
   isLoading.value = true
   stateStore.recordShowContent = 'markdown'
-  stateStore.isModelResponseStringShow = true
   switch (generateType) {
     case 'case':
-      stateStore.isCaseModelResponseStringShow = true
+      stateStore.isModelResponseShow.case = true
       await recordStore.getCase()
-      stateStore.isCaseModelResponseStringShow = false
+      stateStore.isModelResponseShow.case = false
       break
     case 'story':
-      stateStore.isStoryModelResponseStringShow = true
+      stateStore.isModelResponseShow.story = true
       await recordStore.getStory()
-      stateStore.isStoryModelResponseStringShow = false
+      stateStore.isModelResponseShow.story = false
       break
     case 'test':
       await recordStore.getTest()
@@ -49,17 +48,16 @@ async function generate() {
       await recordStore.getPose()
       break
     case 'conversation':
-      stateStore.isConversationModelResponseStringShow = true
+      stateStore.isModelResponseShow.conversation = true
       await recordStore.getConversation()
-      stateStore.isConversationModelResponseStringShow = false
+      stateStore.isModelResponseShow.conversation = false
       break
     case 'discussion':
-      stateStore.isDiscussionModelResponseStringShow = true
+      stateStore.isModelResponseShow.discussion = true
       await recordStore.getDiscussion()
-      stateStore.isDiscussionModelResponseStringShow = false
+      stateStore.isModelResponseShow.discussion = false
       break
   }
-  stateStore.isModelResponseStringShow = false
   isLoading.value = false
 }
 </script>

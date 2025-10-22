@@ -23,7 +23,7 @@
             <v-divider class="my-2" />
           </details>
         </div>
-        <div v-if="isStreamContentShow" class="story">
+        <div v-if="stateStore.isModelResponseShow.story" class="story">
           <MDC :value="modelStore.modelResponse.chat.content" />
         </div>
         <div v-else class="story">
@@ -43,17 +43,12 @@ const recordStore = useRecordStore()
 const isReasoningContentShowSwitches = ref(true)
 const isReasoningContentShow = computed(
   () =>
-    (isReasoningContentShowSwitches.value || stateStore.isModelResponseShow.story) &&
-    (modelStore.modelResponse.chat.reasoning_content || recordStore.record.reasoning.story)
+    (stateStore.isModelResponseShow.story && modelStore.modelResponse.chat.reasoning_content) ||
+    (isReasoningContentShowSwitches.value && recordStore.record.reasoning.story)
 )
 
 // 思考内容
 const reasoning = computed(
   () => recordStore.record.reasoning.story || modelStore.modelResponse.chat.reasoning_content
-)
-
-// 是否显示流式内容
-const isStreamContentShow = computed(
-  () => stateStore.isModelResponseShow.story && modelStore.modelResponse.chat.content
 )
 </script>

@@ -22,6 +22,7 @@
   margin-bottom: 0.9em; /* 段后间距 */
   text-indent: 2em;
   line-height: 1.8;
+  text-align: justify;
 }
 
 .conversation p {
@@ -29,6 +30,7 @@
   margin-bottom: 0.9em; /* 段后间距 */
   text-indent: 0em;
   line-height: 1.8;
+  text-align: justify;
 }
 
 .discussion p {
@@ -36,4 +38,5 @@
   margin-bottom: 0.9em; /* 段后间距 */
   text-indent: 0em;
   line-height: 1.8;
+  text-align: justify;
 }

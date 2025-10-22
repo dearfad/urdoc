@@ -1,6 +1,7 @@
 <template>
   <v-card class="overflow-auto" rounded="lg" hover>
     <ClientOnly>
+      {{ modelStore.modelResponse.chat.case }}
       <v-card-item class="bg-surface-light">
         <template #prepend>
           <v-icon icon="mdi-alpha-c-circle" />
@@ -24,7 +25,7 @@
           </details>
         </div>
 
-        <div v-if="isStreamContentShow" class="case">
+        <div v-if="stateStore.isModelResponseShow.case" class="case">
           <MDC :value="streamContentMarkdown" />
         </div>
         <div v-else class="case">
@@ -44,8 +45,8 @@ const modelStore = useModelStore()
 const isReasoningContentShowSwitches = ref(true)
 const isReasoningContentShow = computed(
   () =>
-    (isReasoningContentShowSwitches.value || stateStore.isModelResponseShow.case) &&
-    (modelStore.modelResponse.chat.reasoning_content || recordStore.record.reasoning.case)
+    (stateStore.isModelResponseShow.case && modelStore.modelResponse.chat.reasoning_content) ||
+    (isReasoningContentShowSwitches.value && recordStore.record.reasoning.case)
 )
 
 // 思考内容
@@ -54,9 +55,6 @@ const reasoning = computed(
 )
 
 // 是否显示流式内容
-const isStreamContentShow = computed(
-  () => stateStore.isModelResponseShow.case && modelStore.modelResponse.chat.content
-)
 const streamContentMarkdown = computed(() => {
   return Object.entries(modelStore.modelResponse.chat.content)
     .map(([key, value]) => `**${key}**: ${value}`)
