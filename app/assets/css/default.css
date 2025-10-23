@@ -8,6 +8,19 @@
   line-height: 1.6;
 }
 
+.reasoning ul,
+.reasoning ol {
+  padding-left: 3em;
+}
+
+.reasoning li {
+  font-size: 1em;
+  margin-top: 0; /* 段前间距 */
+  margin-bottom: 0.8em; /* 段后间距 */
+  text-indent: 0.5em;
+  line-height: 1.6;
+}
+
 .case p {
   font-size: 1.2em;
   margin-top: 0; /* 段前间距 */
@@ -21,6 +34,23 @@
   margin-top: 0; /* 段前间距 */
   margin-bottom: 0.9em; /* 段后间距 */
   text-indent: 2em;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.story ol {
+  padding-left: 3em;
+}
+
+.story ul {
+  padding-left: 3em;
+}
+
+.story li {
+  font-size: 1.2em;
+  margin-top: 0; /* 段前间距 */
+  margin-bottom: 0.9em; /* 段后间距 */
+  text-indent: 0.5em;
   line-height: 1.8;
   text-align: justify;
 }

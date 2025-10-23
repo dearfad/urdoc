@@ -1,5 +1,5 @@
 <template>
-  <v-card class="overflow-auto" rounded="lg" hover>
+  <v-card class="overflow-auto" rounded="lg" hover min-height="700">
     <ClientOnly>
       {{ modelStore.modelResponse.chat.case }}
       <v-card-item class="bg-surface-light">
@@ -20,7 +20,7 @@
           <details open>
             <summary class="font-weight-bold">思考过程</summary>
             <v-divider class="my-2" />
-            <MDC :value="reasoning" />
+            <MDC cache-key="case-reasoning-content-show" :value="reasoningContent" />
             <v-divider class="my-2" />
           </details>
         </div>
@@ -50,14 +50,14 @@ const isReasoningContentShow = computed(
 )
 
 // 思考内容
-const reasoning = computed(
+const reasoningContent = computed(
   () => recordStore.record.reasoning.case || modelStore.modelResponse.chat.reasoning_content
 )
 
 // 是否显示流式内容
 const streamContentMarkdown = computed(() => {
   return Object.entries(modelStore.modelResponse.chat.content)
-    .map(([key, value]) => `**${key}**: ${value}`)
+    .map(([key, value]) => `**${key}**：${value}`)
     .join('\n\n')
 })
 </script>

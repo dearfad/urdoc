@@ -1,5 +1,5 @@
 <template>
-  <v-card class="overflow-auto" rounded="lg" hover>
+  <v-card class="overflow-auto" rounded="lg" hover min-height="700">
     <ClientOnly>
       <v-card-item class="bg-surface-light">
         <template #prepend>
@@ -19,7 +19,7 @@
           <details open>
             <summary class="font-weight-bold">思考过程</summary>
             <v-divider class="my-2" />
-            <MDC :value="reasoning" />
+            <MDC cache-key="story-reasoning-content-show" :value="reasoningContent" />
             <v-divider class="my-2" />
           </details>
         </div>
@@ -48,7 +48,7 @@ const isReasoningContentShow = computed(
 )
 
 // 思考内容
-const reasoning = computed(
+const reasoningContent = computed(
   () => recordStore.record.reasoning.story || modelStore.modelResponse.chat.reasoning_content
 )
 </script>

@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   devtools: {
     enabled: false,
   },
-  css: ['~/assets/css/mdc.css'],
+  css: ['~/assets/css/default.css'],
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/mdc',

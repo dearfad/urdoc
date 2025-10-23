@@ -11,7 +11,7 @@ import defaultIllustrationPrompt from '@/assets/default/illustration/prompt.md?r
 import defaultConversationPrompt from '@/assets/default/conversation/prompt.md?raw'
 import defaultDiscussionPrompt from '@/assets/default/discussion/prompt.md?raw'
 
-const CURRENT_VERSION = '2025-10-20'
+const CURRENT_VERSION = '2025-10-23'
 
 export const usePromptStore = defineStore(
   'prompt',

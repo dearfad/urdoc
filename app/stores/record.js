@@ -253,7 +253,6 @@ export const useRecordStore = defineStore(
       try {
         record.value.case = modelStore.modelResponse.chat.content
         record.value.reasoning.case = modelStore.modelResponse.chat.reasoning_content
-        modelStore.resetResponse()
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case
       } catch (error) {
