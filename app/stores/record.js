@@ -245,6 +245,7 @@ export const useRecordStore = defineStore(
     }
 
     async function getCase() {
+      stateStore.isModelResponseShow.case = true
       $reset()
       const messages = promptStore.getSystemPrompt('case')
       await modelRouter.getCase(messages)
@@ -258,6 +259,7 @@ export const useRecordStore = defineStore(
       } catch (error) {
         stateStore.appInfos.push('获取病例失败: ' + error)
       }
+      stateStore.isModelResponseShow.case = false
     }
 
     async function checkCase() {
@@ -268,6 +270,7 @@ export const useRecordStore = defineStore(
     }
 
     async function getStory() {
+      stateStore.isModelResponseShow.story = true
       const messages = promptStore.getSystemPrompt('story')
       await modelRouter.getStory(messages)
       if (!modelStore.modelResponse.chat.content) return
@@ -275,6 +278,7 @@ export const useRecordStore = defineStore(
       record.value.reasoning.story = modelStore.modelResponse.chat.reasoning_content
       modelStore.resetResponse()
       record.value.tag.story = stateStore.tag.story
+      stateStore.isModelResponseShow.story = false
     }
 
     async function getConversation() {
