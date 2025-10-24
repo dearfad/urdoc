@@ -281,23 +281,21 @@ export const useRecordStore = defineStore(
     }
 
     async function getConversation() {
-      stateStore.setModelResponseStringShow('conversation', true)
+      stateStore.isModelResponseShow.conversation = true
       const messages = promptStore.getSystemPrompt('conversation')
       await modelRouter.getConversation(messages)
       record.value.conversation = modelStore.modelResponse.chat.content
       modelStore.resetResponse()
-      stateStore.setModelResponseStringShow('conversation', false)
-      // record.value.tag.story = stateStore.tag.story
+      stateStore.isModelResponseShow.conversation = false
     }
 
     async function getDiscussion() {
-      stateStore.setModelResponseStringShow('discussion', true)
+      stateStore.isModelResponseShow.discussion = true
       const messages = promptStore.getSystemPrompt('discussion')
       await modelRouter.getDiscussion(messages)
       record.value.discussion = modelStore.modelResponse.chat.content
       modelStore.resetResponse()
-      stateStore.setModelResponseStringShow('discussion', false)
-      // record.value.tag.story = stateStore.tag.story
+      stateStore.isModelResponseShow.discussion = false
     }
     async function getStoryIllustration() {
       record.value.story.插图 = []

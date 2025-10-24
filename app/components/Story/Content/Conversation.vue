@@ -1,26 +1,35 @@
 <template>
-  <v-card class="overflow-auto" rounded="lg" :height="height" hover>
+  <v-card rounded="lg" hover min-height="700">
     <v-card-item class="bg-surface-light">
       <template #prepend>
         <v-icon icon="mdi-alpha-d-circle" />
       </template>
+      <template #append>
+        <v-icon
+          :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+          @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
+        />
+      </template>
       <v-card-title class="font-weight-bold">对话</v-card-title>
     </v-card-item>
     <v-divider />
-    <v-card-text class="text-body-1">
-      <div v-if="isConversationModelResponseStringShow" class="conversation">
-        <div v-if="modelStore.modelResponse.chat.reasoning_content" class="px-4">
-          <details open>
-            <summary>🤔 思考过程</summary>
-            <MDC :value="modelStore.modelResponse.chat.reasoning_content" />
-          </details>
-        </div>
-        <div>
-          <MDC :value="modelStore.modelResponse.chat.content" />
-        </div>
+    <v-card-text>
+      <div v-if="isReasoningContentShow" class="reasoning my-4">
+        <details open>
+          <summary class="font-weight-bold">思考过程</summary>
+          <v-divider class="my-2" />
+          <MDC cache-key="conversation-chat-reasoning-content-show" :value="reasoningContent" />
+          <v-divider class="my-2" />
+        </details>
       </div>
-      <div class="conversation">
-        <MDC :value="recordStore.view.conversation" />
+      <div v-if="stateStore.isModelResponseShow.conversation" class="conversation">
+        <MDC
+          cache-key="conversation-chat-content-show"
+          :value="modelStore.modelResponse.chat.content"
+        />
+      </div>
+      <div v-else class="conversation">
+        <MDC cache-key="record-conversation-show" :value="recordStore.view.conversation" />
       </div>
     </v-card-text>
   </v-card>
@@ -30,8 +39,18 @@
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()
-const { isConversationModelResponseStringShow } = storeToRefs(stateStore)
-const { height } = defineProps({
-  height: { type: String, default: '55vh', required: false },
-})
+
+// 是否显示思考过程
+const isReasoningContentShowSwitches = ref(true)
+const isReasoningContentShow = computed(
+  () =>
+    (stateStore.isModelResponseShow.conversation &&
+      modelStore.modelResponse.chat.reasoning_content) ||
+    (isReasoningContentShowSwitches.value && recordStore.record.reasoning.conversation)
+)
+
+// 思考内容
+const reasoningContent = computed(
+  () => recordStore.record.reasoning.conversation || modelStore.modelResponse.chat.reasoning_content
+)
 </script>

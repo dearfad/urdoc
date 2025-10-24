@@ -19,8 +19,8 @@
       <v-col cols="12" md="9" class="d-flex flex-column ga-4">
         <CaseContentMarkdown />
         <StoryContentMarkdown />
-        <!-- <StoryContentConversation height="" />
-          <StoryContentDiscussion height="" /> -->
+        <StoryContentConversation />
+        <StoryContentDiscussion />
       </v-col>
     </v-row>
   </v-container>
@@ -44,10 +44,12 @@ async function generate() {
   field.value = '生成故事...'
   await recordStore.getStory()
   // 对话
-  // field.value = '生成对话&头像...'
+  field.value = '生成对话&头像...'
+  await recordStore.getConversation()
   // await Promise.all([recordStore.getConversation(), recordStore.getFace()])
   // 讨论
-  // field.value = '生成讨论$插图...'
+  field.value = '生成讨论$插图...'
+  await recordStore.getDiscussion()
   // await Promise.all([recordStore.getDiscussion(), recordStore.getStoryIllustration()])
   //
   isLoading.value = false

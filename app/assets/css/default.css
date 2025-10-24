@@ -2,8 +2,8 @@
 
 .reasoning p {
   font-size: 1em;
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.8em; /* 段后间距 */
+  margin-top: 0;
+  margin-bottom: 0.8em;
   text-indent: 2em;
   line-height: 1.6;
 }
@@ -15,24 +15,24 @@
 
 .reasoning li {
   font-size: 1em;
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.8em; /* 段后间距 */
+  margin-top: 0;
+  margin-bottom: 0.8em;
   text-indent: 0.5em;
   line-height: 1.6;
 }
 
 .case p {
   font-size: 1.2em;
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.9em; /* 段后间距 */
+  margin-top: 0;
+  margin-bottom: 0.9em;
   text-indent: 0em;
   line-height: 1.8;
 }
 
 .story p {
   font-size: 1.2em;
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.9em; /* 段后间距 */
+  margin-top: 0;
+  margin-bottom: 0.9em;
   text-indent: 2em;
   line-height: 1.8;
   text-align: justify;
@@ -48,24 +48,26 @@
 
 .story li {
   font-size: 1.2em;
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.9em; /* 段后间距 */
+  margin-top: 0;
+  margin-bottom: 0.9em;
   text-indent: 0.5em;
   line-height: 1.8;
   text-align: justify;
 }
 
 .conversation p {
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.9em; /* 段后间距 */
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
   text-indent: 0em;
   line-height: 1.8;
   text-align: justify;
 }
 
 .discussion p {
-  margin-top: 0; /* 段前间距 */
-  margin-bottom: 0.9em; /* 段后间距 */
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
   text-indent: 0em;
   line-height: 1.8;
   text-align: justify;
