@@ -1,32 +1,51 @@
 <template>
-  <v-bottom-navigation :active="stateStore.isBottomNavigationShow" :elevation="0">
-    <v-btn to="/cstar/case">
-      <v-icon>mdi-wrench-outline</v-icon>
-      <span>病例</span>
-    </v-btn>
-
-    <v-btn to="/cstar/story">
-      <v-icon>mdi-book-open-outline</v-icon>
-      <span>故事</span>
-    </v-btn>
-
-    <v-btn to="/cstar/test" :disabled="true">
-      <v-icon>mdi-ab-testing</v-icon>
-      <span>问题</span>
-    </v-btn>
-
-    <v-btn to="/cstar/act" :disabled="true">
-      <v-icon>mdi-account-outline</v-icon>
-      <span>问诊</span>
-    </v-btn>
-
-    <v-btn to="/cstar/rate" :disabled="true">
-      <v-icon>mdi-shield-star-outline</v-icon>
-      <span>评价</span>
-    </v-btn>
-  </v-bottom-navigation>
+  <div class="overflow-visible">
+    <v-bottom-navigation :active="stateStore.isBottomNavigationShow" :elevation="4">
+      <v-btn v-for="item in items" :key="item.name" :to="item.to" :disabled="item.disabled">
+        <v-icon>{{ item.icon }}</v-icon>
+        <span>{{ item.title }}</span>
+      </v-btn>
+    </v-bottom-navigation>
+  </div>
 </template>
 
 <script setup>
 const stateStore = useStateStore()
+const items = ref([
+  {
+    name: 'case',
+    icon: 'mdi-wrench-outline',
+    title: '病例',
+    to: '/cstar/case',
+    disabled: false,
+  },
+  {
+    name: 'story',
+    icon: 'mdi-book-open-outline',
+    title: '故事',
+    to: '/cstar/story',
+    disabled: false,
+  },
+  {
+    name: 'test',
+    icon: 'mdi-ab-testing',
+    title: '问题',
+    to: '/cstar/test',
+    disabled: true,
+  },
+  {
+    name: 'act',
+    icon: 'mdi-account-outline',
+    title: '问诊',
+    to: '/cstar/act',
+    disabled: true,
+  },
+  {
+    name: 'rate',
+    icon: 'mdi-star-outline',
+    title: '评估',
+    to: '/cstar/rate',
+    disabled: true,
+  },
+])
 </script>

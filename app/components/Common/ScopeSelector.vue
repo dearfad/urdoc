@@ -1,8 +1,17 @@
 <template>
-  <v-card subtitle="疾病范围" hover rounded="lg">
-    <v-card-text>
+  <v-card hover rounded="lg">
+    <v-card-item class="bg-surface-light">
+      <v-card-title>疾病范围</v-card-title>
+    </v-card-item>
+    <v-card-text class="py-0">
       <v-chip-group column>
-        <v-chip v-for="item in filteredItems" :key="item" variant="text" :prepend-icon="item.icon">
+        <v-chip
+          v-for="item in filteredItems"
+          :key="item"
+          variant="text"
+          :prepend-icon="item.icon"
+          size="large"
+        >
           {{ stateStore.scope[item.name] }}
         </v-chip>
       </v-chip-group>

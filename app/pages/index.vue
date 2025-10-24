@@ -16,11 +16,11 @@
     <v-btn
       class="font-weight-bold my-8"
       size="x-large"
-      :to="$localePath('/cstar/case')"
+      :to="$localePath('/project/narrative-medicine')"
       rounded="lg"
       variant="outlined"
     >
-      {{ $t('index.button-create') }}
+      {{ $t('index.button-narrative-medicine') }}
     </v-btn>
   </div>
 </template>

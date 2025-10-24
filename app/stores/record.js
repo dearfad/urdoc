@@ -285,6 +285,7 @@ export const useRecordStore = defineStore(
       const messages = promptStore.getSystemPrompt('conversation')
       await modelRouter.getConversation(messages)
       record.value.conversation = modelStore.modelResponse.chat.content
+      record.value.reasoning.conversation = modelStore.modelResponse.chat.reasoning_content
       modelStore.resetResponse()
       stateStore.isModelResponseShow.conversation = false
     }
@@ -294,6 +295,7 @@ export const useRecordStore = defineStore(
       const messages = promptStore.getSystemPrompt('discussion')
       await modelRouter.getDiscussion(messages)
       record.value.discussion = modelStore.modelResponse.chat.content
+      record.value.reasoning.discussion = modelStore.modelResponse.chat.reasoning_content
       modelStore.resetResponse()
       stateStore.isModelResponseShow.discussion = false
     }
