@@ -42,7 +42,6 @@
 <script setup>
 definePageMeta({
   title: '叙事医学',
-  layout: 'cstar',
 })
 const recordStore = useRecordStore()
 const isLoading = ref(false)

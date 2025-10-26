@@ -5,6 +5,7 @@
     <AppInfo />
     <v-main>
       <slot />
+      <AppBottomNavigation />
     </v-main>
   </v-app>
 </template>

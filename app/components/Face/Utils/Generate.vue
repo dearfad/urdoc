@@ -3,6 +3,6 @@
     <CommonGenerateButton generate-type="face" />
     <ModelCard model-type="chat" model-usage="face" />
     <ModelCard model-type="image" model-usage="face" />
-    <CommonPromptCard usage="face" />
+    <!-- <CommonPromptCard usage="face" /> -->
   </div>
 </template>

@@ -9,6 +9,5 @@
 <script setup>
 definePageMeta({
   title: '评价',
-  layout: 'cstar',
 })
 </script>

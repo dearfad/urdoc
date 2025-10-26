@@ -12,7 +12,7 @@
     />
     <ModelCard model-type="chat" model-usage="illustration" />
     <ModelCard model-type="image" model-usage="illustration" />
-    <CommonPromptCard usage="illustration" />
+    <!-- <CommonPromptCard usage="illustration" /> -->
   </div>
 </template>
 
