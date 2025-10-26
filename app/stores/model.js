@@ -203,6 +203,7 @@ export const useModelStore = defineStore(
       { name: 'MODELSCOPE', id: 'MODELSCOPE' },
       { name: 'GITEE', id: 'GITEE' },
       { name: 'OLLAMA', id: 'OLLAMA' },
+      { name: 'HUGGINGFACE', id: 'HUGGINGFACE' },
     ]
 
     const PROVIDER_COMPOSABLES_MAP = {
@@ -213,6 +214,7 @@ export const useModelStore = defineStore(
       OPENROUTER: useProviderOpenRouter(),
       MODELSCOPE: useProviderModelScope(),
       GITEE: useProviderGitee(),
+      HUGGINGFACE: useProviderHuggingFace(),
       OLLAMA: useProviderOllama(),
     }
 
