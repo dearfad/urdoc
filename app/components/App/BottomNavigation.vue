@@ -11,6 +11,7 @@
             :value="menu"
             :to="menu.link"
             :disabled="menu.disabled"
+            slim
           >
             <template #prepend>
               <v-icon :icon="menu.icon" />

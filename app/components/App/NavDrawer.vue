@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="stateStore.isNavDrawerShow" location="left">
+  <v-navigation-drawer v-model="stateStore.isNavDrawerShow" location="left" disable-resize-watcher>
     <v-list v-for="(list, navIndex) in navLists" :key="navIndex" nav density="compact">
       <v-list-subheader class="font-weight-bold">{{ list.title }}</v-list-subheader>
       <v-list-item
