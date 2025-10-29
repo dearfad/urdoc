@@ -1,18 +1,19 @@
 <template>
   <v-card rounded="lg" hover min-height="700">
-    <v-card-item class="bg-surface-light">
+    <v-toolbar density="comfortable">
       <template #prepend>
-        <v-icon icon="mdi-alpha-c-circle" />
+        <v-btn icon="mdi-alpha-c-circle" to="/cstar/case" variant="plain" />
       </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="病历" />
       <template #append>
-        <v-icon
+        <v-btn
           :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <v-btn icon="mdi-cog-outline" />
       </template>
-      <v-card-title class="font-weight-bold">病历</v-card-title>
-    </v-card-item>
-    <v-divider />
+    </v-toolbar>
+    <!-- <v-divider /> -->
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>

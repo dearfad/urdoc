@@ -1,8 +1,11 @@
 <template>
   <v-card hover rounded="lg">
-    <v-card-item class="bg-surface-light">
-      <v-card-title>疾病范围</v-card-title>
-    </v-card-item>
+    <v-toolbar v-if="isTitleShow" density="comfortable">
+      <template #prepend>
+        <v-btn icon="mdi-medical-bag" variant="plain" />
+      </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="疾病范围" />
+    </v-toolbar>
     <v-card-text class="py-0">
       <v-chip-group column>
         <v-chip
@@ -53,6 +56,9 @@
 </template>
 
 <script setup>
+const { isTitleShow } = defineProps({
+  isTitleShow: { type: Boolean, required: false, default: false },
+})
 const stateStore = useStateStore()
 const bookStore = useBookStore()
 const items = ref([

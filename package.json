@@ -16,7 +16,7 @@
     "@clerk/localizations": "^3.26.3",
     "@clerk/nuxt": "^1.11.1",
     "@mdi/font": "^7.4.47",
-    "@nuxt/eslint": "^1.9.0",
+    "@nuxt/eslint": "^1.10.0",
     "@nuxtjs/i18n": "^10.1.2",
     "@nuxtjs/mdc": "^0.18.0",
     "@pinia/nuxt": "^0.11.2",
@@ -29,7 +29,7 @@
     "pinia-plugin-persistedstate": "^4.5.0",
     "vite-plugin-vuetify": "^2.1.2",
     "vue": "3.5.22",
-    "vue-json-pretty": "^2.5.0",
+    "vue-json-pretty": "^2.6.0",
     "vue-router": "^4.6.3",
     "vuetify": "^3.10.7",
     "vuetify-nuxt-module": "^0.18.8"
@@ -38,7 +38,7 @@
     "cookie": "1.0.2"
   },
   "devDependencies": {
-    "mermaid": "^11.12.0",
+    "mermaid": "^11.12.1",
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17"
   }
