@@ -57,7 +57,7 @@
 
 <script setup>
 const { isTitleShow } = defineProps({
-  isTitleShow: { type: Boolean, required: false, default: false },
+  isTitleShow: { type: Boolean, required: false, default: true },
 })
 const stateStore = useStateStore()
 const bookStore = useBookStore()

@@ -68,6 +68,12 @@ export const useModelStore = defineStore(
 
     const activeModels = ref({
       chat: {
+        default: {
+          source: 'free',
+          provider: 'BIGMODEL',
+          model: 'glm-4-flash-250414',
+          thinking: false,
+        },
         case: {
           source: 'free',
           provider: 'BIGMODEL',
@@ -136,6 +142,12 @@ export const useModelStore = defineStore(
         },
       },
       image: {
+        default: {
+          source: 'free',
+          provider: 'BIGMODEL',
+          model: 'cogview-3-flash',
+          thinking: false,
+        },
         face: {
           source: 'free',
           provider: 'BIGMODEL',
@@ -150,6 +162,12 @@ export const useModelStore = defineStore(
         },
       },
       video: {
+        default: {
+          source: 'free',
+          provider: 'BIGMODEL',
+          model: 'cogvideox-flash',
+          thinking: false,
+        },
         pose: {
           source: 'free',
           provider: 'BIGMODEL',
@@ -158,6 +176,12 @@ export const useModelStore = defineStore(
         },
       },
       audio: {
+        default: {
+          source: 'custom',
+          provider: 'GITEE',
+          model: 'MOSS-TTSD-v0.5',
+          thinking: false,
+        },
         dialogue: {
           source: 'custom',
           provider: 'GITEE',
@@ -251,6 +275,9 @@ export const useModelStore = defineStore(
         video: {
           url: '',
           cover_image_url: '',
+        },
+        audio: {
+          url: '',
         },
       }
     }
