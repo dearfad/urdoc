@@ -74,72 +74,72 @@ export const useModelStore = defineStore(
           model: 'glm-4-flash-250414',
           thinking: false,
         },
-        case: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        story: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        test: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        act: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        rate: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        check: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        face: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        illustration: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        pose: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        conversation: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
-        discussion: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'glm-4-flash-250414',
-          thinking: false,
-        },
+        // case: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // story: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // test: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // act: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // rate: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // check: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // face: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // illustration: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // pose: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // conversation: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
+        // discussion: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'glm-4-flash-250414',
+        //   thinking: false,
+        // },
       },
       image: {
         default: {
@@ -148,18 +148,18 @@ export const useModelStore = defineStore(
           model: 'cogview-3-flash',
           thinking: false,
         },
-        face: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'cogview-3-flash',
-          thinking: false,
-        },
-        illustration: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'cogview-3-flash',
-          thinking: false,
-        },
+        // face: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'cogview-3-flash',
+        //   thinking: false,
+        // },
+        // illustration: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'cogview-3-flash',
+        //   thinking: false,
+        // },
       },
       video: {
         default: {
@@ -168,12 +168,12 @@ export const useModelStore = defineStore(
           model: 'cogvideox-flash',
           thinking: false,
         },
-        pose: {
-          source: 'free',
-          provider: 'BIGMODEL',
-          model: 'cogvideox-flash',
-          thinking: false,
-        },
+        // pose: {
+        //   source: 'free',
+        //   provider: 'BIGMODEL',
+        //   model: 'cogvideox-flash',
+        //   thinking: false,
+        // },
       },
       audio: {
         default: {
@@ -182,12 +182,12 @@ export const useModelStore = defineStore(
           model: 'MOSS-TTSD-v0.5',
           thinking: false,
         },
-        dialogue: {
-          source: 'custom',
-          provider: 'GITEE',
-          model: 'MOSS-TTSD-v0.5',
-          thinking: false,
-        },
+        // dialogue: {
+        //   source: 'custom',
+        //   provider: 'GITEE',
+        //   model: 'MOSS-TTSD-v0.5',
+        //   thinking: false,
+        // },
       },
     })
 
