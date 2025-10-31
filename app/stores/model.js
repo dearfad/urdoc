@@ -246,7 +246,7 @@ export const useModelStore = defineStore(
       return PROVIDER_COMPOSABLES_MAP[activeModels.value[modelType][modelUsage].provider]
     }
 
-    const modelResponse = ref({
+    const RESPONSE = {
       chat: {
         content: '',
         reasoning_content: '',
@@ -261,25 +261,12 @@ export const useModelStore = defineStore(
       audio: {
         url: '',
       },
-    })
+    }
+
+    const modelResponse = ref(RESPONSE)
 
     function resetResponse() {
-      modelResponse.value = {
-        chat: {
-          content: '',
-          reasoning_content: '',
-        },
-        image: {
-          url: '',
-        },
-        video: {
-          url: '',
-          cover_image_url: '',
-        },
-        audio: {
-          url: '',
-        },
-      }
+      modelResponse.value = RESPONSE
     }
 
     return {

@@ -1,5 +1,5 @@
 <template>
-  <v-card hover class="px-4 py-2" rounded="lg">
+  <v-card hover rounded="lg">
     <v-select
       v-model="provider"
       :items="providers"
@@ -23,7 +23,7 @@
       @update:model-value="setActiveModel"
     />
 
-    <v-card-actions class="px-0 ga-0">
+    <v-card-actions class="pa-0 ga-0">
       <v-btn text="添加" @click="isExpandShow = !isExpandShow" />
       <v-btn text="删除" @click="handleModelDelete" />
       <v-btn text="获取" @click="getCustomModels" />
@@ -97,7 +97,7 @@ watch(
 )
 
 const modelsByType =
-  modelStore.customModels[modelType].length > 0
+  modelStore.customModels[modelType]?.length > 0
     ? computed(() => modelStore.customModels[modelType])
     : computed(() => [])
 const providers =

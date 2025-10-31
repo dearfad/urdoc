@@ -70,7 +70,8 @@ export const useProviderModelScope = () => {
   async function getChatResponse(modelUsage, messages) {
     modelStore.modelResponse.chat.content = ''
     modelStore.modelResponse.chat.reasoning_content = ''
-    const chatModel = modelStore.activeModels.chat[modelUsage]
+    const chatModel =
+      modelStore.activeModels.chat[modelUsage] || modelStore.activeModels.chat.default
     const payload = {
       url: `${API_BASE}${CHAT_COMPLETIONS}`,
       apiKey: chatModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
@@ -115,7 +116,8 @@ export const useProviderModelScope = () => {
 
   async function getImageResponse(modelUsage, messages) {
     modelStore.modelResponse.image.url = ''
-    const imageModel = modelStore.activeModels.image[modelUsage]
+    const imageModel =
+      modelStore.activeModels.image[modelUsage] || modelStore.activeModels.image.default
     const payload = {
       url: `${API_BASE}${IMAGES_GENERATIONS}`,
       apiKey: imageModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,

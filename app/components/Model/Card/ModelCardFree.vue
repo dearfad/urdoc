@@ -1,5 +1,5 @@
 <template>
-  <v-card hover class="px-4 py-2" rounded="lg">
+  <v-card hover rounded="lg">
     <v-select
       v-model="provider"
       :items="providers"
@@ -16,7 +16,6 @@
       :items="modelsByProvider"
       item-title="model"
       variant="outlined"
-      class="my-4"
       hide-details="auto"
       density="comfortable"
       return-object

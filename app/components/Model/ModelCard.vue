@@ -5,6 +5,14 @@
         <v-btn icon="mdi-medical-bag" variant="plain" />
       </template>
       <v-toolbar-title class="font-weight-bold ml-0" text="模型设定" />
+      <template #append>
+        <v-btn
+          variant="plain"
+          text="思考"
+          :prepend-icon="stateStore.isModelThinking ? 'mdi-check-circle' : 'mdi-alert-circle'"
+          @click="stateStore.isModelThinking = !stateStore.isModelThinking"
+        />
+      </template>
     </v-toolbar>
     <v-expansion-panels variant="accordion">
       <v-expansion-panel v-for="(item, index) in models" :key="index">
@@ -16,12 +24,12 @@
           <v-icon v-if="item.model.thinking" icon="mdi-brain" />
         </v-expansion-panel-title>
         <v-expansion-panel-text>
-          <v-tabs v-model="tab" grow density="compact">
+          <v-tabs v-model="tab[item.type]" grow density="compact" hide-slider>
             <v-tab value="free" text="免费" prepend-icon="mdi-check-circle-outline" />
             <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
             <v-tab value="local" text="本地" prepend-icon="mdi-home" />
           </v-tabs>
-          <v-tabs-window v-model="tab">
+          <v-tabs-window v-model="tab[item.type]">
             <v-tabs-window-item value="free">
               <ModelCardFree :model-type="item.type" :model-usage="modelUsage" />
             </v-tabs-window-item>
@@ -35,16 +43,6 @@
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
-
-    <!-- <v-card-actions>
-      <v-spacer />
-      <v-btn
-        text="思考"
-        :prepend-icon="stateStore.isModelThinking ? 'mdi-check-circle' : 'mdi-alert-circle'"
-        @click="stateStore.isModelThinking = !stateStore.isModelThinking"
-      />
-      <v-btn text="设为全局" @click="handleModelGlobal" />
-    </v-card-actions> -->
   </v-card>
 </template>
 
@@ -70,12 +68,20 @@ const modelUsageLabel = ref({
   face: '头像',
   illustration: '插图',
   pose: '姿势',
+  dialogue: '谈话',
 })
 
-const tab = ref()
-const modelStore = useModelStore()
+const tab = ref({})
 
-const modelInfo = ref([
+onMounted(() => {
+  modelInfo.value.forEach((item) => {
+    tab.value[item.type] = item.model.source
+  })
+})
+
+const modelStore = useModelStore()
+const stateStore = useStateStore()
+const modelInfo = computed(() => [
   {
     title: '文本',
     icon: 'mdi-text',
@@ -113,49 +119,4 @@ const models = computed(() => {
     return modelInfo.value.filter((model) => model.type === modelType)
   }
 })
-
-// const stateStore = useStateStore()
-// const model = computed(() => modelStore.activeModels[modelType][modelUsage])
-// const thinking = computed(() => (model.value.thinking ? 'mdi-brain' : ''))
-
-// onMounted(() => {
-//   // 模型全局应用
-//   tab.value = model.value.source
-// })
-
-// function handleModelGlobal() {
-//   // 设定模型全局应用
-//   let usages = []
-//   switch (modelType) {
-//     case 'chat':
-//       usages = [
-//         'case',
-//         'story',
-//         'test',
-//         'act',
-//         'rate',
-//         'face',
-//         'pose',
-//         'check',
-//         'illustration',
-//         'conversation',
-//         'discussion',
-//       ]
-//       break
-//     case 'image':
-//       usages = ['face', 'illustration']
-//       break
-//     case 'video':
-//       usages = ['pose']
-//       break
-//     default:
-//       stateStore.appInfos.push('未知模型类型')
-//       return
-//   }
-//   for (const usage of usages) {
-//     if (model.value) {
-//       modelStore.activeModels[modelType][usage] = model.value
-//     }
-//   }
-// }
 </script>

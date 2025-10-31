@@ -1,12 +1,13 @@
 <template>
-  <v-card hover class="px-4 py-2" rounded="lg">
+  <v-card hover rounded="lg">
     <v-select
       v-model="localModel.provider"
       :items="['OLLAMA', 'COMFYUI']"
       label="服务商"
       variant="outlined"
-      class="mt-4"
+      class="my-4"
       density="comfortable"
+      hide-details="auto"
       @update:model-value="setActiveModel"
     />
     <v-select
@@ -19,12 +20,15 @@
       label="思考模型"
       item-title="name"
       item-value="id"
+      hide-details="auto"
       @update:model-value="setActiveModel"
     />
     <v-text-field
       v-model="localModel.model"
       variant="outlined"
       label="模型"
+      class="mt-4"
+      hide-details="auto"
       @update:model-value="setActiveModel"
     />
   </v-card>

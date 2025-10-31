@@ -1,6 +1,6 @@
 <template>
   <v-card hover rounded="lg">
-    <v-tabs v-model="tab" bg-color="grey-lighten-3">
+    <v-tabs v-model="tab" bg-color="grey-lighten-3" hide-slider>
       <v-tab text="范围" value="scope" />
       <v-tab text="模型" value="model" />
     </v-tabs>
