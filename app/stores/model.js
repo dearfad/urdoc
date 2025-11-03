@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-10-21'
+const CURRENT_VERSION = '2025-11-03'
 export const useModelStore = defineStore(
   'model',
   () => {

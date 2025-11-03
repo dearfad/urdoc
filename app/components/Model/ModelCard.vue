@@ -19,16 +19,34 @@
         <v-expansion-panel-title>
           <v-icon :icon="item.icon" class="mx-2" />
           <span v-if="mdAndUp" class="font-weight-bold mx-2">{{ item.title }}</span>
-          <span class="font-weight-bold mx-2">{{ modelUsageLabel[modelUsage] }}</span>
+          <span class="font-weight-bold mx-2">{{ usageLabel }}</span>
           <span class="mx-2">{{ item.model.model }}</span>
           <v-icon v-if="item.model.thinking" icon="mdi-brain" />
         </v-expansion-panel-title>
+
         <v-expansion-panel-text>
-          <v-tabs v-model="tab[item.type]" grow density="compact" hide-slider>
+          <v-card-text
+            v-if="getActiveModels(item.type).length > 0 && modelType === 'all'"
+            class="pa-0 border-thin border-dotted"
+          >
+            <v-chip-group column class="py-0">
+              <v-chip
+                v-for="model in getActiveModels(item.type)"
+                :key="model"
+                variant="text"
+                prepend-icon="mdi-bookmark-outline"
+              >
+                <span class="font-weight-bold mr-2">{{ modelUsageLabel[model] }}</span>
+                <span>{{ modelStore.activeModels[item.type][model].model }}</span>
+              </v-chip>
+            </v-chip-group>
+          </v-card-text>
+          <v-tabs v-model="tab[item.type]" grow density="compact">
             <v-tab value="free" text="免费" prepend-icon="mdi-check-circle-outline" />
             <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
-            <v-tab value="local" text="本地" prepend-icon="mdi-home" />
+            <v-tab value="local" text="本地" prepend-icon="mdi-home" :disabled="true" />
           </v-tabs>
+
           <v-tabs-window v-model="tab[item.type]">
             <v-tabs-window-item value="free">
               <ModelCardFree :model-type="item.type" :model-usage="modelUsage" />
@@ -55,9 +73,10 @@ const { modelType, modelUsage, isTitleShow } = defineProps({
   modelUsage: { type: String, required: false, default: 'default' },
   isTitleShow: { type: Boolean, required: false, default: true },
 })
+
 const modelUsageLabel = ref({
   default: '默认',
-  case: '对话',
+  case: '病历',
   story: '故事',
   test: '测试',
   act: '活动',
@@ -70,6 +89,22 @@ const modelUsageLabel = ref({
   pose: '姿势',
   dialogue: '谈话',
 })
+
+const usageLabel = computed(() => {
+  if (modelType === 'all') {
+    return modelUsageLabel.value['default']
+  } else {
+    return modelStore.activeModels[modelType][modelUsage]
+      ? modelUsageLabel.value[modelUsage]
+      : `${modelUsageLabel.value[modelUsage]} - ${modelUsageLabel.value['default']}`
+  }
+})
+
+function getActiveModels(itemType) {
+  const models = modelStore.activeModels[itemType]
+  if (!models) return {}
+  return Object.keys(models).filter((key) => key !== 'default' && models[key] != null)
+}
 
 const tab = ref({})
 
@@ -120,3 +155,10 @@ const models = computed(() => {
   }
 })
 </script>
+
+<style scoped>
+:deep(.v-expansion-panel-text__wrapper) {
+  padding-top: 0;
+  padding-bottom: 16px;
+}
+</style>

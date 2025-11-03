@@ -20,7 +20,7 @@
       hide-details="auto"
       density="comfortable"
       return-object
-      @update:model-value="setActiveModel"
+      @update:model-value="handleModelChange"
     />
 
     <v-card-actions class="pa-0 ga-0">
@@ -28,6 +28,14 @@
       <v-btn text="删除" @click="handleModelDelete" />
       <v-btn text="获取" @click="getCustomModels" />
       <v-btn text="上传" @click="uploadCustomModels" />
+      <v-checkbox-btn
+        v-if="modelUsage !== 'default'"
+        v-model="isSetModelDefault"
+        hide-details="true"
+        @update:model-value="handleModelChange"
+      >
+        <template #label><span class="text-body-2 font-weight-bold">设为默认</span></template>
+      </v-checkbox-btn>
     </v-card-actions>
     <v-expand-transition>
       <v-card v-if="isExpandShow" class="my-2 py-2 d-flex flex-column ga-4" variant="flat">
@@ -81,16 +89,27 @@ const isExpandShow = ref(false)
 
 const provider = ref('')
 const model = ref()
+const isSetModelDefault = ref(true)
 
 watch(
   () => modelStore.activeModels[modelType][modelUsage],
   (newActiveModel) => {
-    if (newActiveModel && newActiveModel.source === 'custom') {
-      model.value = newActiveModel
-      provider.value = newActiveModel.provider
+    if (newActiveModel) {
+      if (newActiveModel.source === 'custom') {
+        model.value = newActiveModel
+        provider.value = newActiveModel.provider
+      } else {
+        model.value = null
+        provider.value = null
+      }
     } else {
-      model.value = null
-      provider.value = null
+      if (modelStore.activeModels[modelType]['default'].source === 'custom') {
+        model.value = modelStore.activeModels[modelType]['default']
+        provider.value = modelStore.activeModels[modelType]['default'].provider
+      } else {
+        model.value = null
+        provider.value = null
+      }
     }
   },
   { immediate: true }
@@ -117,13 +136,18 @@ const customModel = ref({
 
 function handleProviderChange() {
   model.value = modelsByProvider.value[0]
-  setActiveModel()
+  handleModelChange()
 }
 
-function setActiveModel() {
+function handleModelChange() {
   if (model.value) {
     model.value.source = 'custom'
-    modelStore.activeModels[modelType][modelUsage] = model.value
+    if (isSetModelDefault.value) {
+      modelStore.activeModels[modelType]['default'] = model.value
+      if (modelUsage !== 'default') modelStore.activeModels[modelType][modelUsage] = null
+    } else {
+      modelStore.activeModels[modelType][modelUsage] = model.value
+    }
   }
 }
 
@@ -167,7 +191,7 @@ function handleModelDelete() {
   if (providers.value.length > 0) {
     provider.value = providers.value[0]
     model.value = modelsByProvider.value[0]
-    setActiveModel()
+    handleModelChange()
   } else {
     provider.value = null
     model.value = null

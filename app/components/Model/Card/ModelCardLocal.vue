@@ -31,6 +31,14 @@
       hide-details="auto"
       @update:model-value="setActiveModel"
     />
+    <v-checkbox-btn
+      v-if="modelUsage !== 'default'"
+      v-model="isSetModelDefault"
+      hide-details="true"
+      @update:model-value="handleModelChange"
+    >
+      <template #label><span class="text-body-2 font-weight-bold">设为默认</span></template>
+    </v-checkbox-btn>
   </v-card>
 </template>
 
@@ -40,6 +48,9 @@ const { modelType, modelUsage } = defineProps({
   modelUsage: { type: String, required: true },
 })
 const modelStore = useModelStore()
+
+const isSetModelDefault = ref(true)
+
 const localModel = ref({
   provider: '',
   model: '',
@@ -63,11 +74,17 @@ watch(
 )
 
 function setActiveModel() {
-  modelStore.activeModels[modelType][modelUsage] = {
+  const modelData = {
     source: 'local',
     provider: localModel.value.provider,
     model: localModel.value.model,
     thinking: localModel.value.thinking,
+  }
+  if (isSetModelDefault.value) {
+    modelStore.activeModels[modelType]['default'] = modelData
+    if (modelUsage !== 'default') modelStore.activeModels[modelType][modelUsage] = null
+  } else {
+    modelStore.activeModels[modelType][modelUsage] = modelData
   }
 }
 </script>

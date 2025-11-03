@@ -21,6 +21,14 @@
       return-object
       @update:model-value="handleModelChange"
     />
+    <v-checkbox-btn
+      v-if="modelUsage !== 'default'"
+      v-model="isSetModelDefault"
+      hide-details="true"
+      @update:model-value="handleModelChange"
+    >
+      <template #label><span class="text-body-2 font-weight-bold">设为默认</span></template>
+    </v-checkbox-btn>
   </v-card>
 </template>
 
@@ -34,16 +42,27 @@ const modelStore = useModelStore()
 
 const provider = ref()
 const model = ref()
+const isSetModelDefault = ref(true)
 
 watch(
   () => modelStore.activeModels[modelType][modelUsage],
   (newActiveModel) => {
-    if (newActiveModel && newActiveModel.source === 'free') {
-      model.value = newActiveModel
-      provider.value = newActiveModel.provider
+    if (newActiveModel) {
+      if (newActiveModel.source === 'free') {
+        model.value = newActiveModel
+        provider.value = newActiveModel.provider
+      } else {
+        model.value = null
+        provider.value = null
+      }
     } else {
-      model.value = null
-      provider.value = null
+      if (modelStore.activeModels[modelType]['default'].source === 'free') {
+        model.value = modelStore.activeModels[modelType]['default']
+        provider.value = modelStore.activeModels[modelType]['default'].provider
+      } else {
+        model.value = null
+        provider.value = null
+      }
     }
   },
   { immediate: true }
@@ -62,7 +81,7 @@ const providers = computed(() => {
 
 // // 合并相同服务商的多种模型
 const modelsByProvider = computed(() => {
-  if (model.value) {
+  if (provider.value) {
     return modelsByType.value.filter((model) => model.provider === provider.value)
   } else {
     return []
@@ -77,7 +96,12 @@ function handleProviderChange() {
 function handleModelChange() {
   if (model.value) {
     model.value.source = 'free'
-    modelStore.activeModels[modelType][modelUsage] = model.value
+    if (isSetModelDefault.value) {
+      modelStore.activeModels[modelType]['default'] = model.value
+      if (modelUsage !== 'default') modelStore.activeModels[modelType][modelUsage] = null
+    } else {
+      modelStore.activeModels[modelType][modelUsage] = model.value
+    }
   }
 }
 </script>

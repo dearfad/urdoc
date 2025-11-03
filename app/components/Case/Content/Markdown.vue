@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg" hover min-height="700">
+  <v-card rounded="lg" hover min-height="400">
     <v-toolbar density="comfortable">
       <template #prepend>
         <v-btn icon="mdi-alpha-c-circle" to="/cstar/case" variant="plain" />

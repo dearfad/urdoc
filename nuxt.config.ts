@@ -4,10 +4,8 @@
 export default defineNuxtConfig({
   ssr: true,
   compatibilityDate: '2025-08-08',
-  devtools: {
-    enabled: false,
-  },
   css: ['~/assets/css/default.css'],
+
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/mdc',
@@ -65,5 +63,9 @@ export default defineNuxtConfig({
       { code: 'en', name: 'English', file: 'en/index.ts' },
     ],
     strategy: 'no_prefix',
+  },
+
+  devtools: {
+    enabled: false,
   },
 })
