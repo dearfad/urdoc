@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-10-27'
+const CURRENT_VERSION = '2025-11-03'
 export const useStateStore = defineStore(
   'state',
   () => {
@@ -40,7 +40,7 @@ export const useStateStore = defineStore(
     const modelResponseField = ref('')
 
     // 思考模型是否思考
-    const isModelThinking = ref(false)
+    const isModelThinking = ref(true)
 
     // 当前章节选择
     const scope = ref<Scope>({
