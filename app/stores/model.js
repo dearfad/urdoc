@@ -243,7 +243,11 @@ export const useModelStore = defineStore(
     }
 
     function getProviderComposable(modelType, modelUsage) {
-      return PROVIDER_COMPOSABLES_MAP[activeModels.value[modelType][modelUsage].provider]
+      return PROVIDER_COMPOSABLES_MAP[
+        activeModels.value[modelType][modelUsage]
+          ? activeModels.value[modelType][modelUsage].provider
+          : activeModels.value[modelType]['default'].provider
+      ]
     }
 
     const RESPONSE = {
