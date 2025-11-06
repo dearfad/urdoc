@@ -1,12 +1,20 @@
 <template>
-  <div class="d-flex flex-column w-100 w-md-75 mx-auto my-4 px-2 ga-4">
-    <FaceContentShow />
-    <!-- <CommonPutOSS /> -->
-    <FaceContentPrompt />
-    <FaceUtilsGenerate />
-    <StoryUtilsGenerateIllustration />
-    <StoryContentIllustration />
-  </div>
+  <v-container fluid class="w-100 w-md-66">
+    <v-row justify="center">
+      <v-col cols="12" md="6">
+        <FaceContentShow />
+        <FaceContentPrompt />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <!-- <CommonPutOSS /> -->
+        <FaceUtilsGenerate />
+        <StoryUtilsGenerateIllustration />
+        <StoryContentIllustration />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup>

@@ -1,7 +1,7 @@
 <template>
-  <v-card hover class="text-body-1 px-4 py-2 overflow-auto" rounded="lg">
+  <v-sheet class="my-2 border-thin border-dotted text-body-2 pa-2">
     {{ promptStore.prompts.image.face }}
-  </v-card>
+  </v-sheet>
 </template>
 
 <script lang="ts" setup>
