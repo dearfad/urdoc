@@ -6,12 +6,20 @@
         <FaceContentPrompt />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-        <!-- <CommonPutOSS /> -->
+    <v-row justify="center">
+      <v-col cols="12" md="9">
         <FaceUtilsGenerate />
-        <StoryUtilsGenerateIllustration />
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="6">
         <StoryContentIllustration />
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="9">
+        <!-- <CommonPutOSS /> -->
+        <StoryUtilsGenerateIllustration />
       </v-col>
     </v-row>
   </v-container>
