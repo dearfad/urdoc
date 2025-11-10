@@ -77,7 +77,24 @@
   font-size: 1.2em;
   margin-top: 0;
   margin-bottom: 0.9em;
-  text-indent: 0em;
+  text-indent: 0;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.comment ol {
+  padding-left: 3em;
+}
+
+.comment ul {
+  padding-left: 3em;
+}
+
+.comment li {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0.5em;
   line-height: 1.8;
   text-align: justify;
 }
