@@ -247,10 +247,10 @@ export const usePromptStore = defineStore(
           content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}`
           break
         case 'discussion':
-          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation.markdown}`
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation}`
           break
         case 'comment':
-          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation.markdown}. 提供讨论如下： ${recordStore.view.discussion.markdown}`
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation}. 提供讨论如下： ${recordStore.view.discussion}`
           break
         default:
           content = '系统要点设定：无特殊要求'
