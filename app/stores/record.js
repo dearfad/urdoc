@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-10-14'
+const CURRENT_VERSION = '2025-11-10'
 export const useRecordStore = defineStore(
   'record',
   () => {
@@ -28,16 +28,18 @@ export const useRecordStore = defineStore(
         病理: '',
       },
       story: {
-        故事: '',
-        插图: [],
+        content: '',
+        illustration: [],
       },
       conversation: '',
       discussion: '',
+      comment: '',
       reasoning: {
         case: '',
         story: '',
         conversation: '',
         discussion: '',
+        comment: '',
       },
       test: [
         {
@@ -117,7 +119,7 @@ export const useRecordStore = defineStore(
       // return Object.entries(record.value.story)
       //   .map(([key, value]) => `**${key}**:\n\n${value}`)
       //   .join('\n\n')
-      return record.value.story['故事']
+      return record.value.story['content']
     })
 
     const testText = computed(() => {
@@ -162,6 +164,7 @@ export const useRecordStore = defineStore(
         },
         conversation: record.value.conversation,
         discussion: record.value.discussion,
+        comment: record.value.comment,
         test: {
           json: record.value.test,
           text: testText.value,
@@ -191,16 +194,18 @@ export const useRecordStore = defineStore(
           病理: '',
         },
         story: {
-          故事: '',
-          插图: [],
+          content: '',
+          illustration: [],
         },
         conversation: '',
         discussion: '',
+        comment: '',
         reasoning: {
           case: '',
           story: '',
           conversation: '',
           discussion: '',
+          comment: '',
         },
         test: [
           {
@@ -273,7 +278,7 @@ export const useRecordStore = defineStore(
       const messages = promptStore.getSystemPrompt('story')
       await modelRouter.getStory(messages)
       if (!modelStore.modelResponse.chat.content) return
-      record.value.story.故事 = modelStore.modelResponse.chat.content
+      record.value.story.content = modelStore.modelResponse.chat.content
       record.value.reasoning.story = modelStore.modelResponse.chat.reasoning_content
       modelStore.resetResponse()
       record.value.tag.story = stateStore.tag.story
@@ -299,8 +304,18 @@ export const useRecordStore = defineStore(
       modelStore.resetResponse()
       stateStore.isModelResponseShow.discussion = false
     }
+
+    async function getComment() {
+      stateStore.isModelResponseShow.comment = true
+      const messages = promptStore.getSystemPrompt('comment')
+      await modelRouter.getDiscussion(messages)
+      record.value.comment = modelStore.modelResponse.chat.content
+      record.value.reasoning.comment = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
+      stateStore.isModelResponseShow.comment = false
+    }
     async function getStoryIllustration() {
-      record.value.story.插图 = []
+      record.value.story.illustration = []
       const messages = promptStore.getSystemPrompt('illustration')
       await modelRouter.getStoryIllustration(messages)
     }
@@ -464,6 +479,7 @@ export const useRecordStore = defineStore(
       getStory,
       getConversation,
       getDiscussion,
+      getComment,
       getStoryIllustration,
       getTest,
       getAct,

@@ -19,6 +19,7 @@ export const useStateStore = defineStore(
       story: false,
       conversation: false,
       discussion: false,
+      comment: false,
     })
 
     // 是否编辑病例

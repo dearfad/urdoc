@@ -38,10 +38,14 @@ async function generate() {
   field.value = '生成讨论...'
   await recordStore.getDiscussion()
 
+  field.value = '生成评语...'
+  await recordStore.getComment()
+
   field.value = '生成头像...'
   await recordStore.getFace()
-  // field.value = '生成插图...'
-  // await recordStore.getStoryIllustration()
+
+  field.value = '生成插图...'
+  await recordStore.getStoryIllustration()
   //
   isLoading.value = false
 }

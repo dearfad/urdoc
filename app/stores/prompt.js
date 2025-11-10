@@ -10,8 +10,9 @@ import defaultVerifyPrompt from '@/assets/default/verify/prompt.md?raw'
 import defaultIllustrationPrompt from '@/assets/default/illustration/prompt.md?raw'
 import defaultConversationPrompt from '@/assets/default/conversation/prompt.md?raw'
 import defaultDiscussionPrompt from '@/assets/default/discussion/prompt.md?raw'
+import defaultCommentPrompt from '@/assets/default/comment/prompt.md?raw'
 
-const CURRENT_VERSION = '2025-10-23'
+const CURRENT_VERSION = '2025-11-10'
 
 export const usePromptStore = defineStore(
   'prompt',
@@ -32,6 +33,7 @@ export const usePromptStore = defineStore(
       'verify',
       'conversation',
       'discussion',
+      'comment',
     ]
     const prompts = ref({
       system: {
@@ -131,6 +133,14 @@ export const usePromptStore = defineStore(
           author: '',
           public: true,
         },
+        comment: {
+          id: '',
+          type: 'comment',
+          title: '默认',
+          prompt: defaultCommentPrompt,
+          author: '',
+          public: true,
+        },
       },
       user: {
         case: [],
@@ -147,7 +157,7 @@ export const usePromptStore = defineStore(
       },
       image: {
         face: '',
-        illustration: '',
+        // illustration: '',
       },
       video: {
         pose: '',
@@ -238,6 +248,9 @@ export const usePromptStore = defineStore(
           break
         case 'discussion':
           content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation.markdown}`
+          break
+        case 'comment':
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation.markdown}. 提供讨论如下： ${recordStore.view.discussion.markdown}`
           break
         default:
           content = '系统要点设定：无特殊要求'

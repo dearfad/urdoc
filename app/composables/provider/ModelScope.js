@@ -134,7 +134,7 @@ export const useProviderModelScope = () => {
         model: imageModel.model,
         prompt: messages,
         // quality: 'standard',
-        // size: '1024x1024',
+        size: '1024x1024',
         // watermark_enabled: true,
       },
     }
@@ -184,6 +184,7 @@ export const useProviderModelScope = () => {
       }
       if (data['task_status'] == 'FAILED') {
         console.log('Image Generation Failed.')
+        stateStore.appInfos.push(`图片生成失败：${data['errors'].message}`)
         break
       }
       await new Promise((resolve) => setTimeout(resolve, 1000))

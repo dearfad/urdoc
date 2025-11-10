@@ -22,6 +22,7 @@
         <StoryContentMarkdown />
         <StoryContentConversation />
         <StoryContentDiscussion />
+        <StoryContentComment />
       </v-col>
     </v-row>
   </v-container>
