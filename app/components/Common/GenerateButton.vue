@@ -57,6 +57,11 @@ async function generate() {
       await recordStore.getDiscussion()
       stateStore.isModelResponseShow.discussion = false
       break
+    case 'comment':
+      stateStore.isModelResponseShow.comment = true
+      await recordStore.getComment()
+      stateStore.isModelResponseShow.comment = false
+      break
   }
   isLoading.value = false
 }

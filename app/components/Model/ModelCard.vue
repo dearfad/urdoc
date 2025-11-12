@@ -88,6 +88,7 @@ const modelUsageLabel = ref({
   illustration: '插图',
   pose: '姿势',
   dialogue: '谈话',
+  comment: '评语',
 })
 
 const usageLabel = computed(() => {

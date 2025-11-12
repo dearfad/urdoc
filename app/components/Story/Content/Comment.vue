@@ -2,7 +2,7 @@
   <v-card rounded="lg" hover min-height="400">
     <v-card-item class="bg-surface-light">
       <template #prepend>
-        <v-icon icon="mdi-disc" />
+        <v-icon icon="mdi-comment-outline" />
       </template>
       <template #append>
         <v-icon

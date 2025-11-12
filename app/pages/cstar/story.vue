@@ -7,6 +7,8 @@
     <StoryUtilsGenerateConversation />
     <StoryContentDiscussion />
     <StoryUtilsGenerateDiscussion />
+    <StoryContentComment />
+    <StoryUtilsGenerateComment />
   </div>
 </template>
 
