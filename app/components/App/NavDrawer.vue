@@ -48,9 +48,9 @@ const projects = ref([
 const cstar = ref([
   { text: '生成病例', icon: 'mdi-alpha-c-circle', link: '/cstar/case', disabled: false },
   { text: '编写故事', icon: 'mdi-alpha-s-circle', link: '/cstar/story', disabled: false },
-  { text: '设计问题', icon: 'mdi-alpha-t-circle', link: '/cstar/test', disabled: true },
-  { text: '模拟问诊', icon: 'mdi-alpha-a-circle', link: '/cstar/act', disabled: true },
-  { text: '评估能力', icon: 'mdi-alpha-r-circle', link: '/cstar/rate', disabled: true },
+  { text: '设计问题', icon: 'mdi-alpha-t-circle', link: '/cstar/test', disabled: false },
+  { text: '模拟问诊', icon: 'mdi-alpha-a-circle', link: '/cstar/act', disabled: false },
+  { text: '评估能力', icon: 'mdi-alpha-r-circle', link: '/cstar/rate', disabled: false },
 ])
 
 const multimodal = ref([

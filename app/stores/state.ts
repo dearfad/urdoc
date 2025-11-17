@@ -20,6 +20,9 @@ export const useStateStore = defineStore(
       conversation: false,
       discussion: false,
       comment: false,
+      test: false,
+      act: false,
+      rate: false,
     })
 
     // 是否编辑病例

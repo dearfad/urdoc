@@ -93,7 +93,9 @@ export const useProviderBigModel = () => {
         model: chatModel.model,
         messages: messages,
         stream: true,
-        response_format: modelUsage === 'case' ? { type: 'json_object' } : { type: 'text' },
+        response_format: ['case', 'test'].includes(modelUsage)
+          ? { type: 'json_object' }
+          : { type: 'text' },
       },
     }
     if (chatModel.thinking) {

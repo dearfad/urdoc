@@ -40,6 +40,9 @@ export const useRecordStore = defineStore(
         conversation: '',
         discussion: '',
         comment: '',
+        test: '',
+        act: '',
+        rate: '',
       },
       test: [
         {
@@ -123,31 +126,31 @@ export const useRecordStore = defineStore(
     })
 
     const testText = computed(() => {
-      // return record.value.test
       return record.value.test
-        .map((test, index) => {
-          const question = `问题${index + 1}: ${test.问题}`
-          const options = Object.entries(test.选项)
-            .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
-            .join(' ')
-          const answer = `答案: ${test.答案}`
-          return `${question}\n${options}\n${answer}`
-        })
-        .join('\n\n')
+      // return record.value.test
+      //   .map((test, index) => {
+      //     const question = `问题${index + 1}: ${test.问题}`
+      //     const options = Object.entries(test.选项)
+      //       .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
+      //       .join(' ')
+      //     const answer = `答案: ${test.答案}`
+      //     return `${question}\n${options}\n${answer}`
+      //   })
+      //   .join('\n\n')
     })
 
     const testMarkdown = computed(() => {
-      // return record.value.test
       return record.value.test
-        .map((test, index) => {
-          const question = `**问题${index + 1}**: ${test.问题}\n`
-          const options = Object.entries(test.选项)
-            .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
-            .join('\n')
-          const answer = `**答案**: ${test.答案}\n`
-          return `${question}\n**选项**:\n${options}\n\n${answer}\n`
-        })
-        .join('\n\n')
+      // return record.value.test
+      //   .map((test, index) => {
+      //     const question = `**问题${index + 1}**: ${test.问题}\n`
+      //     const options = Object.entries(test.选项)
+      //       .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
+      //       .join('\n')
+      //     const answer = `**答案**: ${test.答案}\n`
+      //     return `${question}\n**选项**:\n${options}\n\n${answer}\n`
+      //   })
+      //   .join('\n\n')
     })
 
     const view = computed(() => {
@@ -206,6 +209,9 @@ export const useRecordStore = defineStore(
           conversation: '',
           discussion: '',
           comment: '',
+          test: '',
+          act: '',
+          rate: '',
         },
         test: [
           {
@@ -308,7 +314,7 @@ export const useRecordStore = defineStore(
     async function getComment() {
       stateStore.isModelResponseShow.comment = true
       const messages = promptStore.getSystemPrompt('comment')
-      await modelRouter.getDiscussion(messages)
+      await modelRouter.getComment(messages)
       record.value.comment = modelStore.modelResponse.chat.content
       record.value.reasoning.comment = modelStore.modelResponse.chat.reasoning_content
       modelStore.resetResponse()
@@ -321,9 +327,14 @@ export const useRecordStore = defineStore(
     }
 
     async function getTest() {
+      stateStore.isModelResponseShow.test = true
       const messages = promptStore.getSystemPrompt('test')
-      record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
+      await modelRouter.getTest(messages)
+      record.value.test = modelStore.modelResponse.chat.content
+      record.value.reasoning.test = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
       record.value.tag.test = stateStore.tag.test
+      stateStore.isModelResponseShow.test = false
     }
 
     async function getAct() {

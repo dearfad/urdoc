@@ -98,3 +98,11 @@
   line-height: 1.8;
   text-align: justify;
 }
+
+.test p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0em;
+  line-height: 1.8;
+}
