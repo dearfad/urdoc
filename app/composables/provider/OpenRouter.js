@@ -44,7 +44,7 @@ export const useProviderOpenRouter = () => {
           modelResponseStream.reasoning_content += choice.delta.reasoning
             ? choice.delta.reasoning
             : ''
-          if (modelUsage === 'case') {
+          if (['case', 'test'].includes(modelUsage)) {
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
               ? modelResponseStream.reasoning_content
               : ''

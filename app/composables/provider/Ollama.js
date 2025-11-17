@@ -57,7 +57,7 @@ export const useProviderOllama = () => {
           modelResponseStream.reasoning_content += message.message.thinking
             ? message.message.thinking
             : ''
-          if (modelUsage === 'case') {
+          if (['case', 'test'].includes(modelUsage)) {
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
               ? modelResponseStream.reasoning_content
               : ''

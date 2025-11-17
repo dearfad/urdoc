@@ -47,7 +47,7 @@ export const useProviderGitee = () => {
           modelResponseStream.reasoning_content += choice.delta.reasoning_content
             ? choice.delta.reasoning_content
             : ''
-          if (modelUsage === 'case') {
+          if (['case', 'test'].includes(modelUsage)) {
             modelStore.modelResponse.chat.reasoning_content = modelResponseStream.reasoning_content
               ? modelResponseStream.reasoning_content
               : ''
