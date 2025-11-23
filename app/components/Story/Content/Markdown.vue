@@ -18,21 +18,25 @@
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <MDC cache-key="story-chat-reasoning-content-show" :value="reasoningContent" />
+          <!-- <MDC cache-key="story-chat-reasoning-content-show" :value="reasoningContent" /> -->
+          <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
       <div v-if="stateStore.isModelResponseShow.story" class="story">
-        <MDC cache-key="story-chat-content-show" :value="modelStore.modelResponse.chat.content" />
+        <!-- <MDC cache-key="story-chat-content-show" :value="modelStore.modelResponse.chat.content" /> -->
+        <MarkdownRender :content="modelStore.modelResponse.chat.content" />
       </div>
       <div v-else class="story">
-        <MDC cache-key="record-story-markdown-show" :value="recordStore.view.story.markdown" />
+        <!-- <MDC cache-key="record-story-markdown-show" :value="recordStore.view.story.markdown" /> -->
+        <MarkdownRender :content="recordStore.view.story.markdown" />
       </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script setup>
+import MarkdownRender from 'vue-renderer-markdown'
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()

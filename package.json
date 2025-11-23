@@ -13,8 +13,8 @@
     "edgeone": "nuxt generate && vitepress build docs"
   },
   "dependencies": {
-    "@clerk/localizations": "^3.28.2",
-    "@clerk/nuxt": "^1.13.1",
+    "@clerk/localizations": "^3.28.3",
+    "@clerk/nuxt": "^1.13.2",
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.10.0",
     "@nuxtjs/i18n": "^10.2.1",
@@ -30,6 +30,7 @@
     "vite-plugin-vuetify": "^2.1.2",
     "vue": "3.5.24",
     "vue-json-pretty": "^2.6.0",
+    "vue-renderer-markdown": "^0.0.63-beta.0",
     "vue-router": "^4.6.3",
     "vuetify": "^3.10.11",
     "vuetify-nuxt-module": "^0.18.8"

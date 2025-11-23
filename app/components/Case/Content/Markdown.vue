@@ -14,27 +14,39 @@
       </template>
     </v-toolbar>
     <!-- <v-divider /> -->
+
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <MDC cache-key="case-chat-reasoning-content-show" :value="reasoningContent" />
+          <!-- <MDC cache-key="case-chat-reasoning-content-show" :value="reasoningContent" /> -->
+          <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
 
       <div v-if="stateStore.isModelResponseShow.case" class="case">
+        <MarkdownRender :content="streamChatContentMarkdown" />
+      </div>
+      <div v-else class="case">
+        <MarkdownRender :content="recordStore.view.case.markdown" />
+      </div>
+
+      <!-- <div v-if="stateStore.isModelResponseShow.case" class="case">
         <MDC cache-key="case-chat-content-show" :value="streamChatContentMarkdown" />
       </div>
       <div v-else class="case">
         <MDC cache-key="record-case-markdown-show" :value="recordStore.view.case.markdown" />
-      </div>
+      </div> -->
     </v-card-text>
   </v-card>
 </template>
 
 <script setup>
+import MarkdownRender from 'vue-renderer-markdown'
+import 'vue-renderer-markdown/index.css'
+
 const recordStore = useRecordStore()
 const stateStore = useStateStore()
 const modelStore = useModelStore()

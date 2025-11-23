@@ -18,19 +18,22 @@
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <MDC cache-key="discussion-chat-reasoning-content-show" :value="reasoningContent" />
+          <!-- <MDC cache-key="discussion-chat-reasoning-content-show" :value="reasoningContent" /> -->
+          <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
       <div v-if="stateStore.isModelResponseShow.discussion" class="discussion">
-        <MDC
+        <!-- <MDC
           cache-key="discussion-chat-content-show"
           :value="modelStore.modelResponse.chat.content"
-        />
+        /> -->
+        <MarkdownRender :content="modelStore.modelResponse.chat.content" />
       </div>
       <div v-else class="discussion">
         <div v-for="(line, index) in recordStore.view.discussion.split('\n\n')" :key="index">
-          <MDC :value="line" />
+          <!-- <MDC :value="line" /> -->
+          <MarkdownRender :content="line" />
           <v-divider v-if="(index + 1) % 2 === 0" class="my-2" />
         </div>
       </div>
@@ -39,6 +42,7 @@
 </template>
 
 <script setup>
+import MarkdownRender from 'vue-renderer-markdown'
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()
