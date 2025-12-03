@@ -13,14 +13,14 @@
     "edgeone": "nuxt generate && vitepress build docs"
   },
   "dependencies": {
-    "@clerk/localizations": "^3.28.3",
-    "@clerk/nuxt": "^1.13.2",
+    "@clerk/localizations": "^3.29.0",
+    "@clerk/nuxt": "^1.13.4",
     "@mdi/font": "^7.4.47",
-    "@nuxt/eslint": "^1.10.0",
+    "@nuxt/eslint": "^1.11.0",
     "@nuxtjs/i18n": "^10.2.1",
-    "@nuxtjs/mdc": "^0.18.4",
+    "@nuxtjs/mdc": "^0.19.1",
     "@pinia/nuxt": "^0.11.3",
-    "@supabase/supabase-js": "^2.84.0",
+    "@supabase/supabase-js": "^2.86.0",
     "ali-oss": "^6.23.0",
     "jsonrepair": "^3.13.1",
     "nuxt": "^4.2.1",
@@ -28,18 +28,18 @@
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "vite-plugin-vuetify": "^2.1.2",
-    "vue": "3.5.24",
+    "vue": "3.5.25",
     "vue-json-pretty": "^2.6.0",
-    "vue-renderer-markdown": "^0.0.63-beta.0",
+    "vue-renderer-markdown": "^0.0.63-beta.4",
     "vue-router": "^4.6.3",
-    "vuetify": "^3.10.11",
+    "vuetify": "^3.11.0",
     "vuetify-nuxt-module": "^0.18.8"
   },
   "overrides": {
     "cookie": "1.0.2"
   },
   "devDependencies": {
-    "mermaid": "^11.12.1",
+    "mermaid": "^11.12.2",
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17"
   }
