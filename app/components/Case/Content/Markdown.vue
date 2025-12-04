@@ -32,8 +32,8 @@
       <div v-else class="case">
         <MarkdownRender :content="recordStore.view.case.markdown" />
       </div>
-
-      <!-- <div v-if="stateStore.isModelResponseShow.case" class="case">
+      <!-- 
+      <div v-if="stateStore.isModelResponseShow.case" class="case">
         <MDC cache-key="case-chat-content-show" :value="streamChatContentMarkdown" />
       </div>
       <div v-else class="case">
@@ -44,8 +44,8 @@
 </template>
 
 <script setup>
-import MarkdownRender from 'vue-renderer-markdown'
-import 'vue-renderer-markdown/index.css'
+import MarkdownRender from 'markstream-vue'
+import 'markstream-vue/index.css'
 
 const recordStore = useRecordStore()
 const stateStore = useStateStore()

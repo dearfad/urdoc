@@ -20,9 +20,10 @@
     "@nuxtjs/i18n": "^10.2.1",
     "@nuxtjs/mdc": "^0.19.1",
     "@pinia/nuxt": "^0.11.3",
-    "@supabase/supabase-js": "^2.86.0",
+    "@supabase/supabase-js": "^2.86.1",
     "ali-oss": "^6.23.0",
     "jsonrepair": "^3.13.1",
+    "markstream-vue": "^0.0.2-beta.8",
     "nuxt": "^4.2.1",
     "partial-json": "^0.1.7",
     "pinia": "^3.0.4",
@@ -30,9 +31,8 @@
     "vite-plugin-vuetify": "^2.1.2",
     "vue": "3.5.25",
     "vue-json-pretty": "^2.6.0",
-    "vue-renderer-markdown": "^0.0.63-beta.4",
     "vue-router": "^4.6.3",
-    "vuetify": "^3.11.0",
+    "vuetify": "^3.11.2",
     "vuetify-nuxt-module": "^0.18.8"
   },
   "overrides": {

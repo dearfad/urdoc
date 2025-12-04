@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import MarkdownRender from 'vue-renderer-markdown'
+import MarkdownRender from 'markstream-vue'
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()
