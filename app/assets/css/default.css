@@ -1,0 +1,108 @@
+/* 调整段落之间的间距 */
+
+.reasoning p {
+  font-size: 1em;
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  text-indent: 2em;
+  line-height: 1.6;
+}
+
+.reasoning ul,
+.reasoning ol {
+  padding-left: 3em;
+}
+
+.reasoning li {
+  font-size: 1em;
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  text-indent: 0.5em;
+  line-height: 1.6;
+}
+
+.case p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0em;
+  line-height: 1.8;
+}
+
+.story p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 2em;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.story ol {
+  padding-left: 3em;
+}
+
+.story ul {
+  padding-left: 3em;
+}
+
+.story li {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0.5em;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.conversation p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0em;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.discussion p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0em;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.comment p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.comment ol {
+  padding-left: 3em;
+}
+
+.comment ul {
+  padding-left: 3em;
+}
+
+.comment li {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0.5em;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.test p {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 0.9em;
+  text-indent: 0em;
+  line-height: 1.8;
+}

@@ -1,0 +1,24 @@
+{
+  "index": {
+    "title": "Case Study Platform",
+    "intro-line-1": "via large language model",
+    "intro-line-2": "Generate cases, Write stories, Design questions",
+    "intro-line-3": "Simulate consultations, Evaluate competence",
+    "intro-line-4": "Application and innovation of the CSTAR model",
+    "button-narrative-medicine": "Narrative Medicine"
+  },
+  "app": {
+    "bar": {
+      "theme": "Theme",
+      "documents": "Documents",
+      "language": "Language",
+      "sign-in": "Sign In"
+    },
+    "drawer": {
+      "narrative-medicine": "NarrativeMed",
+      "case": "Case",
+      "story": "Story",
+      "settings": "Settings"
+    }
+  }
+}

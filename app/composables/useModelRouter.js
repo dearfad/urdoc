@@ -1,130 +1,139 @@
 export default function () {
   const stateStore = useStateStore()
   const recordStore = useRecordStore()
-  const chatModel = useChatModel()
-  const imageModel = useImageModel()
-  const videoModel = useVideoModel()
+  // const imageModel = useImageModel()
+  // const videoModel = useVideoModel()
   const promptStore = usePromptStore()
-
-  function getChatModelParams(modelUsage, messages, response_format) {
-    const model = stateStore.models.chat[modelUsage]
-    const params = {
-      // 使用模型接入点url
-      url: model.url,
-      // 默认POST方法
-      method: 'POST',
-      // 添加apiKeyName，优先网关gateway，次选服务商provider
-      apiKeyName: model.key.gateway || model.key.provider,
-      // 服务器端根据apiKeyName添加
-      // Authorization: 'Bearer <apiKey>',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // 请求体 response_format 有区别，待规范化
-      body: JSON.stringify({
-        model: model.id,
-        messages: messages,
-        stream: true,
-        response_format: response_format === 'text' ? { type: 'text' } : { type: 'json_object' },
-      }),
-    }
-    return params
-  }
-
-  function getImageModelParams(modelUsage, prompt) {
-    const model = stateStore.models.image[modelUsage]
-    const params = {
-      url: model.url,
-      method: 'POST',
-      apiKeyName: model.key.gateway || model.key.provider,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: model.id,
-        prompt: prompt,
-      }),
-    }
-    return params
-  }
-
-  function getVideoModelParams(modelUsage, prompt) {
-    const model = stateStore.models.video[modelUsage]
-    const params = {
-      url: model.url,
-      method: 'POST',
-      apiKeyName: model.key.gateway || model.key.provider,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: model.id,
-        prompt: prompt,
-        image_url: recordStore.record.face,
-      }),
-    }
-    return params
-  }
+  const modelStore = useModelStore()
+  // const apiKeyStore = useApiKeyStore()
 
   // Chat Model
-
   async function getCase(messages) {
-    const params = getChatModelParams('case', messages, 'json')
-    return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
+    const provider = modelStore.getProviderComposable('chat', 'case')
+    return await provider.getResponse('chat', 'case', messages)
   }
-  async function checkCase(messages) {
-    const params = getChatModelParams('check', messages, 'json')
-    return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
-  }
+  // async function checkCase(messages) {
+  //   const params = getChatModelParams('check', messages, 'json')
+  //   return await chatModel.getResponse(params, 'json', recordStore.watchFields.case)
+  // }
 
   async function getStory(messages) {
-    const params = getChatModelParams('story', messages, 'text')
-    return await chatModel.getResponse(params, 'text')
+    const provider = modelStore.getProviderComposable('chat', 'story')
+    return await provider.getResponse('chat', 'story', messages)
+  }
+
+  async function getConversation(messages) {
+    const provider = modelStore.getProviderComposable('chat', 'conversation')
+    return await provider.getResponse('chat', 'conversation', messages)
+  }
+
+  async function getDiscussion(messages) {
+    const provider = modelStore.getProviderComposable('chat', 'discussion')
+    return await provider.getResponse('chat', 'discussion', messages)
+  }
+
+  async function getComment(messages) {
+    const provider = modelStore.getProviderComposable('chat', 'comment')
+    return await provider.getResponse('chat', 'comment', messages)
   }
 
   async function getTest(messages) {
-    const params = getChatModelParams('test', messages, 'json')
-    return await chatModel.getResponse(params, 'json')
+    const provider = modelStore.getProviderComposable('chat', 'test')
+    return await provider.getResponse('chat', 'test', messages)
   }
 
-  async function getAct(messages) {
-    const params = getChatModelParams('act', messages, 'text')
-    return await chatModel.getResponse(params, 'text')
-  }
+  // async function getAct(messages) {
+  //   const params = getChatModelParams('act', messages, 'text')
+  //   return await chatModel.getResponse(params, 'text')
+  // }
 
-  async function getRate(messages) {
-    const params = getChatModelParams('rate', messages, 'text')
-    return await chatModel.getResponse(params, 'text')
-  }
+  // async function getRate(messages) {
+  //   const params = getChatModelParams('rate', messages, 'text')
+  //   return await chatModel.getResponse(params, 'text')
+  // }
 
   // Image Model
-
   async function getFace(messages) {
-    const chatParams = getChatModelParams('face', messages, 'text')
-    const prompt = await chatModel.getResponse(chatParams, 'text')
-    promptStore.prompts.image.face = prompt
-    const imageParams = getImageModelParams('face', prompt)
-    return await imageModel.getResponse(imageParams)
+    const chatProvider = modelStore.getProviderComposable('chat', 'face')
+    await chatProvider.getResponse('chat', 'face', messages)
+    promptStore.prompts.image.face = modelStore.modelResponse.chat.content
+    const imageProvider = modelStore.getProviderComposable('image', 'face')
+    return await imageProvider.getResponse('image', 'face', promptStore.prompts.image.face)
+  }
+
+  async function getStoryIllustration(messages) {
+    const chatProvider = modelStore.getProviderComposable('chat', 'illustration')
+    await chatProvider.getResponse('chat', 'illustration', messages)
+    const prompt = modelStore.modelResponse.chat.content
+    // 使用正则表达式提取方括号内的内容
+    const content = prompt.match(/(?<=\[)(.*?)(?=\])/)[0]
+    // 将提取的内容按逗号分割并去除多余的空格
+    const result = content.split(',').map((item) => item.trim().replace(/'/g, ''))
+
+    for (const item of result) {
+      // promptStore.prompts.image.illustration = item
+      const imageProvider = modelStore.getProviderComposable('image', 'illustration')
+      const url = await imageProvider.getResponse('image', 'illustration', item)
+      recordStore.record.story.illustration.push({
+        title: item,
+        url: url,
+      })
+    }
+
+    // 并发执行所有插图生成任务
+    // const illustrationPromises = result.map(async (item) => {
+    //   promptStore.prompts.image.illustration = item
+    //   const imageProvider = modelStore.getProviderComposable('image', 'illustration')
+    //   const url = await imageProvider.getResponse('image', 'illustration', item)
+    //   return url
+    // })
+
+    // // 等待所有插图生成完成并收集结果
+    // const urls = await Promise.all(illustrationPromises)
+
+    // // 将所有生成的插图URL添加到记录中
+    // recordStore.record.story.illustration.push(...urls)
+
+    return
   }
 
   // Video Model
 
   async function getPose(messages) {
-    const chatParams = getChatModelParams('pose', messages, 'text')
-    const prompt = await chatModel.getResponse(chatParams, 'text')
-    promptStore.prompts.video.pose = prompt
-    const videoParams = getVideoModelParams('pose', prompt)
-    stateStore.poseId = await videoModel.getResponse(videoParams)
-    stateStore.appInfo = stateStore.poseId
+    const chatProvier = modelStore.getProviderComposable('chat', 'pose')
+    await chatProvier.getResponse('chat', 'pose', messages)
+    promptStore.prompts.video.pose = modelStore.modelResponse.chat.content
+    const videoProvider = modelStore.getProviderComposable('video', 'pose')
+    return await videoProvider.getResponse('video', 'pose', promptStore.prompts.video.pose)
   }
 
   // Voice Model
-  async function getVoice(text) {
+  async function getVoice(messages) {
     const response = await $fetch(
-      `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${text}`
+      `https://textreadtts.com/tts/convert?accessKey=FREE&language=chinese&speaker=speaker${stateStore.voiceId}&text=${messages}`
     )
     return response.audio
   }
 
-  return { getCase, getStory, getTest, getAct, getRate, getFace, getPose, getVoice, checkCase }
+  async function getDialogue(messages) {
+    const provider = modelStore.getProviderComposable('audio', 'dialogue')
+    return await provider.getResponse('audio', 'dialogue', messages)
+  }
+
+  return {
+    getCase,
+    getStory,
+    getConversation,
+    getDiscussion,
+    getComment,
+    getTest,
+    // getAct,
+    // getRate,
+    getFace,
+    getPose,
+    getVoice,
+    getDialogue,
+    // checkCase,
+    getStoryIllustration,
+  }
 }

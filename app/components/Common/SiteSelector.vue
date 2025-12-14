@@ -28,31 +28,16 @@ const lastCommitDate = ref({
 })
 
 async function getLastCommitDate(branch) {
-  const params = {
-    url: `https://api.github.com/repos/dearfad/urdoc/commits/${branch}`,
-    method: 'GET',
-    apiKeyName: 'GITHUB_API_TOKEN',
-    headers: {
-      'Content-Type': 'application/vnd.github+json',
-      'User-Agent': 'urdoc',
-    },
-  }
-  const response = await $fetch('/fetch', {
+  return await $fetch('/github/last-commit', {
     baseURL: stateStore.apiBaseUrl,
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: {
-      params: params,
+      branch: branch,
     },
   })
-  const utcDate = new Date(response.commit.committer.date)
-  const beijingDateStr = utcDate.toLocaleDateString('zh-CN', {
-    timeZone: 'Asia/Shanghai',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  })
-  const formattedDate = beijingDateStr.replace(/\//g, '-')
-  return formattedDate
 }
 
 onMounted(async () => {

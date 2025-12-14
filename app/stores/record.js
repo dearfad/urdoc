@@ -1,12 +1,13 @@
-import { jsonrepair } from 'jsonrepair'
-
+const CURRENT_VERSION = '2025-11-10'
 export const useRecordStore = defineStore(
   'record',
   () => {
+    const version = ref(CURRENT_VERSION)
     const promptStore = usePromptStore()
     const modelRouter = useModelRouter()
     const supabase = useSupabase()
     const stateStore = useStateStore()
+    const modelStore = useModelStore()
 
     // Medical Records
     const record = ref({
@@ -27,7 +28,21 @@ export const useRecordStore = defineStore(
         病理: '',
       },
       story: {
-        故事: '',
+        content: '',
+        illustration: [],
+      },
+      conversation: '',
+      discussion: '',
+      comment: '',
+      reasoning: {
+        case: '',
+        story: '',
+        conversation: '',
+        discussion: '',
+        comment: '',
+        test: '',
+        act: '',
+        rate: '',
       },
       test: [
         {
@@ -61,6 +76,7 @@ export const useRecordStore = defineStore(
       face: '',
       pose: '',
       voice: '',
+      dialogue: '',
       author: '',
       public: true,
     })
@@ -106,35 +122,35 @@ export const useRecordStore = defineStore(
       // return Object.entries(record.value.story)
       //   .map(([key, value]) => `**${key}**:\n\n${value}`)
       //   .join('\n\n')
-      return record.value.story['故事']
+      return record.value.story['content']
     })
 
     const testText = computed(() => {
-      // return record.value.test
       return record.value.test
-        .map((test, index) => {
-          const question = `问题${index + 1}: ${test.问题}`
-          const options = Object.entries(test.选项)
-            .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
-            .join(' ')
-          const answer = `答案: ${test.答案}`
-          return `${question}\n${options}\n${answer}`
-        })
-        .join('\n\n')
+      // return record.value.test
+      //   .map((test, index) => {
+      //     const question = `问题${index + 1}: ${test.问题}`
+      //     const options = Object.entries(test.选项)
+      //       .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
+      //       .join(' ')
+      //     const answer = `答案: ${test.答案}`
+      //     return `${question}\n${options}\n${answer}`
+      //   })
+      //   .join('\n\n')
     })
 
     const testMarkdown = computed(() => {
-      // return record.value.test
       return record.value.test
-        .map((test, index) => {
-          const question = `**问题${index + 1}**: ${test.问题}\n`
-          const options = Object.entries(test.选项)
-            .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
-            .join('\n')
-          const answer = `**答案**: ${test.答案}\n`
-          return `${question}\n**选项**:\n${options}\n\n${answer}\n`
-        })
-        .join('\n\n')
+      // return record.value.test
+      //   .map((test, index) => {
+      //     const question = `**问题${index + 1}**: ${test.问题}\n`
+      //     const options = Object.entries(test.选项)
+      //       .map(([optionKey, optionValue]) => `${optionKey}: ${optionValue}`)
+      //       .join('\n')
+      //     const answer = `**答案**: ${test.答案}\n`
+      //     return `${question}\n**选项**:\n${options}\n\n${answer}\n`
+      //   })
+      //   .join('\n\n')
     })
 
     const view = computed(() => {
@@ -149,6 +165,9 @@ export const useRecordStore = defineStore(
           text: storyText.value,
           markdown: storyMarkdown.value,
         },
+        conversation: record.value.conversation,
+        discussion: record.value.discussion,
+        comment: record.value.comment,
         test: {
           json: record.value.test,
           text: testText.value,
@@ -178,7 +197,21 @@ export const useRecordStore = defineStore(
           病理: '',
         },
         story: {
-          故事: '',
+          content: '',
+          illustration: [],
+        },
+        conversation: '',
+        discussion: '',
+        comment: '',
+        reasoning: {
+          case: '',
+          story: '',
+          conversation: '',
+          discussion: '',
+          comment: '',
+          test: '',
+          act: '',
+          rate: '',
         },
         test: [
           {
@@ -211,6 +244,7 @@ export const useRecordStore = defineStore(
         },
         face: '',
         voice: '',
+        dialogue: '',
         pose: '',
         author: '',
         public: true,
@@ -222,35 +256,85 @@ export const useRecordStore = defineStore(
     }
 
     async function getCase() {
+      stateStore.isModelResponseShow.case = true
       $reset()
       const messages = promptStore.getSystemPrompt('case')
-      const caseJson = await modelRouter.getCase(messages)
+      await modelRouter.getCase(messages)
+      if (!modelStore.modelResponse.chat.content) return
       try {
-        const caseJsonRepaired = jsonrepair(caseJson)
-        const caseJsonParsed = JSON.parse(caseJsonRepaired)
-        record.value.case = caseJsonParsed
+        record.value.case = modelStore.modelResponse.chat.content
+        record.value.reasoning.case = modelStore.modelResponse.chat.reasoning_content
         record.value.scope = stateStore.scope
         record.value.tag.case = stateStore.tag.case
       } catch (error) {
         stateStore.appInfos.push('获取病例失败: ' + error)
       }
+      stateStore.isModelResponseShow.case = false
     }
+
     async function checkCase() {
       const messages = promptStore.getSystemPrompt('review')
       const result = JSON.parse(await modelRouter.checkCase(messages))
       // 计划中
       stateStore.appInfos.push(result)
     }
+
     async function getStory() {
+      stateStore.isModelResponseShow.story = true
       const messages = promptStore.getSystemPrompt('story')
-      record.value.story.故事 = await modelRouter.getStory(messages)
+      await modelRouter.getStory(messages)
+      if (!modelStore.modelResponse.chat.content) return
+      record.value.story.content = modelStore.modelResponse.chat.content
+      record.value.reasoning.story = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
       record.value.tag.story = stateStore.tag.story
+      stateStore.isModelResponseShow.story = false
+    }
+
+    async function getConversation() {
+      stateStore.isModelResponseShow.conversation = true
+      const messages = promptStore.getSystemPrompt('conversation')
+      await modelRouter.getConversation(messages)
+      record.value.conversation = modelStore.modelResponse.chat.content
+      record.value.reasoning.conversation = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
+      stateStore.isModelResponseShow.conversation = false
+    }
+
+    async function getDiscussion() {
+      stateStore.isModelResponseShow.discussion = true
+      const messages = promptStore.getSystemPrompt('discussion')
+      await modelRouter.getDiscussion(messages)
+      record.value.discussion = modelStore.modelResponse.chat.content
+      record.value.reasoning.discussion = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
+      stateStore.isModelResponseShow.discussion = false
+    }
+
+    async function getComment() {
+      stateStore.isModelResponseShow.comment = true
+      const messages = promptStore.getSystemPrompt('comment')
+      await modelRouter.getComment(messages)
+      record.value.comment = modelStore.modelResponse.chat.content
+      record.value.reasoning.comment = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
+      stateStore.isModelResponseShow.comment = false
+    }
+    async function getStoryIllustration() {
+      record.value.story.illustration = []
+      const messages = promptStore.getSystemPrompt('illustration')
+      await modelRouter.getStoryIllustration(messages)
     }
 
     async function getTest() {
+      stateStore.isModelResponseShow.test = true
       const messages = promptStore.getSystemPrompt('test')
-      record.value.test = Object.values(JSON.parse(await modelRouter.getTest(messages)))
+      await modelRouter.getTest(messages)
+      record.value.test = modelStore.modelResponse.chat.content
+      record.value.reasoning.test = modelStore.modelResponse.chat.reasoning_content
+      modelStore.resetResponse()
       record.value.tag.test = stateStore.tag.test
+      stateStore.isModelResponseShow.test = false
     }
 
     async function getAct() {
@@ -292,6 +376,11 @@ export const useRecordStore = defineStore(
     async function getVoice(text) {
       record.value.voice = ''
       record.value.voice = await modelRouter.getVoice(text)
+    }
+
+    async function getDialogue() {
+      record.value.dialogue = ''
+      record.value.dialogue = await modelRouter.getDialogue(record.value.conversation)
     }
 
     const database = {
@@ -389,6 +478,7 @@ export const useRecordStore = defineStore(
     // })
 
     return {
+      version,
       record,
       records,
       watchFields,
@@ -398,12 +488,17 @@ export const useRecordStore = defineStore(
       getCase,
       checkCase,
       getStory,
+      getConversation,
+      getDiscussion,
+      getComment,
+      getStoryIllustration,
       getTest,
       getAct,
       getRate,
       getFace,
       getPose,
       getVoice,
+      getDialogue,
       newRecord,
 
       database,
@@ -412,6 +507,18 @@ export const useRecordStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('record')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )

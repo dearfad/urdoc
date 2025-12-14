@@ -7,14 +7,34 @@ import defaultFacePrompt from '@/assets/default/face/prompt.md?raw'
 import defaultPosePrompt from '@/assets/default/pose/prompt.md?raw'
 import defaultReviewPrompt from '@/assets/default/review/prompt.md?raw'
 import defaultVerifyPrompt from '@/assets/default/verify/prompt.md?raw'
+import defaultIllustrationPrompt from '@/assets/default/illustration/prompt.md?raw'
+import defaultConversationPrompt from '@/assets/default/conversation/prompt.md?raw'
+import defaultDiscussionPrompt from '@/assets/default/discussion/prompt.md?raw'
+import defaultCommentPrompt from '@/assets/default/comment/prompt.md?raw'
+
+const CURRENT_VERSION = '2025-11-10'
 
 export const usePromptStore = defineStore(
   'prompt',
   () => {
+    const version = ref(CURRENT_VERSION)
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
     const supabase = useSupabase()
-    const promptType = ['case', 'story', 'test', 'act', 'rate', 'face', 'pose', 'review', 'verify']
+    const promptType = [
+      'case',
+      'story',
+      'test',
+      'act',
+      'rate',
+      'face',
+      'pose',
+      'review',
+      'verify',
+      'conversation',
+      'discussion',
+      'comment',
+    ]
     const prompts = ref({
       system: {
         case: {
@@ -89,6 +109,38 @@ export const usePromptStore = defineStore(
           author: '',
           public: true,
         },
+        illustration: {
+          id: '',
+          type: 'illustration',
+          title: '默认',
+          prompt: defaultIllustrationPrompt,
+          author: '',
+          public: true,
+        },
+        conversation: {
+          id: '',
+          type: 'conversation',
+          title: '默认',
+          prompt: defaultConversationPrompt,
+          author: '',
+          public: true,
+        },
+        discussion: {
+          id: '',
+          type: 'discussion',
+          title: '默认',
+          prompt: defaultDiscussionPrompt,
+          author: '',
+          public: true,
+        },
+        comment: {
+          id: '',
+          type: 'comment',
+          title: '默认',
+          prompt: defaultCommentPrompt,
+          author: '',
+          public: true,
+        },
       },
       user: {
         case: [],
@@ -100,9 +152,12 @@ export const usePromptStore = defineStore(
         pose: [],
         review: [],
         verify: [],
+        conversation: [],
+        discussion: [],
       },
       image: {
         face: '',
+        // illustration: '',
       },
       video: {
         pose: '',
@@ -185,6 +240,18 @@ export const usePromptStore = defineStore(
         case 'verify':
           content = `提供问题如下：${recordStore.view.case.markdown}`
           break
+        case 'illustration':
+          content = `提供故事如下：${recordStore.view.story.markdown}`
+          break
+        case 'conversation':
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}`
+          break
+        case 'discussion':
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation}`
+          break
+        case 'comment':
+          content = `提供病例如下：${recordStore.view.case.markdown}. 提供故事如下：${recordStore.view.story.markdown}. 提供对话如下： ${recordStore.view.conversation}. 提供讨论如下： ${recordStore.view.discussion}`
+          break
         default:
           content = '系统要点设定：无特殊要求'
           break
@@ -198,9 +265,21 @@ export const usePromptStore = defineStore(
       ]
     }
 
-    return { prompts, database, getSystemPrompt }
+    return { version, prompts, database, getSystemPrompt }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('prompt')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )

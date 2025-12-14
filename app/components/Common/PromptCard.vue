@@ -11,12 +11,11 @@
       density="comfortable"
       class="mt-4"
       return-object
-      no-data-text="读取后可选择"
     />
     <v-card-actions>
       <v-btn text="查看" @click="isPromptShow = !isPromptShow" />
       <v-spacer />
-      <v-btn disabled text="刷新" @click="selectByColumn" />
+      <v-btn v-tooltip:bottom="'从服务器同步最新提示词'" text="获取" @click="selectByColumn" />
       <v-btn text="新建" @click="create" />
     </v-card-actions>
     <v-expand-transition class="mt-4">

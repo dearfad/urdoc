@@ -2,7 +2,7 @@
   <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto mb-16">
     <div class="ma-4 font-weight-bold">当前模型</div>
     <div class="ma-4 font-weight-bold">
-      <vue-json-pretty :data="stateStore.models" class="mx-auto" />
+      <vue-json-pretty :data="modelStore.activeModels" class="mx-auto" />
     </div>
     <div class="ma-4 font-weight-bold">对话模型 - 病例</div>
     <CommonModelSelector model-type="chat" model-usage="case" />
@@ -24,5 +24,5 @@
 <script setup>
 import VueJsonPretty from 'vue-json-pretty'
 import 'vue-json-pretty/lib/styles.css'
-const stateStore = useStateStore()
+const modelStore = useModelStore()
 </script>

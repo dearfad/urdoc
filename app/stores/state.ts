@@ -1,6 +1,8 @@
+const CURRENT_VERSION = '2025-11-03'
 export const useStateStore = defineStore(
   'state',
   () => {
+    const version = ref(CURRENT_VERSION)
     //
     // API 地址设定
     //
@@ -8,21 +10,20 @@ export const useStateStore = defineStore(
 
     // AppBar
     // 侧边栏显示切换
-    const isNavDrawerShow = ref(true)
+    const isNavDrawerShow = ref(false)
     // 底部导航栏显示切换
-    const isBottomNavigationShow = ref(false)
-    const isAppFooterShow = ref(false)
+    const isBottomNavigationShow = ref(true)
 
-    // AppDebug
-    // 是否开启调试模式以显示原始数据
-    const isDebug = ref(false)
-    // 模型返回数据流
-    const modelResponseStream = ref('')
-    // 模型返回数据内容
-    const modelResponseString = ref('')
-    const isModelResponseStringShow = ref(false)
-    const isCaseModelResponseStringShow = ref(false)
-    const isStoryModelResponseStringShow = ref(false)
+    const isModelResponseShow = ref({
+      case: false,
+      story: false,
+      conversation: false,
+      discussion: false,
+      comment: false,
+      test: false,
+      act: false,
+      rate: false,
+    })
 
     // 是否编辑病例
     const recordShowContent = ref('markdown')
@@ -42,6 +43,9 @@ export const useStateStore = defineStore(
     // 当前模型生成字段
     const modelResponseField = ref('')
 
+    // 思考模型是否思考
+    const isModelThinking = ref(true)
+
     // 当前章节选择
     const scope = ref<Scope>({
       book: '',
@@ -60,95 +64,7 @@ export const useStateStore = defineStore(
       act: [],
       rate: [],
     })
-    // 默认平台和模型
-    const models = ref({
-      chat: {
-        case: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        check: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        story: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        test: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        act: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        rate: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        face: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-        pose: {
-          gateway: '直连',
-          provider: '智谱',
-          name: '智谱 GLM-4-Flash',
-          id: 'glm-4-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-      },
-      image: {
-        face: {
-          gateway: '直连',
-          provider: '智谱',
-          name: 'CogView-3-Flash',
-          id: 'cogview-3-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/images/generations',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-      },
-      video: {
-        pose: {
-          gateway: '直连',
-          provider: '智谱',
-          name: 'CogVideoX-Flash',
-          id: 'cogvideox-flash',
-          url: 'https://open.bigmodel.cn/api/paas/v4/videos/generations',
-          key: { gateway: '', provider: 'ZHIPU_API_KEY' },
-        },
-      },
-    })
+
     // 聊天模式
     const isActing = ref(false)
     const isRating = ref(false)
@@ -161,21 +77,17 @@ export const useStateStore = defineStore(
     const poseId = ref('')
 
     return {
+      version,
       apiBaseUrl,
 
       isNavDrawerShow,
 
       isBottomNavigationShow,
-      isAppFooterShow,
 
-      isModelResponseStringShow,
-      isCaseModelResponseStringShow,
-      isStoryModelResponseStringShow,
+      isModelResponseShow,
 
-      isDebug,
-      modelResponseStream,
-      modelResponseString,
       modelResponseField,
+      isModelThinking,
 
       recordShowContent,
       listRecords,
@@ -191,8 +103,6 @@ export const useStateStore = defineStore(
       scope,
       tag,
 
-      models,
-
       isActing,
       isRating,
       userPrompt,
@@ -203,6 +113,18 @@ export const useStateStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: {
+      serializer: {
+        serialize: JSON.stringify,
+        deserialize: (str) => {
+          const data = JSON.parse(str)
+          if (data.version !== CURRENT_VERSION) {
+            localStorage.removeItem('state')
+          } else {
+            return data
+          }
+        },
+      },
+    },
   }
 )

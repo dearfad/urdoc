@@ -1,103 +1,77 @@
 <template>
-  <v-card hover class="px-4 py-2" rounded="lg">
-    <v-select
-      v-model="book"
-      label="教科书"
-      :items="books"
-      variant="outlined"
-      class="my-4"
-      hide-details="auto"
-      prepend-inner-icon="mdi-book-open-variant-outline"
-      density="comfortable"
-      clearable
-      append-icon="mdi-autorenew"
-      @click:append="randomBook"
-      @update:model-value="handleBookChange"
-    />
-    <v-select
-      v-model="part"
-      label="篇目"
-      :items="parts"
-      variant="outlined"
-      class="my-4"
-      hide-details="auto"
-      density="comfortable"
-      prepend-inner-icon="mdi-bookmark-multiple-outline"
-      clearable
-      :disabled="parts.length === 0"
-      append-icon="mdi-autorenew"
-      @update:model-value="handlePartChange"
-      @click:append="randomPart"
-    />
-    <v-select
-      v-model="chapter"
-      label="章节"
-      :items="chapters"
-      variant="outlined"
-      class="my-4"
-      hide-details="auto"
-      density="comfortable"
-      prepend-inner-icon="mdi-bookmark-multiple-outline"
-      clearable
-      :disabled="chapters.length === 0"
-      append-icon="mdi-autorenew"
-      @click:append="randomChapter"
-      @update:model-value="handleChapterChange"
-    />
-    <v-select
-      v-model="section"
-      label="节次"
-      :items="sections"
-      variant="outlined"
-      class="my-4"
-      hide-details="auto"
-      density="comfortable"
-      prepend-inner-icon="mdi-book-outline"
-      clearable
-      :disabled="sections.length === 0"
-      append-icon="mdi-autorenew"
-      @update:model-value="handleSectionChange"
-      @click:append="randomSection"
-    />
-    <v-select
-      v-model="subsection"
-      label="子节"
-      :items="subsections"
-      variant="outlined"
-      class="my-4"
-      density="comfortable"
-      prepend-inner-icon="mdi-bookmark-outline"
-      clearable
-      :disabled="subsections.length === 0"
-      hide-details="auto"
-      append-icon="mdi-autorenew"
-      @update:model-value="handleSubsectionChange"
-      @click:append="randomSubsection"
-    />
-    <v-select
-      v-model="topic"
-      label="主题"
-      :items="topics"
-      variant="outlined"
-      class="my-4"
-      density="comfortable"
-      prepend-inner-icon="mdi-bookmark-outline"
-      clearable
-      :disabled="topics.length === 0"
-      hide-details="auto"
-      append-icon="mdi-autorenew"
-      @update:model-value="handleTopicChange"
-      @click:append="randomTopic"
-    />
-    <div class="d-flex flex-column align-end mt-2">
-      <v-checkbox v-model="random" max-width="70px" label="随机" density="compact" hide-details />
-    </div>
+  <v-card hover rounded="lg">
+    <v-toolbar v-if="isTitleShow" density="comfortable">
+      <template #prepend>
+        <v-btn icon="mdi-medical-bag" variant="plain" />
+      </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="疾病范围" />
+    </v-toolbar>
+    <v-card-text class="py-0">
+      <v-chip-group column>
+        <v-chip
+          v-for="item in filteredItems"
+          :key="item"
+          variant="text"
+          :prepend-icon="item.icon"
+          size="large"
+        >
+          {{ stateStore.scope[item.name] }}
+        </v-chip>
+      </v-chip-group>
+    </v-card-text>
+    <v-expansion-panels color="grey-lighten-3">
+      <v-expansion-panel title="请选择">
+        <v-expansion-panel-text>
+          <v-select
+            v-for="entry in entries"
+            :key="entry"
+            v-model="entry['v-model']"
+            :label="entry.label"
+            :items="entry.items()"
+            variant="outlined"
+            class="my-4"
+            hide-details="auto"
+            density="comfortable"
+            clearable
+            append-icon="mdi-autorenew"
+            :prepend-inner-icon="entry['prepend-inner-icon']"
+            :disabled="entry.items().length === 0"
+            @click:append="entry['click-append']()"
+            @update:model-value="entry['update-model-value']()"
+          />
+
+          <div class="d-flex justify-end">
+            <v-checkbox
+              v-model="random"
+              max-width="70px"
+              label="随机"
+              density="compact"
+              hide-details
+            />
+          </div>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-card>
 </template>
 
 <script setup>
+const { isTitleShow } = defineProps({
+  isTitleShow: { type: Boolean, required: false, default: true },
+})
 const stateStore = useStateStore()
 const bookStore = useBookStore()
+const items = ref([
+  { icon: 'mdi-book-open-variant-outline', name: 'book' },
+  { icon: 'mdi-bookmark-multiple-outline', name: 'part' },
+  { icon: 'mdi-bookmark-multiple-outline', name: 'chapter' },
+  { icon: 'mdi-book-outline', name: 'section' },
+  { icon: 'mdi-bookmark-outline', name: 'subsection' },
+  { icon: 'mdi-bookmark-outline', name: 'topic' },
+])
+const filteredItems = computed(() => {
+  return items.value.filter((item) => stateStore.scope[item.name])
+})
 
 const random = ref(true)
 
@@ -240,4 +214,55 @@ function handleScope() {
     topic: topic.value,
   }
 }
+
+const entries = ref([
+  {
+    label: '教科书',
+    'prepend-inner-icon': 'mdi-book-open-variant-outline',
+    items: () => books.value,
+    'v-model': book,
+    'click-append': randomBook,
+    'update-model-value': handleBookChange,
+  },
+  {
+    label: '篇目',
+    'prepend-inner-icon': 'mdi-bookmark-multiple-outline',
+    items: () => parts.value,
+    'v-model': part,
+    'click-append': randomPart,
+    'update-model-value': handlePartChange,
+  },
+  {
+    label: '章节',
+    'prepend-inner-icon': 'mdi-bookmark-multiple-outline',
+    items: () => chapters.value,
+    'v-model': chapter,
+    'click-append': randomChapter,
+    'update-model-value': handleChapterChange,
+  },
+  {
+    label: '节次',
+    'prepend-inner-icon': 'mdi-book-outline',
+    items: () => sections.value,
+    'v-model': section,
+    'click-append': randomSection,
+    'update-model-value': handleSectionChange,
+  },
+  {
+    label: '子节',
+    'prepend-inner-icon': 'mdi-bookmark-outline',
+    items: () => subsections.value,
+    'v-model': subsection,
+    'click-append': randomSubsection,
+    'update-model-value': handleSubsectionChange,
+  },
+  {
+    label: '主题',
+    'prepend-inner-icon': 'mdi-bookmark-outline',
+    items: () => topics.value,
+    'v-model': topic,
+    'click-append': randomTopic,
+    'update-model-value': handleTopicChange,
+  },
+])
 </script>

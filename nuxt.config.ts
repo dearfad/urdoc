@@ -1,12 +1,11 @@
-import { zhCN } from '@clerk/localizations'
+// import { zhCN, enUs } from '@clerk/localizations'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
-  compatibilityDate: '2025-08-08',
-  devtools: {
-    enabled: false,
-  },
+  compatibilityDate: '2025-11-23',
+  css: ['~/assets/css/default.css'],
+
   modules: [
     '@nuxt/eslint',
     '@nuxtjs/mdc',
@@ -14,6 +13,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@clerk/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   piniaPluginPersistedstate: {
@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     '/admin/**': { ssr: false },
     '/user/**': { ssr: false },
     '/project/**': { ssr: false },
+    '/site/**': { ssr: false },
   },
 
   // EdgeOne Pages Functions Development
@@ -35,12 +36,15 @@ export default defineNuxtConfig({
     devProxy: {
       '/function': 'http://localhost:8088/function',
     },
+    prerender: {
+      ignore: ['/i18n/**', '/_i18n/**'],
+    },
   },
 
   // Clerk Configuration
-  clerk: {
-    localization: zhCN,
-  },
+  // clerk: {
+  //   localization: zhCN,
+  // },
 
   // Supabase Runtime Configuration
   runtimeConfig: {
@@ -48,5 +52,20 @@ export default defineNuxtConfig({
       supabaseUrl: '',
       supabaseKey: '',
     },
+  },
+
+  // Nuxt i18n Configuration
+  i18n: {
+    defaultLocale: 'zh',
+    langDir: 'locales/',
+    locales: [
+      { code: 'zh', name: '中文', file: 'zh/index.ts' },
+      { code: 'en', name: 'English', file: 'en/index.ts' },
+    ],
+    strategy: 'no_prefix',
+  },
+
+  devtools: {
+    enabled: false,
   },
 })

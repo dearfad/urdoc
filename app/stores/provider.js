@@ -22,10 +22,10 @@ export const useProviderStore = defineStore('provider', () => {
       name: 'EdgeOne Pages Functions',
       url: '/function',
     },
-    // {
-    //   name: 'NUXT Server',
-    //   url: '/api',
-    // },
+    {
+      name: 'Nuxt Server API',
+      url: '/api',
+    },
   ])
   return { sites, apiBaseUrls }
 })
