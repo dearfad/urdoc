@@ -10,7 +10,7 @@ export const useStateStore = defineStore(
 
     // AppBar
     // 侧边栏显示切换
-    const isNavDrawerShow = ref(true)
+    const isNavDrawerShow = ref(false)
     // 底部导航栏显示切换
     const isBottomNavigationShow = ref(true)
 
