@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-11-03'
+const CURRENT_VERSION = '2025-12-14'
 export const useStateStore = defineStore(
   'state',
   () => {

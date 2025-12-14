@@ -3,7 +3,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
-  compatibilityDate: '2025-11-23',
+  compatibilityDate: '2025-12-14',
   css: ['~/assets/css/default.css'],
 
   modules: [
