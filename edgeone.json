@@ -1,7 +1,0 @@
-{
-  "name": "urdoc",
-  "buildCommand": "npm run edgeone",
-  "installCommand": "npm install",
-  "outputDirectory": "dist",
-  "nodeVersion": "24.5.0"
-}
