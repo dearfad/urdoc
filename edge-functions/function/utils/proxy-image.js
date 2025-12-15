@@ -18,7 +18,7 @@ export async function onRequest(context) {
     // 代理请求图片（绕过防盗链）
     const imageResponse = await fetch(imageUrl, {
       headers: {
-        Referer: 'https://urdoc.dearfad.com/project/narrative-medicine', // 必填！根据实际情况修改
+        Referer: 'https://dev.urdoc.dearfad.com/project/narrative-medicine', // 必填！根据实际情况修改
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
     })
