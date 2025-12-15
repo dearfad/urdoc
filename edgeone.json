@@ -2,6 +2,6 @@
   "name": "urdoc",
   "buildCommand": "npm run edgeone",
   "installCommand": "npm install",
-  "outputDirectory": ".output/public",
+  "outputDirectory": "dist",
   "nodeVersion": "24.5.0"
 }
