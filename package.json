@@ -13,17 +13,18 @@
     "edgeone": "nuxt generate && vitepress build docs"
   },
   "dependencies": {
-    "@clerk/localizations": "^3.30.1",
-    "@clerk/nuxt": "^1.13.7",
+    "@clerk/localizations": "^3.31.0",
+    "@clerk/nuxt": "^1.13.8",
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^1.12.1",
     "@nuxtjs/i18n": "^10.2.1",
     "@nuxtjs/mdc": "^0.19.1",
     "@pinia/nuxt": "^0.11.3",
-    "@supabase/supabase-js": "^2.87.1",
+    "@supabase/supabase-js": "^2.88.0",
+    "@zumer/snapdom": "^2.0.1",
     "ali-oss": "^6.23.0",
     "jsonrepair": "^3.13.1",
-    "markstream-vue": "^0.0.3-beta.4",
+    "markstream-vue": "^0.0.3-beta.6",
     "nuxt": "^4.2.2",
     "partial-json": "^0.1.7",
     "pinia": "^3.0.4",
@@ -32,8 +33,8 @@
     "vue": "3.5.25",
     "vue-json-pretty": "^2.6.0",
     "vue-router": "^4.6.4",
-    "vuetify": "^3.11.3",
-    "vuetify-nuxt-module": "^0.18.8"
+    "vuetify": "^3.11.4",
+    "vuetify-nuxt-module": "^0.19.1"
   },
   "devDependencies": {
     "mermaid": "^11.12.2",

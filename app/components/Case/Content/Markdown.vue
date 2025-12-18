@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg" hover min-height="400">
+  <v-card id="capture" rounded="lg" hover min-height="400">
     <v-toolbar density="comfortable">
       <template #prepend>
         <v-btn icon="mdi-alpha-c-circle" to="/cstar/case" variant="plain" />
@@ -10,7 +10,7 @@
           :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
-        <v-btn icon="mdi-cog-outline" />
+        <v-btn icon="mdi-monitor-screenshot" @click="capture" />
       </template>
     </v-toolbar>
     <!-- <v-divider /> -->
@@ -46,6 +46,7 @@
 <script setup>
 import MarkdownRender from 'markstream-vue'
 import 'markstream-vue/index.css'
+import { snapdom } from '@zumer/snapdom'
 
 const recordStore = useRecordStore()
 const stateStore = useStateStore()
@@ -70,4 +71,12 @@ const streamChatContentMarkdown = computed(() => {
     .map(([key, value]) => `**${key}**：${value}`)
     .join('\n\n')
 })
+
+// 截图
+async function capture() {
+  await snapdom.download(document.querySelector('#capture'), {
+    format: 'jpg',
+    filename: 'my-capture',
+  })
+}
 </script>

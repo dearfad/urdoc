@@ -58,7 +58,19 @@ export default function () {
     await chatProvider.getResponse('chat', 'face', messages)
     promptStore.prompts.image.face = modelStore.modelResponse.chat.content
     const imageProvider = modelStore.getProviderComposable('image', 'face')
-    return await imageProvider.getResponse('image', 'face', promptStore.prompts.image.face)
+    const imgUrl = await imageProvider.getResponse('image', 'face', promptStore.prompts.image.face)
+
+    const fetchImageToBase64ApiUrl = `${stateStore.apiBaseUrl}/utils/fetchImageToBase64`
+    const response = await fetch(fetchImageToBase64ApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        imgUrl: imgUrl,
+      }),
+    })
+    return await response.text()
   }
 
   async function getStoryIllustration(messages) {
