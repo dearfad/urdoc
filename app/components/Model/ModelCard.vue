@@ -2,14 +2,14 @@
   <v-card hover rounded="lg">
     <v-toolbar v-if="isTitleShow" density="comfortable">
       <template #prepend>
-        <v-btn icon="mdi-medical-bag" variant="plain" />
+        <v-btn :icon="mdiMedicalBag" variant="plain" />
       </template>
       <v-toolbar-title class="font-weight-bold ml-0" text="模型设定" />
       <template #append>
         <v-btn
           variant="plain"
           text="思考"
-          :prepend-icon="stateStore.isModelThinking ? 'mdi-check-circle' : 'mdi-alert-circle'"
+          :prepend-icon="stateStore.isModelThinking ? mdiCheckCircle : mdiAlertCircle"
           @click="stateStore.isModelThinking = !stateStore.isModelThinking"
         />
       </template>
@@ -21,7 +21,7 @@
           <span v-if="mdAndUp" class="font-weight-bold mx-2">{{ item.title }}</span>
           <span class="font-weight-bold mx-2">{{ usageLabel }}</span>
           <span class="mx-2">{{ item.model.model }}</span>
-          <v-icon v-if="item.model.thinking" icon="mdi-brain" />
+          <v-icon v-if="item.model.thinking" :icon="mdiBrain" />
         </v-expansion-panel-title>
 
         <v-expansion-panel-text>
@@ -34,7 +34,7 @@
                 v-for="model in getActiveModels(item.type)"
                 :key="model"
                 variant="text"
-                prepend-icon="mdi-bookmark-outline"
+                :prepend-icon="mdiBookmarkOutline"
               >
                 <span class="font-weight-bold mr-2">{{ modelUsageLabel[model] }}</span>
                 <span>{{ modelStore.activeModels[item.type][model].model }}</span>
@@ -42,9 +42,9 @@
             </v-chip-group>
           </v-card-text>
           <v-tabs v-model="tab[item.type]" grow density="compact">
-            <v-tab value="free" text="免费" prepend-icon="mdi-check-circle-outline" />
-            <v-tab value="custom" text="自定义" prepend-icon="mdi-pencil-outline" />
-            <v-tab value="local" text="本地" prepend-icon="mdi-home" :disabled="true" />
+            <v-tab value="free" text="免费" :prepend-icon="mdiCheckCircleOutline" />
+            <v-tab value="custom" text="自定义" :prepend-icon="mdiPencilOutline" />
+            <v-tab value="local" text="本地" :prepend-icon="mdiHome" :disabled="true" />
           </v-tabs>
 
           <v-tabs-window v-model="tab[item.type]">
@@ -66,6 +66,20 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
+import {
+  mdiMedicalBag,
+  mdiCheckCircle,
+  mdiAlertCircle,
+  mdiBrain,
+  mdiBookmarkOutline,
+  mdiCheckCircleOutline,
+  mdiPencilOutline,
+  mdiHome,
+  mdiText,
+  mdiImageOutline,
+  mdiVideoOutline,
+  mdiAccountTieVoiceOutline,
+} from '@mdi/js'
 const { mdAndUp } = useDisplay()
 
 const { modelType, modelUsage, isTitleShow } = defineProps({
@@ -120,28 +134,28 @@ const stateStore = useStateStore()
 const modelInfo = computed(() => [
   {
     title: '文本',
-    icon: 'mdi-text',
+    icon: mdiText,
     type: 'chat',
     model:
       modelStore.activeModels['chat'][modelUsage] || modelStore.activeModels['chat']['default'],
   },
   {
     title: '图片',
-    icon: 'mdi-image-outline',
+    icon: mdiImageOutline,
     type: 'image',
     model:
       modelStore.activeModels['image'][modelUsage] || modelStore.activeModels['image']['default'],
   },
   {
     title: '视频',
-    icon: 'mdi-video-outline',
+    icon: mdiVideoOutline,
     type: 'video',
     model:
       modelStore.activeModels['video'][modelUsage] || modelStore.activeModels['video']['default'],
   },
   {
     title: '音频',
-    icon: 'mdi-account-tie-voice-outline',
+    icon: mdiAccountTieVoiceOutline,
     type: 'audio',
     model:
       modelStore.activeModels['audio'][modelUsage] || modelStore.activeModels['audio']['default'],

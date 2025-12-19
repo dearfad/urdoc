@@ -1,9 +1,10 @@
 <template>
-  <v-container fluid class="w-100 w-md-66">
+  <v-container id="narrative-medicine-container" fluid class="w-100 w-md-66">
     <v-row>
       <v-col cols="12" class="d-flex flex-column ga-4">
         <ProjectNarrativeMedicineGenBtn />
         <ProjectNarrativeMedicineOptionCard />
+        <!-- <CommonCaptureButton capture-id="narrative-medicine-container" /> -->
       </v-col>
     </v-row>
     <v-row>

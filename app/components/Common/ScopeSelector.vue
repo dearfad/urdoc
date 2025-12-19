@@ -2,7 +2,7 @@
   <v-card hover rounded="lg">
     <v-toolbar v-if="isTitleShow" density="comfortable">
       <template #prepend>
-        <v-btn icon="mdi-medical-bag" variant="plain" />
+        <v-btn :icon="mdiMedicalBag" variant="plain" />
       </template>
       <v-toolbar-title class="font-weight-bold ml-0" text="疾病范围" />
     </v-toolbar>
@@ -33,7 +33,7 @@
             hide-details="auto"
             density="comfortable"
             clearable
-            append-icon="mdi-autorenew"
+            :append-icon="mdiAutorenew"
             :prepend-inner-icon="entry['prepend-inner-icon']"
             :disabled="entry.items().length === 0"
             @click:append="entry['click-append']()"
@@ -56,18 +56,26 @@
 </template>
 
 <script setup>
+import {
+  mdiMedicalBag,
+  mdiAutorenew,
+  mdiBookOpenVariantOutline,
+  mdiBookmarkMultipleOutline,
+  mdiBookOutline,
+  mdiBookmarkOutline,
+} from '@mdi/js'
 const { isTitleShow } = defineProps({
   isTitleShow: { type: Boolean, required: false, default: true },
 })
 const stateStore = useStateStore()
 const bookStore = useBookStore()
 const items = ref([
-  { icon: 'mdi-book-open-variant-outline', name: 'book' },
-  { icon: 'mdi-bookmark-multiple-outline', name: 'part' },
-  { icon: 'mdi-bookmark-multiple-outline', name: 'chapter' },
-  { icon: 'mdi-book-outline', name: 'section' },
-  { icon: 'mdi-bookmark-outline', name: 'subsection' },
-  { icon: 'mdi-bookmark-outline', name: 'topic' },
+  { icon: mdiBookOpenVariantOutline, name: 'book' },
+  { icon: mdiBookmarkMultipleOutline, name: 'part' },
+  { icon: mdiBookmarkMultipleOutline, name: 'chapter' },
+  { icon: mdiBookOutline, name: 'section' },
+  { icon: mdiBookmarkOutline, name: 'subsection' },
+  { icon: mdiBookmarkOutline, name: 'topic' },
 ])
 const filteredItems = computed(() => {
   return items.value.filter((item) => stateStore.scope[item.name])
@@ -218,7 +226,7 @@ function handleScope() {
 const entries = ref([
   {
     label: '教科书',
-    'prepend-inner-icon': 'mdi-book-open-variant-outline',
+    'prepend-inner-icon': mdiBookOpenVariantOutline,
     items: () => books.value,
     'v-model': book,
     'click-append': randomBook,
@@ -226,7 +234,7 @@ const entries = ref([
   },
   {
     label: '篇目',
-    'prepend-inner-icon': 'mdi-bookmark-multiple-outline',
+    'prepend-inner-icon': mdiBookmarkMultipleOutline,
     items: () => parts.value,
     'v-model': part,
     'click-append': randomPart,
@@ -234,7 +242,7 @@ const entries = ref([
   },
   {
     label: '章节',
-    'prepend-inner-icon': 'mdi-bookmark-multiple-outline',
+    'prepend-inner-icon': mdiBookmarkMultipleOutline,
     items: () => chapters.value,
     'v-model': chapter,
     'click-append': randomChapter,
@@ -242,7 +250,7 @@ const entries = ref([
   },
   {
     label: '节次',
-    'prepend-inner-icon': 'mdi-book-outline',
+    'prepend-inner-icon': mdiBookOutline,
     items: () => sections.value,
     'v-model': section,
     'click-append': randomSection,
@@ -250,7 +258,7 @@ const entries = ref([
   },
   {
     label: '子节',
-    'prepend-inner-icon': 'mdi-bookmark-outline',
+    'prepend-inner-icon': mdiBookmarkOutline,
     items: () => subsections.value,
     'v-model': subsection,
     'click-append': randomSubsection,
@@ -258,7 +266,7 @@ const entries = ref([
   },
   {
     label: '主题',
-    'prepend-inner-icon': 'mdi-bookmark-outline',
+    'prepend-inner-icon': mdiBookmarkOutline,
     items: () => topics.value,
     'v-model': topic,
     'click-append': randomTopic,

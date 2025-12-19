@@ -1,44 +1,33 @@
 <template>
-  <v-card id="capture" rounded="lg" hover min-height="400">
+  <v-card id="case-card" rounded="lg" hover min-height="400">
     <v-toolbar density="comfortable">
       <template #prepend>
-        <v-btn icon="mdi-alpha-c-circle" to="/cstar/case" variant="plain" />
+        <v-btn :icon="mdiAlphaCCircle" to="/cstar/case" variant="plain" />
       </template>
       <v-toolbar-title class="font-weight-bold ml-0" text="病历" />
       <template #append>
         <v-btn
-          :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+          :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
-        <v-btn icon="mdi-monitor-screenshot" @click="capture" />
+        <CommonCaptureButton capture-id="case-card" />
       </template>
     </v-toolbar>
-    <!-- <v-divider /> -->
-
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <!-- <MDC cache-key="case-chat-reasoning-content-show" :value="reasoningContent" /> -->
           <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
-
       <div v-if="stateStore.isModelResponseShow.case" class="case">
         <MarkdownRender :content="streamChatContentMarkdown" />
       </div>
       <div v-else class="case">
         <MarkdownRender :content="recordStore.view.case.markdown" />
       </div>
-      <!-- 
-      <div v-if="stateStore.isModelResponseShow.case" class="case">
-        <MDC cache-key="case-chat-content-show" :value="streamChatContentMarkdown" />
-      </div>
-      <div v-else class="case">
-        <MDC cache-key="record-case-markdown-show" :value="recordStore.view.case.markdown" />
-      </div> -->
     </v-card-text>
   </v-card>
 </template>
@@ -46,7 +35,8 @@
 <script setup>
 import MarkdownRender from 'markstream-vue'
 import 'markstream-vue/index.css'
-import { snapdom } from '@zumer/snapdom'
+
+import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 
 const recordStore = useRecordStore()
 const stateStore = useStateStore()
@@ -71,12 +61,4 @@ const streamChatContentMarkdown = computed(() => {
     .map(([key, value]) => `**${key}**：${value}`)
     .join('\n\n')
 })
-
-// 截图
-async function capture() {
-  await snapdom.download(document.querySelector('#capture'), {
-    format: 'jpg',
-    filename: 'my-capture',
-  })
-}
 </script>

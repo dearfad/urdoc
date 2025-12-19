@@ -1,34 +1,31 @@
 <template>
-  <v-card rounded="lg" hover min-height="400">
-    <v-card-item class="bg-surface-light">
+  <v-card id="comment-card" rounded="lg" hover min-height="400">
+    <v-toolbar density="comfortable">
       <template #prepend>
-        <v-icon icon="mdi-comment-outline" />
+        <v-btn :icon="mdiCommentOutline" to="/cstar/story" variant="plain" />
       </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="评语" />
       <template #append>
-        <v-icon
-          :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+        <v-btn
+          :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <CommonCaptureButton capture-id="comment-card" />
       </template>
-      <v-card-title class="font-weight-bold">评语</v-card-title>
-    </v-card-item>
-    <v-divider />
+    </v-toolbar>
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <!-- <MDC cache-key="comment-chat-reasoning-content-show" :value="reasoningContent" /> -->
           <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
       <div v-if="stateStore.isModelResponseShow.comment" class="comment">
-        <!-- <MDC cache-key="comment-chat-content-show" :value="modelStore.modelResponse.chat.content" /> -->
         <MarkdownRender :content="modelStore.modelResponse.chat.content" />
       </div>
       <div v-else class="comment">
-        <!-- <MDC cache-key="record-comment-show" :value="recordStore.view.comment" /> -->
         <MarkdownRender :content="recordStore.view.comment" />
       </div>
     </v-card-text>
@@ -36,6 +33,7 @@
 </template>
 
 <script setup>
+import { mdiCommentOutline, mdiHeadMinusOutline, mdiHeadCogOutline } from '@mdi/js'
 import MarkdownRender from 'markstream-vue'
 const stateStore = useStateStore()
 const modelStore = useModelStore()

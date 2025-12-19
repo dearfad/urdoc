@@ -1,41 +1,32 @@
 <template>
-  <v-card rounded="lg" hover min-height="400">
-    <v-card-item class="bg-surface-light">
+  <v-card id="discussion-card" rounded="lg" hover min-height="400">
+    <v-toolbar density="comfortable">
       <template #prepend>
-        <v-icon icon="mdi-disc" />
+        <v-btn :icon="mdiDisc" to="/cstar/story" variant="plain" />
       </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="讨论" />
       <template #append>
-        <v-icon
-          :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+        <v-btn
+          :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <CommonCaptureButton capture-id="discussion-card" />
       </template>
-      <v-card-title class="font-weight-bold">讨论</v-card-title>
-    </v-card-item>
-    <v-divider />
+    </v-toolbar>
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <!-- <MDC cache-key="discussion-chat-reasoning-content-show" :value="reasoningContent" /> -->
           <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
       <div v-if="stateStore.isModelResponseShow.discussion" class="discussion">
-        <!-- <MDC
-          cache-key="discussion-chat-content-show"
-          :value="modelStore.modelResponse.chat.content"
-        /> -->
         <MarkdownRender :content="modelStore.modelResponse.chat.content" />
       </div>
       <div v-else class="discussion">
-        <div v-for="(line, index) in recordStore.view.discussion.split('\n\n')" :key="index">
-          <!-- <MDC :value="line" /> -->
-          <MarkdownRender :content="line" />
-          <v-divider v-if="(index + 1) % 2 === 0" class="my-2" />
-        </div>
+        <MarkdownRender :content="recordStore.view.discussion" />
       </div>
     </v-card-text>
   </v-card>
@@ -43,6 +34,7 @@
 
 <script setup>
 import MarkdownRender from 'markstream-vue'
+import { mdiDisc, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()

@@ -7,13 +7,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/default.css'],
 
   modules: [
+    '@clerk/nuxt',
     '@nuxt/eslint',
-    '@nuxtjs/mdc',
-    'vuetify-nuxt-module',
+    '@nuxtjs/i18n',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    '@clerk/nuxt',
-    '@nuxtjs/i18n',
+    'vuetify-nuxt-module',
   ],
 
   piniaPluginPersistedstate: {
@@ -67,5 +66,13 @@ export default defineNuxtConfig({
 
   devtools: {
     enabled: false,
+  },
+
+  vuetify: {
+    vuetifyOptions: {
+      icons: {
+        defaultSet: 'mdi-svg',
+      },
+    },
   },
 })

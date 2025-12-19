@@ -25,45 +25,60 @@
 </template>
 
 <script setup>
+import {
+  mdiBookOpenOutline,
+  mdiAccountInjury,
+  mdiAlphaCCircle,
+  mdiAlphaSCircle,
+  mdiAlphaTCircle,
+  mdiAlphaACircle,
+  mdiAlphaRCircle,
+  mdiCastEducation,
+  mdiFolderOutline,
+  mdiCogOutline,
+  mdiImageOutline,
+  mdiVideoOutline,
+  mdiAccountTieVoiceOutline,
+} from '@mdi/js'
 const stateStore = useStateStore()
 
 const projects = ref([
   {
     text: '叙事医学',
-    icon: 'mdi-book-open-outline',
+    icon: mdiBookOpenOutline,
     link: '/project/narrative-medicine',
     disabled: false,
   },
-  { text: '虚拟门诊', icon: 'mdi-account-injury', link: '/project/clinic', disabled: true },
+  { text: '虚拟门诊', icon: mdiAccountInjury, link: '/project/clinic', disabled: true },
 ])
 
 const cstar = ref([
-  { text: '生成病例', icon: 'mdi-alpha-c-circle', link: '/cstar/case', disabled: false },
-  { text: '编写故事', icon: 'mdi-alpha-s-circle', link: '/cstar/story', disabled: false },
-  { text: '设计问题', icon: 'mdi-alpha-t-circle', link: '/cstar/test', disabled: false },
-  { text: '模拟问诊', icon: 'mdi-alpha-a-circle', link: '/cstar/act', disabled: false },
-  { text: '评估能力', icon: 'mdi-alpha-r-circle', link: '/cstar/rate', disabled: false },
+  { text: '生成病例', icon: mdiAlphaCCircle, link: '/cstar/case', disabled: false },
+  { text: '编写故事', icon: mdiAlphaSCircle, link: '/cstar/story', disabled: false },
+  { text: '设计问题', icon: mdiAlphaTCircle, link: '/cstar/test', disabled: false },
+  { text: '模拟问诊', icon: mdiAlphaACircle, link: '/cstar/act', disabled: false },
+  { text: '评估能力', icon: mdiAlphaRCircle, link: '/cstar/rate', disabled: false },
 ])
 
 const multimodal = ref([
-  { text: '图像生成', icon: 'mdi-image-outline', link: '/image/face', disabled: false },
-  { text: '视频生成', icon: 'mdi-video-outline', link: '/video/pose', disabled: false },
+  { text: '图像生成', icon: mdiImageOutline, link: '/image/face', disabled: false },
+  { text: '视频生成', icon: mdiVideoOutline, link: '/video/pose', disabled: false },
   {
     text: '语音合成',
-    icon: 'mdi-account-tie-voice-outline',
+    icon: mdiAccountTieVoiceOutline,
     link: '/audio/voice',
     disabled: false,
   },
 ])
 
 const settings = ref([
-  { text: '设置', icon: 'mdi-cog-outline', link: '/site/settings', disabled: false },
+  { text: '设置', icon: mdiCogOutline, link: '/site/settings', disabled: false },
 ])
 
 const bottomNavLists = ref([
-  { title: '项目', icon: 'mdi-cast-education', menu: projects.value },
-  { title: 'CSTAR', icon: 'mdi-folder-outline', menu: cstar.value },
-  { title: '多模态', icon: 'mdi-folder-outline', menu: multimodal.value },
-  { title: '设置', icon: 'mdi-cog-outline', menu: settings.value },
+  { title: '项目', icon: mdiCastEducation, menu: projects.value },
+  { title: 'CSTAR', icon: mdiFolderOutline, menu: cstar.value },
+  { title: '多模态', icon: mdiFolderOutline, menu: multimodal.value },
+  { title: '设置', icon: mdiCogOutline, menu: settings.value },
 ])
 </script>

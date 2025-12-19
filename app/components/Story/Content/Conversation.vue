@@ -1,37 +1,31 @@
 <template>
-  <v-card rounded="lg" hover min-height="400">
-    <v-card-item class="bg-surface-light">
+  <v-card id="conversation-card" rounded="lg" hover min-height="400">
+    <v-toolbar density="comfortable">
       <template #prepend>
-        <v-icon icon="mdi-alpha-d-circle" />
+        <v-btn :icon="mdiAlphaCCircle" to="/cstar/story" variant="plain" />
       </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="对话" />
       <template #append>
-        <v-icon
-          :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+        <v-btn
+          :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <CommonCaptureButton capture-id="conversation-card" />
       </template>
-      <v-card-title class="font-weight-bold">对话</v-card-title>
-    </v-card-item>
-    <v-divider />
+    </v-toolbar>
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <!-- <MDC cache-key="conversation-chat-reasoning-content-show" :value="reasoningContent" /> -->
           <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
       <div v-if="stateStore.isModelResponseShow.conversation" class="conversation">
-        <!-- <MDC
-          cache-key="conversation-chat-content-show"
-          :value="modelStore.modelResponse.chat.content"
-        /> -->
         <MarkdownRender :content="modelStore.modelResponse.chat.content" />
       </div>
       <div v-else class="conversation">
-        <!-- <MDC cache-key="record-conversation-show" :value="recordStore.view.conversation" /> -->
         <MarkdownRender :content="recordStore.view.conversation" />
       </div>
     </v-card-text>
@@ -40,6 +34,7 @@
 
 <script setup>
 import MarkdownRender from 'markstream-vue'
+import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()

@@ -85,10 +85,26 @@ export default function () {
     for (const item of result) {
       // promptStore.prompts.image.illustration = item
       const imageProvider = modelStore.getProviderComposable('image', 'illustration')
-      const url = await imageProvider.getResponse('image', 'illustration', item)
+      const url = await imageProvider.getResponse(
+        'image',
+        'illustration',
+        recordStore.record.case.姓名 + '，' + item
+      )
+
+      const fetchImageToBase64ApiUrl = `${stateStore.apiBaseUrl}/utils/fetchImageToBase64`
+      const response = await fetch(fetchImageToBase64ApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imgUrl: url,
+        }),
+      })
+
       recordStore.record.story.illustration.push({
         title: item,
-        url: url,
+        url: await response.text(),
       })
     }
 

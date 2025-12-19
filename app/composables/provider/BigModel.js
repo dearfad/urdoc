@@ -161,6 +161,10 @@ export const useProviderBigModel = () => {
       return
     }
     const content = await response.json()
+    if (!content.data) {
+      stateStore.appInfos.push(content.error.message)
+      return
+    }
     modelStore.modelResponse.image.url = content.data[0].url || ''
     return modelStore.modelResponse.image.url
   }

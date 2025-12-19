@@ -1,34 +1,31 @@
 <template>
-  <v-card rounded="lg" hover min-height="400">
-    <v-card-item class="bg-surface-light">
+  <v-card id="story-card" rounded="lg" hover min-height="400">
+    <v-toolbar density="comfortable">
       <template #prepend>
-        <v-icon icon="mdi-alpha-s-circle" />
+        <v-btn :icon="mdiAlphaSCircle" to="/cstar/story" variant="plain" />
       </template>
+      <v-toolbar-title class="font-weight-bold ml-0" text="故事" />
       <template #append>
-        <v-icon
-          :icon="isReasoningContentShow ? 'mdi-head-cog-outline' : 'mdi-head-minus-outline'"
+        <v-btn
+          :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <CommonCaptureButton capture-id="story-card" />
       </template>
-      <v-card-title class="font-weight-bold">故事</v-card-title>
-    </v-card-item>
-    <v-divider />
+    </v-toolbar>
     <v-card-text>
       <div v-if="isReasoningContentShow" class="reasoning my-4">
         <details open>
           <summary class="font-weight-bold">思考过程</summary>
           <v-divider class="my-2" />
-          <!-- <MDC cache-key="story-chat-reasoning-content-show" :value="reasoningContent" /> -->
           <MarkdownRender :content="reasoningContent" />
           <v-divider class="my-2" />
         </details>
       </div>
       <div v-if="stateStore.isModelResponseShow.story" class="story">
-        <!-- <MDC cache-key="story-chat-content-show" :value="modelStore.modelResponse.chat.content" /> -->
         <MarkdownRender :content="modelStore.modelResponse.chat.content" />
       </div>
       <div v-else class="story">
-        <!-- <MDC cache-key="record-story-markdown-show" :value="recordStore.view.story.markdown" /> -->
         <MarkdownRender :content="recordStore.view.story.markdown" />
       </div>
     </v-card-text>
@@ -37,6 +34,7 @@
 
 <script setup>
 import MarkdownRender from 'markstream-vue'
+import { mdiAlphaSCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 const stateStore = useStateStore()
 const modelStore = useModelStore()
 const recordStore = useRecordStore()

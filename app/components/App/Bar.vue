@@ -10,7 +10,7 @@
     <div v-if="mdAndUp">
       <v-btn
         v-tooltip="$t('app.bar.theme')"
-        icon="mdi-theme-light-dark"
+        :icon="mdiThemeLightDark"
         variant="plain"
         :ripple="false"
         @click="theme.toggle()"
@@ -21,7 +21,7 @@
         target="_blank"
         variant="plain"
         :ripple="false"
-        icon="mdi-github"
+        :icon="mdiGithub"
       />
       <v-btn
         v-tooltip="$t('app.bar.documents')"
@@ -29,11 +29,11 @@
         target="_blank"
         variant="plain"
         :ripple="false"
-        icon="mdi-file-document-outline"
+        :icon="mdiFileDocumentOutline"
       />
       <v-btn
         v-tooltip="$t('app.bar.language')"
-        icon="mdi-translate"
+        :icon="mdiTranslate"
         variant="plain"
         :ripple="false"
         @click="toggleLocale()"
@@ -42,28 +42,28 @@
     <div v-else>
       <v-menu>
         <template #activator="{ props }">
-          <v-btn icon="mdi-dots-horizontal" v-bind="props" />
+          <v-btn :icon="mdiDotsHorizontal" v-bind="props" />
         </template>
         <v-list slim>
           <v-list-item
-            prepend-icon="mdi-theme-light-dark"
+            :prepend-icon="mdiThemeLightDark"
             :title="$t('app.bar.theme')"
             @click="theme.toggle()"
           />
           <v-list-item
-            prepend-icon="mdi-github"
+            :prepend-icon="mdiGithub"
             title="GitHub"
             href="https://github.com/dearfad/urdoc"
             target="_blank"
           />
           <v-list-item
-            prepend-icon="mdi-file-document-outline"
+            :prepend-icon="mdiFileDocumentOutline"
             :title="$t('app.bar.documents')"
             href="https://urdoc.dearfad.com/docs"
             target="_blank"
           />
           <v-list-item
-            prepend-icon="mdi-translate"
+            :prepend-icon="mdiTranslate"
             :title="$t('app.bar.language')"
             @click="toggleLocale()"
           />
@@ -86,6 +86,13 @@
 <script setup>
 import { updateClerkOptions } from '@clerk/vue'
 import { zhCN, enUS } from '@clerk/localizations'
+import {
+  mdiThemeLightDark,
+  mdiGithub,
+  mdiFileDocumentOutline,
+  mdiTranslate,
+  mdiDotsHorizontal,
+} from '@mdi/js'
 const router = useRouter()
 const stateStore = useStateStore()
 const theme = useTheme()
