@@ -10,6 +10,7 @@
           :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <CommonAudioButton content="case" />
         <CommonCaptureButton capture-id="case-card" />
       </template>
     </v-toolbar>

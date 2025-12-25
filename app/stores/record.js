@@ -31,6 +31,9 @@ export const useRecordStore = defineStore(
         content: '',
         illustration: [],
       },
+      audio: {
+        case: '',
+      },
       conversation: '',
       discussion: '',
       comment: '',
@@ -200,6 +203,7 @@ export const useRecordStore = defineStore(
           content: '',
           illustration: [],
         },
+        audio: { case: '' },
         conversation: '',
         discussion: '',
         comment: '',
@@ -378,6 +382,11 @@ export const useRecordStore = defineStore(
       record.value.voice = await modelRouter.getVoice(text)
     }
 
+    async function getAudio(type) {
+      if (type === 'case') {
+        await modelRouter.getDialogue(record.value.view.case.markdown)
+      }
+    }
     async function getDialogue() {
       record.value.dialogue = ''
       record.value.dialogue = await modelRouter.getDialogue(record.value.conversation)
@@ -498,6 +507,7 @@ export const useRecordStore = defineStore(
       getFace,
       getPose,
       getVoice,
+      getAudio,
       getDialogue,
       newRecord,
 
