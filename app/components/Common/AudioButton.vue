@@ -7,48 +7,39 @@
 
 <script setup>
 import { mdiPlayCircleOutline, mdiVolumeHigh, mdiPause } from '@mdi/js'
-const { content } = defineProps({
-  content: { type: String, required: true },
-})
+
 const recordStore = useRecordStore()
 
+const { audioType } = defineProps({
+  audioType: { type: String, required: true },
+})
+
 const audioPlayer = ref(null)
-const audioUrl = ref('')
-const link = 'https://gitee.com/gitee-ai/moark-assets/raw/master/jay_prompt.wav'
 const isLoading = ref(false)
 const isPlaying = ref(false)
 
-const btnIcon = computed(() => {
-  return audioUrl.value ? (isPlaying.value ? mdiPause : mdiPlayCircleOutline) : mdiVolumeHigh
-})
+const audioUrl = computed(() => recordStore.record.audio[audioType])
+
+const btnIcon = computed(() =>
+  audioUrl.value ? (isPlaying.value ? mdiPause : mdiPlayCircleOutline) : mdiVolumeHigh
+)
+
 async function getAudio() {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-  audioUrl.value = link
+  await recordStore.getAudio(audioType)
 }
-// 截图
+
 async function play() {
   isLoading.value = true
-  if (!audioPlayer.value) return
   if (!audioUrl.value) {
     await getAudio()
     isLoading.value = false
     return
   }
-  if (audioPlayer.value.paused) {
-    audioPlayer.value.play()
-  } else {
-    audioPlayer.value.pause()
-  }
+  audioPlayer.value[audioPlayer.value.paused ? 'play' : 'pause']()
   isLoading.value = false
 }
 
-function onPlay() {
-  isPlaying.value = true
-}
-function onPause() {
-  isPlaying.value = false
-}
-function onEnded() {
-  isPlaying.value = false
-}
+const onPlay = () => (isPlaying.value = true)
+const onEnded = () => (isPlaying.value = false)
+const onPause = () => (isPlaying.value = false)
 </script>

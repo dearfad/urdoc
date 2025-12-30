@@ -1,4 +1,5 @@
 const CURRENT_VERSION = '2025-11-10'
+
 export const useRecordStore = defineStore(
   'record',
   () => {
@@ -33,6 +34,7 @@ export const useRecordStore = defineStore(
       },
       audio: {
         case: '',
+        story: '',
       },
       conversation: '',
       discussion: '',
@@ -203,7 +205,10 @@ export const useRecordStore = defineStore(
           content: '',
           illustration: [],
         },
-        audio: { case: '' },
+        audio: {
+          case: '',
+          story: '',
+        },
         conversation: '',
         discussion: '',
         comment: '',
@@ -247,9 +252,9 @@ export const useRecordStore = defineStore(
           rate: [],
         },
         face: '',
+        pose: '',
         voice: '',
         dialogue: '',
-        pose: '',
         author: '',
         public: true,
       }
@@ -382,11 +387,14 @@ export const useRecordStore = defineStore(
       record.value.voice = await modelRouter.getVoice(text)
     }
 
-    async function getAudio(type) {
-      if (type === 'case') {
-        await modelRouter.getDialogue(record.value.view.case.markdown)
+    async function getAudio(audioType) {
+      const audioContent = {
+        case: view.value.case.text,
+        story: view.value.story.text,
       }
+      record.value.audio[audioType] = await modelRouter.getAudio(audioContent[audioType])
     }
+
     async function getDialogue() {
       record.value.dialogue = ''
       record.value.dialogue = await modelRouter.getDialogue(record.value.conversation)

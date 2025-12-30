@@ -148,6 +148,11 @@ export default function () {
     return await provider.getResponse('audio', 'dialogue', messages)
   }
 
+  async function getAudio(messages) {
+    const provider = modelStore.getProviderComposable('audio', 'default')
+    return await provider.getResponse('audio', 'default', messages)
+  }
+
   return {
     getCase,
     getStory,
@@ -161,6 +166,7 @@ export default function () {
     getPose,
     getVoice,
     getDialogue,
+    getAudio,
     // checkCase,
     getStoryIllustration,
   }

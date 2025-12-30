@@ -4,6 +4,7 @@ export const useProviderGitee = () => {
   const API_BASE = 'https://ai.gitee.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
   const ASYNC_AUDIO_SPEECH = '/async/audio/speech'
+  const AUDIO_SPEECH = '/audio/speech'
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -122,7 +123,8 @@ export const useProviderGitee = () => {
     const audioModel =
       modelStore.activeModels.audio[modelUsage] || modelStore.activeModels.audio.default
     const payload = {
-      url: `${API_BASE}${ASYNC_AUDIO_SPEECH}`,
+      // url: `${API_BASE}${ASYNC_AUDIO_SPEECH}`,
+      url: `${API_BASE}${AUDIO_SPEECH}`,
       apiKey: audioModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
       apiKeyName:
         audioModel.source === 'free'
@@ -133,13 +135,20 @@ export const useProviderGitee = () => {
       },
       method: 'POST',
       body: {
-        model: audioModel.model,
-        audio_mode: 'Single',
-        prompt_audio_single_url: 'https://gitee.com/cryusxin/test/raw/master/single_reference.wav',
-        prompt_text_single:
-          '[S1]我意思是说通用计算机是指我们所有人都能用的这种普通计算机的意思啊？[S2]不是，不是。现在通用计算机就，比如说现在买了一台电脑嘛。[S1]嗯。[S2]电脑里面你可以装各种各样的软件，对吧？你可以用来聊微信，你可以用来-[S1]明白，可以做会计用的发票机啊-[S2]对对对对 [S1]...连接各种设备啊什么的。[S2]你只要放不同的软件，[S1]嗯。[S2]它都可以去完成那个软件所定义的相对应的工作。',
-        use_normalize: true,
-        inputs: replaceDialogueSpeakers(messages),
+        // MOSS-TTSD-v0.5
+        // model: audioModel.model,
+        // audio_mode: 'Single',
+        // prompt_audio_single_url: 'https://gitee.com/cryusxin/test/raw/master/single_reference.wav',
+        // prompt_text_single:
+        //   '[S1]我意思是说通用计算机是指我们所有人都能用的这种普通计算机的意思啊？[S2]不是，不是。现在通用计算机就，比如说现在买了一台电脑嘛。[S1]嗯。[S2]电脑里面你可以装各种各样的软件，对吧？你可以用来聊微信，你可以用来-[S1]明白，可以做会计用的发票机啊-[S2]对对对对 [S1]...连接各种设备啊什么的。[S2]你只要放不同的软件，[S1]嗯。[S2]它都可以去完成那个软件所定义的相对应的工作。',
+        // use_normalize: true,
+        // inputs: replaceDialogueSpeakers(messages),
+
+        // IndexTTS-1.5
+        input: messages,
+        model: 'IndexTTS-1.5',
+        prompt_audio_url: 'https://gitee.com/gitee-ai/moark-assets/raw/master/jay_prompt.wav',
+        response_data_format: 'url',
       },
     }
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -151,53 +160,57 @@ export const useProviderGitee = () => {
       body: JSON.stringify(payload),
     })
     const content = await response.json()
-    const taskId = content.task_id || ''
-    if (!taskId) {
-      stateStore.appInfos.push(content.error.message)
-      return
-    }
-    const taskUrl = `${API_BASE}/task/${taskId}`
+    // console.log('content: ', content)
+    return content.url
+    // ========================================
+    // const taskId = content.task_id || ''
+    // if (!taskId) {
+    //   stateStore.appInfos.push(content.error.message)
+    //   return
+    // }
+    // const taskUrl = `${API_BASE}/task/${taskId}`
 
-    while (true) {
-      const result = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: taskUrl,
-          apiKey:
-            audioModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
-          apiKeyName:
-            audioModel.source === 'free'
-              ? FREE_API_KEY_NAME
-              : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
-          method: 'GET',
-          headers: {},
-          body: { model: audioModel.model },
-        }),
-      })
-      const data = await result.json()
+    // while (true) {
+    //   const result = await fetch(url, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       url: taskUrl,
+    //       apiKey:
+    //         audioModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+    //       apiKeyName:
+    //         audioModel.source === 'free'
+    //           ? FREE_API_KEY_NAME
+    //           : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
+    //       method: 'GET',
+    //       headers: {},
+    //       body: { model: audioModel.model },
+    //     }),
+    //   })
+    //   const data = await result.json()
 
-      if (data['status'] === 'success') {
-        //   if (result.output?.file_url) {
-        modelStore.modelResponse.audio.url = data.output?.file_url
-        break
-      }
+    //   if (data['status'] === 'success') {
+    //     //   if (result.output?.file_url) {
+    //     modelStore.modelResponse.audio.url = data.output?.file_url
+    //     break
+    //   }
 
-      // if (data['task_status'] === 'FAIL') {
-      //   console.log('Image Generation Failed.')
-      //   break
-      // }
+    //   // if (data['task_status'] === 'FAIL') {
+    //   //   console.log('Image Generation Failed.')
+    //   //   break
+    //   // }
 
-      // if (data['error']) {
-      //   stateStore.appInfos.push(data.error.message)
-      //   break
-      // }
+    //   // if (data['error']) {
+    //   //   stateStore.appInfos.push(data.error.message)
+    //   //   break
+    //   // }
 
-      await new Promise((resolve) => setTimeout(resolve, 5000))
-    }
-    return modelStore.modelResponse.audio.url
+    //   await new Promise((resolve) => setTimeout(resolve, 5000))
+    // }
+    // return modelStore.modelResponse.audio.url
+    // ===============================================
   }
   // genericDialogueReplacer.js
   function replaceDialogueSpeakers(dialogue) {
