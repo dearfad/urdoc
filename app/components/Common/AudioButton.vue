@@ -1,7 +1,15 @@
 <template>
   <div>
     <v-btn :icon="btnIcon" :loading="isLoading" @click="play" />
-    <audio ref="audioPlayer" :src="audioUrl" @play="onPlay" @pause="onPause" @ended="onEnded" />
+    <audio
+      ref="audioPlayer"
+      :src="audioUrl"
+      @play="onPlay"
+      @pause="onPause"
+      @ended="onEnded"
+      @error="onError"
+      @canplay="onCanplay"
+    />
   </div>
 </template>
 
@@ -42,4 +50,5 @@ async function play() {
 const onPlay = () => (isPlaying.value = true)
 const onEnded = () => (isPlaying.value = false)
 const onPause = () => (isPlaying.value = false)
+const onError = () => (recordStore.record.audio[audioType] = '')
 </script>

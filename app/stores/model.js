@@ -1,4 +1,4 @@
-const CURRENT_VERSION = '2025-12-30'
+const CURRENT_VERSION = '2025-12-31'
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -179,7 +179,7 @@ export const useModelStore = defineStore(
         default: {
           source: 'custom',
           provider: 'GITEE',
-          model: 'IndexTTS-1.5',
+          model: 'IndexTTS-2',
           thinking: false,
         },
         // dialogue: {

@@ -3,8 +3,15 @@ export const useProviderGitee = () => {
   const USER_API_KEY_NAME = 'USER_GITEE_API_KEY'
   const API_BASE = 'https://ai.gitee.com/v1'
   const CHAT_COMPLETIONS = '/chat/completions'
-  const ASYNC_AUDIO_SPEECH = '/async/audio/speech'
   const AUDIO_SPEECH = '/audio/speech'
+  const ASYNC_AUDIO_SPEECH = '/async/audio/speech'
+  const ASYNC_AUDIO_SPEECH_MODELS = [
+    'MOSS-TTSD-v0.5',
+    'VibeVoice-Large',
+    'IndexTTS-2',
+    'Spark-TTS-0.5B',
+    'AudioFly',
+  ]
 
   const stateStore = useStateStore()
   const modelStore = useModelStore()
@@ -123,8 +130,9 @@ export const useProviderGitee = () => {
     const audioModel =
       modelStore.activeModels.audio[modelUsage] || modelStore.activeModels.audio.default
     const payload = {
-      // url: `${API_BASE}${ASYNC_AUDIO_SPEECH}`,
-      url: `${API_BASE}${AUDIO_SPEECH}`,
+      url: ASYNC_AUDIO_SPEECH_MODELS.includes(audioModel.model)
+        ? `${API_BASE}${ASYNC_AUDIO_SPEECH}`
+        : `${API_BASE}${AUDIO_SPEECH}`,
       apiKey: audioModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
       apiKeyName:
         audioModel.source === 'free'
@@ -132,6 +140,8 @@ export const useProviderGitee = () => {
           : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
       headers: {
         'Content-Type': 'application/json',
+        // IndexTTS-2
+        'X-Failover-Enabled': true,
       },
       method: 'POST',
       body: {
@@ -145,10 +155,19 @@ export const useProviderGitee = () => {
         // inputs: replaceDialogueSpeakers(messages),
 
         // IndexTTS-1.5
-        input: messages,
-        model: 'IndexTTS-1.5',
-        prompt_audio_url: 'https://gitee.com/gitee-ai/moark-assets/raw/master/jay_prompt.wav',
-        response_data_format: 'url',
+        // input: messages,
+        // model: 'IndexTTS-1.5',
+        // prompt_audio_url: 'https://gitee.com/gitee-ai/moark-assets/raw/master/jay_prompt.wav',
+        // response_data_format: 'url',
+
+        // IndexTTS-2
+        inputs: messages,
+        model: 'IndexTTS-2',
+        prompt_audio_url: 'https://gitee.com/cryusxin/test/raw/master/single_reference.wav',
+        // prompt_text: '对我来讲是一种荣幸，但是也是压力蛮大的。不过我觉得是一种呃很好的一个挑战。',
+        // emo_audio_prompt_url:
+        //   'https://gitee.com/gitee-ai/moark-assets/raw/master/index-tts-2/emo_sad.wav',
+        // emo_alpha: 0.5,
       },
     }
     const url = `${stateStore.apiBaseUrl}/model/proxy`
@@ -161,57 +180,58 @@ export const useProviderGitee = () => {
     })
     const content = await response.json()
     // console.log('content: ', content)
-    return content.url
+    // return content.url
     // ========================================
-    // const taskId = content.task_id || ''
-    // if (!taskId) {
-    //   stateStore.appInfos.push(content.error.message)
-    //   return
-    // }
-    // const taskUrl = `${API_BASE}/task/${taskId}`
+    const taskId = content.task_id || ''
+    if (!taskId) {
+      stateStore.appInfos.push(content.error.message)
+      return
+    }
+    const taskUrl = `${API_BASE}/task/${taskId}`
 
-    // while (true) {
-    //   const result = await fetch(url, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       url: taskUrl,
-    //       apiKey:
-    //         audioModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
-    //       apiKeyName:
-    //         audioModel.source === 'free'
-    //           ? FREE_API_KEY_NAME
-    //           : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
-    //       method: 'GET',
-    //       headers: {},
-    //       body: { model: audioModel.model },
-    //     }),
-    //   })
-    //   const data = await result.json()
+    while (true) {
+      const result = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: taskUrl,
+          apiKey:
+            audioModel.source === 'free' ? '' : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKey,
+          apiKeyName:
+            audioModel.source === 'free'
+              ? FREE_API_KEY_NAME
+              : apiKeyStore.apiKeys[USER_API_KEY_NAME]?.apiKeyName,
+          method: 'GET',
+          headers: {},
+          body: { model: audioModel.model },
+        }),
+      })
+      const data = await result.json()
 
-    //   if (data['status'] === 'success') {
-    //     //   if (result.output?.file_url) {
-    //     modelStore.modelResponse.audio.url = data.output?.file_url
-    //     break
-    //   }
+      if (data['status'] === 'success') {
+        //   if (result.output?.file_url) {
+        modelStore.modelResponse.audio.url = data.output?.file_url
+        break
+      }
 
-    //   // if (data['task_status'] === 'FAIL') {
-    //   //   console.log('Image Generation Failed.')
-    //   //   break
-    //   // }
+      // if (data['task_status'] === 'FAIL') {
+      //   console.log('Image Generation Failed.')
+      //   break
+      // }
 
-    //   // if (data['error']) {
-    //   //   stateStore.appInfos.push(data.error.message)
-    //   //   break
-    //   // }
+      // if (data['error']) {
+      //   stateStore.appInfos.push(data.error.message)
+      //   break
+      // }
 
-    //   await new Promise((resolve) => setTimeout(resolve, 5000))
-    // }
-    // return modelStore.modelResponse.audio.url
+      await new Promise((resolve) => setTimeout(resolve, 5000))
+    }
+    return modelStore.modelResponse.audio.url
     // ===============================================
   }
+
   // genericDialogueReplacer.js
   function replaceDialogueSpeakers(dialogue) {
     // 提取所有不同的说话人

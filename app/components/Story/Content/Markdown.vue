@@ -10,6 +10,7 @@
           :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
           @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
         />
+        <CommonAudioButton audio-type="story" />
         <CommonCaptureButton capture-id="story-card" />
       </template>
     </v-toolbar>
