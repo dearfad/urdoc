@@ -49,6 +49,21 @@ export const useModelStore = defineStore(
           model: 'internlm2.5-latest',
           thinking: false,
         },
+        {
+          provider: 'NVIDIA',
+          model: 'deepseek-ai/deepseek-v3.2',
+          thinking: true,
+        },
+        {
+          provider: 'NVIDIA',
+          model: 'moonshotai/kimi-k2-instruct',
+          thinking: true,
+        },
+        {
+          provider: 'NVIDIA',
+          model: 'meta/llama-4-maverick-17b-128e-instruct',
+          thinking: true,
+        },
       ],
       image: [
         {
@@ -228,6 +243,7 @@ export const useModelStore = defineStore(
       { name: 'GITEE', id: 'GITEE' },
       { name: 'OLLAMA', id: 'OLLAMA' },
       { name: 'HUGGINGFACE', id: 'HUGGINGFACE' },
+      { name: 'NVIDIA', id: 'NVIDIA' },
     ]
 
     const PROVIDER_COMPOSABLES_MAP = {
@@ -240,6 +256,7 @@ export const useModelStore = defineStore(
       GITEE: useProviderGitee(),
       HUGGINGFACE: useProviderHuggingFace(),
       OLLAMA: useProviderOllama(),
+      NVIDIA: useProviderNvidia(),
     }
 
     function getProviderComposable(modelType, modelUsage) {
