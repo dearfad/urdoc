@@ -20,6 +20,11 @@ export const useModelStore = defineStore(
           thinking: true,
         },
         {
+          provider: 'BIGMODEL',
+          model: 'glm-4.7-flash',
+          thinking: true,
+        },
+        {
           provider: 'XFYUN',
           model: 'lite',
           thinking: false,
@@ -227,7 +232,7 @@ export const useModelStore = defineStore(
             model: customModels.value,
             user_id: userStore.user.id,
           },
-          'user_id'
+          'user_id',
         )
         stateStore.appInfos.push(!error ? '更新成功' : '更新失败')
       },
@@ -317,5 +322,5 @@ export const useModelStore = defineStore(
         },
       },
     },
-  }
+  },
 )
