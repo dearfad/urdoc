@@ -6,6 +6,9 @@ export default defineEventHandler(async (event) => {
     if (!token) return sendErrorResponse(API_KEY_ERROR)
     payload.headers.Authorization = `Bearer ${token}`
   }
+  // 添加 Accept-Encoding: identity 头部
+  // 禁用压缩
+  payload.headers['Accept-Encoding'] = 'identity'
   try {
     const params = {
       method: payload.method,
@@ -15,7 +18,6 @@ export default defineEventHandler(async (event) => {
       params.body = JSON.stringify(payload.body)
     }
     const response = await fetch(payload.url, params)
-    // console.log(response)
     if (
       response.headers.get('content-type')?.includes('stream') ||
       response.headers.get('content-type')?.includes('application/x-ndjson')

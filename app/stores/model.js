@@ -1,3 +1,5 @@
+import { useProviderLongCat } from '~/composables'
+
 const CURRENT_VERSION = '2025-12-31'
 export const useModelStore = defineStore(
   'model',
@@ -67,6 +69,26 @@ export const useModelStore = defineStore(
         {
           provider: 'NVIDIA',
           model: 'meta/llama-4-maverick-17b-128e-instruct',
+          thinking: true,
+        },
+        {
+          provider: 'LONGCAT',
+          model: 'LongCat-Flash-Chat',
+          thinking: false,
+        },
+        {
+          provider: 'LONGCAT',
+          model: 'LongCat-Flash-Thinking',
+          thinking: true,
+        },
+        {
+          provider: 'LONGCAT',
+          model: 'LongCat-Flash-Thinking-2601',
+          thinking: true,
+        },
+        {
+          provider: 'IFLOW',
+          model: 'tstars2.0',
           thinking: true,
         },
       ],
@@ -249,6 +271,8 @@ export const useModelStore = defineStore(
       { name: 'OLLAMA', id: 'OLLAMA' },
       { name: 'HUGGINGFACE', id: 'HUGGINGFACE' },
       { name: 'NVIDIA', id: 'NVIDIA' },
+      { name: 'LONGCAT', id: 'LONGCAT' },
+      { name: 'IFLOW', id: 'IFLOW' },
     ]
 
     const PROVIDER_COMPOSABLES_MAP = {
@@ -262,6 +286,8 @@ export const useModelStore = defineStore(
       HUGGINGFACE: useProviderHuggingFace(),
       OLLAMA: useProviderOllama(),
       NVIDIA: useProviderNvidia(),
+      LONGCAT: useProviderLongCat(),
+      IFLOW: useProviderIFlow(),
     }
 
     function getProviderComposable(modelType, modelUsage) {
