@@ -44,7 +44,7 @@
           <v-tabs v-model="tab[item.type]" grow density="compact">
             <v-tab value="free" text="免费" :prepend-icon="mdiCheckCircleOutline" />
             <v-tab value="custom" text="自定义" :prepend-icon="mdiPencilOutline" />
-            <v-tab value="local" text="本地" :prepend-icon="mdiHome" :disabled="true" />
+            <v-tab value="local" text="本地" :prepend-icon="mdiHome" />
           </v-tabs>
 
           <v-tabs-window v-model="tab[item.type]">
