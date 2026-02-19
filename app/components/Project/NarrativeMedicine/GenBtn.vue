@@ -44,8 +44,8 @@ async function generate() {
   field.value = '生成头像...'
   await recordStore.getFace()
 
-  field.value = '生成插图...'
-  await recordStore.getStoryIllustration()
+  // field.value = '生成插图...'
+  // await recordStore.getStoryIllustration()
   //
   isLoading.value = false
 }
