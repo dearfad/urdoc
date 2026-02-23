@@ -1,5 +1,9 @@
 # URDOC - Virtual Medical Case Study Platform
 
+[English](./README.md) | [中文](./README-CN.md)
+
+---
+
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

@@ -1,5 +1,9 @@
 # URDOC - 虚拟病例研究平台
 
+[English](./README.md) | [中文](./README-CN.md)
+
+---
+
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
