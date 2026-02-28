@@ -75,4 +75,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  vite: {
+    optimizeDeps: {
+      include: ['@clerk/vue', '@clerk/localizations'],
+    },
+  },
 })
