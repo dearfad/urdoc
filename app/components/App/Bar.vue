@@ -25,7 +25,7 @@
       />
       <v-btn
         v-tooltip="$t('app.bar.documents')"
-        href="https://urdoc.dearfad.com/docs"
+        href="https://docs.urdoc.dearfad.com"
         target="_blank"
         variant="plain"
         :ripple="false"

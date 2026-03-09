@@ -6,11 +6,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "docs:dev": "vitepress dev docs --host",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs",
-    "edgeone": "nuxt generate && vitepress build docs"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@clerk/localizations": "^3.37.2",
