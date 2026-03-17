@@ -3,42 +3,50 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: true,
+  devtools: {
+    enabled: false,
+  },
+  css: ['~/assets/css/main.css'],
+  ui: {
+    fonts: false,
+  },
   compatibilityDate: '2025-12-14',
-  css: ['~/assets/css/default.css'],
+  // css: ['~/assets/css/default.css'],
 
   modules: [
-    '@clerk/nuxt',
+    // '@clerk/nuxt',
     '@nuxt/eslint',
-    '@nuxtjs/i18n',
-    '@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt',
-    'vuetify-nuxt-module',
+    '@nuxt/ui',
+    // '@nuxtjs/i18n',
+    // '@pinia/nuxt',
+    // 'pinia-plugin-persistedstate/nuxt',
+    // 'vuetify-nuxt-module',
   ],
 
-  piniaPluginPersistedstate: {
-    storage: 'localStorage',
-  },
+  // piniaPluginPersistedstate: {
+  //   storage: 'localStorage',
+  // },
 
-  routeRules: {
-    '/cstar/**': { ssr: false },
-    '/image/**': { ssr: false },
-    '/video/**': { ssr: false },
-    '/audio/**': { ssr: false },
-    '/admin/**': { ssr: false },
-    '/user/**': { ssr: false },
-    '/project/**': { ssr: false },
-    '/site/**': { ssr: false },
-  },
+  // routeRules: {
+  //   '/cstar/**': { ssr: false },
+  //   '/image/**': { ssr: false },
+  //   '/video/**': { ssr: false },
+  //   '/audio/**': { ssr: false },
+  //   '/admin/**': { ssr: false },
+  //   '/user/**': { ssr: false },
+  //   '/project/**': { ssr: false },
+  //   '/site/**': { ssr: false },
+  // },
 
   // EdgeOne Pages Functions Development
-  nitro: {
-    devProxy: {
-      '/function': 'http://localhost:8088/function',
-    },
-    prerender: {
-      ignore: ['/i18n/**', '/_i18n/**'],
-    },
-  },
+  // nitro: {
+  //   devProxy: {
+  //     '/function': 'http://localhost:8088/function',
+  //   },
+  //   prerender: {
+  //     ignore: ['/i18n/**', '/_i18n/**'],
+  //   },
+  // },
 
   // Clerk Configuration
   // clerk: {
@@ -46,39 +54,35 @@ export default defineNuxtConfig({
   // },
 
   // Supabase Runtime Configuration
-  runtimeConfig: {
-    public: {
-      supabaseUrl: '',
-      supabaseKey: '',
-    },
-  },
+  // runtimeConfig: {
+  //   public: {
+  //     supabaseUrl: '',
+  //     supabaseKey: '',
+  //   },
+  // },
 
   // Nuxt i18n Configuration
-  i18n: {
-    defaultLocale: 'zh',
-    langDir: 'locales/',
-    locales: [
-      { code: 'zh', name: '中文', file: 'zh/index.ts' },
-      { code: 'en', name: 'English', file: 'en/index.ts' },
-    ],
-    strategy: 'no_prefix',
-  },
+  // i18n: {
+  //   defaultLocale: 'zh',
+  //   langDir: 'locales/',
+  //   locales: [
+  //     { code: 'zh', name: '中文', file: 'zh/index.ts' },
+  //     { code: 'en', name: 'English', file: 'en/index.ts' },
+  //   ],
+  //   strategy: 'no_prefix',
+  // },
 
-  devtools: {
-    enabled: false,
-  },
+  // vuetify: {
+  //   vuetifyOptions: {
+  //     icons: {
+  //       defaultSet: 'mdi-svg',
+  //     },
+  //   },
+  // },
 
-  vuetify: {
-    vuetifyOptions: {
-      icons: {
-        defaultSet: 'mdi-svg',
-      },
-    },
-  },
-
-  vite: {
-    optimizeDeps: {
-      include: ['@clerk/vue', '@clerk/localizations'],
-    },
-  },
+  // vite: {
+  //   optimizeDeps: {
+  //     include: ['@clerk/vue', '@clerk/localizations'],
+  //   },
+  // },
 })

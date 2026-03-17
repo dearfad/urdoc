@@ -1,0 +1,7 @@
+{
+  "name": "urdoc",
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
+  "outputDirectory": ".output",
+  "nodeVersion": "24.5.0"
+}

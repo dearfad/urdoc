@@ -70,7 +70,7 @@
         </v-list>
       </v-menu>
     </div>
-    <div :key="clerkKey" class="mx-2">
+    <!-- <div :key="clerkKey" class="mx-2">
       <SignedOut>
         <SignInButton mode="modal">
           <v-btn>{{ $t('app.bar.sign-in') }}</v-btn>
@@ -79,7 +79,7 @@
       <SignedIn>
         <UserButton />
       </SignedIn>
-    </div>
+    </div> -->
   </v-app-bar>
 </template>
 
