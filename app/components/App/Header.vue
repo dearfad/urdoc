@@ -17,23 +17,5 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const items = computed(() => [
-  {
-    label: 'Docs',
-    to: '/docs',
-    active: route.path.startsWith('/docs'),
-  },
-  {
-    label: 'Pricing',
-    to: '/pricing',
-  },
-  {
-    label: 'Blog',
-    to: '/blog',
-  },
-  {
-    label: 'Changelog',
-    to: '/changelog',
-  },
-])
+const items = computed(() => [])
 </script>
