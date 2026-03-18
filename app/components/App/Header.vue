@@ -1,7 +1,7 @@
 <template>
   <UHeader title="URDOC">
-    <UNavigationMenu :items="items" variant="link" />
     <template #right>
+      <UNavigationMenu :items="items" variant="link" />
       <UColorModeButton />
       <UButton
         to="https://github.com/dearfad/urdoc"
@@ -12,16 +12,17 @@
         variant="ghost"
       />
     </template>
+    <template #body>
+      <UNavigationMenu :items="items" orientation="vertical" />
+    </template>
   </UHeader>
 </template>
 
 <script setup lang="ts">
-const route = useRoute()
 const items = computed(() => [
   {
     label: '文档',
-    to: 'https://docs.urdoc.dearfad.com',
-    icon: 'i-lucide-book-text',
+    to: '/docs',
   },
 ])
 </script>
