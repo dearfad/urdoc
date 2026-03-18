@@ -1,5 +1,6 @@
 <template>
   <UHeader title="URDOC">
+    <template #title> <UIcon name="i-lucide-hospital" class="size-8 text-green-500" /> URDOC </template>
     <template #right>
       <UNavigationMenu :items="items" variant="link" />
       <UColorModeButton />
@@ -22,7 +23,7 @@
 const items = computed(() => [
   {
     label: '文档',
-    to: '/docs',
+    to: 'https://docs.urdoc.dearfad.com',
   },
 ])
 </script>
