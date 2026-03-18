@@ -15,5 +15,10 @@
     "better-sqlite3": "^12.8.0",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
   }
 }
