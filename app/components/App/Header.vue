@@ -17,5 +17,11 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const items = computed(() => [])
+const items = computed(() => [
+  {
+    label: '文档',
+    to: 'https://docs.urdoc.dearfad.com',
+    icon: 'i-lucide-book-text',
+  },
+])
 </script>

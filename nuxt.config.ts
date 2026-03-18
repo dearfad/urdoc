@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-17',
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxt/content'],
+  modules: ['@nuxt/eslint', '@nuxt/ui'],
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
 })

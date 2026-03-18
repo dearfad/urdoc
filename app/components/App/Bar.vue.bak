@@ -104,19 +104,7 @@ const toggleNavDrawer = () => {
   stateStore.isNavDrawerShow = !stateStore.isNavDrawerShow
 }
 
-const toggleLocale = () => {
-  const newLocale = locale.value === 'zh' ? 'en' : 'zh'
-  setLocale(newLocale)
-  updateClerkOptions({
-    localization: newLocale === 'zh' ? zhCN : enUS,
-  })
-  clerkKey.value = newLocale
-}
+
 </script>
 
-<style scoped>
-/* 解决网站标题被截断的问题 */
-:deep(.v-toolbar-title__placeholder) {
-  overflow: visible;
-}
-</style>
+
