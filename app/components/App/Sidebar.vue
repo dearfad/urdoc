@@ -1,12 +1,5 @@
 <template>
-  <UDashboardSidebar
-    id="default"
-    v-model:open="open"
-    collapsible
-    resizable
-    class="bg-elevated/25"
-    :ui="{ footer: 'lg:border-t lg:border-default' }"
-  >
+  <UDashboardSidebar id="default" v-model:open="open" collapsible resizable>
     <template #header="{ collapsed }">
       <NuxtLink to="/" class="flex items-end gap-0.5">
         <span v-if="!collapsed" class="text-xl font-bold text-highlighted">URDOC</span>
@@ -19,7 +12,14 @@
     </template>
 
     <template #default="{ collapsed }">
-      <UNavigationMenu :collapsed="collapsed" :items="links" orientation="vertical" tooltip popover />
+      <UNavigationMenu
+        :collapsed="collapsed"
+        :items="links"
+        orientation="vertical"
+        tooltip
+        popover
+        :ui="{ linkLabel: 'text-base font-extrabold' }"
+      />
     </template>
 
     <template #footer="{ collapsed }">
@@ -41,6 +41,7 @@ const links = [
   {
     label: '叙事医学',
     icon: 'i-lucide-house',
+    to: '/',
   },
   {
     label: 'CSTAR',
@@ -48,9 +49,13 @@ const links = [
     children: [
       {
         label: 'Case',
+        icon: 'i-lucide-file-text',
+        to: '/dashboard',
       },
       {
         label: 'Story',
+        icon: 'i-lucide-file-text',
+        to: '/',
       },
     ],
   },
