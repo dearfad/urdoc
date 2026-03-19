@@ -1,6 +1,6 @@
 <template>
   <UHeader title="URDOC">
-    <template #title> <UIcon name="i-lucide-hospital" class="size-8 text-green-500" /> URDOC </template>
+    <template #title> <UIcon name="i-lucide-hospital" class="size-8 text-blue-500" /> URDOC </template>
     <template #right>
       <UNavigationMenu :items="items" variant="link" />
       <UColorModeButton />

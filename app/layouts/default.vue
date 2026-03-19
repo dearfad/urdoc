@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <AppHeader />
-    <UMain>
+  <UApp>
+    <UDashboardGroup>
+      <AppSidebar />
       <slot />
-    </UMain>
-  </div>
+    </UDashboardGroup>
+  </UApp>
 </template>
