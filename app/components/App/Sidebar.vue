@@ -7,9 +7,29 @@
     class="bg-elevated/25"
     :ui="{ footer: 'lg:border-t lg:border-default' }"
   >
+    <template #header="{ collapsed }">
+      <NuxtLink to="/" class="flex items-end gap-0.5">
+        <span v-if="!collapsed" class="text-xl font-bold text-highlighted">URDOC</span>
+      </NuxtLink>
+
+      <div v-if="!collapsed" class="flex items-center gap-1.5 ms-auto">
+        <UDashboardSearch />
+        <UDashboardSearchButton collapsed />
+      </div>
+    </template>
+
     <template #default="{ collapsed }">
-      <UNavigationMenu :collapsed="collapsed" :items="links[0]" orientation="vertical" tooltip popover />
-      <UNavigationMenu :collapsed="collapsed" :items="links[1]" orientation="vertical" tooltip class="mt-auto" />
+      <UNavigationMenu :collapsed="collapsed" :items="links" orientation="vertical" tooltip popover />
+    </template>
+
+    <template #footer="{ collapsed }">
+      <UButton
+        :label="collapsed ? '' : '设置'"
+        icon="i-lucide-settings"
+        color="neutral"
+        variant="ghost"
+        class="w-full"
+      />
     </template>
   </UDashboardSidebar>
 </template>
@@ -18,26 +38,21 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 const open = ref(false)
 const links = [
-  [
-    {
-      label: 'Home',
-      icon: 'i-lucide-house',
-      to: '/dashboard',
-    },
-    {
-      label: 'Customers',
-      icon: 'i-lucide-users',
-      to: '/customers',
-    },
-  ],
-  [
-    {
-      label: '设置',
-      to: '/settings',
-      icon: 'i-lucide-settings',
-      defaultOpen: true,
-      type: 'trigger',
-    },
-  ],
-] satisfies NavigationMenuItem[][]
+  {
+    label: '叙事医学',
+    icon: 'i-lucide-house',
+  },
+  {
+    label: 'CSTAR',
+    icon: 'i-lucide-users',
+    children: [
+      {
+        label: 'Case',
+      },
+      {
+        label: 'Story',
+      },
+    ],
+  },
+] satisfies NavigationMenuItem[]
 </script>
