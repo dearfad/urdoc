@@ -1,15 +1,35 @@
 <template>
-  <UDashboardNavbar
-    class="sticky lg:absolute top-0 inset-x-0 border-b-0 z-10 bg-default/75 backdrop-blur lg:bg-transparent lg:backdrop-blur-none pointer-events-none sm:px-4"
-    :ui="{ left: 'pointer-events-auto', right: 'pointer-events-auto' }"
-  >
+  <UDashboardNavbar>
     <template #left>
-      <UDashboardSidebarCollapse />
+      <UTooltip text="侧边栏">
+        <UDashboardSidebarCollapse />
+      </UTooltip>
     </template>
 
     <template #right>
-      <UColorModeButton />
-      <UButton color="neutral" variant="ghost" icon="i-lucide-plus" to="/" class="lg:hidden" />
+      <UTooltip text="主题">
+        <UColorModeButton />
+      </UTooltip>
+      <UTooltip text="文档">
+        <UButton
+          to="https://docs.urdoc.dearfad.com"
+          target="_blank"
+          icon="i-lucide-file-text"
+          aria-label="Documentation"
+          color="neutral"
+          variant="ghost"
+        />
+      </UTooltip>
+      <UTooltip text="GitHub">
+        <UButton
+          to="https://github.com/dearfad/urdoc"
+          target="_blank"
+          icon="i-simple-icons-github"
+          aria-label="GitHub"
+          color="neutral"
+          variant="ghost"
+        />
+      </UTooltip>
     </template>
   </UDashboardNavbar>
 </template>

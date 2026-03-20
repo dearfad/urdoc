@@ -1,6 +1,6 @@
 <template>
   <UApp :locale="zh_cn">
-    <UDashboardGroup unit="rem">
+    <UDashboardGroup>
       <AppSidebar />
       <slot />
     </UDashboardGroup>
