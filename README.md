@@ -1,210 +1,131 @@
-# URDOC - Virtual Medical Case Study Platform
-
-[English](./README.md) | [中文](./README-CN.md)
-
----
-
-<div align="center">
+# URDOC - 虚拟病例研究平台
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Nuxt.js](https://img.shields.io/badge/Nuxt.js-4.x-green.svg)](https://nuxt.com/)
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-blue.svg)](https://vuejs.org/)
-[![Vuetify](https://img.shields.io/badge/Vuetify-3.x-purple.svg)](https://vuetifyjs.com/)
 
-</div>
+**URDOC** 是一个基于大语言模型的虚拟医学病例研究平台，集成病例生成、故事编写、问题设计、问诊模拟和能力评估功能。平台采用 **CSTAR 方法论**，为医学教育和临床实践提供高效、灵活且创新的学习环境。
 
-**URDOC** (虚拟病例研究平台) is an advanced virtual medical case study platform that integrates **case generation**, **story writing**, **question design**, **consultation simulation**, and **ability assessment**. Leveraging cutting-edge large language model technology, URDOC provides an efficient, flexible, and innovative learning and research environment for medical education and clinical practice.
+## ✨ 核心功能
 
-## ✨ Key Features
+- 🏥 **病例生成 (Case)** - AI 驱动的医学病例创建，提供真实临床场景
+- 📝 **编写故事 (Story)** - 交互式医学叙事发展，丰富病例背景
+- ❓ **考核理论 (Test)** - 智能医学问题生成与理论考核
+- 💬 **互动实践 (Act)** - 真实的医患问诊互动模拟
+- 📊 **评估能力 (Rate)** - 全面的学习效果评估和反馈系统
 
-- 🏥 **Case Generation** - AI-powered medical case creation with realistic scenarios
-- 📝 **Story Writing** - Interactive medical narrative development
-- ❓ **Question Design** - Intelligent medical question generation and assessment
-- 💬 **Consultation Simulation** - Realistic doctor-patient interaction simulation
-- 📊 **Ability Assessment** - Comprehensive evaluation and feedback system
-- 🌐 **Multi-language Support** - Built-in Chinese/English internationalization
-- 🔐 **Authentication** - Secure user management with Clerk
-- ☁️ **Edge Computing** - Serverless deployment with EdgeOne Functions
+## 🛠 技术栈
 
-## 🛠 Technology Stack
+- **[Nuxt.js 4.x](https://nuxt.com/)** - 全栈 Vue.js 框架
+- **[Vue.js 3.x](https://vuejs.org/)** - 渐进式 JavaScript 框架
+- **[Nuxt UI v4.x](https://ui.nuxt.com/)** - 基于 Tailwind CSS 的 UI 组件库
+- **[Tailwind CSS v4.x](https://tailwindcss.com/)** - 原子化 CSS 框架
+- **TypeScript** - 类型安全开发
+- **pnpm** - 高效包管理器
+- **[Tencent Cloud EdgeOne](https://edgeone.tencent.com/)** - Serverless 边缘计算部署
 
-### Frontend Framework
-- **[Nuxt.js 4.x](https://nuxt.com/)** - Full-stack Vue.js framework
-- **[Vue.js 3.x](https://vuejs.org/)** - Progressive JavaScript framework
-- **[Vuetify 3.x](https://vuetifyjs.com/)** - Material Design component library
-- **TypeScript** - Type-safe development
-
-### Backend & Database
-- **[Supabase](https://supabase.com/)** - Open-source Firebase alternative
-- **Edge Functions** - Serverless API endpoints
-- **Pinia** - State management with persistence
-
-### Authentication & Security
-- **[Clerk](https://clerk.com/)** - Modern authentication and user management
-
-### Development Tools
-- **Vite** - Next-generation frontend tooling
-- **VitePress** - Documentation site generator
-- **ESLint** - Code quality and consistency
-- **Prettier** - Code formatting
-
-## 📁 Project Structure
+## 📁 项目结构
 
 ```
 urdoc/
-├── app/                    # Main application source code
-│   ├── components/        # Reusable Vue components
-│   ├── composables/       # Vue composables
-│   ├── layouts/          # Application layouts
-│   ├── pages/            # Route pages
-│   ├── stores/           # Pinia stores
-│   └── types/            # TypeScript type definitions
-├── server/                # Server-side API endpoints
-├── prompts/               # AI prompt templates for medical scenarios
-├── docs/                  # VitePress documentation
-├── public/                # Static assets
-├── i18n/                  # Internationalization files
-└── edge-functions/        # EdgeOne serverless functions
+├── app/                        # 应用源代码（Nuxt 4 约定）
+│   ├── app.vue                 # 根组件
+│   ├── app.config.ts           # 应用配置（主题、颜色等）
+│   ├── assets/css/main.css     # 全局样式
+│   ├── components/
+│   │   └── App/                # 应用级组件
+│   │       ├── Navbar.vue      # 顶部导航栏
+│   │       └── Sidebar.vue     # 侧边栏导航
+│   ├── layouts/
+│   │   ├── default.vue         # 仪表盘布局（侧边栏 + 内容区）
+│   │   └── landing.vue         # 落地页布局
+│   └── pages/
+│       ├── index.vue           # 首页（落地页）
+│       ├── dashboard/
+│       │   └── index.vue       # 仪表盘概览
+│       └── case/
+│           └── index.vue       # 病例生成页面
+├── public/                     # 静态资源
+├── nuxt.config.ts              # Nuxt 配置
+├── eslint.config.mjs           # ESLint 配置
+├── .prettierrc.json            # Prettier 配置
+└── edgeone.json                # EdgeOne 部署配置
 ```
 
-## 🚀 Getting Started
+## 🚀 快速开始
 
-### Prerequisites
+### 前置要求
 
-- Node.js 18.x or later
-- npm or yarn package manager
-- Git
+- Node.js 18.x 或更高版本
+- pnpm
 
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/urdoc.git
-   cd urdoc
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Environment Setup**
-   Create a `.env` file in the root directory with the following variables:
-   ```env
-   # Supabase Configuration
-   PUBLIC_SUPABASE_URL=your_supabase_url
-   PUBLIC_SUPABASE_KEY=your_supabase_anon_key
-
-   # Clerk Configuration (if using Clerk authentication)
-   CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-   CLERK_SECRET_KEY=your_clerk_secret_key
-   ```
-
-### Development
-
-**Start the development server:**
-```bash
-npm run dev
-```
-
-**Build for production:**
-```bash
-npm run build
-```
-
-**Preview production build:**
-```bash
-npm run preview
-```
-
-**Generate static site:**
-```bash
-npm run generate
-```
-
-### Documentation
-
-**Start documentation development server:**
-```bash
-npm run docs:dev
-```
-
-**Build documentation:**
-```bash
-npm run docs:build
-```
-
-**Preview documentation:**
-```bash
-npm run docs:preview
-```
-
-## 📚 Documentation
-
-Comprehensive documentation is available in the `/docs` directory and includes:
-
-- **User Guide** - Complete usage instructions and tutorials
-- **API Reference** - Detailed API documentation
-- **Development Guide** - Contributing guidelines and development workflows
-- **Deployment Guide** - Production deployment instructions
-
-Access the documentation locally:
-```bash
-npm run docs:dev
-```
-
-## 🌐 Internationalization
-
-URDOC supports multiple languages with built-in internationalization:
-
-- **Chinese (中文)** - Default language
-- **English** - Full translation support
-
-Language files are located in `i18n/locales/` and can be easily extended for additional languages.
-
-## 🚀 Deployment
-
-### EdgeOne Deployment
-
-This project is configured for deployment on EdgeOne with serverless functions:
+### 安装
 
 ```bash
-# Build and deploy to EdgeOne
-npm run edgeone
+git clone https://github.com/dearfad/urdoc.git
+cd urdoc
+pnpm install
 ```
 
-### Environment Configuration
+### 开发
 
-The project uses route rules for optimal performance:
-- Static routes are server-side rendered (SSR)
-- Dynamic routes (`/user/**`, `/project/**`, etc.) are client-side rendered
-- Media routes (`/image/**`, `/video/**`, `/audio/**`) are optimized for static delivery
+```bash
+# 启动开发服务器（支持局域网访问）
+pnpm dev
 
-## 🤝 Contributing
+# 生产构建
+pnpm build
 
-We welcome contributions to URDOC! Please follow these guidelines:
+# 预览生产构建
+pnpm preview
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+# 静态站点生成
+pnpm generate
+```
 
-Please ensure your code follows the project's coding standards and includes appropriate tests.
+### 代码风格
 
-## 📄 License
+- 无分号、单引号、120 字符行宽
+- ESLint + Prettier 集成（保存时自动格式化）
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🌐 部署
 
-## 🌟 Acknowledgments
+项目部署在 **腾讯云 EdgeOne** 平台，使用 Serverless 函数提供后端 API 服务。
 
-- Built with [Nuxt.js](https://nuxt.com/) - The Intuitive Vue Framework
-- UI components by [Vuetify](https://vuetifyjs.com/)
-- Authentication powered by [Clerk](https://clerk.com/)
-- Database services by [Supabase](https://supabase.com/)
+```bash
+# 构建并部署
+pnpm build
+```
+
+部署配置详见 `edgeone.json`。
+
+## 📚 文档
+
+完整项目文档：https://docs.urdoc.dearfad.com
+
+## 🤝 贡献
+
+欢迎贡献代码、报告问题或提出建议！
+
+1. Fork 本仓库
+2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交更改 (`git commit -m 'Add amazing feature'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 提交 Pull Request
+
+## 📄 许可证
+
+[MIT License](LICENSE) - Copyright 2025-2026 dearfad
+
+## 🌟 致谢
+
+- [Nuxt.js](https://nuxt.com/) - 直观的 Vue 全栈框架
+- [Nuxt UI](https://ui.nuxt.com/) - 现代化的 UI 组件库
+- [Tailwind CSS](https://tailwindcss.com/) - 实用的原子化 CSS 框架
+- [Tencent Cloud EdgeOne](https://edgeone.tencent.com/) - 边缘计算平台
 
 ---
 
 <div align="center">
-Made with ❤️ for medical education and clinical practice
+为医学教育和临床实践 ❤️ 制作
 </div>
