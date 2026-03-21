@@ -9,11 +9,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^2.0.37",
     "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/simple-icons": "^1.2.74",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/ui": "^4.5.1",
+    "ai": "^6.0.134",
     "nuxt": "^4.4.2",
     "tailwindcss": "^4.2.2"
   }

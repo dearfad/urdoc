@@ -15,6 +15,7 @@
       <UButton
         :label="collapsed ? '' : '设置'"
         icon="i-lucide-settings"
+        to="/settings"
         color="neutral"
         variant="ghost"
         class="font-bold text-base w-full"
@@ -39,6 +40,7 @@ const items = [
       {
         label: '叙事医学',
         icon: 'i-lucide-book-plus',
+        to: '/project/narrative-medicine',
         class: 'font-bold text-base',
       },
     ],
@@ -51,27 +53,31 @@ const items = [
       {
         label: '生成病例',
         icon: 'i-mdi-alpha-c-circle',
-        to: '/case',
+        to: '/cstar/case',
         class: 'font-bold text-base',
       },
       {
         label: '编写故事',
         icon: 'i-mdi-alpha-s-circle',
+        to: '/cstar/story',
         class: 'font-bold text-base',
       },
       {
         label: '考核理论',
         icon: 'i-mdi-alpha-t-circle',
+        to: '/cstar/test',
         class: 'font-bold text-base',
       },
       {
         label: '互动实践',
         icon: 'i-mdi-alpha-a-circle',
+        to: '/cstar/act',
         class: 'font-bold text-base',
       },
       {
         label: '评估能力',
         icon: 'i-mdi-alpha-r-circle',
+        to: '/cstar/rate',
         class: 'font-bold text-base',
       },
     ],
@@ -84,16 +90,19 @@ const items = [
       {
         label: '图像创作',
         icon: 'i-lucide-image',
+        to: '/multimodal/image',
         class: 'font-bold text-base',
       },
       {
         label: '视频渲染',
         icon: 'i-lucide-video',
+        to: '/multimodal/video',
         class: 'font-bold text-base',
       },
       {
         label: '语音合成',
         icon: 'i-lucide-speech',
+        to: '/multimodal/speech',
         class: 'font-bold text-base',
       },
     ],
