@@ -1,6 +1,7 @@
 <template>
   <UDashboardSidebar id="default" collapsible resizable>
     <template #header="{ collapsed }">
+      <AppLogo class="h-8 w-auto shrink-0" />
       <NuxtLink to="/">
         <span v-if="!collapsed" class="text-xl font-bold">URDOC</span>
       </NuxtLink>
