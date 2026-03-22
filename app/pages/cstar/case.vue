@@ -15,7 +15,6 @@
           </UTooltip>
         </template>
       </UDashboardNavbar>
-      <UDashboardToolbar />
     </template>
     <template #body>
       <CardCase />

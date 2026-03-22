@@ -1,46 +1,52 @@
 <template>
-  <UCard id="case">
-    <!-- <v-toolbar density="comfortable">
-        <template #prepend>
-          <v-btn :icon="mdiAlphaCCircle" to="/cstar/case" variant="plain" />
-        </template>
-        <v-toolbar-title class="font-weight-bold ml-0" text="病历" />
-        <template #append>
-          <v-btn
-            :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
-            @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
-          />
-          <CommonAudioButton audio-type="case" />
-          <CommonCaptureButton capture-id="case-card" />
-        </template>
-      </v-toolbar> -->
-    <template #header> Header </template>
+  <UCard id="component-card-case" :ui="{ header: 'flex items-center py-2' }">
+    <!-- 
+      <v-btn
+        :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
+        @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
+      />
+      <CommonAudioButton audio-type="case" />
+      <CommonCaptureButton capture-id="case-card" /> 
+    -->
 
-    <template #default> Default </template>
+    <template #header>
+      <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
+      <span class="font-bold">病历</span>
+      <div class="flex ms-auto gap-2">
+        <UButton icon="i-lucide-camera" variant="ghost" />
+        <UButton icon="i-lucide-file-volume" variant="ghost" />
+      </div>
+    </template>
 
-    <template #footer> Footer </template>
-    <!-- <v-card-text>
-        <div v-if="isReasoningContentShow" class="reasoning my-4">
-          <details open>
-            <summary class="font-weight-bold">思考过程</summary>
-            <v-divider class="my-2" />
-            <MarkdownRender :content="reasoningContent" />
-            <v-divider class="my-2" />
-          </details>
-        </div>
-        <div v-if="stateStore.isModelResponseShow.case" class="case">
-          <MarkdownRender :content="streamChatContentMarkdown" />
-        </div>
-        <div v-else class="case">
-          <MarkdownRender :content="recordStore.view.case.markdown" />
-        </div>
-      </v-card-text> -->
+    <template #default>
+      <MDC :value="md" />
+
+      <!-- 
+        <v-card-text>
+          <div v-if="isReasoningContentShow" class="reasoning my-4">
+            <details open>
+              <summary class="font-weight-bold">思考过程</summary>
+              <v-divider class="my-2" />
+              <MarkdownRender :content="reasoningContent" />
+              <v-divider class="my-2" />
+            </details>
+          </div>
+          <div v-if="stateStore.isModelResponseShow.case" class="case">
+            <MarkdownRender :content="streamChatContentMarkdown" />
+          </div>
+          <div v-else class="case">
+            <MarkdownRender :content="recordStore.view.case.markdown" />
+          </div>
+        </v-card-text> 
+      -->
+    </template>
   </UCard>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // import MarkdownRender from 'markstream-vue'
-// import 'markstream-vue/index.css'
+
+const md = `# Hello World\n\n这是 **加粗** 的文本。`
 
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 
