@@ -46,7 +46,7 @@
 <script setup lang="ts">
 // import MarkdownRender from 'markstream-vue'
 
-const md = `# Hello World\n\n这是 **加粗** 的文本。`
+const md = `# 生成病例\n\n这是 **加粗** 的文本。`
 
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 
