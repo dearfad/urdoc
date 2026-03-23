@@ -2,7 +2,7 @@
   "name": "urdoc",
   "type": "module",
   "scripts": {
-    "build": "pnpm prune --prod && NODE_OPTIONS=--max-old-space-size=4096 nuxt build",
+    "build": "nuxt build",
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -16,8 +16,10 @@
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/ui": "^4.5.1",
     "@nuxtjs/mdc": "^0.20.2",
+    "@pinia/nuxt": "0.11.3",
     "ai": "^6.0.134",
     "nuxt": "^4.4.2",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "tailwindcss": "^4.2.2"
   }
 }
