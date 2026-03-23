@@ -2,7 +2,7 @@
   "name": "urdoc",
   "type": "module",
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 nuxt build",
+    "build": "pnpm prune --prod && NODE_OPTIONS=--max-old-space-size=4096 nuxt build",
     "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
