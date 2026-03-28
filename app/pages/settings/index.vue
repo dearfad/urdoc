@@ -23,7 +23,6 @@
             class="flex items-center justify-between not-last:pb-4 gap-2"
           >
             <UInput v-model="stateStore.version" autocomplete="off" />
-            <UInput v-model="stateStore.a" autocomplete="off" />
             <USwitch v-model="state[field.name]" @update:model-value="onChange" />
           </UFormField>
         </UPageCard>

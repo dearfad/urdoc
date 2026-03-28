@@ -17,7 +17,8 @@
       </UDashboardNavbar>
     </template>
     <template #body>
-      <CardCase />
+      <Case />
+      <BookSelector />
     </template>
   </UDashboardPanel>
 </template>

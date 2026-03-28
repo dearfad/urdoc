@@ -1,5 +1,5 @@
 <template>
-  <UCard id="component-card-case" :ui="{ header: 'flex items-center py-2' }">
+  <UCard id="component-case-index"">
     <!-- 
       <v-btn
         :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
