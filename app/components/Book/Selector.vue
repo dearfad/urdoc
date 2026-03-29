@@ -1,20 +1,28 @@
 <template>
-  <UCard>
+  <UCard id="component-book-selector" :ui="{ header: 'flex items-center py-2' }">
     <template #header>
+      <!-- <v-toolbar v-if="isTitleShow" density="comfortable">
+        <template #prepend>
+          <v-btn :icon="mdiMedicalBag" variant="plain" />
+        </template>
+        <v-toolbar-title class="font-weight-bold ml-0" text="疾病范围" />
+      </v-toolbar> -->
       <UButton icon="i-lucide-book" variant="ghost" />
       <span class="font-bold">疾病范围</span>
     </template>
     <template #default>
-      <USelect v-model="value" :items="items" class="w-full" placeholder="Select status" size="xl" />
+      <UBadge>test</UBadge>
+      <UCard>
+        <UCollapsible class="flex flex-col gap-2 w-full">
+          <UButton label="选择范围" color="neutral" variant="subtle" trailing-icon="i-lucide-chevron-down" block />
+          <template #content>
+            <USelect v-model="book" :items="books" class="w-full" placeholder="教科书" size="xl" icon="i-lucide-book" />
+          </template>
+        </UCollapsible>
+      </UCard>
     </template>
   </UCard>
   <!-- <v-card hover rounded="lg">
-    <v-toolbar v-if="isTitleShow" density="comfortable">
-      <template #prepend>
-        <v-btn :icon="mdiMedicalBag" variant="plain" />
-      </template>
-      <v-toolbar-title class="font-weight-bold ml-0" text="疾病范围" />
-    </v-toolbar>
     <v-card-text class="py-0">
       <v-chip-group column>
         <v-chip
@@ -65,9 +73,11 @@
 </template>
 
 <script setup>
-// const bookStore = useBookStore()
-const value = ref('')
-const items = ref(['选项1', '选项2', '选项3'])
+const bookStore = useBookStore()
+
+const book = ref('')
+// const book = ref(stateStore.scope.book)
+const books = computed(() => Object.keys(bookStore.books))
 
 // import {
 //   mdiMedicalBag,
@@ -95,9 +105,6 @@ const items = ref(['选项1', '选项2', '选项3'])
 // })
 
 // const random = ref(true)
-
-// const books = computed(() => Object.keys(bookStore.books))
-// const book = ref(stateStore.scope.book)
 
 // const parts = computed(() => {
 //   if (!book.value) return []

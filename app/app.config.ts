@@ -3,10 +3,5 @@ export default defineAppConfig({
     colors: {
       primary: 'blue',
     },
-    card: {
-      slots: {
-        header: 'flex items-center py-2',
-      },
-    },
   },
 })
