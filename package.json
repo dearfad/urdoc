@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^2.0.37",
-    "@iconify-json/lucide": "^1.2.99",
+    "@iconify-json/lucide": "^1.2.101",
     "@iconify-json/mdi": "^1.2.3",
-    "@iconify-json/simple-icons": "^1.2.75",
+    "@iconify-json/simple-icons": "^1.2.76",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/ui": "^4.6.0",
     "@nuxtjs/mdc": "^0.21.0",

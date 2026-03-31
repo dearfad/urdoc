@@ -1,6 +1,15 @@
-export default {
-  // 妇产科学 2024年6月 第10版
-  妇产科学: {
+// /assets/books/obstetricsAndGynecology.ts
+
+import type { Book } from './types'
+
+const obstetricsAndGynecology: Book = {
+  meta: {
+    bookName: '妇产科学',
+    publishDate: '2024-06',
+    edition: 10,
+    isbn: '978-7-117-36436-2',
+  },
+  content: {
     绪论: {},
     女性生殖系统发育与解剖: {
       女性生殖器官的发育: {},
@@ -264,3 +273,5 @@ export default {
   // 三维模型2 卵巢的周期性变化
   // 三维模型3 正常分娩
 }
+
+export default obstetricsAndGynecology

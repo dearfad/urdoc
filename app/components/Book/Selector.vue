@@ -1,5 +1,8 @@
 <template>
-  <UCard id="component-book-selector" :ui="{ header: 'flex items-center py-2' }">
+  <UCard
+    id="component-book-selector"
+    :ui="{ header: 'bg-elevated flex items-center py-2 ', body: 'p-0 sm:p-0', root: 'border border-default' }"
+  >
     <template #header>
       <!-- <v-toolbar v-if="isTitleShow" density="comfortable">
         <template #prepend>
@@ -11,12 +14,16 @@
       <span class="font-bold">疾病范围</span>
     </template>
     <template #default>
-      <UBadge>test</UBadge>
-      <UCard>
+      <div class="p-2">
+        <UBadge icon="i-lucide-book" variant="outline" color="neutral" size="lg">外科学</UBadge>
+      </div>
+      <UCard :ui="{ body: 'p-0 sm:p-0' }">
         <UCollapsible class="flex flex-col gap-2 w-full">
-          <UButton label="选择范围" color="neutral" variant="subtle" trailing-icon="i-lucide-chevron-down" block />
+          <UButton label="选择" trailing-icon="i-lucide-chevron-down" block variant="soft" color="neutral" />
           <template #content>
+            {{ bookStore.bookList }}
             <USelect v-model="book" :items="books" class="w-full" placeholder="教科书" size="xl" icon="i-lucide-book" />
+            {{ bookStore.books[book] }}
           </template>
         </UCollapsible>
       </UCard>

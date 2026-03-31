@@ -1,5 +1,8 @@
 <template>
-  <UCard id="component-case-index" :ui="{ header: 'flex items-center py-2' }">
+  <UCard
+    id="component-case-index"
+    :ui="{ header: 'bg-elevated flex items-center py-2', root: 'border border-default' }"
+  >
     <!-- 
       <v-btn
         :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"

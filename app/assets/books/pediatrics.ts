@@ -1,6 +1,15 @@
-export default {
-  // 儿科学 2024年6月 第10版
-  儿科学: {
+// /assets/books/pediatrics.ts
+
+import type { Book } from './types'
+
+const pediatrics: Book = {
+  meta: {
+    bookName: '儿科学',
+    publishDate: '2024-06',
+    edition: 10,
+    isbn: '978-7-117-36534-5',
+  },
+  content: {
     绪论: {
       儿科学的范围和任务: {},
       儿科学的特点: {},
@@ -441,3 +450,5 @@ export default {
     },
   },
 }
+
+export default pediatrics

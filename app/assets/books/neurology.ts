@@ -1,12 +1,20 @@
-export default {
-  // 神经病学 2024年7月 第9版
-  神经病学: {
+// /assets/books/neurology.ts
+
+import type { Book } from './types'
+
+const neurology: Book = {
+  meta: {
+    bookName: '神经病学',
+    publishDate: '2024-07',
+    edition: 9,
+    isbn: '978-7-117-36579-6',
+  },
+  content: {
     绪论: {
       神经病学的概念和范畴: {},
       神经病学的特性及医学生的学习目标: {},
       神经病学的历史发展与未来展望: {},
     },
-
     神经系统解剖生理及定位诊断: {
       中枢神经: {
         大脑半球: {},
@@ -411,3 +419,5 @@ export default {
   // 数字人案例2 急性脑梗死案例
   // 数字人案例3 周围性面瘫案例
 }
+
+export default neurology
