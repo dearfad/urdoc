@@ -2,19 +2,15 @@
 
 import type { Book, BookCollection } from './types'
 
-const EXCLUDED_FILES = ['./index.ts', './types.ts']
-
-const bookModules = import.meta.glob<Book>('./*.ts', {
+const bookModules = import.meta.glob<Book>(['./*.ts', '!./index.ts', '!./types.ts'], {
   eager: true,
   import: 'default',
 })
 
-export const books: BookCollection = Object.entries(bookModules).reduce((acc, [path, book]) => {
-  if (EXCLUDED_FILES.includes(path)) return acc
-  if (book?.meta?.bookName) {
-    acc[book.meta.bookName] = book
-  }
-  return acc
-}, {} as BookCollection)
+export const books: BookCollection = Object.fromEntries(
+  Object.values(bookModules)
+    .filter((book) => book?.meta?.bookName)
+    .map((book) => [book.meta.bookName, book]),
+) as BookCollection
 
 export default books
