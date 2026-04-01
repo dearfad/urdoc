@@ -39,15 +39,15 @@ export const useStateStore = defineStore('state', () => {
   // // 思考模型是否思考
   // const isModelThinking = ref(true)
 
-  // // 当前章节选择
-  // const scope = ref<Scope>({
-  //   book: '',
-  //   part: '',
-  //   chapter: '',
-  //   section: '',
-  //   subsection: '',
-  //   topic: '',
-  // })
+  // 当前章节选择
+  const scope = ref<Scope>({
+    book: '',
+    part: '',
+    chapter: '',
+    section: '',
+    subsection: '',
+    topic: '',
+  })
 
   // // Tag
   // const tag = ref<Tag>({
@@ -89,7 +89,7 @@ export const useStateStore = defineStore('state', () => {
     // voiceId,
     // responseText,
 
-    // scope,
+    scope,
     // tag,
 
     // isActing,

@@ -18,35 +18,46 @@
         <UBadge icon="i-lucide-book" variant="soft" color="neutral" size="lg">外科学</UBadge>
       </div>
       <UCard :ui="{ body: 'p-0 sm:p-0' }">
-        <UCollapsible class="flex flex-col gap-2 w-full" :ui="{ content: 'flex' }">
+        <UCollapsible class="flex flex-col gap-2 w-full" :ui="{ content: 'flex flex-col' }">
           <UButton label="选择" trailing-icon="i-lucide-chevron-down" block variant="soft" color="neutral" />
           <template #content>
-            <USelect
-              v-model="book"
-              :items="books"
-              class="w-full m-2"
-              :ui="{ content: 'min-w-fit' }"
-              placeholder="教科书"
-              size="lg"
-              icon="i-lucide-book"
-            />
-            <UButton icon="i-lucide-dices" size="lg" variant="ghost" class="m-2" />
+            <!-- <v-select
+              v-for="entry in entries"
+              :key="entry"
+              v-model="entry['v-model']"
+              :label="entry.label"
+              :items="entry.items()"
+              variant="outlined"
+              class="my-4"
+              hide-details="auto"
+              density="comfortable"
+              clearable
+              :append-icon="mdiAutorenew"
+              :prepend-inner-icon="entry['prepend-inner-icon']"
+              :disabled="entry.items().length === 0"
+              @click:append="entry['click-append']()"
+              @update:model-value="entry['update-model-value']()"
+            /> -->
+            <div v-for="entry in entries" :key="entry" class="flex flex-row">
+              <USelect
+                :placeholder="entry.placeholder"
+                v-model="entry['v-model']"
+                :items="entry.items()"
+                :icon="entry.icon"
+                class="w-full m-2"
+                :ui="{ content: 'min-w-fit' }"
+                size="lg"
+                clear
+                clear-icon="i-lucide-x"
+                @update:modelValue="entry['update-modelValue']()"
+              />
+              <UButton icon="i-lucide-dices" size="lg" variant="ghost" class="m-2" />
+            </div>
+            <div class="flex justify-end m-4">
+              <UCheckbox v-model="random" label="随机" />
+            </div>
           </template>
         </UCollapsible>
-        <div class="p-2 flex gap-2">
-          <span>
-            {{ bookStore.books[book].meta.bookName }}
-          </span>
-          <span>
-            {{ bookStore.books[book].meta.publishDate }}
-          </span>
-          <span>
-            {{ bookStore.books[book].meta.edition }}
-          </span>
-          <span>
-            {{ bookStore.books[book].meta.isbn }}
-          </span>
-        </div>
       </UCard>
     </template>
   </UCard>
@@ -101,30 +112,55 @@
 </template>
 
 <script setup>
+const stateStore = useStateStore()
 const bookStore = useBookStore()
 
-const book = ref('')
-// const book = ref(stateStore.scope.book)
+const random = ref(true)
+
+const book = ref(stateStore.scope.book)
 const books = computed(() => Object.keys(bookStore.books))
-// const bookList = computed(() =>
-//   Object.values(booksRef.value).map((book) => ({
-//     name: book.meta.bookName,
-//     edition: book.meta.edition,
-//     publishDate: book.meta.publishDate,
-//   })),
-// )
-// import {
-//   mdiMedicalBag,
-//   mdiAutorenew,
-//   mdiBookOpenVariantOutline,
-//   mdiBookmarkMultipleOutline,
-//   mdiBookOutline,
-//   mdiBookmarkOutline,
-// } from '@mdi/js'
+
+const part = ref(stateStore.scope.part)
+const parts = computed(() => {
+  if (!book.value) return []
+  return bookStore.books[book.value] ? Object.keys(bookStore.books[book.value].content) : []
+})
+
+const chapter = ref(stateStore.scope.chapter)
+const chapters = computed(() => {
+  if (parts.value.length === 0) return []
+  return bookStore.books[book.value].content[part.value]
+    ? Object.keys(bookStore.books[book.value].content[part.value])
+    : []
+})
+
+const section = ref(stateStore.scope.section)
+const sections = computed(() => {
+  if (chapters.value.length === 0) return []
+  return bookStore.books[book.value].content[part.value][chapter.value]
+    ? Object.keys(bookStore.books[book.value].content[part.value][chapter.value])
+    : []
+})
+
+const subsection = ref(stateStore.scope.subsection)
+const subsections = computed(() => {
+  if (sections.value.length === 0) return []
+  return bookStore.books[book.value].content[part.value][chapter.value][section.value]
+    ? Object.keys(bookStore.books[book.value].content[part.value][chapter.value][section.value])
+    : []
+})
+
+const topic = ref(stateStore.scope.topic)
+const topics = computed(() => {
+  if (subsections.value.length === 0) return []
+  return bookStore.books[book.value].content[part.value][chapter.value][section.value][subsection.value]
+    ? Object.keys(bookStore.books[book.value].content[part.value][chapter.value][section.value][subsection.value])
+    : []
+})
+
 // const { isTitleShow } = defineProps({
 //   isTitleShow: { type: Boolean, required: false, default: true },
 // })
-// const stateStore = useStateStore()
 
 // const items = ref([
 //   { icon: mdiBookOpenVariantOutline, name: 'book' },
@@ -138,48 +174,6 @@ const books = computed(() => Object.keys(bookStore.books))
 //   return items.value.filter((item) => stateStore.scope[item.name])
 // })
 
-// const random = ref(true)
-
-// const parts = computed(() => {
-//   if (!book.value) return []
-//   return bookStore.books[book.value] ? Object.keys(bookStore.books[book.value]) : []
-// })
-// const part = ref(stateStore.scope.part)
-
-// const chapters = computed(() => {
-//   if (parts.value.length === 0) return []
-//   return bookStore.books[book.value][part.value]
-//     ? Object.keys(bookStore.books[book.value][part.value])
-//     : []
-// })
-// const chapter = ref(stateStore.scope.chapter)
-
-// const sections = computed(() => {
-//   if (chapters.value.length === 0) return []
-//   return bookStore.books[book.value][part.value][chapter.value]
-//     ? Object.keys(bookStore.books[book.value][part.value][chapter.value])
-//     : []
-// })
-// const section = ref(stateStore.scope.section)
-
-// const subsections = computed(() => {
-//   if (sections.value.length === 0) return []
-//   return bookStore.books[book.value][part.value][chapter.value][section.value]
-//     ? Object.keys(bookStore.books[book.value][part.value][chapter.value][section.value])
-//     : []
-// })
-// const subsection = ref(stateStore.scope.subsection)
-
-// const topics = computed(() => {
-//   if (subsections.value.length === 0) return []
-//   return bookStore.books[book.value][part.value][chapter.value][section.value][subsection.value]
-//     ? Object.keys(
-//         bookStore.books[book.value][part.value][chapter.value][section.value][subsection.value]
-//       )
-//     : []
-// })
-// const topic = ref(stateStore.scope.topic)
-
 // function randomBook() {
 //   if (random.value) {
 //     book.value = books.value[Math.floor(Math.random() * books.value.length)]
@@ -187,14 +181,14 @@ const books = computed(() => Object.keys(bookStore.books))
 //   }
 // }
 
-// function handleBookChange() {
-//   if (random.value) {
-//     part.value = parts.value[Math.floor(Math.random() * parts.value.length)]
-//   } else {
-//     part.value = ''
-//   }
-//   handlePartChange()
-// }
+function handleBookChange() {
+  if (random.value) {
+    part.value = parts.value[Math.floor(Math.random() * parts.value.length)]
+  } else {
+    part.value = ''
+  }
+  handlePartChange()
+}
 
 // function randomPart() {
 //   if (random.value) {
@@ -202,14 +196,15 @@ const books = computed(() => Object.keys(bookStore.books))
 //     handlePartChange()
 //   }
 // }
-// function handlePartChange() {
-//   if (random.value) {
-//     chapter.value = chapters.value[Math.floor(Math.random() * chapters.value.length)]
-//   } else {
-//     chapter.value = ''
-//   }
-//   handleChapterChange()
-// }
+
+function handlePartChange() {
+  if (random.value) {
+    chapter.value = chapters.value[Math.floor(Math.random() * chapters.value.length)]
+  } else {
+    chapter.value = ''
+  }
+  handleChapterChange()
+}
 
 // function randomChapter() {
 //   if (random.value) {
@@ -217,14 +212,14 @@ const books = computed(() => Object.keys(bookStore.books))
 //     handleChapterChange()
 //   }
 // }
-// function handleChapterChange() {
-//   if (random.value) {
-//     section.value = sections.value[Math.floor(Math.random() * sections.value.length)]
-//   } else {
-//     section.value = ''
-//   }
-//   handleSectionChange()
-// }
+function handleChapterChange() {
+  if (random.value) {
+    section.value = sections.value[Math.floor(Math.random() * sections.value.length)]
+  } else {
+    section.value = ''
+  }
+  handleSectionChange()
+}
 
 // function randomSection() {
 //   if (random.value) {
@@ -232,14 +227,15 @@ const books = computed(() => Object.keys(bookStore.books))
 //     handleSectionChange()
 //   }
 // }
-// function handleSectionChange() {
-//   if (random.value) {
-//     subsection.value = subsections.value[Math.floor(Math.random() * subsections.value.length)]
-//   } else {
-//     subsection.value = ''
-//   }
-//   handleSubsectionChange()
-// }
+
+function handleSectionChange() {
+  if (random.value) {
+    subsection.value = subsections.value[Math.floor(Math.random() * subsections.value.length)]
+  } else {
+    subsection.value = ''
+  }
+  handleSubsectionChange()
+}
 
 // function randomSubsection() {
 //   if (random.value) {
@@ -247,14 +243,15 @@ const books = computed(() => Object.keys(bookStore.books))
 //     handleSubsectionChange()
 //   }
 // }
-// function handleSubsectionChange() {
-//   if (random.value) {
-//     topic.value = topics.value[Math.floor(Math.random() * topics.value.length)]
-//   } else {
-//     topic.value = ''
-//   }
-//   handleTopicChange()
-// }
+
+function handleSubsectionChange() {
+  if (random.value) {
+    topic.value = topics.value[Math.floor(Math.random() * topics.value.length)]
+  } else {
+    topic.value = ''
+  }
+  handleTopicChange()
+}
 
 // function randomTopic() {
 //   if (random.value) {
@@ -262,69 +259,76 @@ const books = computed(() => Object.keys(bookStore.books))
 //     handleTopicChange()
 //   }
 // }
-// function handleTopicChange() {
-//   handleScope()
-// }
 
-// function handleScope() {
-//   stateStore.scope = {
-//     book: book.value,
-//     part: part.value,
-//     chapter: chapter.value,
-//     section: section.value,
-//     subsection: subsection.value,
-//     topic: topic.value,
-//   }
-// }
+function handleTopicChange() {
+  handleScope()
+}
 
-// const entries = ref([
-//   {
-//     label: '教科书',
-//     'prepend-inner-icon': mdiBookOpenVariantOutline,
-//     items: () => books.value,
-//     'v-model': book,
-//     'click-append': randomBook,
-//     'update-model-value': handleBookChange,
-//   },
-//   {
-//     label: '篇目',
-//     'prepend-inner-icon': mdiBookmarkMultipleOutline,
-//     items: () => parts.value,
-//     'v-model': part,
-//     'click-append': randomPart,
-//     'update-model-value': handlePartChange,
-//   },
-//   {
-//     label: '章节',
-//     'prepend-inner-icon': mdiBookmarkMultipleOutline,
-//     items: () => chapters.value,
-//     'v-model': chapter,
-//     'click-append': randomChapter,
-//     'update-model-value': handleChapterChange,
-//   },
-//   {
-//     label: '节次',
-//     'prepend-inner-icon': mdiBookOutline,
-//     items: () => sections.value,
-//     'v-model': section,
-//     'click-append': randomSection,
-//     'update-model-value': handleSectionChange,
-//   },
-//   {
-//     label: '子节',
-//     'prepend-inner-icon': mdiBookmarkOutline,
-//     items: () => subsections.value,
-//     'v-model': subsection,
-//     'click-append': randomSubsection,
-//     'update-model-value': handleSubsectionChange,
-//   },
-//   {
-//     label: '主题',
-//     'prepend-inner-icon': mdiBookmarkOutline,
-//     items: () => topics.value,
-//     'v-model': topic,
-//     'click-append': randomTopic,
-//     'update-model-value': handleTopicChange,
-//   },
-// ])
+function handleScope() {
+  stateStore.scope = {
+    book: book.value,
+    part: part.value,
+    chapter: chapter.value,
+    section: section.value,
+    subsection: subsection.value,
+    topic: topic.value,
+  }
+}
+
+const entries = ref([
+  {
+    placeholder: '教科书',
+    'v-model': book,
+    items: () => books.value,
+    icon: 'i-lucide-book',
+    'update-modelValue': handleBookChange,
+    // 'prepend-inner-icon': mdiBookOpenVariantOutline,
+    // 'click-append': randomBook,
+  },
+  {
+    placeholder: '篇目',
+    'v-model': part,
+    items: () => parts.value,
+    icon: 'i-lucide-bookmark',
+    'update-modelValue': handlePartChange,
+    // 'prepend-inner-icon': mdiBookmarkMultipleOutline,
+    // 'click-append': randomPart,
+  },
+  {
+    placeholder: '章节',
+    'v-model': chapter,
+    items: () => chapters.value,
+    icon: 'i-lucide-table-of-contents',
+    'update-modelValue': handleChapterChange,
+    // 'prepend-inner-icon': mdiBookmarkMultipleOutline,
+    // 'click-append': randomChapter,
+  },
+  {
+    placeholder: '节次',
+    'v-model': section,
+    items: () => sections.value,
+    icon: 'i-lucide-book-marked',
+    'update-modelValue': handleSectionChange,
+    // 'prepend-inner-icon': mdiBookOutline,
+    // 'click-append': randomSection,
+  },
+  {
+    placeholder: '子节',
+    'v-model': subsection,
+    items: () => subsections.value,
+    icon: 'i-lucide-book-open',
+    'update-modelValue': handleSubsectionChange,
+    // 'prepend-inner-icon': mdiBookmarkOutline,
+    // 'click-append': randomSubsection,
+  },
+  {
+    placeholder: '主题',
+    'v-model': topic,
+    items: () => topics.value,
+    icon: 'i-lucide-notepad-text',
+    'update-modelValue': handleTopicChange,
+    // 'prepend-inner-icon': mdiBookmarkOutline,
+    // 'click-append': randomTopic,
+  },
+])
 </script>
