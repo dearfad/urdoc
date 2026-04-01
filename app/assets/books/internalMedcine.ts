@@ -609,5 +609,4 @@ const internalMedicine: Book = {
   },
 }
 
-
 export default internalMedicine

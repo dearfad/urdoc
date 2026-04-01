@@ -15,17 +15,38 @@
     </template>
     <template #default>
       <div class="p-2">
-        <UBadge icon="i-lucide-book" variant="outline" color="neutral" size="lg">外科学</UBadge>
+        <UBadge icon="i-lucide-book" variant="soft" color="neutral" size="lg">外科学</UBadge>
       </div>
       <UCard :ui="{ body: 'p-0 sm:p-0' }">
-        <UCollapsible class="flex flex-col gap-2 w-full">
+        <UCollapsible class="flex flex-col gap-2 w-full" :ui="{ content: 'flex' }">
           <UButton label="选择" trailing-icon="i-lucide-chevron-down" block variant="soft" color="neutral" />
           <template #content>
-            {{ bookStore.bookList }}
-            <USelect v-model="book" :items="books" class="w-full" placeholder="教科书" size="xl" icon="i-lucide-book" />
-            {{ bookStore.books[book] }}
+            <USelect
+              v-model="book"
+              :items="books"
+              class="w-full m-2"
+              :ui="{ content: 'min-w-fit' }"
+              placeholder="教科书"
+              size="lg"
+              icon="i-lucide-book"
+            />
+            <UButton icon="i-lucide-dices" size="lg" variant="ghost" class="m-2" />
           </template>
         </UCollapsible>
+        <div class="p-2 flex gap-2">
+          <span>
+            {{ bookStore.books[book].meta.bookName }}
+          </span>
+          <span>
+            {{ bookStore.books[book].meta.publishDate }}
+          </span>
+          <span>
+            {{ bookStore.books[book].meta.edition }}
+          </span>
+          <span>
+            {{ bookStore.books[book].meta.isbn }}
+          </span>
+        </div>
       </UCard>
     </template>
   </UCard>
@@ -85,7 +106,13 @@ const bookStore = useBookStore()
 const book = ref('')
 // const book = ref(stateStore.scope.book)
 const books = computed(() => Object.keys(bookStore.books))
-
+// const bookList = computed(() =>
+//   Object.values(booksRef.value).map((book) => ({
+//     name: book.meta.bookName,
+//     edition: book.meta.edition,
+//     publishDate: book.meta.publishDate,
+//   })),
+// )
 // import {
 //   mdiMedicalBag,
 //   mdiAutorenew,
