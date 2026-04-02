@@ -54,8 +54,16 @@
                 :ui="{ content: 'min-w-fit' }"
                 size="lg"
                 :disabled="entry.items().length === 0"
+                @update:modelValue="entry['update']()"
               />
-              <UButton icon="i-lucide-dices" size="lg" variant="ghost" class="m-2" @click="entry['random']()" />
+              <UButton
+                icon="i-lucide-dices"
+                size="lg"
+                variant="ghost"
+                class="m-2"
+                @click="entry['random']()"
+                :disabled="entry.items().length === 0"
+              />
             </div>
             <div class="flex justify-end m-4">
               <UCheckbox v-model="random" label="随机" />
@@ -68,7 +76,13 @@
           :ui="{ content: 'flex flex-col m-2' }"
         >
           <template #content>
-            <UInputTags v-model="caseStore.case.tags" icon="i-lucide-tag" size="lg" />
+            <div class="flex flex-col gap-2">
+              <UInputTags v-model="caseStore.case.tags" icon="i-lucide-tag" size="lg" variant="soft" />
+              <div class="flex flex-row">
+                <USelect v-model="selectedTagItems" :items="tagItems" multiple class="flex-1" />
+                <UButton @click="updateTagItems" variant="subtle" class="ml-2">添加</UButton>
+              </div>
+            </div>
           </template>
         </UCollapsible>
       </UCard>
@@ -118,14 +132,80 @@ const filteredSourceItems = computed(() => {
   return sourceItems.value.filter((item) => caseStore.case.source?.content?.[item.name])
 })
 
+const selectedTagItems = ref([])
+const tagItems = ref([
+  {
+    type: 'label',
+    label: '年龄',
+    icon: 'i-lucide-users',
+  },
+  '儿童',
+  '青年',
+  '中年',
+  '老年',
+  {
+    type: 'separator',
+  },
+  {
+    type: 'label',
+    label: '娱乐',
+    icon: 'i-lucide-gamepad',
+  },
+  '修仙',
+  '神话',
+  '穿越',
+  '历史',
+  '科幻',
+  '都市',
+  '游戏',
+])
+function updateTagItems() {
+  selectedTagItems.value.forEach((tag) => {
+    if (!caseStore.case.tags.includes(tag)) {
+      caseStore.case.tags.push(tag)
+    }
+  })
+  selectedTagItems.value = []
+}
+
 // ================ Book Selection Logic =================
 
-const book = ref(caseStore.case.source?.content?.book ?? '')
-const part = ref(caseStore.case.source?.content?.part ?? '')
-const chapter = ref(caseStore.case.source?.content?.chapter ?? '')
-const section = ref(caseStore.case.source?.content?.section ?? '')
-const subsection = ref(caseStore.case.source?.content?.subsection ?? '')
-const topic = ref(caseStore.case.source?.content?.topic ?? '')
+const book = computed({
+  get: () => caseStore.case.source?.content?.book ?? '',
+  set: (value) => {
+    caseStore.case.source.content.book = value
+  },
+})
+const part = computed({
+  get: () => caseStore.case.source?.content?.part ?? '',
+  set: (value) => {
+    caseStore.case.source.content.part = value
+  },
+})
+const chapter = computed({
+  get: () => caseStore.case.source?.content?.chapter ?? '',
+  set: (value) => {
+    caseStore.case.source.content.chapter = value
+  },
+})
+const section = computed({
+  get: () => caseStore.case.source?.content?.section ?? '',
+  set: (value) => {
+    caseStore.case.source.content.section = value
+  },
+})
+const subsection = computed({
+  get: () => caseStore.case.source?.content?.subsection ?? '',
+  set: (value) => {
+    caseStore.case.source.content.subsection = value
+  },
+})
+const topic = computed({
+  get: () => caseStore.case.source?.content?.topic ?? '',
+  set: (value) => {
+    caseStore.case.source.content.topic = value
+  },
+})
 
 const books = computed(() => Object.keys(bookStore.books))
 
@@ -162,8 +242,39 @@ const topics = computed(() => {
     : []
 })
 
-watch([book, part, chapter, section, subsection, topic], () => {
-  if (!caseStore.case.source) return
+function handleBookChange() {
+  caseStore.case.source.meta = { ...bookStore.books[book.value]?.meta }
+  part.value = random.value && parts.value.length > 0 ? parts.value[Math.floor(Math.random() * parts.value.length)] : ''
+  handlePartChange()
+}
+
+function handlePartChange() {
+  chapter.value =
+    random.value && chapters.value.length > 0 ? chapters.value[Math.floor(Math.random() * chapters.value.length)] : ''
+  handleChapterChange()
+}
+
+function handleChapterChange() {
+  section.value =
+    random.value && sections.value.length > 0 ? sections.value[Math.floor(Math.random() * sections.value.length)] : ''
+  handleSectionChange()
+}
+
+function handleSectionChange() {
+  subsection.value =
+    random.value && subsections.value.length > 0
+      ? subsections.value[Math.floor(Math.random() * subsections.value.length)]
+      : ''
+  handleSubsectionChange()
+}
+
+function handleSubsectionChange() {
+  topic.value =
+    random.value && topics.value.length > 0 ? topics.value[Math.floor(Math.random() * topics.value.length)] : ''
+  handleTopicChange()
+}
+
+function handleTopicChange() {
   caseStore.case.source.content = {
     book: book.value,
     part: part.value,
@@ -172,74 +283,48 @@ watch([book, part, chapter, section, subsection, topic], () => {
     subsection: subsection.value,
     topic: topic.value,
   }
-})
-
-watch(book, (value) => {
-  if (!caseStore.case.source) return
-  caseStore.case.source.meta = { ...bookStore.books[value]?.meta }
-  part.value = random.value && parts.value.length > 0 ? parts.value[Math.floor(Math.random() * parts.value.length)] : ''
-})
-
-watch(part, (value) => {
-  if (!caseStore.case.source) return
-  chapter.value =
-    random.value && chapters.value.length > 0 ? chapters.value[Math.floor(Math.random() * chapters.value.length)] : ''
-})
-
-watch(chapter, (value) => {
-  if (!caseStore.case.source) return
-  section.value =
-    random.value && sections.value.length > 0 ? sections.value[Math.floor(Math.random() * sections.value.length)] : ''
-})
-
-watch(section, (value) => {
-  if (!caseStore.case.source) return
-  subsection.value =
-    random.value && subsections.value.length > 0
-      ? subsections.value[Math.floor(Math.random() * subsections.value.length)]
-      : ''
-})
-
-watch(subsection, (value) => {
-  if (!caseStore.case.source) return
-  topic.value =
-    random.value && topics.value.length > 0 ? topics.value[Math.floor(Math.random() * topics.value.length)] : ''
-})
+}
 
 function randomBook() {
   if (random.value) {
     book.value = books.value[Math.floor(Math.random() * books.value.length)]
   }
+  handleBookChange()
 }
 
 function randomPart() {
   if (random.value) {
     part.value = parts.value[Math.floor(Math.random() * parts.value.length)]
   }
+  handlePartChange()
 }
 
 function randomChapter() {
   if (random.value) {
     chapter.value = chapters.value[Math.floor(Math.random() * chapters.value.length)]
   }
+  handleChapterChange()
 }
 
 function randomSection() {
   if (random.value) {
     section.value = sections.value[Math.floor(Math.random() * sections.value.length)]
   }
+  handleSectionChange()
 }
 
 function randomSubsection() {
   if (random.value) {
     subsection.value = subsections.value[Math.floor(Math.random() * subsections.value.length)]
   }
+  handleSubsectionChange()
 }
 
 function randomTopic() {
   if (random.value) {
     topic.value = topics.value[Math.floor(Math.random() * topics.value.length)]
   }
+  handleTopicChange()
 }
 
 const entries = ref([
@@ -248,6 +333,7 @@ const entries = ref([
     'v-model': book,
     items: () => books.value,
     icon: 'i-lucide-book',
+    update: handleBookChange,
     random: randomBook,
   },
   {
@@ -255,6 +341,7 @@ const entries = ref([
     'v-model': part,
     items: () => parts.value,
     icon: 'i-lucide-bookmark',
+    update: handlePartChange,
     random: randomPart,
   },
   {
@@ -262,6 +349,7 @@ const entries = ref([
     'v-model': chapter,
     items: () => chapters.value,
     icon: 'i-lucide-table-of-contents',
+    update: handleChapterChange,
     random: randomChapter,
   },
   {
@@ -269,6 +357,7 @@ const entries = ref([
     'v-model': section,
     items: () => sections.value,
     icon: 'i-lucide-book-marked',
+    update: handleSectionChange,
     random: randomSection,
   },
   {
@@ -276,6 +365,7 @@ const entries = ref([
     'v-model': subsection,
     items: () => subsections.value,
     icon: 'i-lucide-book-open',
+    update: handleSubsectionChange,
     random: randomSubsection,
   },
   {
@@ -283,6 +373,7 @@ const entries = ref([
     'v-model': topic,
     items: () => topics.value,
     icon: 'i-lucide-notepad-text',
+    update: handleTopicChange,
     random: randomTopic,
   },
 ])
