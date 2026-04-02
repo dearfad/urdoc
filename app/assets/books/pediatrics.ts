@@ -1,6 +1,6 @@
 // /assets/books/pediatrics.ts
 
-import type { Book } from './types'
+import type { Book } from '../../types/books'
 
 const pediatrics: Book = {
   meta: {

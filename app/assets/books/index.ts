@@ -1,16 +1,14 @@
 // /assets/books/index.ts
 
-import type { Book, BookCollection } from './types'
-
-const bookModules = import.meta.glob<Book>(['./*.ts', '!./index.ts', '!./types.ts'], {
+const bookModules = import.meta.glob<Book>(['./*.ts', '!./index.ts'], {
   eager: true,
   import: 'default',
 })
 
-export const books: BookCollection = Object.fromEntries(
+export const books: Books = Object.fromEntries(
   Object.values(bookModules)
     .filter((book) => book?.meta?.bookName)
     .map((book) => [book.meta.bookName, book]),
-) as BookCollection
+) as Books
 
 export default books

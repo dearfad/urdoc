@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   ui: { fonts: false },
   ignore: ['/app-bak/**/*'],
   nitro: { ignore: ['/app-bak/**/*'] },
+  imports: {
+    dirs: [
+      '~/types', // 让 Nuxt 扫描 app/types 目录
+    ],
+  },
 
   // EdgeOne Pages Functions Development
   // nitro: {

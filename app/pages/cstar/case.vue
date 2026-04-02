@@ -18,7 +18,7 @@
     </template>
     <template #body>
       <Case />
-      <BookSelector />
+      <CaseSettings />
     </template>
   </UDashboardPanel>
 </template>

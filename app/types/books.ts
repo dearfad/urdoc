@@ -1,4 +1,4 @@
-// /assets/books/types.ts
+// /app/types/books.ts
 
 /**
  * 书籍元数据
@@ -11,10 +11,10 @@ export interface BookMeta {
 }
 
 /**
- * 书籍内容节点（递归类型）
+ * 书籍内容节点
  */
-export interface BookContentNode {
-  [key: string]: BookContentNode | {}
+export interface BookContent {
+  [key: string]: BookContent
 }
 
 /**
@@ -22,12 +22,12 @@ export interface BookContentNode {
  */
 export interface Book {
   meta: BookMeta
-  content: BookContentNode
+  content: BookContent
 }
 
 /**
  * 书籍集合
  */
-export interface BookCollection {
+export interface Books {
   [bookName: string]: Book
 }
