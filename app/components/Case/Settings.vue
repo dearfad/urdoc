@@ -8,6 +8,7 @@
     }"
   >
     <template #header v-if="isTitleShow">
+      <UIcon name="i-lucide-cog" class="mr-2" />
       <span class="font-bold">病例设定</span>
     </template>
     <template #default>

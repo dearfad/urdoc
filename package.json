@@ -9,7 +9,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@ai-sdk/openai-compatible": "^2.0.37",
+    "@ai-sdk/openai-compatible": "^2.0.38",
+    "@ai-sdk/vue": "^3.0.145",
     "@iconify-json/lucide": "^1.2.101",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/simple-icons": "^1.2.76",
@@ -17,7 +18,7 @@
     "@nuxt/ui": "^4.6.0",
     "@nuxtjs/mdc": "^0.21.1",
     "@pinia/nuxt": "0.11.3",
-    "ai": "^6.0.143",
+    "ai": "^6.0.145",
     "nuxt": "^4.4.2",
     "pinia-plugin-unstorage": "1.0.0-beta.1",
     "tailwindcss": "^4.2.2"
