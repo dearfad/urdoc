@@ -19,6 +19,7 @@
     <template #body>
       <Case />
       <CaseSettings />
+      <CaseChat />
     </template>
   </UDashboardPanel>
 </template>
