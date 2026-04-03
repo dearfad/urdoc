@@ -12,8 +12,6 @@ export default defineEventHandler(async (event) => {
 
   return streamText({
     model: provider('intern-s1'),
-    maxOutputTokens: 10000,
-    system: 'You are a helpful assistant.',
     messages: await convertToModelMessages(messages),
   }).toUIMessageStreamResponse()
 })
