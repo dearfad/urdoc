@@ -9,80 +9,80 @@ export const useRecordStore = defineStore('record', () => {
   // const modelStore = useModelStore()
 
   // Medical Records
-  const record = ref({
-    id: 0,
-    case: {
-      姓名: '',
-      性别: '',
-      年龄: '',
-      主诉: '',
-      现病史: '',
-      既往史: '',
-      查体: '',
-      专科查体: '',
-      辅助检查: '',
-      诊断: '',
-      治疗: '',
-      手术: '',
-      病理: '',
-    },
-    story: {
-      content: '',
-      illustration: [],
-    },
-    audio: {
-      case: '',
-      story: '',
-    },
-    conversation: '',
-    discussion: '',
-    comment: '',
-    reasoning: {
-      case: '',
-      story: '',
-      conversation: '',
-      discussion: '',
-      comment: '',
-      test: '',
-      act: '',
-      rate: '',
-    },
-    test: [
-      {
-        问题: '',
-        选项: {
-          A: '',
-          B: '',
-          C: '',
-          D: '',
-        },
-        答案: '',
-      },
-    ],
-    act: [],
-    rate: [],
-    scope: {
-      book: '',
-      part: '',
-      chapter: '',
-      section: '',
-      subsection: '',
-      topic: '',
-    },
-    tag: {
-      case: [],
-      story: [],
-      test: [],
-      act: [],
-      rate: [],
-    },
-    face: '',
-    pose: '',
-    voice: '',
-    dialogue: '',
-    author: '',
-    public: true,
-  })
+  // const record = ref({
+  //   id: 0,
+  //   case: {
+  //     姓名: '',
+  //     性别: '',
+  //     年龄: '',
+  //     主诉: '',
+  //     现病史: '',
+  //     既往史: '',
+  //     查体: '',
+  //     专科查体: '',
+  //     辅助检查: '',
+  //     诊断: '',
+  //     治疗: '',
+  //     手术: '',
+  //     病理: '',
+  //   },
+  //   story: {
+  //     content: '',
+  //     illustration: [],
+  //   },
+  //   audio: {
+  //     case: '',
+  //     story: '',
+  //   },
+  //   conversation: '',
+  //   discussion: '',
+  //   comment: '',
+  //   reasoning: {
+  //     case: '',
+  //     story: '',
+  //     conversation: '',
+  //     discussion: '',
+  //     comment: '',
+  //     test: '',
+  //     act: '',
+  //     rate: '',
+  //   },
+  //   test: [
+  //     {
+  //       问题: '',
+  //       选项: {
+  //         A: '',
+  //         B: '',
+  //         C: '',
+  //         D: '',
+  //       },
+  //       答案: '',
+  //     },
+  //   ],
+  //   act: [],
+  //   rate: [],
+  //   scope: {
+  //     book: '',
+  //     part: '',
+  //     chapter: '',
+  //     section: '',
+  //     subsection: '',
+  //     topic: '',
+  //   },
+  //   tag: {
+  //     case: [],
+  //     story: [],
+  //     test: [],
+  //     act: [],
+  //     rate: [],
+  //   },
+  //   face: '',
+  //   pose: '',
+  //   voice: '',
+  //   dialogue: '',
+  //   author: '',
+  //   public: true,
+  // })
   // const records = ref([])
 
   // // 观察字段，提示进度
@@ -494,7 +494,7 @@ export const useRecordStore = defineStore('record', () => {
   syncStoreVersion(VERSION, 'pinia:record')
   return {
     version,
-    record,
+    // record,
     // records,
     // watchFields,
     // view,

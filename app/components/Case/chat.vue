@@ -1,19 +1,9 @@
-<script setup>
-import { isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
-import { Chat } from '@ai-sdk/vue'
-
-const input = ref('')
-const chat = new Chat({})
-
-function onSubmit() {
-  chat.sendMessage({ text: input.value })
-  input.value = ''
-}
-</script>
-
 <template>
   <div>
     <UChatPrompt v-model="input" :error="chat.error" @submit="onSubmit">
+      <UChatPromptSubmit :status="chat.status" @stop="chat.stop()" @reload="chat.regenerate()" />
+    </UChatPrompt>
+    <UChatPrompt v-model="casetemp" :error="chat.error" @submit="onSubmitCase">
       <UChatPromptSubmit :status="chat.status" @stop="chat.stop()" @reload="chat.regenerate()" />
     </UChatPrompt>
     <UChatMessages :messages="chat.messages" :status="chat.status">
@@ -39,3 +29,30 @@ function onSubmit() {
     </UChatMessages>
   </div>
 </template>
+
+<script setup>
+import { isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName, DefaultChatTransport } from 'ai'
+import { Chat } from '@ai-sdk/vue'
+
+const input = ref('')
+const chat = new Chat({
+  transport: new DefaultChatTransport({
+    api: '/api/model/chat',
+  }),
+})
+
+function onSubmit() {
+  chat.sendMessage({ text: input.value })
+  input.value = ''
+}
+
+import defaultCasePrompt from '@/assets/prompts/case/generate.md?raw'
+const caseStore = useCaseStore()
+const casetemp = ref('')
+
+function onSubmitCase() {
+  chat.sendMessage({
+    text: `${defaultCasePrompt}\n\n**要点设定**：${caseStore.case.tags.join('，')}\n\n**来源**：${Object.values(caseStore.case.source.content).join('，')}`,
+  })
+}
+</script>

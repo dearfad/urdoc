@@ -10,17 +10,16 @@ export default defineNuxtConfig({
       '~/types', // 让 Nuxt 扫描 app/types 目录
     ],
   },
+  vite: {
+    optimizeDeps: {
+      include: ['ai', '@ai-sdk/vue'],
+    },
+  },
 
   // EdgeOne Pages Functions Development
   // nitro: {
   //   devProxy: {
   //     '/function': 'http://localhost:8088/function',
-  //   },
-  // },
-
-  // vite: {
-  //   optimizeDeps: {
-  //     include: ['@clerk/vue', '@clerk/localizations'],
   //   },
   // },
 })

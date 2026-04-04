@@ -4,6 +4,7 @@ const caseDefault = {
   id: 0,
   tags: [],
   source: null,
+  content: null,
 }
 
 export const useCaseStore = defineStore('case', () => {
