@@ -13,5 +13,6 @@ export default defineEventHandler(async (event) => {
   return streamText({
     model: provider('intern-s1'),
     messages: await convertToModelMessages(messages),
+    output: 'json',
   }).toUIMessageStreamResponse()
 })

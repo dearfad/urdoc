@@ -4,7 +4,12 @@ const caseDefault = {
   id: 0,
   tags: [],
   source: null,
-  content: null,
+  content: {
+    姓名: '张三',
+    性别: '男',
+    年龄: '30',
+    主诉: '头痛',
+  },
 }
 
 export const useCaseStore = defineStore('case', () => {

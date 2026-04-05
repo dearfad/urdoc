@@ -1,7 +1,10 @@
 <template>
   <UCard
     id="component-case-index"
-    :ui="{ header: 'bg-elevated flex items-center py-2', root: 'border border-default' }"
+    :ui="{
+      header: 'bg-elevated flex items-center py-2',
+      root: 'border border-default overflow-auto',
+    }"
   >
     <!-- 
       <v-btn
@@ -22,7 +25,8 @@
     </template>
 
     <template #default>
-      <MDC :value="md" />
+      <MDC :value="content" />
+      <!-- {{ caseStore.case.content }} -->
 
       <!-- 
         <v-card-text>
@@ -48,13 +52,16 @@
 
 <script setup lang="ts">
 // import MarkdownRender from 'markstream-vue'
-
-const md = `
-# 生成病例\n\n这是 **加粗** 的文本。
-::badge
-**v4.0.0**
-::
-`
+import { parse } from 'partial-json'
+const caseStore = useCaseStore()
+const content = computed(() => {
+  if (!caseStore.case?.content) return ''
+  const raw =
+    typeof caseStore.case.content === 'string' ? caseStore.case.content : JSON.stringify(caseStore.case.content)
+  return Object.entries(parse(raw))
+    .map(([key, value]) => `**${key}**：${value}`)
+    .join('\n\n')
+})
 
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 

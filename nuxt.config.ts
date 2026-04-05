@@ -15,7 +15,9 @@ export default defineNuxtConfig({
       include: ['ai', '@ai-sdk/vue'],
     },
   },
-
+  runtimeConfig: {
+    shushengApiKey: '',
+  },
   // EdgeOne Pages Functions Development
   // nitro: {
   //   devProxy: {
