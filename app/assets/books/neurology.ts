@@ -1,7 +1,5 @@
 // /assets/books/neurology.ts
 
-import type { Book } from '../../types/books'
-
 const neurology: Book = {
   meta: {
     bookName: '神经病学',

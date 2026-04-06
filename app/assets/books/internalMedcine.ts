@@ -1,7 +1,5 @@
 // /assets/books/internalMedicine.ts
 
-import type { Book } from '../../types/books'
-
 const internalMedicine: Book = {
   meta: {
     bookName: '内科学',

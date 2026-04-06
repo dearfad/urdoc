@@ -35,6 +35,58 @@
         </template>
       </UDashboardNavbar>
     </template>
-    <template #body> This is the dashboard overview page. You can add your content here. </template>
+    <template #body>
+      <div class="flex flex-row items-center">
+        <span>最新提交时间</span><UButton @click="getLastCommitDateAll" label="获取" class="mx-2"></UButton>
+      </div>
+      <div class="flex flex-row items-center">
+        <UBadge :label="lastCommitDate.main" variant="soft" class="mx-2" /><span
+          >正式站：https://urdoc.dearfad.com</span
+        >
+      </div>
+      <div class="flex flex-row items-center">
+        <UBadge :label="lastCommitDate.develop" variant="soft" class="mx-2" /><span
+          >开发站：https://dev.urdoc.dearfad.com</span
+        >
+      </div>
+      <div class="flex flex-row items-center">
+        <UBadge :label="lastCommitDate.nuxtui" variant="soft" class="mx-2" /><span
+          >测试站：https://nuxtui.urdoc.dearfad.com</span
+        >
+      </div>
+      <div class="flex flex-row items-center">
+        <UBadge :label="lastCommitDate.docs" variant="soft" class="mx-2" /><span
+          >文档站：https://docs.urdoc.dearfad.com</span
+        >
+      </div>
+    </template>
   </UDashboardPanel>
 </template>
+
+<script setup>
+const lastCommitDate = ref({
+  main: '',
+  develop: '',
+  nuxtui: '',
+  docs: '',
+})
+
+async function getLastCommitDate(branch) {
+  return await $fetch('/api/github/last-commit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: {
+      branch: branch,
+    },
+  })
+}
+
+async function getLastCommitDateAll() {
+  lastCommitDate.value.main = await getLastCommitDate('main')
+  lastCommitDate.value.develop = await getLastCommitDate('develop')
+  lastCommitDate.value.nuxtui = await getLastCommitDate('nuxtui')
+  lastCommitDate.value.docs = await getLastCommitDate('docs')
+}
+</script>

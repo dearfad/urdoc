@@ -1,6 +1,9 @@
 export default defineEventHandler(async (event) => {
   const { branch } = await readBody(event)
-  const githubApiUrl = `https://api.github.com/repos/dearfad/urdoc/commits/${branch}`
+  const githubApiUrl =
+    branch === 'docs'
+      ? `https://api.github.com/repos/dearfad/urdoc-docs/commits/main`
+      : `https://api.github.com/repos/dearfad/urdoc/commits/${branch}`
 
   const response = await fetch(githubApiUrl, {
     method: 'GET',

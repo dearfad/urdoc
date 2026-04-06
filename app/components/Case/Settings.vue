@@ -4,7 +4,7 @@
     :ui="{
       header: 'bg-elevated flex items-center py-2 ',
       body: 'p-0 sm:p-0 flex flex-col',
-      root: 'border border-default',
+      root: 'border border-default overflow-auto',
     }"
   >
     <template #header v-if="isTitleShow">

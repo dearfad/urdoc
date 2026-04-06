@@ -19,6 +19,7 @@
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
       <div class="flex ms-auto gap-2">
+        <CaseChat />
         <UButton icon="i-lucide-camera" variant="ghost" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
       </div>

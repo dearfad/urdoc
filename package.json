@@ -23,5 +23,9 @@
     "partial-json": "^0.1.7",
     "pinia-plugin-unstorage": "1.0.0-beta.1",
     "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2"
   }
 }

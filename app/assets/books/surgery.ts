@@ -1,7 +1,5 @@
 // /assets/books/surgery.ts
 
-import type { Book } from '../../types/books'
-
 const surgery: Book = {
   meta: {
     bookName: '外科学',

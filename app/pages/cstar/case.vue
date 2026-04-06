@@ -17,9 +17,10 @@
       </UDashboardNavbar>
     </template>
     <template #body>
-      <Case />
-      <CaseSettings />
-      <CaseChat />
+      <div class="flex flex-row flex-wrap gap-2">
+        <Case class="basis-4xl" />
+        <CaseSettings class="basis-xl" />
+      </div>
     </template>
   </UDashboardPanel>
 </template>

@@ -1,7 +1,5 @@
 // /assets/books/obstetricsAndGynecology.ts
 
-import type { Book } from '../../types/books'
-
 const obstetricsAndGynecology: Book = {
   meta: {
     bookName: '妇产科学',
