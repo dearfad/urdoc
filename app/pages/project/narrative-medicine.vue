@@ -39,7 +39,7 @@
       <UDashboardToolbar />
     </template>
     <template #body>
-      <CardCase />
+      <Case />
     </template>
   </UDashboardPanel>
 </template>

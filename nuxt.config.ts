@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   },
   vite: {
     optimizeDeps: {
-      include: ['ai', '@ai-sdk/vue'],
+      include: ['ai', '@ai-sdk/vue', 'partial-json'],
     },
   },
   runtimeConfig: {
