@@ -22,6 +22,9 @@ export interface CaseContent {
 export interface Case {
   id: number
   tags: string[]
-  source: Book | null
+  textbook: Book | null
+  custom: string[]
   content: CaseContent | null
 }
+
+export type Cases = Case[]

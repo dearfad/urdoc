@@ -12,8 +12,8 @@
       <span class="font-bold">病例设定</span>
     </template>
     <template #default>
-      <UTabs :items="tabItems" variant="link" class="w-full gap-4" :ui="{ trigger: 'grow' }">
-        <template #source>
+      <UTabs :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="textbook">
+        <template #textbook>
           <div v-for="entry in entries" :key="entry" class="flex flex-row">
             <USelect
               :placeholder="entry.placeholder"
@@ -27,10 +27,19 @@
               @update:modelValue="entry['update']()"
             />
             <UButton
+              icon="i-lucide-x"
+              color="error"
+              size="lg"
+              variant="ghost"
+              class="m-0 px-0"
+              @click="entry['clear']()"
+              :disabled="entry.items().length === 0"
+            />
+            <UButton
               icon="i-lucide-dices"
               size="lg"
               variant="ghost"
-              class="m-2"
+              class="m-0 px-2"
               @click="entry['random']()"
               :disabled="entry.items().length === 0"
             />
@@ -39,12 +48,12 @@
             <UCheckbox v-model="random" label="随机" />
           </div>
         </template>
-        <template #tag>
+        <template #custom>
           <div class="flex flex-col gap-2 p-2">
-            <UInputTags v-model="caseStore.case.tags" icon="i-lucide-tag" size="xl" variant="ghost" />
+            <UInputTags v-model="stateStore.case.custom" icon="i-lucide-tag" size="xl" variant="ghost" />
             <div class="flex flex-row">
-              <USelect v-model="selectedTagItems" :items="tagItems" multiple class="flex-1" />
-              <UButton @click="updateTagItems" variant="subtle" class="ml-2">添加</UButton>
+              <USelect v-model="selectedCustomItems" :items="customItems" multiple class="flex-1" />
+              <UButton @click="updateCustomItems" variant="subtle" class="ml-2">添加</UButton>
             </div>
           </div>
         </template>
@@ -54,21 +63,21 @@
 </template>
 
 <script setup>
-const caseStore = useCaseStore()
+const stateStore = useStateStore()
 const bookStore = useBookStore()
 
 const tabItems = [
   {
-    label: '来源',
-    value: 'source',
+    label: '教科书',
+    value: 'textbook',
     icon: 'i-lucide-book',
-    slot: 'source',
+    slot: 'textbook',
   },
   {
-    label: '标签',
-    value: 'tag',
-    icon: 'i-lucide-tag',
-    slot: 'tag',
+    label: '自定义',
+    value: 'custom',
+    icon: 'i-lucide-pencil',
+    slot: 'custom',
   },
 ]
 
@@ -78,18 +87,17 @@ const { isTitleShow } = defineProps({
 const random = ref(true)
 
 onMounted(() => {
-  caseStore.case.source = caseStore.case.source ?? {
+  stateStore.case.textbook = stateStore.case.textbook ?? {
     meta: { bookName: '', publishDate: '', edition: 0, isbn: '' },
     content: {},
   }
 })
 
-const selectedTagItems = ref([])
-const tagItems = ref([
+const selectedCustomItems = ref([])
+const customItems = ref([
   {
     type: 'label',
     label: '年龄',
-    icon: 'i-lucide-users',
   },
   '儿童',
   '青年',
@@ -101,7 +109,6 @@ const tagItems = ref([
   {
     type: 'label',
     label: '娱乐',
-    icon: 'i-lucide-gamepad',
   },
   '修仙',
   '神话',
@@ -111,51 +118,51 @@ const tagItems = ref([
   '都市',
   '游戏',
 ])
-function updateTagItems() {
-  selectedTagItems.value.forEach((tag) => {
-    if (!caseStore.case.tags.includes(tag)) {
-      caseStore.case.tags.push(tag)
+function updateCustomItems() {
+  selectedCustomItems.value.forEach((customItem) => {
+    if (!stateStore.case.custom.includes(customItem)) {
+      stateStore.case.custom.push(customItem)
     }
   })
-  selectedTagItems.value = []
+  selectedCustomItems.value = []
 }
 
 // ================ Book Selection Logic =================
 
 const book = computed({
-  get: () => caseStore.case.source?.content?.book ?? '',
+  get: () => stateStore.case.textbook?.content?.book ?? '',
   set: (value) => {
-    caseStore.case.source.content.book = value
+    stateStore.case.textbook.content.book = value
   },
 })
 const part = computed({
-  get: () => caseStore.case.source?.content?.part ?? '',
+  get: () => stateStore.case.textbook?.content?.part ?? '',
   set: (value) => {
-    caseStore.case.source.content.part = value
+    stateStore.case.textbook.content.part = value
   },
 })
 const chapter = computed({
-  get: () => caseStore.case.source?.content?.chapter ?? '',
+  get: () => stateStore.case.textbook?.content?.chapter ?? '',
   set: (value) => {
-    caseStore.case.source.content.chapter = value
+    stateStore.case.textbook.content.chapter = value
   },
 })
 const section = computed({
-  get: () => caseStore.case.source?.content?.section ?? '',
+  get: () => stateStore.case.textbook?.content?.section ?? '',
   set: (value) => {
-    caseStore.case.source.content.section = value
+    stateStore.case.textbook.content.section = value
   },
 })
 const subsection = computed({
-  get: () => caseStore.case.source?.content?.subsection ?? '',
+  get: () => stateStore.case.textbook?.content?.subsection ?? '',
   set: (value) => {
-    caseStore.case.source.content.subsection = value
+    stateStore.case.textbook.content.subsection = value
   },
 })
 const topic = computed({
-  get: () => caseStore.case.source?.content?.topic ?? '',
+  get: () => stateStore.case.textbook?.content?.topic ?? '',
   set: (value) => {
-    caseStore.case.source.content.topic = value
+    stateStore.case.textbook.content.topic = value
   },
 })
 
@@ -195,7 +202,7 @@ const topics = computed(() => {
 })
 
 function handleBookChange() {
-  caseStore.case.source.meta = { ...bookStore.books[book.value]?.meta }
+  stateStore.case.textbook.meta = { ...bookStore.books[book.value]?.meta }
   part.value = random.value && parts.value.length > 0 ? parts.value[Math.floor(Math.random() * parts.value.length)] : ''
   handlePartChange()
 }
@@ -227,7 +234,7 @@ function handleSubsectionChange() {
 }
 
 function handleTopicChange() {
-  caseStore.case.source.content = {
+  stateStore.case.textbook.content = {
     book: book.value,
     part: part.value,
     chapter: chapter.value,
@@ -237,48 +244,6 @@ function handleTopicChange() {
   }
 }
 
-function randomBook() {
-  if (random.value) {
-    book.value = books.value[Math.floor(Math.random() * books.value.length)]
-  }
-  handleBookChange()
-}
-
-function randomPart() {
-  if (random.value) {
-    part.value = parts.value[Math.floor(Math.random() * parts.value.length)]
-  }
-  handlePartChange()
-}
-
-function randomChapter() {
-  if (random.value) {
-    chapter.value = chapters.value[Math.floor(Math.random() * chapters.value.length)]
-  }
-  handleChapterChange()
-}
-
-function randomSection() {
-  if (random.value) {
-    section.value = sections.value[Math.floor(Math.random() * sections.value.length)]
-  }
-  handleSectionChange()
-}
-
-function randomSubsection() {
-  if (random.value) {
-    subsection.value = subsections.value[Math.floor(Math.random() * subsections.value.length)]
-  }
-  handleSubsectionChange()
-}
-
-function randomTopic() {
-  if (random.value) {
-    topic.value = topics.value[Math.floor(Math.random() * topics.value.length)]
-  }
-  handleTopicChange()
-}
-
 const entries = ref([
   {
     placeholder: '教科书',
@@ -286,7 +251,16 @@ const entries = ref([
     items: () => books.value,
     icon: 'i-lucide-book',
     update: handleBookChange,
-    random: randomBook,
+    clear: () => {
+      book.value = ''
+      handleBookChange()
+    },
+    random: () => {
+      if (random.value) {
+        book.value = books.value[Math.floor(Math.random() * books.value.length)]
+      }
+      handleBookChange()
+    },
   },
   {
     placeholder: '篇目',
@@ -294,7 +268,16 @@ const entries = ref([
     items: () => parts.value,
     icon: 'i-lucide-bookmark',
     update: handlePartChange,
-    random: randomPart,
+    clear: () => {
+      part.value = ''
+      handlePartChange()
+    },
+    random: () => {
+      if (random.value) {
+        part.value = parts.value[Math.floor(Math.random() * parts.value.length)]
+      }
+      handlePartChange()
+    },
   },
   {
     placeholder: '章节',
@@ -302,7 +285,16 @@ const entries = ref([
     items: () => chapters.value,
     icon: 'i-lucide-table-of-contents',
     update: handleChapterChange,
-    random: randomChapter,
+    clear: () => {
+      chapter.value = ''
+      handleChapterChange()
+    },
+    random: () => {
+      if (random.value) {
+        chapter.value = chapters.value[Math.floor(Math.random() * chapters.value.length)]
+      }
+      handleChapterChange()
+    },
   },
   {
     placeholder: '节次',
@@ -310,7 +302,16 @@ const entries = ref([
     items: () => sections.value,
     icon: 'i-lucide-book-marked',
     update: handleSectionChange,
-    random: randomSection,
+    clear: () => {
+      section.value = ''
+      handleSectionChange()
+    },
+    random: () => {
+      if (random.value) {
+        section.value = sections.value[Math.floor(Math.random() * sections.value.length)]
+      }
+      handleSectionChange()
+    },
   },
   {
     placeholder: '子节',
@@ -318,7 +319,16 @@ const entries = ref([
     items: () => subsections.value,
     icon: 'i-lucide-book-open',
     update: handleSubsectionChange,
-    random: randomSubsection,
+    clear: () => {
+      subsection.value = ''
+      handleSubsectionChange()
+    },
+    random: () => {
+      if (random.value) {
+        subsection.value = subsections.value[Math.floor(Math.random() * subsections.value.length)]
+      }
+      handleSubsectionChange()
+    },
   },
   {
     placeholder: '主题',
@@ -326,7 +336,16 @@ const entries = ref([
     items: () => topics.value,
     icon: 'i-lucide-notepad-text',
     update: handleTopicChange,
-    random: randomTopic,
+    clear: () => {
+      topic.value = ''
+      handleTopicChange()
+    },
+    random: () => {
+      if (random.value) {
+        topic.value = topics.value[Math.floor(Math.random() * topics.value.length)]
+      }
+      handleTopicChange()
+    },
   },
 ])
 </script>

@@ -1,7 +1,13 @@
-const VERSION = '2026-03-24'
+const VERSION = '2026-04-26'
 export const useStateStore = defineStore('state', () => {
   const version = ref(VERSION)
   syncStoreVersion(VERSION, 'pinia:state')
+
+  const caseItem = ref({
+    textbook: null,
+    custom: [],
+  })
+
   // //
   // // API 地址设定
   // //
@@ -39,16 +45,6 @@ export const useStateStore = defineStore('state', () => {
   // // 思考模型是否思考
   // const isModelThinking = ref(true)
 
-  // 当前章节选择
-  const scope = ref<Scope>({
-    book: '',
-    part: '',
-    chapter: '',
-    section: '',
-    subsection: '',
-    topic: '',
-  })
-
   // // Tag
   // const tag = ref<Tag>({
   //   case: [],
@@ -71,6 +67,7 @@ export const useStateStore = defineStore('state', () => {
 
   return {
     version,
+    case: caseItem,
     // apiBaseUrl,
 
     // isModelResponseShow,
@@ -89,7 +86,6 @@ export const useStateStore = defineStore('state', () => {
     // voiceId,
     // responseText,
 
-    scope,
     // tag,
 
     // isActing,

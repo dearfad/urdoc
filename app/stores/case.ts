@@ -1,9 +1,10 @@
-const VERSION = '2026-03-31'
+const VERSION = '2026-04-26'
 
 const caseDefault = {
   id: 0,
   tags: [],
-  source: null,
+  textbook: null,
+  custom: [],
   content: {
     姓名: '',
     性别: '',
@@ -23,12 +24,12 @@ const caseDefault = {
 export const useCaseStore = defineStore('case', () => {
   const version = ref(VERSION)
 
-  const caseItem = ref<Case>({ ...caseDefault })
+  const caseItems = ref<Case>({ ...caseDefault })
 
   function reset() {
-    caseItem.value = { ...caseDefault }
+    caseItems.value = { ...caseDefault }
   }
 
   syncStoreVersion(VERSION, 'pinia:case')
-  return { version, case: caseItem, reset }
+  return { version, case: caseItems, reset }
 })

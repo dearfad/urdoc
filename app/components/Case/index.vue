@@ -2,9 +2,9 @@
   <UCard
     id="component-case-index"
     :ui="{
-      header: 'bg-elevated flex items-center py-2',
-      root: 'border border-default overflow-auto',
-      body: 'py-0 sm:py-0',
+      root: 'border border-default overflow-auto min-h-4/5',
+      header: 'bg-elevated flex items-center py-2 ',
+      body: 'py-0 sm:py-0 min-h-3/4',
       footer: 'p-0 sm:p-0',
     }"
   >
@@ -55,24 +55,24 @@
     <template #footer>
       <div class="mx-4 my-2 flex flex-wrap gap-2">
         <UBadge
-          v-for="sourceItem in filteredSourceItems"
+          v-for="sourceItem in filteredTextbookItems"
           :key="sourceItem"
           :icon="sourceItem.icon"
           variant="soft"
           color="neutral"
           size="lg"
         >
-          {{ caseStore.case.source?.content?.[sourceItem.name] }}
+          {{ caseStore.case.textbook?.content?.[sourceItem.name] }}
         </UBadge>
         <UBadge
-          v-for="tag in caseStore.case.tags"
-          :key="tag"
+          v-for="custom in caseStore.case.custom"
+          :key="custom"
           variant="soft"
           color="neutral"
           size="lg"
-          icon="i-lucide-tag"
+          icon="i-lucide-pencil"
         >
-          {{ tag }}
+          {{ custom }}
         </UBadge>
       </div>
     </template>
@@ -92,7 +92,7 @@ const content = computed(() => {
     .join('\n\n')
 })
 
-const sourceItems = ref([
+const textbookItems = ref([
   { icon: 'i-lucide-book', name: 'book' },
   { icon: 'i-lucide-bookmark', name: 'part' },
   { icon: 'i-lucide-table-of-contents', name: 'chapter' },
@@ -101,8 +101,8 @@ const sourceItems = ref([
   { icon: 'i-lucide-notepad-text', name: 'topic' },
 ])
 
-const filteredSourceItems = computed(() => {
-  return sourceItems.value.filter((item) => caseStore.case.source?.content?.[item.name])
+const filteredTextbookItems = computed(() => {
+  return textbookItems.value.filter((item) => caseStore.case.textbook?.content?.[item.name])
 })
 
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
