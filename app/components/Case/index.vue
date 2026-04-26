@@ -2,9 +2,9 @@
   <UCard
     id="component-case-index"
     :ui="{
-      root: 'border border-default overflow-auto min-h-4/5',
+      root: 'border border-default overflow-auto',
       header: 'bg-elevated flex items-center py-2 ',
-      body: 'py-0 sm:py-0 min-h-3/4',
+      body: 'py-0 sm:py-0',
       footer: 'p-0 sm:p-0',
     }"
   >

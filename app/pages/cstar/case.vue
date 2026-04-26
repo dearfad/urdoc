@@ -17,9 +17,9 @@
       </UDashboardNavbar>
     </template>
     <template #body>
-      <div class="flex flex-row flex-wrap gap-2">
-        <Case class="basis-4xl" />
-        <CaseSettings class="basis-xl" />
+      <div class="flex flex-col gap-2 md:flex-row">
+        <Case class="w-full md:flex-2" />
+        <CaseSettings class="w-full md:flex-1" />
       </div>
     </template>
   </UDashboardPanel>
