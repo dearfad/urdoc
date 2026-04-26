@@ -72,7 +72,7 @@ const lastCommitDate = ref({
 })
 
 async function getLastCommitDate(branch) {
-  return await $fetch('/api/github/last-commit', {
+  return await $fetch('/api/github/commit', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
