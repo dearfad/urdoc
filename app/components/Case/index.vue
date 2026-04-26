@@ -4,6 +4,8 @@
     :ui="{
       header: 'bg-elevated flex items-center py-2',
       root: 'border border-default overflow-auto',
+      body: 'py-0 sm:py-0',
+      footer: 'p-0 sm:p-0',
     }"
   >
     <!-- 
@@ -18,7 +20,7 @@
     <template #header>
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
-      <div class="flex ms-auto gap-2">
+      <div class="ms-auto flex gap-2">
         <CaseChat />
         <UButton icon="i-lucide-camera" variant="ghost" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
@@ -26,8 +28,9 @@
     </template>
 
     <template #default>
-      <MDC :value="content" />
-      <!-- {{ caseStore.case.content }} -->
+      <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
+      <MarkdownRender :content="content" custom-id="case-content" />
+      <!-- <Comark :markdown="content" /> -->
 
       <!-- 
         <v-card-text>
@@ -48,11 +51,36 @@
         </v-card-text> 
       -->
     </template>
+
+    <template #footer>
+      <div class="mx-4 my-2 flex flex-wrap gap-2">
+        <UBadge
+          v-for="sourceItem in filteredSourceItems"
+          :key="sourceItem"
+          :icon="sourceItem.icon"
+          variant="soft"
+          color="neutral"
+          size="lg"
+        >
+          {{ caseStore.case.source?.content?.[sourceItem.name] }}
+        </UBadge>
+        <UBadge
+          v-for="tag in caseStore.case.tags"
+          :key="tag"
+          variant="soft"
+          color="neutral"
+          size="lg"
+          icon="i-lucide-tag"
+        >
+          {{ tag }}
+        </UBadge>
+      </div>
+    </template>
   </UCard>
 </template>
 
-<script setup lang="ts">
-// import MarkdownRender from 'markstream-vue'
+<script setup>
+import MarkdownRender from 'markstream-vue'
 import { parse } from 'partial-json'
 const caseStore = useCaseStore()
 const content = computed(() => {
@@ -62,6 +90,19 @@ const content = computed(() => {
   return Object.entries(parse(raw))
     .map(([key, value]) => `**${key}**：${value}`)
     .join('\n\n')
+})
+
+const sourceItems = ref([
+  { icon: 'i-lucide-book', name: 'book' },
+  { icon: 'i-lucide-bookmark', name: 'part' },
+  { icon: 'i-lucide-table-of-contents', name: 'chapter' },
+  { icon: 'i-lucide-book-marked', name: 'section' },
+  { icon: 'i-lucide-book-open', name: 'subsection' },
+  { icon: 'i-lucide-notepad-text', name: 'topic' },
+])
+
+const filteredSourceItems = computed(() => {
+  return sourceItems.value.filter((item) => caseStore.case.source?.content?.[item.name])
 })
 
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'

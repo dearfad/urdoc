@@ -2,7 +2,7 @@
   <UCard
     id="component-case-settings"
     :ui="{
-      header: 'bg-elevated flex items-center py-2 ',
+      header: 'bg-elevated flex items-center py-2',
       body: 'p-0 sm:p-0 flex flex-col',
       root: 'border border-default overflow-auto',
     }"
@@ -12,81 +12,43 @@
       <span class="font-bold">病例设定</span>
     </template>
     <template #default>
-      <div class="flex flex-wrap">
-        <div class="flex flex-wrap gap-2 mx-4 my-2">
-          <UButton @click="sourceBtnClick" variant="subtle">来源</UButton>
-          <UBadge
-            v-for="sourceItem in filteredSourceItems"
-            :key="sourceItem"
-            :icon="sourceItem.icon"
-            variant="soft"
-            color="neutral"
-            size="lg"
-            >{{ caseStore.case.source?.content?.[sourceItem.name] }}</UBadge
-          >
-        </div>
-        <div class="flex flex-wrap gap-2 mx-4 my-2">
-          <UButton @click="tagBtnClick" variant="subtle">标签</UButton>
-          <UBadge
-            v-for="tag in caseStore.case.tags"
-            :key="tag"
-            variant="soft"
-            color="neutral"
-            size="lg"
-            icon="i-lucide-tag"
-            >{{ tag }}</UBadge
-          >
-        </div>
-      </div>
-      <UCard :ui="{ body: 'p-0 sm:p-0' }" class="ring-0">
-        <UCollapsible
-          v-model:open="sourceCollapsibleOpen"
-          class="flex flex-col gap-2 w-full"
-          :ui="{ content: 'flex flex-col' }"
-        >
-          <template #content>
-            <div v-for="entry in entries" :key="entry" class="flex flex-row">
-              <USelect
-                :placeholder="entry.placeholder"
-                v-model="entry['v-model']"
-                :items="entry.items()"
-                :icon="entry.icon"
-                class="w-full m-2"
-                :ui="{ content: 'min-w-fit' }"
-                size="lg"
-                :disabled="entry.items().length === 0"
-                @update:modelValue="entry['update']()"
-              />
-              <UButton
-                icon="i-lucide-dices"
-                size="lg"
-                variant="ghost"
-                class="m-2"
-                @click="entry['random']()"
-                :disabled="entry.items().length === 0"
-              />
+      <UTabs :items="tabItems" variant="link" class="w-full gap-4" :ui="{ trigger: 'grow' }">
+        <template #source>
+          <div v-for="entry in entries" :key="entry" class="flex flex-row">
+            <USelect
+              :placeholder="entry.placeholder"
+              v-model="entry['v-model']"
+              :items="entry.items()"
+              :icon="entry.icon"
+              class="m-2 w-full"
+              :ui="{ content: 'min-w-fit' }"
+              size="lg"
+              :disabled="entry.items().length === 0"
+              @update:modelValue="entry['update']()"
+            />
+            <UButton
+              icon="i-lucide-dices"
+              size="lg"
+              variant="ghost"
+              class="m-2"
+              @click="entry['random']()"
+              :disabled="entry.items().length === 0"
+            />
+          </div>
+          <div class="m-4 flex justify-end">
+            <UCheckbox v-model="random" label="随机" />
+          </div>
+        </template>
+        <template #tag>
+          <div class="flex flex-col gap-2 p-2">
+            <UInputTags v-model="caseStore.case.tags" icon="i-lucide-tag" size="xl" variant="ghost" />
+            <div class="flex flex-row">
+              <USelect v-model="selectedTagItems" :items="tagItems" multiple class="flex-1" />
+              <UButton @click="updateTagItems" variant="subtle" class="ml-2">添加</UButton>
             </div>
-            <div class="flex justify-end m-4">
-              <UCheckbox v-model="random" label="随机" />
-            </div>
-          </template>
-        </UCollapsible>
-        <UCollapsible
-          v-model:open="tagCollapsibleOpen"
-          class="flex flex-col gap-2 w-full"
-          :ui="{ content: 'flex flex-col m-2' }"
-        >
-          <template #content>
-            <div class="flex flex-col gap-2">
-              <UInputTags v-model="caseStore.case.tags" icon="i-lucide-tag" size="lg" variant="soft" />
-              <div class="flex flex-row">
-                <USelect v-model="selectedTagItems" :items="tagItems" multiple class="flex-1" />
-                <UButton @click="updateTagItems" variant="subtle" class="ml-2">添加</UButton>
-              </div>
-            </div>
-          </template>
-        </UCollapsible>
-      </UCard>
+          </div>
+        </template>
+      </UTabs>
     </template>
   </UCard>
 </template>
@@ -95,42 +57,31 @@
 const caseStore = useCaseStore()
 const bookStore = useBookStore()
 
+const tabItems = [
+  {
+    label: '来源',
+    value: 'source',
+    icon: 'i-lucide-book',
+    slot: 'source',
+  },
+  {
+    label: '标签',
+    value: 'tag',
+    icon: 'i-lucide-tag',
+    slot: 'tag',
+  },
+]
+
 const { isTitleShow } = defineProps({
   isTitleShow: { type: Boolean, required: false, default: true },
 })
 const random = ref(true)
-
-const sourceCollapsibleOpen = ref(false)
-const tagCollapsibleOpen = ref(false)
-
-const sourceBtnClick = () => {
-  sourceCollapsibleOpen.value = !sourceCollapsibleOpen.value
-  tagCollapsibleOpen.value = false
-}
-
-const tagBtnClick = () => {
-  tagCollapsibleOpen.value = !tagCollapsibleOpen.value
-  sourceCollapsibleOpen.value = false
-}
 
 onMounted(() => {
   caseStore.case.source = caseStore.case.source ?? {
     meta: { bookName: '', publishDate: '', edition: 0, isbn: '' },
     content: {},
   }
-})
-
-const sourceItems = ref([
-  { icon: 'i-lucide-book', name: 'book' },
-  { icon: 'i-lucide-bookmark', name: 'part' },
-  { icon: 'i-lucide-table-of-contents', name: 'chapter' },
-  { icon: 'i-lucide-book-marked', name: 'section' },
-  { icon: 'i-lucide-book-open', name: 'subsection' },
-  { icon: 'i-lucide-notepad-text', name: 'topic' },
-])
-
-const filteredSourceItems = computed(() => {
-  return sourceItems.value.filter((item) => caseStore.case.source?.content?.[item.name])
 })
 
 const selectedTagItems = ref([])
