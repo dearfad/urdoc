@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { DefaultChatTransport } from 'ai'
+import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import { parse } from 'partial-json'
 
@@ -25,19 +25,29 @@ const chat = new Chat({
 })
 
 function onSubmit() {
+  caseStore.reset()
   caseStore.case.custom = [...stateStore.case.custom]
   caseStore.case.textbook = stateStore.case.textbook ? JSON.parse(JSON.stringify(stateStore.case.textbook)) : null
   const custom = caseStore.case.custom.join(', ')
   const textbook = caseStore.case.textbook?.content ? Object.values(caseStore.case.textbook.content).join(', ') : ''
-  const text = `要点设定：${custom}\n\n来源：${textbook}`
+  const text = `要点设定：${textbook}, ${custom}`
   chat.sendMessage({ text: text })
 }
 
 watch(
-  () => chat.lastMessage?.parts?.[1]?.text,
-  (text) => {
-    if (!text) return
-    caseStore.case.content = parse(text)
+  // () => chat.lastMessage?.parts?.[1]?.text,
+  () => chat.lastMessage?.parts,
+  (parts) => {
+    if (!parts) return
+    for (const part of parts.slice(1)) {
+      if (isReasoningUIPart(part)) caseStore.case.reasoning = part.text
+      if (isTextUIPart(part)) {
+        if (part.text && part.text.trim().length > 0) {
+          caseStore.case.content = parse(part.text)
+        }
+      }
+    }
   },
+  { deep: true },
 )
 </script>

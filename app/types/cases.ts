@@ -20,10 +20,11 @@ export interface CaseContent {
 
 // 病例结构
 export interface Case {
-  id: number
-  tags: string[]
+  id: number | null
+  tags: string[] | null
   textbook: Book | null
-  custom: string[]
+  custom: string[] | null
+  reasoning: string | null
   content: CaseContent | null
 }
 

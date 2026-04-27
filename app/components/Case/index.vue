@@ -4,7 +4,7 @@
     :ui="{
       root: 'border border-default overflow-auto',
       header: 'bg-elevated flex items-center py-2 ',
-      body: 'py-0 sm:py-0',
+      body: 'py-0 sm:py-2',
       footer: 'p-0 sm:p-0',
     }"
   >
@@ -30,7 +30,10 @@
     <template #default>
       <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
       <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
-      <Comark :markdown="content" />
+      <ClientOnly>
+        <UChatReasoning :text="caseStore.case.reasoning" defaultOpen :ui="{ body: 'max-h-none pt-0' }" />
+        <Comark :markdown="content" />
+      </ClientOnly>
 
       <!-- 
         <v-card-text>
@@ -85,8 +88,8 @@ import { parse } from 'partial-json'
 const caseStore = useCaseStore()
 const content = computed(() => {
   if (!caseStore.case?.content) return ''
-  const raw =
-    typeof caseStore.case.content === 'string' ? caseStore.case.content : JSON.stringify(caseStore.case.content)
+  if (typeof caseStore.case.content === 'string') return
+  const raw = JSON.stringify(caseStore.case.content)
   return Object.entries(parse(raw))
     .map(([key, value]) => `**${key}**：${value}`)
     .join('\n\n')

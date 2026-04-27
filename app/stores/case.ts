@@ -5,20 +5,8 @@ const caseDefault = {
   tags: [],
   textbook: null,
   custom: [],
-  content: {
-    姓名: '',
-    性别: '',
-    年龄: '',
-    主诉: '',
-    现病史: '',
-    既往史: '',
-    查体: '',
-    专科查体: '',
-    诊断: '',
-    治疗: '',
-    手术: '',
-    病理: '',
-  },
+  reasoning: null,
+  content: null,
 }
 
 export const useCaseStore = defineStore('case', () => {

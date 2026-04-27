@@ -22,6 +22,7 @@
               :icon="entry.icon"
               class="m-2 w-full"
               :ui="{ content: 'min-w-fit' }"
+              variant="soft"
               size="lg"
               :disabled="entry.items().length === 0"
               @update:modelValue="entry['update']()"
@@ -50,9 +51,15 @@
         </template>
         <template #custom>
           <div class="flex flex-col gap-2 p-2">
-            <UInputTags v-model="stateStore.case.custom" icon="i-lucide-tag" size="xl" variant="ghost" />
+            <UInputTags
+              v-model="stateStore.case.custom"
+              icon="i-lucide-tag"
+              size="xl"
+              variant="soft"
+              placeholder="输入按回车键确认或添加..."
+            />
             <div class="flex flex-row">
-              <USelect v-model="selectedCustomItems" :items="customItems" multiple class="flex-1" />
+              <USelect v-model="selectedCustomItems" :items="customItems" multiple class="flex-1" variant="soft" />
               <UButton @click="updateCustomItems" variant="subtle" class="ml-2">添加</UButton>
             </div>
           </div>

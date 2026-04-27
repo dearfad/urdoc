@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     system: await getPrompt(type, task),
     messages: await convertToModelMessages(messages),
     providerOptions: {
-      InternAi: { thinking_mode: false },
+      InternAi: { thinking_mode: true },
     },
   }).toUIMessageStreamResponse()
 })

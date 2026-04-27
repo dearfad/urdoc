@@ -59,6 +59,9 @@
           >文档站：https://docs.urdoc.dearfad.com</span
         >
       </div>
+      <div class="flex flex-row items-center">
+        <UButton label="生成病例" size="xl" to="/cstar/case" />
+      </div>
     </template>
   </UDashboardPanel>
 </template>

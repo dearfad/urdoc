@@ -1,5 +1,8 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-17',
+  devtools: {
+    enabled: false,
+  },
   modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt'],
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
@@ -18,17 +21,14 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    shushengApiKey: '',
+  },
+
   // EdgeOne Pages Functions Development
   // nitro: {
   //   devProxy: {
   //     '/function': 'http://localhost:8088/function',
   //   },
   // },
-  runtimeConfig: {
-    shushengApiKey: '',
-  },
-
-  devtools: {
-    enabled: false,
-  },
 })
