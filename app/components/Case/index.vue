@@ -21,16 +21,16 @@
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
       <div class="ms-auto flex gap-2">
-        <CaseChat />
         <UButton icon="i-lucide-camera" variant="ghost" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
+        <CaseChat />
       </div>
     </template>
 
     <template #default>
       <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
-      <MarkdownRender :content="content" custom-id="case-content" />
-      <!-- <Comark :markdown="content" /> -->
+      <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
+      <Comark :markdown="content" />
 
       <!-- 
         <v-card-text>
@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import MarkdownRender from 'markstream-vue'
+// import MarkdownRender from 'markstream-vue'
 import { parse } from 'partial-json'
 const caseStore = useCaseStore()
 const content = computed(() => {

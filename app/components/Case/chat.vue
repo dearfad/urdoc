@@ -1,5 +1,5 @@
 <template>
-  <UButton icon="i-lucide-send" @click="onSubmit" variant="ghost" />
+  <UButton icon="i-lucide-rocket" @click="onSubmit" variant="solid" color="primary">生成病例</UButton>
 </template>
 
 <script setup>

@@ -1,6 +1,2 @@
 @import 'tailwindcss';
 @import '@nuxt/ui';
-
-@layer components {
-  @import 'markstream-vue/index.css';
-}
