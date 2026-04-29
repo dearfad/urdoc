@@ -1,9 +1,8 @@
 <template>
-  <v-btn :icon="mdiMonitorScreenshot" @click="capture" />
+  <UButton icon="i-lucide-camera" variant="ghost" @click="capture" />
 </template>
 
 <script setup>
-import { mdiMonitorScreenshot } from '@mdi/js'
 import { snapdom } from '@zumer/snapdom'
 const { captureId } = defineProps({
   captureId: { type: String, required: true },

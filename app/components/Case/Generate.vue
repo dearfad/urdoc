@@ -1,5 +1,14 @@
 <template>
-  <UButton icon="i-lucide-rocket" @click="onSubmit" variant="solid" color="primary">生成病例</UButton>
+  <!-- <UButton icon="i-lucide-rocket" @click="onSubmit" variant="solid" color="primary" >生成病例</UButton> -->
+  <UChatPromptSubmit
+    :status="chat.status"
+    @stop="chat.stop()"
+    @reload="chat.regenerate()"
+    @click="onSubmit"
+    streaming-color="success"
+  >
+    生成病例
+  </UChatPromptSubmit>
 </template>
 
 <script setup>

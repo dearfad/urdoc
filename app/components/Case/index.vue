@@ -21,9 +21,9 @@
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
       <div class="ms-auto flex gap-2">
-        <UButton icon="i-lucide-camera" variant="ghost" />
+        <ButtonCapture capture-id="component-case-index" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <CaseChat />
+        <CaseGenerate />
       </div>
     </template>
 
@@ -85,6 +85,7 @@
 <script setup>
 // import MarkdownRender from 'markstream-vue'
 import { parse } from 'partial-json'
+import CaptureButton from '../Button/Capture.vue'
 const caseStore = useCaseStore()
 const content = computed(() => {
   if (!caseStore.case?.content) return ''
