@@ -1,4 +1,4 @@
-// /assets/books/obstetricsAndGynecology.ts
+// ~/assets/books/obstetricsAndGynecology.ts
 
 const obstetricsAndGynecology: Book = {
   meta: {

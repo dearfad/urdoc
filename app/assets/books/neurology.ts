@@ -1,4 +1,4 @@
-// /assets/books/neurology.ts
+// ~/assets/books/neurology.ts
 
 const neurology: Book = {
   meta: {

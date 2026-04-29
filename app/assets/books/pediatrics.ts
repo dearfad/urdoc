@@ -1,4 +1,4 @@
-// /assets/books/pediatrics.ts
+// ~/assets/books/pediatrics.ts
 
 const pediatrics: Book = {
   meta: {
