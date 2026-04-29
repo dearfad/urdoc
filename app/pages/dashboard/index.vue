@@ -50,11 +50,6 @@
         >
       </div>
       <div class="flex flex-row items-center">
-        <UBadge :label="lastCommitDate.nuxtui" variant="soft" class="mx-2" /><span
-          >测试站：https://nuxtui.urdoc.dearfad.com</span
-        >
-      </div>
-      <div class="flex flex-row items-center">
         <UBadge :label="lastCommitDate.docs" variant="soft" class="mx-2" /><span
           >文档站：https://docs.urdoc.dearfad.com</span
         >
@@ -70,7 +65,6 @@
 const lastCommitDate = ref({
   main: '',
   develop: '',
-  nuxtui: '',
   docs: '',
 })
 
@@ -89,7 +83,6 @@ async function getLastCommitDate(branch) {
 async function getLastCommitDateAll() {
   lastCommitDate.value.main = await getLastCommitDate('main')
   lastCommitDate.value.develop = await getLastCommitDate('develop')
-  lastCommitDate.value.nuxtui = await getLastCommitDate('nuxtui')
   lastCommitDate.value.docs = await getLastCommitDate('docs')
 }
 </script>
