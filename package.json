@@ -9,24 +9,24 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@ai-sdk/openai-compatible": "^2.0.41",
-    "@ai-sdk/vue": "^3.0.168",
+    "@ai-sdk/openai-compatible": "^2.0.42",
+    "@ai-sdk/vue": "^3.0.170",
     "@comark/nuxt": "^0.3.1",
-    "@iconify-json/lucide": "^1.2.104",
+    "@iconify-json/lucide": "^1.2.105",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/simple-icons": "^1.2.80",
     "@nuxt/eslint": "^1.15.2",
-    "@nuxt/ui": "^4.7.0",
+    "@nuxt/ui": "^4.7.1",
     "@pinia/nuxt": "0.11.3",
     "@zumer/snapdom": "^2.9.0",
-    "ai": "^6.0.168",
-    "nuxt": "^4.4.2",
+    "ai": "^6.0.170",
+    "nuxt": "^4.4.4",
     "partial-json": "^0.1.7",
     "pinia-plugin-unstorage": "1.0.0-beta.1",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
     "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.7.3"
+    "prettier-plugin-tailwindcss": "^0.8.0"
   }
 }

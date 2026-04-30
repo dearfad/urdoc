@@ -6,6 +6,7 @@ export const useStateStore = defineStore('state', () => {
   const caseItem = ref({
     textbook: null,
     custom: [],
+    reasoning: true,
   })
 
   // //

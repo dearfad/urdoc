@@ -64,6 +64,11 @@
             </div>
           </div>
         </template>
+        <template #model>
+          <div class="m-4 flex flex-col">
+            <UCheckbox v-model="stateStore.case.reasoning" label="思考模式" />
+          </div>
+        </template>
       </UTabs>
     </template>
   </UCard>
@@ -85,6 +90,12 @@ const tabItems = [
     value: 'custom',
     icon: 'i-lucide-pencil',
     slot: 'custom',
+  },
+  {
+    label: '模型',
+    value: 'model',
+    icon: 'i-lucide-cpu',
+    slot: 'model',
   },
 ]
 

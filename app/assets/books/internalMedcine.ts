@@ -1,4 +1,4 @@
-// ~/assets/books/internalMedicine.ts
+// assets/books/internalMedicine.ts
 
 const internalMedicine: Book = {
   meta: {

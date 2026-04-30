@@ -1,4 +1,4 @@
-// server/prompts/index.ts
+// #server/prompts/index.ts
 
 const promptMap = {
   case: {

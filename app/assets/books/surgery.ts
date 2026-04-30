@@ -1,4 +1,4 @@
-// ~/assets/books/surgery.ts
+// assets/books/surgery.ts
 
 const surgery: Book = {
   meta: {
