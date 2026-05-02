@@ -3,7 +3,7 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import { getPrompt } from '#server/prompts'
 
 export default defineEventHandler(async (event) => {
-  const { messages, providerName, modelName, apiKeyName, baseURL, type, task } = await readBody(event)
+  const { messages, providerName, modelName, apiKeyName, baseURL, type, task, reasoning } = await readBody(event)
   const config = useRuntimeConfig()
   const provider = createOpenAICompatible({
     name: providerName,
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     system: await getPrompt(type, task),
     messages: await convertToModelMessages(messages),
     providerOptions: {
-      InternAi: { thinking_mode: true },
+      InternAi: { thinking_mode: reasoning },
     },
   }).toUIMessageStreamResponse()
 })
