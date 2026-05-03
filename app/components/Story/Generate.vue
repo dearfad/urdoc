@@ -2,22 +2,21 @@
   <!-- <UButton icon="i-lucide-rocket" @click="onSubmit" variant="solid" color="primary" >生成病例</UButton> -->
   <UChatPromptSubmit
     :status="chat.status"
+    :disabled="!caseStore.case.content || caseStore.case.content.length === 0"
     @stop="chat.stop()"
     @reload="chat.regenerate()"
     @click="onSubmit"
     streaming-color="success"
   >
-    生成病例
+    生成故事
   </UChatPromptSubmit>
 </template>
 
 <script setup>
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
-import { parse } from 'partial-json'
-
-const caseStore = useCaseStore()
 const stateStore = useStateStore()
+const caseStore = useCaseStore()
 const storyStore = useStoryStore()
 
 const chat = new Chat({
@@ -28,33 +27,29 @@ const chat = new Chat({
       modelName: 'intern-s1',
       apiKeyName: 'shushengApiKey',
       baseURL: 'https://chat.intern-ai.org.cn/api/v1',
-      type: 'case',
+      type: 'story',
       task: 'generate',
     },
   }),
 })
 
 function onSubmit() {
-  caseStore.reset()
   storyStore.reset()
-  caseStore.case.custom = [...stateStore.case.custom]
-  caseStore.case.textbook = stateStore.case.textbook ? JSON.parse(JSON.stringify(stateStore.case.textbook)) : null
-  const custom = caseStore.case.custom.join(', ')
-  const textbook = caseStore.case.textbook?.content ? Object.values(caseStore.case.textbook.content).join(', ') : ''
-  const text = `要点设定：${textbook}, ${custom}`
-  chat.sendMessage({ text: text }, { body: { reasoning: stateStore.case.reasoning } })
+  storyStore.story.custom = [...stateStore.story.custom]
+  const custom = storyStore.story.custom.join(', ')
+  const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${custom}`
+  chat.sendMessage({ text: text }, { body: { reasoning: stateStore.story.reasoning } })
 }
 
 watch(
-  // () => chat.lastMessage?.parts?.[1]?.text,
   () => chat.lastMessage?.parts,
   (parts) => {
     if (!parts) return
     for (const part of parts.slice(1)) {
-      if (isReasoningUIPart(part)) caseStore.case.reasoning = part.text
+      if (isReasoningUIPart(part)) storyStore.story.reasoning = part.text
       if (isTextUIPart(part)) {
         if (part.text && part.text.trim().length > 0) {
-          caseStore.case.content = parse(part.text)
+          storyStore.story.content = part.text
         }
       }
     }

@@ -22,7 +22,10 @@
       <UDashboardToolbar />
     </template>
     <template #body>
-      <CardCase />
+      <div class="flex flex-col gap-2 md:flex-row">
+        <Story class="w-full md:flex-2" />
+        <StorySettings class="w-full md:flex-1" />
+      </div>
     </template>
   </UDashboardPanel>
 </template>

@@ -6,7 +6,12 @@ export const useStateStore = defineStore('state', () => {
   const caseItem = ref({
     textbook: null,
     custom: [],
-    reasoning: true,
+    reasoning: false,
+  })
+
+  const story = ref({
+    custom: [],
+    reasoning: false,
   })
 
   // //
@@ -69,6 +74,7 @@ export const useStateStore = defineStore('state', () => {
   return {
     version,
     case: caseItem,
+    story,
     // apiBaseUrl,
 
     // isModelResponseShow,
