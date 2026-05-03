@@ -39,7 +39,7 @@
       <UDashboardToolbar />
     </template>
     <template #body>
-      <div class="flex flex-row flex-wrap gap-4">
+      <div class="flex flex-col gap-4 xl:flex-row">
         <Case />
         <Story />
       </div>
