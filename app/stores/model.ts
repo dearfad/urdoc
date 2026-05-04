@@ -1,8 +1,12 @@
-// import { useProviderLongCat } from '~/composables'
-
-const VERSION = '2026-04-06'
+const VERSION = '2026-05-04'
 export const useModelStore = defineStore('model', () => {
   const version = ref(VERSION)
+  const model = ref<Model>({
+    provider: 'InternAi',
+    name: 'intern-s1',
+    apiKey: 'shushengApiKey',
+    baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+  })
   // const stateStore = useStateStore()
   // const supabase = useSupabase()
   // const userStore = useUserStore()
@@ -321,6 +325,7 @@ export const useModelStore = defineStore('model', () => {
   syncStoreVersion(VERSION, 'pinia:model')
   return {
     version,
+    model,
     // freeModels,
     // activeModels,
     // customModels,

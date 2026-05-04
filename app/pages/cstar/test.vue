@@ -16,7 +16,7 @@
       <UDashboardToolbar />
     </template>
     <template #body>
-      <CardCase />
+      <!-- <CardCase /> -->
     </template>
   </UDashboardPanel>
 </template>

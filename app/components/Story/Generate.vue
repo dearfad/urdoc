@@ -18,15 +18,13 @@ import { Chat } from '@ai-sdk/vue'
 const stateStore = useStateStore()
 const caseStore = useCaseStore()
 const storyStore = useStoryStore()
+const modelStore = useModelStore()
 
 const chat = new Chat({
   transport: new DefaultChatTransport({
     api: '/api/chat',
     body: {
-      providerName: 'InternAi',
-      modelName: 'intern-s1',
-      apiKeyName: 'shushengApiKey',
-      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+      model: modelStore.model,
       type: 'story',
       task: 'generate',
     },

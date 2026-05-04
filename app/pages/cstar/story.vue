@@ -19,7 +19,7 @@
           </UTooltip>
         </template>
       </UDashboardNavbar>
-      <UDashboardToolbar />
+      <!-- <UDashboardToolbar /> -->
     </template>
     <template #body>
       <div class="flex flex-col gap-2 md:flex-row">

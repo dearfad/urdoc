@@ -19,15 +19,13 @@ import { parse } from 'partial-json'
 const caseStore = useCaseStore()
 const stateStore = useStateStore()
 const storyStore = useStoryStore()
+const modelStore = useModelStore()
 
 const chat = new Chat({
   transport: new DefaultChatTransport({
     api: '/api/chat',
     body: {
-      providerName: 'InternAi',
-      modelName: 'intern-s1',
-      apiKeyName: 'shushengApiKey',
-      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+      model: modelStore.model,
       type: 'case',
       task: 'generate',
     },

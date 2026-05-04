@@ -36,7 +36,7 @@
           </UTooltip>
         </template>
       </UDashboardNavbar>
-      <UDashboardToolbar />
+      <!-- <UDashboardToolbar /> -->
     </template>
     <template #body>
       <div class="flex flex-col gap-4 xl:flex-row">
