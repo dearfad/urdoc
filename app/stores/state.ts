@@ -1,4 +1,4 @@
-const VERSION = '2026-05-03'
+const VERSION = '2026-05-06'
 export const useStateStore = defineStore('state', () => {
   const version = ref(VERSION)
   syncStoreVersion(VERSION, 'pinia:state')

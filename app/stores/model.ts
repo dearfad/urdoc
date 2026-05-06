@@ -1,4 +1,4 @@
-const VERSION = '2026-05-04'
+const VERSION = '2026-05-06'
 export const useModelStore = defineStore('model', () => {
   const version = ref(VERSION)
   const model = ref<Model>({

@@ -1,6 +1,6 @@
 import books from '~/assets/books/index'
 
-const VERSION = '2026-03-31'
+const VERSION = '2026-05-06'
 
 export const useBookStore = defineStore('book', () => {
   const version = ref(VERSION)

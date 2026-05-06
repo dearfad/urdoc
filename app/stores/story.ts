@@ -1,4 +1,4 @@
-const VERSION = '2026-05-03'
+const VERSION = '2026-05-06'
 
 const storyDefault = {
   id: 0,

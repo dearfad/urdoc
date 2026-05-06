@@ -36,6 +36,7 @@
           :text="caseStore.case.reasoning"
           defaultOpen
           :ui="{ body: 'max-h-none pt-2' }"
+          class="pt-2"
         >
           <Comark :markdown="caseStore.case.reasoning" class="*:first:mt-0 *:last:mb-0" />
         </UChatReasoning>

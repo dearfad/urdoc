@@ -1,4 +1,4 @@
-const VERSION = '2026-04-26'
+const VERSION = '2026-05-06'
 
 const caseDefault = {
   id: 0,
