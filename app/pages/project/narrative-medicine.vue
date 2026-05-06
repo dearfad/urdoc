@@ -40,8 +40,8 @@
     </template>
     <template #body>
       <div class="flex flex-col gap-4 xl:flex-row">
-        <Case />
-        <Story />
+        <Case class="xl:w-2/5" />
+        <Story class="xl:w-3/5" />
       </div>
     </template>
   </UDashboardPanel>

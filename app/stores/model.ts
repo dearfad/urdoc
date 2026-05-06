@@ -2,11 +2,32 @@ const VERSION = '2026-05-04'
 export const useModelStore = defineStore('model', () => {
   const version = ref(VERSION)
   const model = ref<Model>({
-    provider: 'InternAi',
-    name: 'intern-s1',
-    apiKey: 'shushengApiKey',
-    baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    provider: 'OpenRouter',
+    name: 'tencent/hy3-preview:free',
+    apiKey: 'openrouterApiKey',
+    baseURL: 'https://openrouter.ai/api/v1',
   })
+
+  const models = ref<Models>([
+    {
+      provider: 'InternAi',
+      name: 'intern-s1',
+      apiKey: 'shushengApiKey',
+      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    },
+    {
+      provider: 'BigModel',
+      name: 'glm-4.7-flash',
+      apiKey: 'zhipuApiKey',
+      baseURL: 'https://open.bigmodel.cn/api/paas/v4',
+    },
+    {
+      provider: 'OpenRouter',
+      name: 'tencent/hy3-preview:free',
+      apiKey: 'openrouterApiKey',
+      baseURL: 'https://openrouter.ai/api/v1',
+    },
+  ])
   // const stateStore = useStateStore()
   // const supabase = useSupabase()
   // const userStore = useUserStore()

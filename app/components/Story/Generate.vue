@@ -44,6 +44,7 @@ watch(
   (parts) => {
     if (!parts) return
     for (const part of parts.slice(1)) {
+      stateStore.story.isReasoning = isReasoningUIPart(part)
       if (isReasoningUIPart(part)) storyStore.story.reasoning = part.text
       if (isTextUIPart(part)) {
         if (part.text && part.text.trim().length > 0) {

@@ -7,11 +7,13 @@ export const useStateStore = defineStore('state', () => {
     textbook: null,
     custom: [],
     reasoning: false,
+    isReasoning: false,
   })
 
   const story = ref({
     custom: [],
     reasoning: false,
+    isReasoning: false,
   })
 
   // //

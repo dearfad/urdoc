@@ -2,9 +2,9 @@
   <UCard
     id="component-case-index"
     :ui="{
-      root: 'border border-default overflow-auto',
+      root: 'border border-default overflow-auto flex flex-col',
       header: 'bg-elevated flex items-center py-2 ',
-      body: 'py-0 sm:py-2',
+      body: 'py-0 sm:py-2 flex-1',
       footer: 'p-0 sm:p-0',
     }"
   >
@@ -31,7 +31,14 @@
       <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
       <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
       <ClientOnly>
-        <UChatReasoning :text="caseStore.case.reasoning" defaultOpen :ui="{ body: 'max-h-none pt-0' }" />
+        <UChatReasoning
+          v-if="stateStore.case.isReasoning"
+          :text="caseStore.case.reasoning"
+          defaultOpen
+          :ui="{ body: 'max-h-none pt-2' }"
+        >
+          <Comark :markdown="caseStore.case.reasoning" class="*:first:mt-0 *:last:mb-0" />
+        </UChatReasoning>
         <Comark :markdown="content" />
       </ClientOnly>
 
@@ -87,6 +94,7 @@
 import { parse } from 'partial-json'
 import CaptureButton from '../Button/Capture.vue'
 const caseStore = useCaseStore()
+const stateStore = useStateStore()
 const content = computed(() => {
   if (!caseStore.case?.content) return ''
   if (typeof caseStore.case.content === 'string') return

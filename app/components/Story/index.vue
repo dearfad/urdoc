@@ -31,7 +31,15 @@
       <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
       <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
       <ClientOnly>
-        <UChatReasoning :text="storyStore.story.reasoning" defaultOpen :ui="{ body: 'max-h-none pt-0' }" class="pt-2" />
+        <UChatReasoning
+          v-if="stateStore.story.isReasoning"
+          :text="storyStore.story.reasoning"
+          defaultOpen
+          :ui="{ body: 'max-h-none pt-2' }"
+          class="pt-2"
+        >
+          <Comark :markdown="storyStore.story.reasoning" class="*:first:mt-0 *:last:mb-0" />
+        </UChatReasoning>
         <Comark :markdown="storyStore.story.content" />
       </ClientOnly>
 
@@ -74,7 +82,7 @@
 
 <script setup>
 const storyStore = useStoryStore()
-
+const stateStore = useStateStore()
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 
 // const recordStore = useRecordStore()

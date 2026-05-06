@@ -17,6 +17,16 @@ export default defineEventHandler(async (event) => {
     messages: await convertToModelMessages(messages),
     providerOptions: {
       InternAi: { thinking_mode: reasoning },
+      BigModel: {
+        thinking: {
+          type: reasoning ? 'enabled' : 'disabled',
+        },
+      },
+      OpenRouter: {
+        reasoning: {
+          effort: reasoning ? 'high' : 'none',
+        },
+      },
     },
   }).toUIMessageStreamResponse()
 })
