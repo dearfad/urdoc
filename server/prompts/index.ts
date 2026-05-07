@@ -7,6 +7,9 @@ const promptMap = {
   story: {
     generate: () => import('./story/generate'),
   },
+  test: {
+    generate: () => import('./test/generate'),
+  },
 }
 
 type PromptType = keyof typeof promptMap

@@ -13,6 +13,10 @@
 - ❓ **考核理论 (Test)** - 智能医学问题生成与理论考核
 - 💬 **互动实践 (Act)** - 真实的医患问诊互动模拟
 - 📊 **评估能力 (Rate)** - 全面的学习效果评估和反馈系统
+- 🎯 **CSTAR 集成** - 五阶段医学能力培训闭环（Case-Story-Test-Act-Rate）
+- 🖼️ **多模态支持** - 集成图像、音频等多媒体元素增强病例真实性
+- 📁 **项目管理** - 病例研究项目的创建、组织和协作功能
+- ⚙️ **个性化设置** - 用户偏好、工作流程和系统配置选项
 
 ## 🛠 技术栈
 
@@ -23,6 +27,9 @@
 - **TypeScript** - 类型安全开发
 - **pnpm** - 高效包管理器
 - **[Tencent Cloud EdgeOne](https://edgeone.tencent.com/)** - Serverless 边缘计算部署
+- **AI SDK** - 大语言模型集成（OpenAI 兼容）
+- **Pinia** - 状态管理
+- **ESLint + Prettier** - 代码质量和格式化
 
 ## 📁 项目结构
 
@@ -31,26 +38,38 @@ urdoc/
 ├── app/                        # 应用源代码（Nuxt 4 约定）
 │   ├── app.vue                 # 根组件
 │   ├── app.config.ts           # 应用配置（主题、颜色等）
-│   ├── assets/css/main.css     # 全局样式
+│   ├── assets/
+│   │   └── css/main.css        # 全局样式
 │   ├── components/
-│   │   └── App/                # 应用级组件
-│   │       ├── Navbar.vue      # 顶部导航栏
-│   │       └── Sidebar.vue     # 侧边栏导航
+│   │   ├── App/                # 应用级组件
+│   │   │   ├── Navbar.vue      # 顶部导航栏
+│   │   │   └── Sidebar.vue     # 侧边栏导航
+│   │   ├── Button/             # 按钮组件
+│   │   ├── Case/               # 病例相关组件
+│   │   └── Story/              # 故事相关组件
 │   ├── layouts/
 │   │   ├── default.vue         # 仪表盘布局（侧边栏 + 内容区）
 │   │   └── landing.vue         # 落地页布局
-│   └── pages/
-│       ├── index.vue           # 首页（落地页）
-│       ├── dashboard/
-│       │   └── index.vue       # 仪表盘概览
-│       └── case/
-│           └── index.vue       # 病例生成页面
+│   ├── pages/
+│   │   ├── index.vue           # 首页（落地页）
+│   │   ├── dashboard/          # 仪表盘
+│   │   │   └── index.vue       # 仪表盘概览
+│   │   ├── multimodal/         # 多模态功能
+│   │   ├── project/            # 项目管理
+│   │   ├── settings/           # 系统设置
+│   │   └── cstar/              # CSTAR 五阶段流程
+│   │       ├── case.vue        # 病例生成
+│   │       ├── story.vue       # 故事编写
+│   │       ├── test.vue        # 考核理论
+│   │       ├── act.vue         # 互动实践
+│   │       └── rate.vue        # 评估能力
+│   ├── stores/                 # Pinia 状态管理
+│   ├── types/                  # TypeScript 类型定义
+│   └── utils/                  # 工具函数
 ├── public/                     # 静态资源
 ├── nuxt.config.ts              # Nuxt 配置
 ├── eslint.config.mjs           # ESLint 配置
 ├── .prettierrc.json            # Prettier 配置
-└── edgeone.json                # EdgeOne 部署配置
-```
 
 ## 🚀 快速开始
 
