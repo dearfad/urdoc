@@ -3,7 +3,7 @@ import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 import { getPrompt } from '#server/prompts'
 
 export default defineEventHandler(async (event) => {
-  const { messages, model, type, task, reasoning } = await readBody(event)
+  const { messages, model, type, task, reasoning, case: caseContent } = await readBody(event)
   const config = useRuntimeConfig()
   const provider = createOpenAICompatible({
     name: model.provider,
@@ -11,9 +11,15 @@ export default defineEventHandler(async (event) => {
     baseURL: model.baseURL,
   })
 
+  let systemPrompt = await getPrompt(type, task)
+
+  if (type === 'act' && caseContent) {
+    systemPrompt = `${systemPrompt}\n\n病例内容：${JSON.stringify(caseContent)}`
+  }
+
   return streamText({
     model: provider(model.name),
-    system: await getPrompt(type, task),
+    system: systemPrompt,
     messages: await convertToModelMessages(messages),
     providerOptions: {
       InternAi: { thinking_mode: reasoning },

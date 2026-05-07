@@ -1,9 +1,4 @@
 <template>
-  <!-- <v-sheet class="d-flex flex-column w-100 w-md-66 mx-auto my-4 px-2 ga-4">
-    <CommonRecordTools />
-    <ActContentShow />
-    <ActUtilsChat />
-  </v-sheet> -->
   <UDashboardPanel id="pages-cstar-act">
     <template #header>
       <UDashboardNavbar title="互动实践">
@@ -13,10 +8,12 @@
           </UTooltip>
         </template>
       </UDashboardNavbar>
-      <UDashboardToolbar />
     </template>
     <template #body>
-      <!-- <CardCase /> -->
+      <div class="flex flex-col gap-2 md:flex-row">
+        <Act class="w-full md:flex-2" />
+        <ActSettings class="w-full md:flex-1" />
+      </div>
     </template>
   </UDashboardPanel>
 </template>

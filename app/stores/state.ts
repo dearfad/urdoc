@@ -22,6 +22,12 @@ export const useStateStore = defineStore('state', () => {
     isReasoning: false,
   })
 
+  const act = ref({
+    custom: [],
+    reasoning: false,
+    isReasoning: false,
+  })
+
   // //
   // // API 地址设定
   // //
@@ -84,6 +90,7 @@ export const useStateStore = defineStore('state', () => {
     case: caseItem,
     story,
     test,
+    act,
     // apiBaseUrl,
 
     // isModelResponseShow,

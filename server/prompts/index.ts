@@ -10,6 +10,9 @@ const promptMap = {
   test: {
     generate: () => import('./test/generate'),
   },
+  act: {
+    prompt: () => import('./act/prompt'),
+  },
 }
 
 type PromptType = keyof typeof promptMap
