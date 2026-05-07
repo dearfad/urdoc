@@ -18,7 +18,7 @@
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "nuxt.config.ts": ".env, .gitignore, .npmrc, .prettierrc.json, edgeone.json, eslint.config.mjs, LICENSE, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, tsconfig.json"
+    "nuxt.config.ts": ".env, .gitignore, .npmrc, .prettierrc.json, AGENTS.md, edgeone.json, eslint.config.mjs, LICENSE, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, skills-lock.json, tsconfig.json"
   },
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
