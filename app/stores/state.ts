@@ -3,6 +3,8 @@ export const useStateStore = defineStore('state', () => {
   const version = ref(VERSION)
   syncStoreVersion(VERSION, 'pinia:state')
 
+  const toast = useToast()
+
   const caseItem = ref({
     textbook: null,
     custom: [],
@@ -87,6 +89,7 @@ export const useStateStore = defineStore('state', () => {
 
   return {
     version,
+    toast,
     case: caseItem,
     story,
     test,
