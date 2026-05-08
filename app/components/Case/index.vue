@@ -8,15 +8,6 @@
       footer: 'p-0 sm:p-0',
     }"
   >
-    <!-- 
-      <v-btn
-        :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
-        @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
-      />
-      <CommonAudioButton audio-type="case" />
-      <CommonCaptureButton capture-id="case-card" /> 
-    -->
-
     <template #header>
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
@@ -26,7 +17,6 @@
         <CaseGenerate />
       </div>
     </template>
-
     <template #default>
       <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
       <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->

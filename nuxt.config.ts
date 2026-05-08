@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['ai', '@ai-sdk/vue', 'partial-json', '@zumer/snapdom', '@clerk/nuxt'],
+      include: ['ai', '@ai-sdk/vue', 'partial-json', '@zumer/snapdom'],
     },
   },
 
