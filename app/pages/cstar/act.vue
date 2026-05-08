@@ -7,6 +7,9 @@
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
+        <template #right>
+          <AppHeader />
+        </template>
       </UDashboardNavbar>
     </template>
     <template #body>

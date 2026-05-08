@@ -35,6 +35,9 @@
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
+        <template #right>
+          <AppHeader />
+        </template>
       </UDashboardNavbar>
       <!-- <UDashboardToolbar /> -->
     </template>
