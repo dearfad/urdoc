@@ -15,11 +15,11 @@ importers:
         specifier: ^3.0.176
         version: 3.0.176(vue@3.5.33(typescript@6.0.3))(zod@4.3.6)
       '@clerk/localizations':
-        specifier: ^4.6.0
-        version: 4.6.0
+        specifier: ^4.6.1
+        version: 4.6.1
       '@clerk/nuxt':
-        specifier: ^2.4.0
-        version: 2.4.0(magicast@0.5.2)(vue@3.5.33(typescript@6.0.3))
+        specifier: ^2.4.1
+        version: 2.4.1(magicast@0.5.2)(vue@3.5.33(typescript@6.0.3))
       '@comark/nuxt':
         specifier: ^0.3.1
         version: 0.3.1(@types/markdown-it@14.1.2)(magicast@0.5.2)(markdown-it@14.1.1)(nuxt@4.4.4(@babel/core@7.29.0)(@babel/plugin-syntax-jsx@7.28.6(@babel/core@7.29.0))(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.33)(cac@6.7.14)(db0@0.3.4)(eslint@10.2.1(jiti@2.6.1))(ioredis@5.10.1)(lightningcss@1.32.0)(magicast@0.5.2)(optionator@0.9.4)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.33(typescript@6.0.3)))(rollup-plugin-visualizer@7.0.1(rollup@4.60.2))(rollup@4.60.2)(srvx@0.11.15)(terser@5.46.2)(typescript@6.0.3)(vite@7.3.2(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.2)(yaml@2.8.3))(yaml@2.8.3))(vue@3.5.33(typescript@6.0.3))
@@ -252,20 +252,20 @@ packages:
   '@clack/prompts@1.2.0':
     resolution: {integrity: sha512-4jmztR9fMqPMjz6H/UZXj0zEmE43ha1euENwkckKKel4XpSfokExPo5AiVStdHSAlHekz4d0CA/r45Ok1E4D3w==}
 
-  '@clerk/backend@3.4.5':
-    resolution: {integrity: sha512-GZfi0kl6IhD9G4fPz+i20AOBbenULNI5ucXMRMmbE3ggPvWS4Cn4x2DcxtzsH5Tzkoy1ryahyefuk56A1gMVYA==}
+  '@clerk/backend@3.4.6':
+    resolution: {integrity: sha512-OYRYr8hM/ewWQHFKISrIq/au/9/GsyppqRXmivshWnwMegd9cc2UVirFBouoH5Vv1R92ErqrgF/jYS+FkFEJZw==}
     engines: {node: '>=20.9.0'}
 
-  '@clerk/localizations@4.6.0':
-    resolution: {integrity: sha512-1n9AAk+Lf1xcM8JvpVp+b8BzbrOSDwU9CEWMHfO/yFithae5AeBzVHobCLjRRltxtGwOm2L87E5tEyGvbQRQUQ==}
+  '@clerk/localizations@4.6.1':
+    resolution: {integrity: sha512-h1BUocpzBlzdXtnS7Wtyba8QQKVbibv3+h8B6Rs/xzdsgI9H9qvjkhfwXJlpY5oaiTt8ebOV6/eiFrN8XJhm6w==}
     engines: {node: '>=20.9.0'}
 
-  '@clerk/nuxt@2.4.0':
-    resolution: {integrity: sha512-AZ7wpYLbfiEZoUmfZjimouNVF7w+Z3aHTsxNznjWyU+N9aUUID991V6eXNvj7vq/Y0QCWuyudIFUHPQw0Mywmw==}
+  '@clerk/nuxt@2.4.1':
+    resolution: {integrity: sha512-GCqWkLbkzTO2JhgxMqgv1Abt4CSZJb0dpouaYab6gRqaqOGOOq2LuymeSByRmI2zvUXLeg3NMK5A8/5OkbM2sw==}
     engines: {node: '>=20.9.0'}
 
-  '@clerk/shared@4.10.0':
-    resolution: {integrity: sha512-xlBGws31ABvuU57nygM9pVq3aG3TL3JRAeVZSmRens1B2One3m0fYmB2Mv8eZwIeDCT0cTeGVtK5woK7lRVmMw==}
+  '@clerk/shared@4.10.1':
+    resolution: {integrity: sha512-Vdl/Ox5rh9NpeIYgZbV2Y0zfm4AjStRB9DbNWxK7PDXFDHuYwjlOYFXwFULFqa0kbRs9M1Q+oR7hujAtesZ36w==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
@@ -276,8 +276,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/vue@2.2.0':
-    resolution: {integrity: sha512-66Uv8EejPstMQzRY9WZZp+XUkO2uVR4b8qlNGQcSRXxp+SCr9SMKuwy00dmOKmcRfJm3eGy5QLOjVhLzWpse4g==}
+  '@clerk/vue@2.2.1':
+    resolution: {integrity: sha512-8bUAGLQxi9jfGPnmlzg7iJHN8ZQeNIPwqUlDsnLXt+adYo+sdWgDcc8SjZcSpPUufLenrIGTKqV3wfYTCDZ07Q==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       vue: ^3.2.0
@@ -3665,6 +3665,10 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
+  jiti@2.7.0:
+    resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
+    hasBin: true
+
   js-cookie@3.0.5:
     resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
     engines: {node: '>=14'}
@@ -5672,27 +5676,27 @@ snapshots:
       fast-wrap-ansi: 0.1.6
       sisteransi: 1.0.5
 
-  '@clerk/backend@3.4.5':
+  '@clerk/backend@3.4.6':
     dependencies:
-      '@clerk/shared': 4.10.0
+      '@clerk/shared': 4.10.1
       standardwebhooks: 1.0.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@clerk/localizations@4.6.0':
+  '@clerk/localizations@4.6.1':
     dependencies:
-      '@clerk/shared': 4.10.0
+      '@clerk/shared': 4.10.1
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@clerk/nuxt@2.4.0(magicast@0.5.2)(vue@3.5.33(typescript@6.0.3))':
+  '@clerk/nuxt@2.4.1(magicast@0.5.2)(vue@3.5.33(typescript@6.0.3))':
     dependencies:
-      '@clerk/backend': 3.4.5
-      '@clerk/shared': 4.10.0
-      '@clerk/vue': 2.2.0(vue@3.5.33(typescript@6.0.3))
+      '@clerk/backend': 3.4.6
+      '@clerk/shared': 4.10.1
+      '@clerk/vue': 2.2.1(vue@3.5.33(typescript@6.0.3))
       '@nuxt/kit': 4.4.4(magicast@0.5.2)
       '@nuxt/schema': 4.4.4
     transitivePeerDependencies:
@@ -5701,7 +5705,7 @@ snapshots:
       - react-dom
       - vue
 
-  '@clerk/shared@4.10.0':
+  '@clerk/shared@4.10.1':
     dependencies:
       '@tanstack/query-core': 5.100.9
       dequal: 2.0.3
@@ -5709,9 +5713,9 @@ snapshots:
       js-cookie: 3.0.5
       std-env: 3.10.0
 
-  '@clerk/vue@2.2.0(vue@3.5.33(typescript@6.0.3))':
+  '@clerk/vue@2.2.1(vue@3.5.33(typescript@6.0.3))':
     dependencies:
-      '@clerk/shared': 4.10.0
+      '@clerk/shared': 4.10.1
       vue: 3.5.33(typescript@6.0.3)
     transitivePeerDependencies:
       - react
@@ -6447,7 +6451,7 @@ snapshots:
       errx: 0.1.0
       exsolve: 1.0.8
       ignore: 7.0.5
-      jiti: 2.6.1
+      jiti: 2.7.0
       klona: 2.0.6
       mlly: 1.8.2
       ohash: 2.0.11
@@ -9141,6 +9145,8 @@ snapshots:
       '@pkgjs/parseargs': 0.11.0
 
   jiti@2.6.1: {}
+
+  jiti@2.7.0: {}
 
   js-cookie@3.0.5: {}
 
