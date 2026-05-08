@@ -1,9 +1,11 @@
+import { zhCN } from '@clerk/localizations'
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-03-17',
   devtools: {
     enabled: false,
   },
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt', '@clerk/nuxt'],
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
   ignore: ['/app-bak/**/*'],
@@ -17,7 +19,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['ai', '@ai-sdk/vue', 'partial-json', '@zumer/snapdom'],
+      include: ['ai', '@ai-sdk/vue', 'partial-json', '@zumer/snapdom', '@clerk/vue'],
     },
   },
 
@@ -27,6 +29,9 @@ export default defineNuxtConfig({
     openrouterApiKey: '',
   },
 
+  clerk: {
+    localization: zhCN,
+  },
   // EdgeOne Pages Functions Development
   // nitro: {
   //   devProxy: {
