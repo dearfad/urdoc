@@ -5,7 +5,7 @@ export const useUserStore = defineStore('user', () => {
 
   // 在 store 中使用 useSession 来同步 Clerk 状态
   // const { isLoaded, isSignedIn: clerkIsSignedIn, session: clerkSession } = useSession()
-  const { isLoaded, isSignedIn, user } = useUser()
+  // const { isLoaded, isSignedIn, user } = useUser()
 
   // 监听 Clerk 状态变化并同步到 store
   // watchEffect(() => {
@@ -15,5 +15,6 @@ export const useUserStore = defineStore('user', () => {
   //   }
   // })
 
-  return { isLoaded, isSignedIn, user }
+  // return { isLoaded, isSignedIn, user }
+  return {}
 })

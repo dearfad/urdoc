@@ -39,8 +39,6 @@
 </template>
 
 <script setup>
-import { UserAvatar } from '@clerk/nuxt/components'
-
 const lastCommitDate = ref({
   main: '',
   develop: '',

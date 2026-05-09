@@ -3,16 +3,5 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "outputDirectory": ".output",
-  "nodeVersion": "24.5.0",
-  "headers": [
-    {
-      "source": "**/*",
-      "headers": [
-        {
-          "key": "Host",
-          "value": "dev.urdoc.dearfad.com"
-        }
-      ]
-    }
-  ]
+  "nodeVersion": "24.5.0"
 }
