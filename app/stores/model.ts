@@ -2,10 +2,10 @@ const VERSION = '2026-05-06'
 export const useModelStore = defineStore('model', () => {
   const version = ref(VERSION)
   const model = ref<Model>({
-    provider: 'OpenRouter',
-    name: 'tencent/hy3-preview:free',
-    apiKey: 'openrouterApiKey',
-    baseURL: 'https://openrouter.ai/api/v1',
+    provider: 'InternAi',
+    name: 'intern-s1',
+    apiKey: 'shushengApiKey',
+    baseURL: 'https://chat.intern-ai.org.cn/api/v1',
   })
 
   const models = ref<Models>([
