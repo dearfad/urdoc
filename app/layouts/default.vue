@@ -1,11 +1,12 @@
 <template>
-  <v-app>
-    <AppBar />
-    <AppNavDrawer />
-    <AppInfo />
-    <v-main>
+  <UApp :locale="zh_cn">
+    <UDashboardGroup>
+      <AppSidebar />
       <slot />
-      <AppBottomNavigation />
-    </v-main>
-  </v-app>
+    </UDashboardGroup>
+  </UApp>
 </template>
+
+<script setup lang="ts">
+import { zh_cn } from '@nuxt/ui/locale'
+</script>

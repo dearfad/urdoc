@@ -1,0 +1,33 @@
+// /app/types/books.ts
+
+/**
+ * 书籍元数据
+ */
+export interface BookMeta {
+  bookName: string
+  publishDate: string
+  edition: number
+  isbn: string
+}
+
+/**
+ * 书籍内容节点
+ */
+export interface BookContent {
+  [key: string]: BookContent
+}
+
+/**
+ * 书籍完整结构
+ */
+export interface Book {
+  meta: BookMeta
+  content: BookContent
+}
+
+/**
+ * 书籍集合
+ */
+export interface Books {
+  [bookName: string]: Book
+}

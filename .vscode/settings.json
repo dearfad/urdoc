@@ -18,7 +18,7 @@
   "terminal.integrated.defaultProfile.windows": "Command Prompt",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "nuxt.config.ts": "package.json, package-lock.json, tsconfig.json, eslint.config.mjs, .prettierrc.json, .env, .gitignore, .npmrc, LICENSE"
+    "nuxt.config.ts": ".env, .gitignore, .npmrc, .prettierrc.json, AGENTS.md, edgeone.json, eslint.config.mjs, LICENSE, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, skills-lock.json, tsconfig.json"
   },
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
@@ -27,5 +27,13 @@
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 120
   },
-  "vue.autoInsert.dotValue": true
+  "vue.autoInsert.dotValue": true,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.classAttributes": ["class", "ui"],
+  "tailwindCSS.experimental.classRegex": [["ui:\\s*{([^)]*)\\s*}", "(?:'|\"|`)([^']*)(?:'|\"|`)"]]
 }

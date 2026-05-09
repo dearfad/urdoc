@@ -1,10 +1,10 @@
 <template>
-  <v-container id="narrative-medicine-container" fluid class="w-100 w-md-66">
+  <!-- <v-container id="narrative-medicine-container" fluid class="w-100 w-md-66">
     <v-row>
       <v-col cols="12" class="d-flex flex-column ga-4">
         <ProjectNarrativeMedicineGenBtn />
         <ProjectNarrativeMedicineOptionCard />
-        <!-- <CommonCaptureButton capture-id="narrative-medicine-container" /> -->
+        <CommonCaptureButton capture-id="narrative-medicine-container" />
       </v-col>
     </v-row>
     <v-row>
@@ -26,7 +26,28 @@
         <StoryContentComment />
       </v-col>
     </v-row>
-  </v-container>
+  </v-container> -->
+  <UDashboardPanel id="pages-project-narrative-medicine">
+    <template #header>
+      <UDashboardNavbar title="叙事医学">
+        <template #leading>
+          <UTooltip text="侧边栏">
+            <UDashboardSidebarCollapse />
+          </UTooltip>
+        </template>
+        <template #right>
+          <AppHeader />
+        </template>
+      </UDashboardNavbar>
+      <!-- <UDashboardToolbar /> -->
+    </template>
+    <template #body>
+      <div class="flex flex-col gap-4 xl:flex-row">
+        <Case class="xl:w-2/5" />
+        <Story class="xl:w-3/5" />
+      </div>
+    </template>
+  </UDashboardPanel>
 </template>
 
 <script setup>

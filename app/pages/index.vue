@@ -1,26 +1,32 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-75 mx-auto align-center pt-4 ga-4">
-    <div class="text-h2 font-weight-bold text-blue">URDOC</div>
-    <div class="text-h4 font-weight-bold">
-      {{ $t('index.title') }}
-    </div>
-    <div class="d-flex w-100 justify-center">
-      <v-img max-width="640" src="/heroimage.png" />
-    </div>
-    <div class="text-h6 text-center px-4">
-      <p>{{ $t('index.intro-line-1') }}</p>
-      <p class="font-weight-bold">{{ $t('index.intro-line-2') }}</p>
-      <p class="font-weight-bold">{{ $t('index.intro-line-3') }}</p>
-      <p>{{ $t('index.intro-line-4') }}</p>
-    </div>
-    <v-btn
-      class="font-weight-bold my-8"
-      size="x-large"
-      :to="$localePath('/project/narrative-medicine')"
-      rounded="lg"
-      variant="outlined"
-    >
-      {{ $t('index.button-narrative-medicine') }}
-    </v-btn>
-  </v-sheet>
+  <UPageHero
+    description="通过大语言模型生成病例、编写故事、设计问题、模拟问诊、评估能力，CSTAR模式的应用与创新实践"
+    :links="links"
+    headline="URDOC 🌱 CSTAR"
+  >
+    <template #title><span class="text-4xl sm:text-7xl">虚拟病例研究平台</span></template>
+  </UPageHero>
 </template>
+
+<script setup lang="ts">
+import type { ButtonProps } from '@nuxt/ui'
+
+definePageMeta({
+  layout: 'landing',
+})
+
+const links = ref<ButtonProps[]>([
+  {
+    label: '开始',
+    to: '/dashboard',
+    icon: 'i-lucide-square-play',
+  },
+  {
+    label: '文档',
+    to: 'https://docs.urdoc.dearfad.com',
+    color: 'neutral',
+    variant: 'subtle',
+    trailingIcon: 'i-lucide-arrow-right',
+  },
+])
+</script>

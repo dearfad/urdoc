@@ -1,13 +1,28 @@
 <template>
-  <v-sheet class="d-flex flex-column w-100 w-md-66 mx-auto my-4 px-2 ga-4">
-    <!-- <CommonRecordTools /> -->
-    <TestContentShow />
-    <TestUtilsGenerate />
-  </v-sheet>
+  <UDashboardPanel id="pages-cstar-test">
+    <template #header>
+      <UDashboardNavbar title="考核理论">
+        <template #leading>
+          <UTooltip text="侧边栏">
+            <UDashboardSidebarCollapse />
+          </UTooltip>
+        </template>
+        <template #right>
+          <AppHeader />
+        </template>
+      </UDashboardNavbar>
+    </template>
+    <template #body>
+      <div class="flex flex-col gap-2 md:flex-row">
+        <Test class="w-full md:flex-2" />
+        <TestSettings class="w-full md:flex-1" />
+      </div>
+    </template>
+  </UDashboardPanel>
 </template>
 
 <script setup>
 definePageMeta({
-  title: '测试问题',
+  title: '考核理论',
 })
 </script>

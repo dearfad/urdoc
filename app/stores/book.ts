@@ -1,16 +1,26 @@
-import surgery from '~/assets/books/surgery.js'
-import internalMedicine from '~/assets/books/internalMedcine.js'
-import pediatrics from '~/assets/books/pediatrics.js'
-import obstetricsAndGynecology from '~/assets/books/obstetricsAndGynecology.js'
-import neurology from '~/assets/books/neurology.js'
+import bookModules from '~/assets/books/index'
+
+const VERSION = '2026-05-06'
 
 export const useBookStore = defineStore('book', () => {
-  const books = ref({
-    外科学: surgery,
-    内科学: internalMedicine,
-    妇产科学: obstetricsAndGynecology,
-    儿科学: pediatrics,
-    神经病学: neurology,
-  })
-  return { books }
+  const version = ref(VERSION)
+
+  syncStoreVersion(VERSION, 'pinia:book')
+
+  const books = ref<Books>({})
+
+  async function loadBooks() {
+    const modules = await Promise.all(
+      Object.values(bookModules).map(fn => fn())
+    )
+    books.value = Object.fromEntries(
+      modules
+        .filter((book): book is Book => Boolean(book?.meta?.bookName))
+        .map(book => [book.meta.bookName, book])
+    )
+  }
+
+  loadBooks()
+
+  return { version, books }
 })

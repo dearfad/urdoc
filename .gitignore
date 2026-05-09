@@ -9,27 +9,10 @@ dist
 # Node dependencies
 node_modules
 
-# Logs
-logs
-*.log
-
-# Misc
-.DS_Store
-.fleet
-.idea
-
 # Local env files
 .env
-.env.*
-!.env.example
-
-.wrangler
 
 # Tencent Cloud EdgeOne
 .edgeone
 .edgeone/*
 .tef_dist/*
-  
-# VitePress
-docs/.vitepress/dist
-docs/.vitepress/cache
