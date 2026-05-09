@@ -31,6 +31,7 @@ export default defineNuxtConfig({
 
   clerk: {
     localization: zhCN,
+    domain: 'dev.urdoc.dearfad.com',
   },
   // EdgeOne Pages Functions Development
   // nitro: {
