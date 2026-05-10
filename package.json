@@ -11,8 +11,6 @@
   "dependencies": {
     "@ai-sdk/openai-compatible": "^2.0.47",
     "@ai-sdk/vue": "^3.0.177",
-    "@clerk/localizations": "^4.6.2",
-    "@clerk/nuxt": "^2.4.2",
     "@comark/nuxt": "^0.3.1",
     "@iconify-json/lucide": "^1.2.106",
     "@iconify-json/mdi": "^1.2.3",

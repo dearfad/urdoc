@@ -23,17 +23,5 @@
         variant="ghost"
       />
     </UTooltip>
-    <Show when="signed-out">
-      <SignInButton mode="modal">
-        <UButton icon="i-mdi-account-lock-open" variant="ghost" color="neutral" />
-      </SignInButton>
-    </Show>
-    <Show when="signed-in">
-      <UserButton
-        :appearance="{
-          elements: { userButtonAvatarBox: { width: '20px', height: '20px', margin: '6px' } },
-        }"
-      />
-    </Show>
   </div>
 </template>
