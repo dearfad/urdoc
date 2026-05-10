@@ -12,7 +12,7 @@
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
-        <AppNavigationMenu />
+        <UBreadcrumb :items="items" />
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -24,8 +24,21 @@
   </UDashboardPanel>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   title: '互动实践',
 })
+import type { BreadcrumbItem } from '@nuxt/ui'
+const items = ref<BreadcrumbItem[]>([
+  {
+    label: '首页',
+    icon: 'i-lucide-house',
+    to: '/',
+  },
+  {
+    label: '互动实践',
+    icon: 'i-mdi-alpha-a-circle',
+    to: '/cstar/act',
+  },
+])
 </script>

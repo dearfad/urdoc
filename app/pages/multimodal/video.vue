@@ -17,7 +17,7 @@
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
-        <AppNavigationMenu />
+        <UBreadcrumb :items="items" />
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -26,8 +26,21 @@
   </UDashboardPanel>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   title: '视频渲染',
 })
+import type { BreadcrumbItem } from '@nuxt/ui'
+const items = ref<BreadcrumbItem[]>([
+  {
+    label: '首页',
+    icon: 'i-lucide-house',
+    to: '/',
+  },
+  {
+    label: '视频渲染',
+    icon: 'i-lucide-video',
+    to: '/multimodal/video',
+  },
+])
 </script>

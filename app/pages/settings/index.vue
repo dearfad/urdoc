@@ -9,7 +9,7 @@
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
-        <AppNavigationMenu />
+        <UBreadcrumb :items="items" />
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -38,6 +38,20 @@
 definePageMeta({
   title: '设置',
 })
+
+import type { BreadcrumbItem } from '@nuxt/ui'
+const items = ref<BreadcrumbItem[]>([
+  {
+    label: '首页',
+    icon: 'i-lucide-house',
+    to: '/',
+  },
+  {
+    label: '设置',
+    icon: 'i-lucide-settings',
+    to: '/settings',
+  },
+])
 
 const stateStore = useStateStore()
 

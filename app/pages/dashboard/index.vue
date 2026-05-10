@@ -12,7 +12,7 @@
         </template>
       </UDashboardNavbar>
       <UDashboardToolbar>
-        <AppNavigationMenu />
+        <UBreadcrumb :items="items" />
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -41,14 +41,28 @@
   </UDashboardPanel>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
+const items = ref<BreadcrumbItem[]>([
+  {
+    label: '首页',
+    icon: 'i-lucide-house',
+    to: '/',
+  },
+  {
+    label: '概览',
+    icon: 'i-lucide-layout-dashboard',
+    to: '/dashboard',
+  },
+])
+
 const lastCommitDate = ref({
   main: '',
   develop: '',
   docs: '',
 })
 
-async function getLastCommitDate(branch) {
+async function getLastCommitDate(branch: string): Promise<string> {
   return await $fetch('/api/github/commit', {
     method: 'POST',
     headers: {
