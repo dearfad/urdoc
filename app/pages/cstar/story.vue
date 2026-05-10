@@ -11,7 +11,9 @@
           <AppHeader />
         </template>
       </UDashboardNavbar>
-      <!-- <UDashboardToolbar /> -->
+      <UDashboardToolbar>
+        <AppNavigationMenu />
+      </UDashboardToolbar>
     </template>
     <template #body>
       <div class="flex flex-col gap-2 md:flex-row">

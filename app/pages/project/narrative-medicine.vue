@@ -39,7 +39,9 @@
           <AppHeader />
         </template>
       </UDashboardNavbar>
-      <!-- <UDashboardToolbar /> -->
+      <UDashboardToolbar>
+        <AppNavigationMenu />
+      </UDashboardToolbar>
     </template>
     <template #body>
       <div class="flex flex-col gap-4 xl:flex-row">

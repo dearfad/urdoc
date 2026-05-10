@@ -16,7 +16,9 @@
           <AppHeader />
         </template>
       </UDashboardNavbar>
-      <UDashboardToolbar />
+      <UDashboardToolbar>
+        <AppNavigationMenu />
+      </UDashboardToolbar>
     </template>
     <template #body>
       <CardCase />
