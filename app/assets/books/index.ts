@@ -1,4 +1,4 @@
-// assets/books/index.ts
+// ~/assets/books/index.ts
 
 const bookModules = import.meta.glob<Book>(['./*.ts', '!./index.ts'], {
   eager: true,

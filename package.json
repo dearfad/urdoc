@@ -20,7 +20,7 @@
     "@pinia/nuxt": "0.11.3",
     "@zumer/snapdom": "^2.12.0",
     "ai": "^6.0.177",
-    "nuxt": "^4.4.4",
+    "nuxt": "^4.4.5",
     "partial-json": "^0.1.7",
     "pinia-plugin-unstorage": "1.0.0-beta.1",
     "tailwindcss": "^4.3.0"
