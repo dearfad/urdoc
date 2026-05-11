@@ -13,6 +13,7 @@
       <span class="font-bold">病历</span>
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-case-index" />
+        <ButtonClipboard :text="content" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
         <CaseGenerate />
       </div>

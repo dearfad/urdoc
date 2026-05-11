@@ -22,6 +22,7 @@
       <span class="font-bold">故事</span>
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-story-index" />
+        <ButtonClipboard :text="storyStore.story.content" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
         <StoryGenerate />
       </div>

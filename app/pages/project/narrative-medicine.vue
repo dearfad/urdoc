@@ -41,6 +41,9 @@
       </UDashboardNavbar>
       <UDashboardToolbar>
         <UBreadcrumb :items="items" />
+        <div class="ms-auto flex gap-2">
+          <UButton icon="i-lucide-copy-plus" variant="ghost" @click="copyAll" />
+        </div>
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -57,6 +60,20 @@ definePageMeta({
   title: '叙事医学',
 })
 import type { BreadcrumbItem } from '@nuxt/ui'
+const caseStore = useCaseStore()
+const storyStore = useStoryStore()
+const toast = useToast()
+
+async function copyAll() {
+  const text = `病例内容：\n${JSON.stringify(caseStore.case.content, null, 2)}\n\n故事内容：\n${storyStore.story.content}`
+  try {
+    await navigator.clipboard.writeText(text)
+    toast.add({ title: '已复制到剪贴板', color: 'success', icon: 'i-lucide-check-circle', duration: 2000 })
+  } catch {
+    toast.add({ title: '复制失败', color: 'error', icon: 'i-lucide-alert-circle' })
+  }
+}
+
 const items = ref<BreadcrumbItem[]>([
   {
     label: '首页',
