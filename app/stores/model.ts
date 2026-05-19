@@ -1,11 +1,39 @@
-const VERSION = '2026-05-06'
+const VERSION = '2026-05-19'
 export const useModelStore = defineStore('model', () => {
   const version = ref(VERSION)
-  const model = ref<Model>({
-    provider: 'InternAi',
-    name: 'intern-s1',
-    apiKey: 'shushengApiKey',
-    baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+  syncStoreVersion(VERSION, 'pinia:model')
+
+  const activeModels = ref<ActiveModels>({
+    case: {
+      provider: 'InternAi',
+      name: 'intern-s1',
+      apiKey: 'shushengApiKey',
+      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    },
+    story: {
+      provider: 'InternAi',
+      name: 'intern-s1',
+      apiKey: 'shushengApiKey',
+      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    },
+    test: {
+      provider: 'InternAi',
+      name: 'intern-s1',
+      apiKey: 'shushengApiKey',
+      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    },
+    act: {
+      provider: 'InternAi',
+      name: 'intern-s1',
+      apiKey: 'shushengApiKey',
+      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    },
+    rate: {
+      provider: 'InternAi',
+      name: 'intern-s1',
+      apiKey: 'shushengApiKey',
+      baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    },
   })
 
   const models = ref<Models>([
@@ -24,6 +52,12 @@ export const useModelStore = defineStore('model', () => {
     {
       provider: 'OpenRouter',
       name: 'tencent/hy3-preview:free',
+      apiKey: 'openrouterApiKey',
+      baseURL: 'https://openrouter.ai/api/v1',
+    },
+    {
+      provider: 'OpenRouter',
+      name: 'baidu/cobuddy:free',
       apiKey: 'openrouterApiKey',
       baseURL: 'https://openrouter.ai/api/v1',
     },
@@ -343,10 +377,11 @@ export const useModelStore = defineStore('model', () => {
   // function resetResponse() {
   //   modelResponse.value = RESPONSE
   // }
-  syncStoreVersion(VERSION, 'pinia:model')
+
   return {
     version,
-    model,
+    activeModels,
+    models,
     // freeModels,
     // activeModels,
     // customModels,

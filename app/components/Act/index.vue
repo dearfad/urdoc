@@ -21,10 +21,8 @@
 
       <template #default>
         <ClientOnly>
-          <div class="flex flex-col gap-3 p-2 min-h-[400px]">
-            <div v-if="!caseStore.case.content" class="text-center text-muted py-8">
-              请先生成病例
-            </div>
+          <div class="flex min-h-[400px] flex-col gap-3 p-2">
+            <div v-if="!caseStore.case.content" class="text-muted py-8 text-center">请先生成病例</div>
             <template v-else>
               <div
                 v-for="(msg, idx) in actStore.act.content"
@@ -43,7 +41,7 @@
               </div>
               <div v-if="chat.status === 'streaming'" class="flex justify-start">
                 <UBadge color="neutral" variant="soft" size="lg">
-                  <UIcon name="i-lucide-loader-2" class="animate-spin mr-1" />
+                  <UIcon name="i-lucide-loader-2" class="mr-1 animate-spin" />
                   患者正在思考...
                 </UBadge>
               </div>
@@ -53,7 +51,7 @@
       </template>
 
       <template #footer>
-        <div class="mx-4 my-2 flex gap-2">
+        <div class="mx-4 my-2 flex gap-2" v-if="actStore.act.custom && actStore.act.custom.length > 0">
           <UInput
             v-model="userInput"
             placeholder="请输入您的问题..."
@@ -91,9 +89,9 @@ const userInput = ref('')
 
 const chat = new Chat({
   transport: new DefaultChatTransport({
-    api: '/api/chat',
+    api: stateStore.apiBaseUrl,
     body: {
-      model: modelStore.model,
+      model: modelStore.activeModels.act,
       type: 'act',
       task: 'prompt',
     },

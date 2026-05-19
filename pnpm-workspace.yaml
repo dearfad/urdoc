@@ -4,3 +4,13 @@ allowBuilds:
   esbuild: true
   unrs-resolver: true
   vue-demi: true
+minimumReleaseAgeExclude:
+  - '@ai-sdk/gateway@3.0.116'
+  - '@ai-sdk/vue@3.0.185'
+  - '@iconify-json/simple-icons@1.2.83'
+  - '@nuxt/kit@4.4.6'
+  - '@nuxt/nitro-server@4.4.6'
+  - '@nuxt/schema@4.4.6'
+  - '@nuxt/vite-builder@4.4.6'
+  - ai@6.0.185
+  - nuxt@4.4.6

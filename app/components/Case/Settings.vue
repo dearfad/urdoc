@@ -7,7 +7,7 @@
       root: 'border border-default overflow-auto',
     }"
   >
-    <template #header v-if="isTitleShow">
+    <template #header>
       <UIcon name="i-lucide-cog" class="mr-2" />
       <span class="font-bold">病例设定</span>
     </template>
@@ -66,7 +66,8 @@
         </template>
         <template #model>
           <div class="m-4 flex flex-col">
-            <UCheckbox v-model="stateStore.case.reasoning" label="思考模式" />
+            <SelectModel scene="case" />
+            <UCheckbox v-model="stateStore.case.reasoning" label="思考模式" class="mt-2" />
           </div>
         </template>
       </UTabs>

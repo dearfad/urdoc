@@ -22,9 +22,9 @@ const modelStore = useModelStore()
 
 const chat = new Chat({
   transport: new DefaultChatTransport({
-    api: '/api/chat',
+    api: stateStore.apiBaseUrl,
     body: {
-      model: modelStore.model,
+      model: modelStore.activeModels.story,
       type: 'story',
       task: 'generate',
     },

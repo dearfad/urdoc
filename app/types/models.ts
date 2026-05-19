@@ -1,6 +1,6 @@
 // ~/types/models.ts
 
-// 故事结构
+// 模型结构
 export interface Model {
   provider: string | null
   name: string | null
@@ -9,3 +9,5 @@ export interface Model {
 }
 
 export type Models = Model[]
+
+export type ActiveModels = Record<string, Model>

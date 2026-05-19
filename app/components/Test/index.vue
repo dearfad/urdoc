@@ -34,7 +34,7 @@
     </template>
 
     <template #footer>
-      <div class="mx-4 my-2 flex flex-wrap gap-2">
+      <div class="mx-4 my-2 flex flex-wrap gap-2" v-if="testStore.test.custom && testStore.test.custom.length > 0">
         <UBadge
           v-for="custom in testStore.test.custom"
           :key="custom"

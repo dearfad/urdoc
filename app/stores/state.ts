@@ -5,6 +5,11 @@ export const useStateStore = defineStore('state', () => {
 
   const toast = useToast()
 
+  // //
+  // // API 地址设定
+  // //
+  const apiBaseUrl = ref('/api/chat')
+
   const caseItem = ref({
     textbook: null,
     custom: [],
@@ -29,11 +34,6 @@ export const useStateStore = defineStore('state', () => {
     reasoning: false,
     isReasoning: false,
   })
-
-  // //
-  // // API 地址设定
-  // //
-  // const apiBaseUrl = ref('/function')
 
   // const isModelResponseShow = ref({
   //   case: false,
@@ -90,11 +90,12 @@ export const useStateStore = defineStore('state', () => {
   return {
     version,
     toast,
+    apiBaseUrl,
+
     case: caseItem,
     story,
     test,
     act,
-    // apiBaseUrl,
 
     // isModelResponseShow,
 

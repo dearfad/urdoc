@@ -55,7 +55,10 @@
     </template>
 
     <template #footer>
-      <div class="mx-4 my-2 flex flex-wrap gap-2">
+      <div
+        class="mx-4 my-2 flex flex-wrap gap-2"
+        v-if="caseStore.case.custom?.length || Object.keys(caseStore.case.textbook?.meta ?? {}).length"
+      >
         <UBadge
           v-for="sourceItem in filteredTextbookItems"
           :key="sourceItem"
