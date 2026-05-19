@@ -25,7 +25,6 @@ const chat = new Chat({
   transport: new DefaultChatTransport({
     api: stateStore.apiBaseUrl,
     body: {
-      model: modelStore.activeModels.case,
       type: 'case',
       task: 'generate',
     },
@@ -40,7 +39,10 @@ function onSubmit() {
   const custom = caseStore.case.custom.join(', ')
   const textbook = caseStore.case.textbook?.content ? Object.values(caseStore.case.textbook.content).join(', ') : ''
   const text = `要点设定：${textbook}, ${custom}`
-  chat.sendMessage({ text: text }, { body: { reasoning: stateStore.case.reasoning } })
+  chat.sendMessage(
+    { text: text },
+    { body: { model: modelStore.activeModels.case, reasoning: stateStore.case.reasoning } },
+  )
 }
 
 watch(
