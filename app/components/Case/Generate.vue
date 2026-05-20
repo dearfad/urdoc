@@ -24,14 +24,21 @@ const modelStore = useModelStore()
 const chat = new Chat({
   transport: new DefaultChatTransport({
     api: stateStore.apiBaseUrl,
-    body: {
-      type: 'case',
-      task: 'generate',
-    },
+    body: { type: 'case', task: 'generate' },
   }),
+  onError: (error) => {
+    stateStore.toast.add({
+      title: '生成失败',
+      description: error.message,
+      color: 'error',
+      icon: 'i-lucide-alert-circle',
+    })
+  },
 })
 
 function onSubmit() {
+  if (chat.status === 'error') chat.clearError()
+  chat.stop()
   caseStore.reset()
   storyStore.reset()
   caseStore.case.custom = [...stateStore.case.custom]
@@ -40,13 +47,17 @@ function onSubmit() {
   const textbook = caseStore.case.textbook?.content ? Object.values(caseStore.case.textbook.content).join(', ') : ''
   const text = `要点设定：${textbook}, ${custom}`
   chat.sendMessage(
-    { text: text },
-    { body: { model: modelStore.activeModels.case, reasoning: stateStore.case.reasoning } },
+    { text },
+    {
+      body: {
+        model: modelStore.activeModels.case,
+        reasoning: stateStore.case.reasoning,
+      },
+    },
   )
 }
 
 watch(
-  // () => chat.lastMessage?.parts?.[1]?.text,
   () => chat.lastMessage?.parts,
   (parts) => {
     if (!parts) return
