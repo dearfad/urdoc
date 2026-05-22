@@ -86,6 +86,8 @@ const storyStore = useStoryStore()
 const stateStore = useStateStore()
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 
+
+
 // const recordStore = useRecordStore()
 // const stateStore = useStateStore()
 // const modelStore = useModelStore()
@@ -110,3 +112,9 @@ const stateStore = useStateStore()
 //     .join('\n\n')
 // })
 </script>
+
+<style scoped>
+:deep(.comark-content p) {
+  text-indent: 2em;
+}
+</style>

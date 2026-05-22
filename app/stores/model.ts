@@ -41,21 +41,15 @@ export const useModelStore = defineStore(
     const models = ref<Models>([
       {
         provider: 'InternAi',
-        name: 'intern-s1',
         apiKey: 'shushengApiKey',
         baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+        models: ['intern-latest', 'intern-s1'],
       },
       {
         provider: 'LongCat',
-        name: 'LongCat-Flash-Lite',
         apiKey: 'longcatApiKey',
         baseURL: 'https://api.longcat.chat/openai/v1',
-      },
-      {
-        provider: 'LongCat',
-        name: 'LongCat-Flash-Chat',
-        apiKey: 'longcatApiKey',
-        baseURL: 'https://api.longcat.chat/openai/v1',
+        models: ['LongCat-Flash-Lite', 'LongCat-Flash-Chat'],
       },
     ])
     // const stateStore = useStateStore()

@@ -67,7 +67,6 @@
         <template #model>
           <div class="m-4 flex flex-col">
             <SelectModel scene="case" />
-            <UCheckbox v-model="stateStore.case.reasoning" label="思考模式" class="mt-2" />
           </div>
         </template>
       </UTabs>

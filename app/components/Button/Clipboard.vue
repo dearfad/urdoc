@@ -8,8 +8,8 @@
 </template>
 
 <script setup>
-const { text } = defineProps({
-  text: { type: String, required: true },
+const props = defineProps({
+  text: { type: String, default: '' },
 })
 
 const toast = useToast()
@@ -17,7 +17,7 @@ const copied = ref(false)
 
 async function copy() {
   try {
-    await navigator.clipboard.writeText(text)
+    await navigator.clipboard.writeText(props.text ?? '')
     copied.value = true
     toast.add({
       title: '已复制到剪贴板',

@@ -1,6 +1,6 @@
 {
   "name": "urdoc",
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm edgeone",
   "installCommand": "pnpm install",
   "outputDirectory": ".output",
   "nodeVersion": "24.5.0"

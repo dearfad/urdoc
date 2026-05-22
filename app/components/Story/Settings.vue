@@ -30,7 +30,7 @@
         </template>
         <template #model>
           <div class="m-4 flex flex-col">
-            <UCheckbox v-model="stateStore.story.reasoning" label="思考模式" />
+            <SelectModel scene="story" />
           </div>
         </template>
       </UTabs>
