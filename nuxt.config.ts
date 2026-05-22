@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     shushengApiKey: '',
     zhipuApiKey: '',
     openrouterApiKey: '',
+    longcatApiKey: '',
   },
 
   // EdgeOne Pages Functions Development

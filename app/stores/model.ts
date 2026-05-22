@@ -46,40 +46,16 @@ export const useModelStore = defineStore(
         baseURL: 'https://chat.intern-ai.org.cn/api/v1',
       },
       {
-        provider: 'OpenRouter',
-        name: 'google/gemma-4-26b-a4b-it:free',
-        apiKey: 'openrouterApiKey',
-        baseURL: 'https://openrouter.ai/api/v1',
+        provider: 'LongCat',
+        name: 'LongCat-Flash-Lite',
+        apiKey: 'longcatApiKey',
+        baseURL: 'https://api.longcat.chat/openai/v1',
       },
       {
-        provider: 'OpenRouter',
-        name: 'baidu/cobuddy:free',
-        apiKey: 'openrouterApiKey',
-        baseURL: 'https://openrouter.ai/api/v1',
-      },
-      {
-        provider: 'OpenRouter',
-        name: 'nvidia/nemotron-3-super-120b-a12b:free',
-        apiKey: 'openrouterApiKey',
-        baseURL: 'https://openrouter.ai/api/v1',
-      },
-      {
-        provider: 'OpenRouter',
-        name: 'openai/gpt-oss-120b:free',
-        apiKey: 'openrouterApiKey',
-        baseURL: 'https://openrouter.ai/api/v1',
-      },
-      {
-        provider: 'OpenRouter',
-        name: 'z-ai/glm-4.5-air:free',
-        apiKey: 'openrouterApiKey',
-        baseURL: 'https://openrouter.ai/api/v1',
-      },
-      {
-        provider: 'OpenRouter',
-        name: 'deepseek/deepseek-v4-flash:free',
-        apiKey: 'openrouterApiKey',
-        baseURL: 'https://openrouter.ai/api/v1',
+        provider: 'LongCat',
+        name: 'LongCat-Flash-Chat',
+        apiKey: 'longcatApiKey',
+        baseURL: 'https://api.longcat.chat/openai/v1',
       },
     ])
     // const stateStore = useStateStore()

@@ -14,3 +14,8 @@ minimumReleaseAgeExclude:
   - '@nuxt/vite-builder@4.4.6'
   - ai@6.0.185
   - nuxt@4.4.6
+  - '@ai-sdk/gateway@3.0.119'
+  - '@ai-sdk/vue@3.0.190'
+  - '@iconify-json/lucide@1.2.109'
+  - '@nuxt/ui@4.8.0'
+  - ai@6.0.190

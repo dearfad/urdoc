@@ -3,7 +3,7 @@
   <UChatPromptSubmit
     :status="chat.status"
     @stop="chat.stop()"
-    @reload="chat.regenerate()"
+    @reload="onSubmit"
     @click="onSubmit"
     streaming-color="success"
   >
