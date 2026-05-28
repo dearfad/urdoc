@@ -19,3 +19,8 @@ minimumReleaseAgeExclude:
   - '@iconify-json/lucide@1.2.109'
   - '@nuxt/ui@4.8.0'
   - ai@6.0.190
+  - '@ai-sdk/gateway@3.0.121'
+  - '@ai-sdk/vue@3.0.192'
+  - '@iconify-json/lucide@1.2.110'
+  - '@nuxt/ui@4.8.1'
+  - ai@6.0.192
