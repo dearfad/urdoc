@@ -35,6 +35,12 @@ export const useStateStore = defineStore('state', () => {
     isReasoning: false,
   })
 
+  const rate = ref({
+    custom: [],
+    reasoning: false,
+    isReasoning: false,
+  })
+
   // const isModelResponseShow = ref({
   //   case: false,
   //   story: false,
@@ -96,6 +102,7 @@ export const useStateStore = defineStore('state', () => {
     story,
     test,
     act,
+    rate,
 
     // isModelResponseShow,
 

@@ -1,6 +1,6 @@
 <template>
   <UCard
-    id="component-story-index"
+    id="component-rate-index"
     :ui="{
       root: 'border border-default overflow-auto flex flex-col',
       header: 'bg-elevated flex items-center py-2 ',
@@ -18,13 +18,13 @@
     -->
 
     <template #header>
-      <UButton icon="i-mdi-alpha-s-circle" variant="ghost" to="/cstar/story" />
-      <span class="font-bold">故事</span>
+      <UButton icon="i-mdi-alpha-r-circle" variant="ghost" to="/cstar/story" />
+      <span class="font-bold">评价</span>
       <div class="ms-auto flex gap-2">
-        <ButtonCapture capture-id="component-story-index" />
-        <ButtonClipboard :text="storyStore.story.content" />
+        <ButtonCapture capture-id="component-rate-index" />
+        <ButtonClipboard :text="rateStore.rate.content" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <ButtonGenerate type="story" task="generate" />
+        <ButtonGenerate type="rate" task="generate" />
       </div>
     </template>
 
@@ -33,15 +33,15 @@
       <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
       <ClientOnly>
         <UChatReasoning
-          v-if="stateStore.story.isReasoning"
-          :text="storyStore.story.reasoning"
+          v-if="stateStore.rate.isReasoning"
+          :text="rateStore.rate.reasoning"
           defaultOpen
           :ui="{ body: 'max-h-none pt-2' }"
           class="pt-2"
         >
-          <Comark :markdown="storyStore.story.reasoning" class="*:first:mt-0 *:last:mb-0" />
+          <Comark :markdown="rateStore.rate.reasoning" class="*:first:mt-0 *:last:mb-0" />
         </UChatReasoning>
-        <Comark :markdown="storyStore.story.content" />
+        <Comark :markdown="rateStore.rate.content" />
       </ClientOnly>
 
       <!-- 
@@ -65,9 +65,9 @@
     </template>
 
     <template #footer>
-      <div class="mx-4 my-2 flex flex-wrap gap-2" v-if="storyStore.story.custom && storyStore.story.custom.length > 0">
+      <div class="mx-4 my-2 flex flex-wrap gap-2" v-if="rateStore.rate.custom && rateStore.rate.custom.length > 0">
         <UBadge
-          v-for="custom in storyStore.story.custom"
+          v-for="custom in rateStore.rate.custom"
           :key="custom"
           variant="soft"
           color="neutral"
@@ -82,11 +82,9 @@
 </template>
 
 <script setup>
-const storyStore = useStoryStore()
+const rateStore = useRateStore()
 const stateStore = useStateStore()
 // import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
-
-
 
 // const recordStore = useRecordStore()
 // const stateStore = useStateStore()

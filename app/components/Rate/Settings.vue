@@ -1,6 +1,6 @@
 <template>
   <UCard
-    id="component-story-settings"
+    id="component-rate-settings"
     :ui="{
       header: 'bg-elevated flex items-center py-2',
       body: 'p-0 sm:p-0 flex flex-col',
@@ -9,14 +9,14 @@
   >
     <template #header v-if="isTitleShow">
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">故事设定</span>
+      <span class="font-bold">评估设定</span>
     </template>
     <template #default>
       <UTabs :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="custom">
         <template #custom>
           <div class="flex flex-col gap-2 p-2">
             <UInputTags
-              v-model="stateStore.story.custom"
+              v-model="stateStore.rate.custom"
               icon="i-lucide-tag"
               size="xl"
               variant="soft"
@@ -30,7 +30,7 @@
         </template>
         <template #model>
           <div class="m-4 flex flex-col">
-            <SelectModel scene="story" />
+            <SelectModel scene="rate" />
           </div>
         </template>
       </UTabs>
@@ -64,31 +64,27 @@ const selectedCustomItems = ref([])
 const customItems = ref([
   {
     type: 'label',
-    label: '年龄',
+    label: '评估维度',
   },
-  '儿童',
-  '青年',
-  '中年',
-  '老年',
+  '临床思维',
+  '诊断能力',
+  '治疗方案',
+  '沟通能力',
   {
     type: 'separator',
   },
   {
     type: 'label',
-    label: '娱乐',
+    label: '评估标准',
   },
-  '修仙',
-  '神话',
-  '穿越',
-  '历史',
-  '科幻',
-  '都市',
-  '游戏',
+  '完整性',
+  '准确性',
+  '规范性',
 ])
 function updateCustomItems() {
   selectedCustomItems.value.forEach((customItem) => {
-    if (!stateStore.story.custom.includes(customItem)) {
-      stateStore.story.custom.push(customItem)
+    if (!stateStore.rate.custom.includes(customItem)) {
+      stateStore.rate.custom.push(customItem)
     }
   })
   selectedCustomItems.value = []

@@ -15,7 +15,7 @@
         <ButtonCapture capture-id="component-case-index" />
         <ButtonClipboard :text="content" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <CaseGenerate />
+        <ButtonGenerate type="case" task="generate" />
       </div>
     </template>
     <template #default>

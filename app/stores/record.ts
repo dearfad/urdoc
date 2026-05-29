@@ -1,7 +1,26 @@
-const VERSION = '2026-04-02'
-
 export const useRecordStore = defineStore('record', () => {
-  const version = ref(VERSION)
+  // 核心数据源
+  const caseStore = useCaseStore()
+  const storyStore = useStoryStore()
+  const testStore = useTestStore()
+  const actStore = useActStore()
+  const rateStore = useRateStore()
+  const imageStore = useImageStore()
+  const speechStore = useSpeechStore()
+  const videoStore = useVideoStore()
+
+  // 函数
+  function reset() {
+    caseStore.reset()
+    storyStore.reset()
+    testStore.reset()
+    actStore.reset()
+    rateStore.reset()
+    imageStore.reset()
+    speechStore.reset()
+    videoStore.reset()
+  }
+
   // const promptStore = usePromptStore()
   // const modelRouter = useModelRouter()
   // const supabase = useSupabase()
@@ -491,9 +510,17 @@ export const useRecordStore = defineStore('record', () => {
   //   const result = await client.put(params.url.split('/').pop(), Buffer.from(buffer))
   //   return result
   // })
-  syncStoreVersion(VERSION, 'pinia:record')
   return {
-    version,
+    case: caseStore,
+    story: storyStore,
+    test: testStore,
+    act: actStore,
+    rate: rateStore,
+    image: imageStore,
+    speech: speechStore,
+    video: videoStore,
+    reset,
+
     // record,
     // records,
     // watchFields,

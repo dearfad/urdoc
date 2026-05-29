@@ -1,6 +1,6 @@
 <template>
   <UCard
-    id="component-test-settings"
+    id="component-image-settings"
     :ui="{
       header: 'bg-elevated flex items-center py-2',
       body: 'p-0 sm:p-0 flex flex-col',
@@ -9,14 +9,14 @@
   >
     <template #header v-if="isTitleShow">
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">考核设定</span>
+      <span class="font-bold">图像设定</span>
     </template>
     <template #default>
       <UTabs :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="custom">
         <template #custom>
-          <div class="flex flex-col gap-2 p-2">
+          <!-- <div class="flex flex-col gap-2 p-2">
             <UInputTags
-              v-model="stateStore.test.custom"
+              v-model="stateStore.story.custom"
               icon="i-lucide-tag"
               size="xl"
               variant="soft"
@@ -26,12 +26,12 @@
               <USelect v-model="selectedCustomItems" :items="customItems" multiple class="flex-1" variant="soft" />
               <UButton @click="updateCustomItems" variant="subtle" class="ml-2">添加</UButton>
             </div>
-          </div>
+          </div> -->
         </template>
         <template #model>
-          <div class="m-4 flex flex-col">
-            <SelectModel scene="test" />
-          </div>
+          <!-- <div class="m-4 flex flex-col">
+            <SelectModel scene="image" />
+          </div> -->
         </template>
       </UTabs>
     </template>
@@ -64,26 +64,31 @@ const selectedCustomItems = ref([])
 const customItems = ref([
   {
     type: 'label',
-    label: '考试类型',
+    label: '年龄',
   },
-  '执业医师考试',
-  '执业助理医师考试',
-  '主治医师考试',
+  '儿童',
+  '青年',
+  '中年',
+  '老年',
   {
     type: 'separator',
   },
   {
     type: 'label',
-    label: '难度',
+    label: '娱乐',
   },
-  '基础',
-  '中等',
-  '困难',
+  '修仙',
+  '神话',
+  '穿越',
+  '历史',
+  '科幻',
+  '都市',
+  '游戏',
 ])
 function updateCustomItems() {
   selectedCustomItems.value.forEach((customItem) => {
-    if (!stateStore.test.custom.includes(customItem)) {
-      stateStore.test.custom.push(customItem)
+    if (!stateStore.story.custom.includes(customItem)) {
+      stateStore.story.custom.push(customItem)
     }
   })
   selectedCustomItems.value = []

@@ -14,7 +14,7 @@
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-test-index" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <TestGenerate />
+        <ButtonGenerate type="test" task="generate" />
       </div>
     </template>
 

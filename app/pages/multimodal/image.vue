@@ -1,28 +1,12 @@
 <template>
-  <!-- <v-container fluid class="w-100 w-md-66">
-    <v-row justify="center">
-      <v-col cols="12" md="6">
+  <!-- 
         <FaceContentShow />
         <FaceContentPrompt />
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="12" md="9">
         <FaceUtilsGenerate />
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="12" md="6">
         <StoryContentIllustration />
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="12" md="9">
         <CommonPutOSS />
         <StoryUtilsGenerateIllustration />
-      </v-col>
-    </v-row>
-  </v-container> -->
+-->
   <UDashboardPanel id="pages-multimodal-image">
     <template #header>
       <UDashboardNavbar title="图像创作">
@@ -40,7 +24,10 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <CardCase />
+      <div class="flex flex-col gap-2 md:flex-row">
+        <Image class="w-full md:flex-2" />
+        <ImageSettings class="w-full md:flex-1" />
+      </div>
     </template>
   </UDashboardPanel>
 </template>

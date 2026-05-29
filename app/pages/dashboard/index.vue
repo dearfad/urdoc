@@ -39,6 +39,8 @@
               v-for="item in cstarItems"
               :key="item.label"
               variant="outline"
+              class="cursor-pointer"
+              @click="navigateTo(item.to)"
               :ui="{
                 base: 'h-full',
                 body: 'flex flex-col items-center text-center gap-3 p-6',
@@ -49,6 +51,33 @@
               <UIcon :name="item.icon" class="text-primary size-8" />
               <h3 class="text-highlighted font-semibold">{{ item.label }}</h3>
               <p class="text-muted text-sm leading-relaxed">{{ item.description }}</p>
+            </UCard>
+          </div>
+        </div>
+
+        <!-- 多模态工具 -->
+        <div class="px-6 py-8 lg:px-8">
+          <h2 class="text-highlighted mb-2 text-lg font-semibold">多模态工具</h2>
+          <p class="text-muted mb-6 text-sm">拓展医学教育的表达维度</p>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <UCard
+              v-for="item in multimodalItems"
+              :key="item.label"
+              variant="outline"
+              class="cursor-pointer"
+              @click="navigateTo(item.to)"
+              :ui="{
+                base: 'h-full',
+                body: 'flex items-center gap-4 p-5',
+                header: 'p-0',
+                footer: 'p-0',
+              }"
+            >
+              <UIcon :name="item.icon" class="text-primary size-6 shrink-0" />
+              <div>
+                <h3 class="text-highlighted font-semibold">{{ item.label }}</h3>
+                <p class="text-muted text-sm">{{ item.description }}</p>
+              </div>
             </UCard>
           </div>
         </div>
@@ -69,31 +98,6 @@
               </UBadge>
               <UIcon v-if="i < workflowSteps.length - 1" name="i-lucide-arrow-right" class="text-muted size-4" />
             </template>
-          </div>
-        </div>
-
-        <!-- 多模态工具 -->
-        <div class="px-6 py-8 lg:px-8">
-          <h2 class="text-highlighted mb-2 text-lg font-semibold">多模态工具</h2>
-          <p class="text-muted mb-6 text-sm">拓展医学教育的表达维度</p>
-          <div class="grid gap-4 sm:grid-cols-3">
-            <UCard
-              v-for="item in multimodalItems"
-              :key="item.label"
-              variant="outline"
-              :ui="{
-                base: 'h-full',
-                body: 'flex items-center gap-4 p-5',
-                header: 'p-0',
-                footer: 'p-0',
-              }"
-            >
-              <UIcon :name="item.icon" class="text-primary size-6 shrink-0" />
-              <div>
-                <h3 class="text-highlighted font-semibold">{{ item.label }}</h3>
-                <p class="text-muted text-sm">{{ item.description }}</p>
-              </div>
-            </UCard>
           </div>
         </div>
 
@@ -169,29 +173,45 @@
 </template>
 
 <script setup lang="ts">
-import type { BreadcrumbItem } from '@nuxt/ui'
-const items = ref<BreadcrumbItem[]>([
-  // {
-  //   label: '概览',
-  //   icon: 'i-lucide-house',
-  //   to: '/dashboard',
-  // },
-])
-
 const cstarItems = [
-  { label: '生成病例', icon: 'i-lucide-file-text', description: 'AI 自动生成符合执业医师考试标准的完整结构化病例' },
-  { label: '编写故事', icon: 'i-lucide-book-open', description: '基于病例创作医疗叙事故事，体现叙事医学理念' },
-  { label: '考核理论', icon: 'i-lucide-clipboard-check', description: '根据病例自动生成符合考试要求的选择题' },
-  { label: '互动实践', icon: 'i-lucide-message-square', description: 'AI 模拟患者角色，进行逼真的临床问诊训练' },
-  { label: '评估能力', icon: 'i-lucide-bar-chart-3', description: '多维度评估临床能力，持续追踪学习进度' },
+  {
+    label: '生成病例',
+    icon: 'i-lucide-file-text',
+    description: 'AI 自动生成符合执业医师考试标准的完整结构化病例',
+    to: '/cstar/case',
+  },
+  {
+    label: '编写故事',
+    icon: 'i-lucide-book-open',
+    description: '基于病例创作医疗叙事故事，体现叙事医学理念',
+    to: '/cstar/story',
+  },
+  {
+    label: '考核理论',
+    icon: 'i-lucide-clipboard-check',
+    description: '根据病例自动生成符合考试要求的选择题',
+    to: '/cstar/test',
+  },
+  {
+    label: '互动实践',
+    icon: 'i-lucide-message-square',
+    description: 'AI 模拟患者角色，进行逼真的临床问诊训练',
+    to: '/cstar/act',
+  },
+  {
+    label: '评估能力',
+    icon: 'i-lucide-bar-chart-3',
+    description: '多维度评估临床能力，持续追踪学习进度',
+    to: '/cstar/rate',
+  },
 ]
 
 const workflowSteps = ['生成病例', '编写故事', '考核理论', '互动实践']
 
 const multimodalItems = [
-  { label: '图像创作', icon: 'i-lucide-image', description: 'AI 生成医学相关图像' },
-  { label: '视频渲染', icon: 'i-lucide-video', description: '姿态与动作相关视频生成' },
-  { label: '语音合成', icon: 'i-lucide-volume-2', description: 'AI 语音对话生成' },
+  { label: '图像创作', icon: 'i-lucide-image', description: 'AI 生成医学相关图像', to: '/multimodal/image' },
+  { label: '视频渲染', icon: 'i-lucide-video', description: '姿态与动作相关视频生成', to: '/multimodal/video' },
+  { label: '语音合成', icon: 'i-lucide-volume-2', description: 'AI 语音对话生成', to: '/multimodal/speech' },
 ]
 
 const lastCommitDate = ref({

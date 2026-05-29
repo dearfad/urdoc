@@ -16,7 +16,10 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <!-- <CardCase /> -->
+      <div class="flex flex-col gap-2 md:flex-row">
+        <Rate class="w-full md:flex-2" />
+        <RateSettings class="w-full md:flex-1" />
+      </div>
     </template>
   </UDashboardPanel>
 </template>
