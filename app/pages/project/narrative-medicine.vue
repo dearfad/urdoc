@@ -76,9 +76,9 @@ async function copyAll() {
 
 const items = ref<BreadcrumbItem[]>([
   {
-    label: '首页',
+    label: '概览',
     icon: 'i-lucide-house',
-    to: '/',
+    to: '/dashboard',
   },
   {
     label: '叙事医学',
