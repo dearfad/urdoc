@@ -1,3 +1,6 @@
+import { DefaultChatTransport } from 'ai'
+import { Chat } from '@ai-sdk/vue'
+
 const VERSION = '2026-05-29'
 
 export const useImageStore = defineStore('image', () => {
@@ -5,13 +8,42 @@ export const useImageStore = defineStore('image', () => {
   syncStoreVersion(VERSION, 'pinia:image')
   const image = ref()
 
+  const chat = new Chat({
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    onError: (error) => {
+      useStateStore().toast.add({
+        title: '生成失败',
+        description: error.message,
+        color: 'error',
+        icon: 'i-lucide-alert-circle',
+      })
+    },
+  })
+
+  const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
+
   function reset() {
     image.value = undefined
   }
 
-  function generate() {}
+  function generate() {
+    const stateStore = useStateStore()
+    if (chat.status === 'error') chat.clearError()
+    chat.stop()
+    chat.sendMessage(
+      { text: '生成一张图片' },
+      {
+        body: {
+          type: 'image',
+          task: 'generate',
+          model: useModelStore().activeModels.image,
+          reasoning: false,
+        },
+      },
+    )
+  }
 
-  return { version, image, reset, generate }
+  return { version, image, reset, generate, status }
 })
 
 // export default function () {

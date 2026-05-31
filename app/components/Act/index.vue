@@ -3,7 +3,7 @@
     <UCard
       id="component-act-index"
       :ui="{
-        root: 'border border-default overflow-auto flex flex-col',
+        root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
         header: 'bg-elevated flex items-center py-2',
         body: 'py-0 sm:py-2 flex-1',
         footer: 'p-0 sm:p-0',

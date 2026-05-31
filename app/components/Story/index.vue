@@ -2,7 +2,7 @@
   <UCard
     id="component-story-index"
     :ui="{
-      root: 'border border-default overflow-auto flex flex-col',
+      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
       header: 'bg-elevated flex items-center py-2 ',
       body: 'py-0 sm:py-2 flex-1',
       footer: 'p-0 sm:p-0',
@@ -24,7 +24,7 @@
         <ButtonCapture capture-id="component-story-index" />
         <ButtonClipboard :text="storyStore.story.content" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <ButtonGenerate type="story" task="generate" />
+        <ButtonGenerate type="story" task="generate" label="生成故事" />
       </div>
     </template>
 

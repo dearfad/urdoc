@@ -9,7 +9,7 @@
   >
     <template #header>
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">病例设定</span>
+      <span class="font-bold">病历设定</span>
     </template>
     <template #default>
       <UTabs :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="textbook">

@@ -2,7 +2,7 @@
   <UCard
     id="component-rate-index"
     :ui="{
-      root: 'border border-default overflow-auto flex flex-col',
+      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
       header: 'bg-elevated flex items-center py-2 ',
       body: 'py-0 sm:py-2 flex-1',
       footer: 'p-0 sm:p-0',
@@ -24,7 +24,7 @@
         <ButtonCapture capture-id="component-rate-index" />
         <ButtonClipboard :text="rateStore.rate.content" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <ButtonGenerate type="rate" task="generate" />
+        <ButtonGenerate type="rate" task="generate" label="生成评估" />
       </div>
     </template>
 

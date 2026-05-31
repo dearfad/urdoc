@@ -36,6 +36,24 @@ export const useModelStore = defineStore(
         apiKey: 'shushengApiKey',
         baseURL: 'https://chat.intern-ai.org.cn/api/v1',
       },
+      image: {
+        provider: 'InternAi',
+        name: 'intern-s1',
+        apiKey: 'shushengApiKey',
+        baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+      },
+      speech: {
+        provider: 'InternAi',
+        name: 'intern-s1',
+        apiKey: 'shushengApiKey',
+        baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+      },
+      video: {
+        provider: 'InternAi',
+        name: 'intern-s1',
+        apiKey: 'shushengApiKey',
+        baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+      },
     })
 
     const models = ref<Models>([

@@ -13,45 +13,35 @@
       <span class="font-bold">病历</span>
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-case-index" />
-        <ButtonClipboard :text="content" />
+        <ButtonClipboard :text="caseStore.markdown" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <ButtonGenerate type="case" task="generate" />
+        <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+        <ButtonGenerate type="case" task="generate" label="生成病例" />
       </div>
     </template>
     <template #default>
-      <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
-      <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
       <ClientOnly>
-        <UChatReasoning
-          v-if="stateStore.case.isReasoning"
-          :text="caseStore.case.reasoning"
-          defaultOpen
-          :ui="{ body: 'max-h-none pt-2' }"
-          class="pt-2"
-        >
-          <Comark :markdown="caseStore.case.reasoning" class="*:first:mt-0 *:last:mb-0" />
-        </UChatReasoning>
-        <Comark :markdown="content" />
+        <div v-if="isEditing && caseStore.case?.content" class="flex flex-1 flex-col gap-2">
+          <!-- <UEditorToolbar v-if="editor" layout="fixed" :editor="editor" /> -->
+          <UEditor class="min-h-0 flex-1" content-type="json" v-model="editor" />
+          <!-- <div class="flex justify-end gap-2">
+            <UButton color="neutral" variant="soft" @click="cancelEdit">取消</UButton>
+            <UButton color="primary" @click="saveEdit">保存</UButton>
+          </div> -->
+        </div>
+        <div v-else>
+          <UChatReasoning
+            v-if="stateStore.case.isReasoning"
+            :text="caseStore.case.reasoning"
+            defaultOpen
+            :ui="{ body: 'max-h-none pt-2' }"
+            class="pt-2"
+          >
+            <Comark :markdown="caseStore.case.reasoning" class="*:first:mt-0 *:last:mb-0" />
+          </UChatReasoning>
+          <Comark :markdown="caseStore.markdown" />
+        </div>
       </ClientOnly>
-
-      <!-- 
-        <v-card-text>
-          <div v-if="isReasoningContentShow" class="reasoning my-4">
-            <details open>
-              <summary class="font-weight-bold">思考过程</summary>
-              <v-divider class="my-2" />
-              <MarkdownRender :content="reasoningContent" />
-              <v-divider class="my-2" />
-            </details>
-          </div>
-          <div v-if="stateStore.isModelResponseShow.case" class="case">
-            <MarkdownRender :content="streamChatContentMarkdown" />
-          </div>
-          <div v-else class="case">
-            <MarkdownRender :content="recordStore.view.case.markdown" />
-          </div>
-        </v-card-text> 
-      -->
     </template>
 
     <template #footer>
@@ -85,20 +75,8 @@
 </template>
 
 <script setup>
-// import MarkdownRender from 'markstream-vue'
-import { parse } from 'partial-json'
-import CaptureButton from '../Button/Capture.vue'
 const caseStore = useCaseStore()
 const stateStore = useStateStore()
-const content = computed(() => {
-  if (!caseStore.case?.content) return ''
-  if (typeof caseStore.case.content === 'string') return
-  const raw = JSON.stringify(caseStore.case.content)
-  return Object.entries(parse(raw))
-    .map(([key, value]) => `**${key}**：${value}`)
-    .join('\n\n')
-})
-
 const textbookItems = ref([
   { icon: 'i-lucide-book', name: 'book' },
   { icon: 'i-lucide-bookmark', name: 'part' },
@@ -112,29 +90,23 @@ const filteredTextbookItems = computed(() => {
   return textbookItems.value.filter((item) => caseStore.case.textbook?.content?.[item.name])
 })
 
-// import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
-
-// const recordStore = useRecordStore()
-// const stateStore = useStateStore()
-// const modelStore = useModelStore()
-
-// 是否显示思考过程
-// const isReasoningContentShowSwitches = ref(true)
-// const isReasoningContentShow = computed(
-//   () =>
-//     (stateStore.isModelResponseShow.case && modelStore.modelResponse.chat.reasoning_content) ||
-//     (isReasoningContentShowSwitches.value && recordStore.record.reasoning.case),
-// )
-
-// 思考内容
-// const reasoningContent = computed(
-//   () => recordStore.record.reasoning.case || modelStore.modelResponse.chat.reasoning_content,
-// )
-
-// 是否显示流式内容
-// const streamChatContentMarkdown = computed(() => {
-//   return Object.entries(modelStore.modelResponse.chat.content)
-//     .map(([key, value]) => `**${key}**：${value}`)
-//     .join('\n\n')
-// })
+const isEditing = ref(false)
+const editor = ref({
+  type: 'doc',
+  content: [
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [{ type: 'text', text: 'Hello World' }],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        { type: 'text', text: 'This is a ' },
+        { type: 'text', marks: [{ type: 'bold' }], text: 'rich text' },
+        { type: 'text', text: ' editor.' },
+      ],
+    },
+  ],
+})
 </script>

@@ -1,4 +1,5 @@
-import { isReasoningUIPart, isTextUIPart } from 'ai'
+import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
+import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-05-31'
 
@@ -14,7 +15,31 @@ export const useStoryStore = defineStore('story', () => {
     content: null,
   })
 
-  const { status, send, stop } = useChatGenerations()
+  const chat = new Chat({
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    onError: (error) => {
+      useStateStore().toast.add({
+        title: '生成失败',
+        description: error.message,
+        color: 'error',
+        icon: 'i-lucide-alert-circle',
+      })
+    },
+  })
+
+  const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
+
+  watch(
+    () => chat.lastMessage?.parts,
+    (parts) => {
+      if (!parts) return
+      for (const part of parts.slice(1)) {
+        useStateStore().story.isReasoning = isReasoningUIPart(part)
+        handlePart(part)
+      }
+    },
+    { deep: true },
+  )
 
   function reset() {
     story.value = {
@@ -26,7 +51,7 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  function generate() {
+  function prepare() {
     const stateStore = useStateStore()
     const caseStore = useCaseStore()
 
@@ -37,22 +62,23 @@ export const useStoryStore = defineStore('story', () => {
 
     const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
 
-    send({
+    return {
       type: 'story',
       text,
       body: {
         model: useModelStore().activeModels.story,
         reasoning: stateStore.story.reasoning,
       },
-      onPart: (part) => {
-        if (isReasoningUIPart(part)) {
-          story.value.reasoning = part.text
-        }
-        if (isTextUIPart(part) && part.text?.trim()) {
-          story.value.content = part.text
-        }
-      },
-    })
+    }
+  }
+
+  function handlePart(part: any) {
+    if (isReasoningUIPart(part)) {
+      story.value.reasoning = part.text
+    }
+    if (isTextUIPart(part) && part.text?.trim()) {
+      story.value.content = part.text
+    }
   }
 
   function verify() {}
@@ -65,17 +91,25 @@ export const useStoryStore = defineStore('story', () => {
 
   function illustrate() {}
 
+  function generate() {
+    const data = prepare()
+    if (chat.status === 'error') chat.clearError()
+    chat.stop()
+    chat.sendMessage({ text: data.text }, { body: { ...data.body, type: data.type, task: 'generate' } })
+  }
+
   return {
     version,
     story,
     reset,
-    generate,
+    prepare,
+    handlePart,
     verify,
-    status,
-    stop,
     comment,
     conversation: converse,
     discussion: discuss,
     illustrate,
+    status,
+    generate,
   }
 })

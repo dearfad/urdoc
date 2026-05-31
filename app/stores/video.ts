@@ -1,3 +1,6 @@
+import { DefaultChatTransport } from 'ai'
+import { Chat } from '@ai-sdk/vue'
+
 const VERSION = '2026-05-29'
 
 export const useVideoStore = defineStore('video', () => {
@@ -5,11 +8,41 @@ export const useVideoStore = defineStore('video', () => {
   syncStoreVersion(VERSION, 'pinia:video')
   const video = ref()
 
+  const chat = new Chat({
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    onError: (error) => {
+      useStateStore().toast.add({
+        title: '生成失败',
+        description: error.message,
+        color: 'error',
+        icon: 'i-lucide-alert-circle',
+      })
+    },
+  })
+
+  const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
+
   function reset() {
     video.value = undefined
   }
-  function generate() {}
-  return { version, video, reset, generate }
+
+  function generate() {
+    if (chat.status === 'error') chat.clearError()
+    chat.stop()
+    chat.sendMessage(
+      { text: '生成视频' },
+      {
+        body: {
+          type: 'video',
+          task: 'generate',
+          model: useModelStore().activeModels.video,
+          reasoning: false,
+        },
+      },
+    )
+  }
+
+  return { version, video, reset, generate, status }
 })
 
 // export default function () {

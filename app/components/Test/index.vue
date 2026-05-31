@@ -2,7 +2,7 @@
   <UCard
     id="component-test-index"
     :ui="{
-      root: 'border border-default overflow-auto flex flex-col',
+      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
       header: 'bg-elevated flex items-center py-2 ',
       body: 'py-0 sm:py-2 flex-1',
       footer: 'p-0 sm:p-0',
@@ -14,7 +14,7 @@
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-test-index" />
         <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <ButtonGenerate type="test" task="generate" />
+        <ButtonGenerate type="test" task="generate" label="生成考核" />
       </div>
     </template>
 

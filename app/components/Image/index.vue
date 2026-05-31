@@ -12,7 +12,7 @@
       <UButton icon="i-lucide-image" variant="ghost" to="/multimodal/image" />
       <span class="font-bold">图像创作</span>
       <div class="ms-auto flex gap-2">
-        <ButtonGenerate type="image" task="generate" />
+        <ButtonGenerate type="image" task="generate" label="生成图像" />
       </div>
     </template>
     <template #default> </template>
