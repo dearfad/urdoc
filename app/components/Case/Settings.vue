@@ -3,8 +3,8 @@
     id="component-case-settings"
     :ui="{
       header: 'bg-elevated flex items-center py-2',
-      body: 'p-0 sm:p-0 flex flex-col',
-      root: 'border border-default overflow-auto',
+      body: 'p-0 sm:p-0 flex min-h-0 flex-1 flex-col',
+      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
     }"
   >
     <template #header>

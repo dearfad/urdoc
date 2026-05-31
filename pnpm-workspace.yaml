@@ -24,3 +24,4 @@ minimumReleaseAgeExclude:
   - '@iconify-json/lucide@1.2.110'
   - '@nuxt/ui@4.8.1'
   - ai@6.0.192
+  - '@iconify-json/lucide@1.2.111'

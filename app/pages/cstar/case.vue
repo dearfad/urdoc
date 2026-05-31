@@ -16,9 +16,9 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <div class="flex flex-col gap-2 md:flex-row">
-        <Case class="w-full md:flex-2" />
-        <CaseSettings class="w-full md:flex-1" />
+      <div class="flex min-h-0 flex-1 flex-col gap-2 md:flex-row">
+        <Case class="flex min-h-0 w-full flex-col md:flex-2" />
+        <CaseSettings class="flex min-h-0 w-full flex-col md:flex-1" />
       </div>
     </template>
   </UDashboardPanel>

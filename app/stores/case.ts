@@ -12,12 +12,12 @@ const caseDefault = {
 export const useCaseStore = defineStore('case', () => {
   const version = ref(VERSION)
 
-  const caseItems = ref<Case>({ ...caseDefault })
+  const case_ = ref<Case>({ ...caseDefault })
 
   function reset() {
-    caseItems.value = { ...caseDefault }
+    case_.value = { ...caseDefault }
   }
 
   syncStoreVersion(VERSION, 'pinia:case')
-  return { version, case: caseItems, reset }
+  return { version, case: case_, reset }
 })
