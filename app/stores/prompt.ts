@@ -2,6 +2,7 @@ const VERSION = '2026-04-04'
 
 export const usePromptStore = defineStore('prompt', () => {
   const version = ref(VERSION)
+  syncStoreVersion(VERSION, 'pinia:prompt')
   // const stateStore = useStateStore()
   // const recordStore = useRecordStore()
   // const supabase = useSupabase()
@@ -244,7 +245,6 @@ export const usePromptStore = defineStore('prompt', () => {
   //     },
   //   ]
   // }
-  syncStoreVersion(VERSION, 'pinia:prompt')
   return {
     version,
     // prompts,

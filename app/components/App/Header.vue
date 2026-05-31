@@ -5,8 +5,7 @@
     </UTooltip>
     <UTooltip text="文档">
       <UButton
-        to="https://docs.urdoc.dearfad.com"
-        target="_blank"
+        to="/docs"
         icon="i-lucide-file-text"
         aria-label="Documentation"
         color="neutral"

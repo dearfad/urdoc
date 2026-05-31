@@ -1,22 +1,26 @@
 const VERSION = '2026-05-06'
 
-const testDefault = {
-  id: 0,
-  tags: [],
-  custom: [],
-  reasoning: null,
-  content: null,
-}
-
 export const useTestStore = defineStore('test', () => {
   const version = ref(VERSION)
+  syncStoreVersion(VERSION, 'pinia:test')
 
-  const test = ref<Test>({ ...testDefault })
+  const test = ref<Test>({
+    id: 0,
+    tags: [],
+    custom: [],
+    reasoning: null,
+    content: null,
+  })
 
   function reset() {
-    test.value = { ...testDefault }
+    test.value = {
+      id: 0,
+      tags: [],
+      custom: [],
+      reasoning: null,
+      content: null,
+    }
   }
 
-  syncStoreVersion(VERSION, 'pinia:test')
   return { version, test, reset }
 })

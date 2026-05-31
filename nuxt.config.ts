@@ -26,10 +26,6 @@ export default defineNuxtConfig({
     longcatApiKey: '',
   },
 
-  // EdgeOne Pages Functions Development
-  // nitro: {
-  //   devProxy: {
-  //     '/function': 'http://localhost:8088/function',
-  //   },
-  // },
+
+
 })

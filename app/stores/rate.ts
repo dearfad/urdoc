@@ -10,6 +10,7 @@ const storyDefault = {
 
 export const useRateStore = defineStore('rate', () => {
   const version = ref(VERSION)
+  syncStoreVersion(VERSION, 'pinia:rate')
 
   const rate = ref<Rate>({ ...storyDefault })
 
@@ -17,6 +18,5 @@ export const useRateStore = defineStore('rate', () => {
     rate.value = { ...storyDefault }
   }
 
-  syncStoreVersion(VERSION, 'pinia:rate')
   return { version, rate, reset }
 })

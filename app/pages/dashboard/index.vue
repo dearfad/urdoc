@@ -137,14 +137,9 @@
                   >
                 </div>
                 <div class="flex items-center gap-3">
-                  <UBadge :label="lastCommitDate.docs || '--'" color="info" variant="soft" class="font-mono text-xs" />
+                  <UBadge label="最新" color="info" variant="soft" class="font-mono text-xs" />
                   <span class="text-muted text-sm"
-                    >文档站：<a
-                      href="https://docs.urdoc.dearfad.com"
-                      target="_blank"
-                      class="text-primary hover:underline"
-                      >docs.urdoc.dearfad.com</a
-                    ></span
+                    >文档：<NuxtLink to="/docs" class="text-primary hover:underline">应用内文档中心</NuxtLink></span
                   >
                 </div>
               </div>
@@ -217,7 +212,6 @@ const multimodalItems = [
 const lastCommitDate = ref({
   main: '',
   develop: '',
-  docs: '',
 })
 
 async function getLastCommitDate(branch: string): Promise<string> {
@@ -235,6 +229,5 @@ async function getLastCommitDate(branch: string): Promise<string> {
 async function getLastCommitDateAll() {
   lastCommitDate.value.main = await getLastCommitDate('main')
   lastCommitDate.value.develop = await getLastCommitDate('develop')
-  lastCommitDate.value.docs = await getLastCommitDate('docs')
 }
 </script>

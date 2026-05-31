@@ -2,6 +2,7 @@ const VERSION = '2026-05-31'
 
 export const useRecordStore = defineStore('record', () => {
   const version = ref(VERSION)
+  syncStoreVersion(VERSION, 'pinia:record')
   const id = ref(0)
   const tags = ref<string[]>([])
   const title = ref('')
@@ -536,7 +537,6 @@ export const useRecordStore = defineStore('record', () => {
   // record 自身的 $state 仅含元数据字段（id/tags/title/author/public_/status 等）
   // 子 store（case/story/test/act/rate 等）的数据由各自独立持久化（pinia:case 等），
   // 不嵌套在 record 中，无数据重复
-  syncStoreVersion(VERSION, 'pinia:record')
   return {
     version,
     id,

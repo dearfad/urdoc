@@ -104,7 +104,7 @@ const links = ref<ButtonProps[]>([
   },
   {
     label: '文档',
-    to: 'https://docs.urdoc.dearfad.com',
+    to: '/docs',
     color: 'neutral',
     variant: 'subtle',
     trailingIcon: 'i-lucide-arrow-right',

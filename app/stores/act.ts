@@ -10,6 +10,7 @@ const actDefault = {
 
 export const useActStore = defineStore('act', () => {
   const version = ref(VERSION)
+  syncStoreVersion(VERSION, 'pinia:act')
 
   const act = ref<Act>({ ...actDefault })
 
@@ -17,6 +18,5 @@ export const useActStore = defineStore('act', () => {
     act.value = { ...actDefault }
   }
 
-  syncStoreVersion(VERSION, 'pinia:act')
   return { version, act, reset }
 })
