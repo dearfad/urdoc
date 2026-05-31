@@ -1,4 +1,6 @@
-const VERSION = '2026-05-06'
+import { isReasoningUIPart, isTextUIPart } from 'ai'
+
+const VERSION = '2026-05-31'
 
 export const useStoryStore = defineStore('story', () => {
   const version = ref(VERSION)
@@ -12,6 +14,8 @@ export const useStoryStore = defineStore('story', () => {
     content: null,
   })
 
+  const { status, send, stop } = useChatGenerations()
+
   function reset() {
     story.value = {
       id: 0,
@@ -22,7 +26,35 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  function generate() {}
+  function generate() {
+    const stateStore = useStateStore()
+    const caseStore = useCaseStore()
+
+    reset()
+
+    story.value.custom = [...stateStore.story.custom]
+    const customText = story.value.custom.join(', ')
+
+    const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
+
+    send({
+      type: 'story',
+      text,
+      body: {
+        model: useModelStore().activeModels.story,
+        reasoning: stateStore.story.reasoning,
+      },
+      onPart: (part) => {
+        if (isReasoningUIPart(part)) {
+          story.value.reasoning = part.text
+        }
+        if (isTextUIPart(part) && part.text?.trim()) {
+          story.value.content = part.text
+        }
+      },
+    })
+  }
+
   function verify() {}
 
   function comment() {}
@@ -33,5 +65,17 @@ export const useStoryStore = defineStore('story', () => {
 
   function illustrate() {}
 
-  return { version, story, reset, generate, verify, comment, conversation: converse, discussion: discuss, illustrate }
+  return {
+    version,
+    story,
+    reset,
+    generate,
+    verify,
+    status,
+    stop,
+    comment,
+    conversation: converse,
+    discussion: discuss,
+    illustrate,
+  }
 })

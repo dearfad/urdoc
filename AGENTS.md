@@ -32,7 +32,7 @@
 - **字体**：`ui: fonts: false`，禁用 Nuxt UI 内置字体，通过 CSS 自定义
 - **Tailwind CSS v4**：使用 `@import 'tailwindcss'` 语法（非 v3 `@tailwind` 指令），文件扩展名 `.css` 关联为 tailwindcss 语言模式
 - **Pinia**：所有 store 需调用 `syncStoreVersion(VERSION, 'pinia:<name>')` 实现 localStorage 版本控制（见 `app/utils/store.ts`）
-- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容，数据存储在 `.data/content/contents.sqlite`
+- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容（使用 `@comark/vue` 渲染），通过 Comark 和 ComarkRenderer 组件使用
 - **自动导入类型**：`~/types` 被配置为类型扫描目录（`imports.dirs`）
 - **导入别名**：`#server/prompts` 用于从 `server/prompts/` 动态导入提示词模板
 - **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话，provider 选项支持 InternAi、BigModel、OpenRouter 的 reasoning/thinking 配置

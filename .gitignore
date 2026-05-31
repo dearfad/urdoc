@@ -1,18 +1,9 @@
 # Nuxt dev/build outputs
 .output
-.data
 .nuxt
-.nitro
-.cache
-dist
 
 # Node dependencies
 node_modules
 
 # Local env files
 .env
-
-# Tencent Cloud EdgeOne
-.edgeone
-.edgeone/*
-.tef_dist/*
