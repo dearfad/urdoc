@@ -190,6 +190,12 @@ const items = [
         icon: 'i-lucide-code',
         to: '/docs/development',
       },
+      {
+        label: '  自定义教科书',
+        icon: 'i-lucide-book-type',
+        to: '/docs/development/custom-textbook',
+        class: 'pl-8 text-sm',
+      },
     ],
   },
 ] satisfies NavigationMenuItem[]

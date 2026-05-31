@@ -23,6 +23,7 @@ export const docNav: (DocNavItem | DocGroup)[] = [
     children: [
       { label: '框架说明', icon: 'i-lucide-circle-star', slug: 'cstar/index' },
       { label: '生成病例', icon: 'i-mdi-alpha-c-circle', slug: 'cstar/case' },
+      { label: '自定义教科书', icon: 'i-lucide-book-type', slug: 'development/custom-textbook', description: '自定义教科书数据结构' },
       { label: '编写故事', icon: 'i-mdi-alpha-s-circle', slug: 'cstar/story' },
       { label: '考核理论', icon: 'i-mdi-alpha-t-circle', slug: 'cstar/test' },
       { label: '互动实践', icon: 'i-mdi-alpha-a-circle', slug: 'cstar/act' },
