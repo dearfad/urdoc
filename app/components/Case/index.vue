@@ -21,14 +21,10 @@
     </template>
     <template #default>
       <ClientOnly>
-        <div v-if="isEditing && caseStore.case?.content" class="flex flex-1 flex-col gap-2">
-          <!-- <UEditorToolbar v-if="editor" layout="fixed" :editor="editor" /> -->
-          <UEditor class="min-h-0 flex-1" content-type="json" v-model="editor" />
-          <!-- <div class="flex justify-end gap-2">
-            <UButton color="neutral" variant="soft" @click="cancelEdit">取消</UButton>
-            <UButton color="primary" @click="saveEdit">保存</UButton>
-          </div> -->
-        </div>
+        <EditorObject
+          v-if="isEditing && caseStore.case?.content"
+          v-model="caseStore.case.content"
+        />
         <div v-else>
           <UChatReasoning
             v-if="stateStore.case.isReasoning"
@@ -91,22 +87,4 @@ const filteredTextbookItems = computed(() => {
 })
 
 const isEditing = ref(false)
-const editor = ref({
-  type: 'doc',
-  content: [
-    {
-      type: 'heading',
-      attrs: { level: 1 },
-      content: [{ type: 'text', text: 'Hello World' }],
-    },
-    {
-      type: 'paragraph',
-      content: [
-        { type: 'text', text: 'This is a ' },
-        { type: 'text', marks: [{ type: 'bold' }], text: 'rich text' },
-        { type: 'text', text: ' editor.' },
-      ],
-    },
-  ],
-})
 </script>
