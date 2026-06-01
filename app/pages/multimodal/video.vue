@@ -6,7 +6,7 @@
   </v-sheet> -->
   <UDashboardPanel id="pages-multimodal-video">
     <template #header>
-      <UDashboardNavbar title="视频渲染">
+      <UDashboardNavbar title="影像渲染">
         <template #leading>
           <UTooltip text="侧边栏">
             <UDashboardSidebarCollapse />
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  title: '视频渲染',
+  title: '影像渲染',
 })
 import type { BreadcrumbItem } from '@nuxt/ui'
 const items = ref<BreadcrumbItem[]>([
@@ -38,7 +38,7 @@ const items = ref<BreadcrumbItem[]>([
     to: '/dashboard',
   },
   {
-    label: '视频渲染',
+    label: '影像渲染',
     icon: 'i-lucide-video',
     to: '/multimodal/video',
   },

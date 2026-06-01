@@ -3,16 +3,23 @@
     id="component-case-settings"
     :ui="{
       header: 'bg-elevated flex items-center py-2',
-      body: 'p-0 sm:p-0 flex min-h-0 flex-1 flex-col',
-      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
+      body: 'p-0 sm:p-0 flex min-h-0 flex-col',
+      root: 'border border-default overflow-auto flex min-h-0 flex-col',
     }"
   >
     <template #header>
       <UIcon name="i-lucide-cog" class="mr-2" />
       <span class="font-bold">病历设定</span>
+      <UButton
+        :icon="collapsed ? 'i-lucide-chevron-down' : 'i-lucide-chevron-up'"
+        variant="ghost"
+        size="sm"
+        class="ms-auto"
+        @click="collapsed = !collapsed"
+      />
     </template>
     <template #default>
-      <UTabs :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="textbook">
+      <UTabs v-show="!collapsed" :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="textbook">
         <template #textbook>
           <div v-for="entry in entries" :key="entry" class="flex flex-row">
             <USelect
@@ -75,6 +82,7 @@
 </template>
 
 <script setup>
+const collapsed = ref(false)
 const stateStore = useStateStore()
 const bookStore = useBookStore()
 

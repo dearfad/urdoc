@@ -2,8 +2,11 @@
   <UApp :locale="zh_cn">
     <UDashboardGroup>
       <AppSidebar />
-      <slot />
+      <div class="min-w-0 flex-1 flex pb-24 md:pb-0">
+        <slot />
+      </div>
     </UDashboardGroup>
+    <AppMobileNav />
   </UApp>
 </template>
 

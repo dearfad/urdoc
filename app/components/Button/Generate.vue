@@ -17,7 +17,7 @@ const stores = {
   test: useTestStore(),
   rate: useRateStore(),
   image: useImageStore(),
-  speech: useSpeechStore(),
+  audio: useAudioStore(),
   video: useVideoStore(),
 }
 

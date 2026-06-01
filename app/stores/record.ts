@@ -13,7 +13,7 @@ export const useRecordStore = defineStore('record', () => {
   const actStore = useActStore()
   const rateStore = useRateStore()
   const imageStore = useImageStore()
-  const speechStore = useSpeechStore()
+  const audioStore = useAudioStore()
   const videoStore = useVideoStore()
 
   // 函数
@@ -25,7 +25,7 @@ export const useRecordStore = defineStore('record', () => {
     actStore.reset()
     rateStore.reset()
     imageStore.reset()
-    speechStore.reset()
+    audioStore.reset()
     videoStore.reset()
   }
 

@@ -36,12 +36,13 @@ export const docNav: (DocNavItem | DocGroup)[] = [
     children: [
       { label: '工具说明', icon: 'i-lucide-file-stack', slug: 'multimodal/index' },
       { label: '图像创作', icon: 'i-lucide-image', slug: 'multimodal/image' },
-      { label: '视频渲染', icon: 'i-lucide-video', slug: 'multimodal/video' },
-      { label: '语音合成', icon: 'i-lucide-speech', slug: 'multimodal/speech' },
+      { label: '影像渲染', icon: 'i-lucide-video', slug: 'multimodal/video' },
+      { label: '音频合成', icon: 'i-lucide-audio-lines', slug: 'multimodal/audio' },
     ],
   } as DocGroup,
   { label: '项目背景', icon: 'i-lucide-info', slug: 'project', description: 'URDOC 平台的设计理念与愿景' },
   { label: '开发者指南', icon: 'i-lucide-code', slug: 'development', description: '架构、技术栈与部署说明' },
+  { label: '数据组织结构', icon: 'i-lucide-tree-pine', slug: 'development/data-architecture', description: '通用树形节点模型与 Record 设计' },
 ]
 
 export function getDocTitle(slug: string): string {

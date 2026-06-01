@@ -42,7 +42,7 @@ export const useModelStore = defineStore(
         apiKey: 'shushengApiKey',
         baseURL: 'https://chat.intern-ai.org.cn/api/v1',
       },
-      speech: {
+      audio: {
         provider: 'InternAi',
         name: 'intern-s1',
         apiKey: 'shushengApiKey',

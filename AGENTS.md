@@ -2,6 +2,8 @@
 
 单个 Nuxt 4 应用（非 monorepo）。`pnpm-workspace.yaml` 仅允许原生依赖的构建。
 
+> 开发原则：UI 优先使用 Nuxt UI 内置组件 + frontend-design skill 美学；后端大模型通信优先使用 ai-sdk skill。
+
 ## 语言要求
 
 - 所有思考、回复、代码注释必须使用简体中文
@@ -35,7 +37,7 @@
 - **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容（使用 `@comark/vue` 渲染），通过 Comark 和 ComarkRenderer 组件使用
 - **自动导入类型**：`~/types` 被配置为类型扫描目录（`imports.dirs`）
 - **导入别名**：`#server/prompts` 用于从 `server/prompts/` 动态导入提示词模板
-- **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话，provider 选项支持 InternAi、BigModel、OpenRouter 的 reasoning/thinking 配置
+- **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话（参见 ai-sdk skill）；provider 选项支持 InternAi、BigModel、OpenRouter 的 reasoning/thinking 配置
 - **Vite optimizeDeps**：包含 `ai`、`@ai-sdk/vue`、`partial-json`、`@zumer/snapdom`
 
 ## 环境变量
@@ -44,11 +46,26 @@
 - `process.env.GITHUB_API_TOKEN` — GitHub API 访问令牌，用于 `server/api/github/commit.js`，**不属于** runtimeConfig
 - `process.env.DEARFAD_SHUSHENG_API_KEY` — 仅用于 `server/api/model/object.js`，**不属于** runtimeConfig
 
+## UI 设计原则
+
+- 优先使用 Nuxt UI v4 内置组件（UButton、UInput 等），避免自行封装基础 UI
+- 视觉美学遵循 frontend-design skill：选择鲜明风格方向（极简、复古未来、精致等），注重排版、色彩、动效和空间构图
+- 所有 UI 组件必须同时适配桌面端和手机端，使用 Tailwind 响应式前缀（`sm:`、`md:` 等）
+- 风格专业、美观、干净，遵循 Nuxt UI v4 语义化颜色体系（`text-muted`、`bg-elevated`、`border-default` 等）
+- 输入控件使用 `size="lg"` 或 `size="xl"` 确保移动端触摸友好
+- 表单布局在手机端纵向堆叠（`flex-col`）、桌面端横向排列（`sm:flex-row`）
+
 ## 规范
 
 - Prettier：无分号、单引号、120 字符行宽、`prettier-plugin-tailwindcss` 插件
 - ESLint：继承 `.nuxt/eslint.config.mjs`（Nuxt 生成），无自定义规则
 - VSCode 保存时自动格式化（Prettier）+ ESLint fix
+
+## AI 开发规范
+
+- 所有大模型通信优先使用 `ai` SDK（`ai` + `@ai-sdk/openai-compatible`），遵循 ai-sdk skill
+- 不依赖内部知识，始终以 `node_modules/ai/docs/` 或 ai-sdk.dev 文档为准
+- 流式对话使用 `streamText`，provider 配置参考 `server/api/chat.ts`
 
 ## 部署
 

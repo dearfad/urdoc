@@ -1,5 +1,4 @@
-import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
-import { Chat } from '@ai-sdk/vue'
+import { isReasoningUIPart, isTextUIPart } from 'ai'
 
 const VERSION = '2026-05-31'
 
@@ -15,30 +14,19 @@ export const useStoryStore = defineStore('story', () => {
     content: null,
   })
 
-  const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
-    onError: (error) => {
-      useStateStore().toast.add({
-        title: '生成失败',
-        description: error.message,
-        color: 'error',
-        icon: 'i-lucide-alert-circle',
-      })
-    },
-  })
-
-  const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
+  const { status, lastParts, currentType, lastMessageRole, send } = useChatApi()
 
   watch(
-    () => chat.lastMessage?.parts,
+    () => lastParts.value,
     (parts) => {
-      if (!parts) return
-      for (const part of parts.slice(1)) {
+      if (currentType.value !== 'story') return
+      if (!parts.length) return
+      if (lastMessageRole.value !== 'assistant') return
+      for (const part of parts) {
         useStateStore().story.isReasoning = isReasoningUIPart(part)
         handlePart(part)
       }
     },
-    { deep: true },
   )
 
   function reset() {
@@ -51,7 +39,16 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  function prepare() {
+  function handlePart(part: any) {
+    if (isReasoningUIPart(part)) {
+      story.value.reasoning = part.text
+    }
+    if (isTextUIPart(part) && part.text?.trim()) {
+      story.value.content = part.text
+    }
+  }
+
+  function generate() {
     const stateStore = useStateStore()
     const caseStore = useCaseStore()
 
@@ -62,53 +59,19 @@ export const useStoryStore = defineStore('story', () => {
 
     const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
 
-    return {
+    send(text, {
       type: 'story',
-      text,
-      body: {
-        model: useModelStore().activeModels.story,
-        reasoning: stateStore.story.reasoning,
-      },
-    }
-  }
-
-  function handlePart(part: any) {
-    if (isReasoningUIPart(part)) {
-      story.value.reasoning = part.text
-    }
-    if (isTextUIPart(part) && part.text?.trim()) {
-      story.value.content = part.text
-    }
-  }
-
-  function verify() {}
-
-  function comment() {}
-
-  function converse() {}
-
-  function discuss() {}
-
-  function illustrate() {}
-
-  function generate() {
-    const data = prepare()
-    if (chat.status === 'error') chat.clearError()
-    chat.stop()
-    chat.sendMessage({ text: data.text }, { body: { ...data.body, type: data.type, task: 'generate' } })
+      task: 'generate',
+      model: useModelStore().activeModels.story,
+      reasoning: stateStore.story.reasoning,
+    })
   }
 
   return {
     version,
     story,
     reset,
-    prepare,
     handlePart,
-    verify,
-    comment,
-    conversation: converse,
-    discussion: discuss,
-    illustrate,
     status,
     generate,
   }

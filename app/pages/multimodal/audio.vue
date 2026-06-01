@@ -4,9 +4,9 @@
     <VoiceUtilsGenerateDialogue />
     <ModelCard model-type="audio" />
   </v-sheet> -->
-  <UDashboardPanel id="pages-multimodal-speech">
+  <UDashboardPanel id="pages-multimodal-audio">
     <template #header>
-      <UDashboardNavbar title="语音合成">
+      <UDashboardNavbar title="音频合成">
         <template #leading>
           <UTooltip text="侧边栏">
             <UDashboardSidebarCollapse />
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  title: '语音合成',
+  title: '音频合成',
 })
 
 import type { BreadcrumbItem } from '@nuxt/ui'
@@ -39,9 +39,9 @@ const items = ref<BreadcrumbItem[]>([
     to: '/dashboard',
   },
   {
-    label: '语音合成',
+    label: '音频合成',
     icon: 'i-lucide-mic',
-    to: '/multimodal/speech',
+    to: '/multimodal/audio',
   },
 ])
 </script>

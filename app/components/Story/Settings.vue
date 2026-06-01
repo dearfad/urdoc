@@ -10,9 +10,16 @@
     <template #header v-if="isTitleShow">
       <UIcon name="i-lucide-cog" class="mr-2" />
       <span class="font-bold">故事设定</span>
+      <UButton
+        :icon="collapsed ? 'i-lucide-chevron-down' : 'i-lucide-chevron-up'"
+        variant="ghost"
+        size="sm"
+        class="ms-auto"
+        @click="collapsed = !collapsed"
+      />
     </template>
     <template #default>
-      <UTabs :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="custom">
+      <UTabs v-show="!collapsed" :items="tabItems" variant="link" class="w-full" :ui="{ trigger: 'grow' }" defaultValue="custom">
         <template #custom>
           <div class="flex flex-col gap-2 p-2">
             <UInputTags
@@ -39,6 +46,7 @@
 </template>
 
 <script setup>
+const collapsed = ref(false)
 const stateStore = useStateStore()
 
 const tabItems = [

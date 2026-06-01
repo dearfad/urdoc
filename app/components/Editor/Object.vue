@@ -1,19 +1,24 @@
 <template>
-  <div class="flex flex-col gap-2" :class="{ 'ps-4': depth > 0 }">
+  <div class="flex flex-col gap-3" :class="{ 'ps-4': depth > 0 }">
     <div
       v-for="(value, key) in modelValue"
       :key="key"
-      class="flex items-start gap-2"
+      class="flex flex-col gap-1.5 rounded-lg border border-default bg-elevated/50 p-3 sm:flex-row sm:items-start sm:gap-3"
     >
-      <span class="mt-2 w-32 shrink-0 truncate text-sm font-medium text-muted">
+      <span
+        class="flex shrink-0 items-center text-sm font-semibold text-muted sm:mt-1.5 sm:w-20 sm:text-base"
+      >
         {{ formatKey(key) }}
       </span>
-      <div class="flex-1">
+      <div class="min-w-0 flex-1">
         <UInput
           v-if="getValueType(value) === 'string'"
           :value="value"
           @update:modelValue="(val) => updateValue(key, val)"
           class="w-full"
+          size="xl"
+          variant="soft"
+          :ui="{ base: 'text-sm sm:text-base' }"
         />
         <UTextarea
           v-else-if="getValueType(value) === 'longtext'"
@@ -22,6 +27,9 @@
           class="w-full"
           :rows="3"
           autoresize
+          size="xl"
+          variant="soft"
+          :ui="{ base: 'text-sm sm:text-base' }"
         />
         <UInput
           v-else-if="getValueType(value) === 'number'"
@@ -29,17 +37,24 @@
           type="number"
           @update:modelValue="(val) => updateValue(key, Number(val))"
           class="w-full"
+          size="xl"
+          variant="soft"
+          :ui="{ base: 'text-sm sm:text-base' }"
         />
         <USwitch
           v-else-if="getValueType(value) === 'boolean'"
           :value="value"
           @update:modelValue="(val) => updateValue(key, val)"
+          size="lg"
         />
         <UInputTags
           v-else-if="getValueType(value) === 'string[]'"
           :value="value"
           @update:modelValue="(val) => updateValue(key, val)"
           class="w-full"
+          size="xl"
+          variant="soft"
+          :ui="{ input: 'text-sm sm:text-base' }"
         />
         <EditorObject
           v-else-if="getValueType(value) === 'object'"
@@ -53,6 +68,9 @@
           @update:modelValue="(val) => updateValue(key, val)"
           placeholder="null"
           class="w-full"
+          size="xl"
+          variant="soft"
+          :ui="{ base: 'text-sm sm:text-base' }"
         />
       </div>
     </div>

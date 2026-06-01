@@ -3,10 +3,10 @@ import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-05-29'
 
-export const useSpeechStore = defineStore('speech', () => {
+export const useAudioStore = defineStore('audio', () => {
   const version = ref(VERSION)
-  syncStoreVersion(VERSION, 'pinia:speech')
-  const speech = ref()
+  syncStoreVersion(VERSION, 'pinia:audio')
+  const audio = ref()
 
   const chat = new Chat({
     transport: new DefaultChatTransport({ api: '/api/chat' }),
@@ -23,7 +23,7 @@ export const useSpeechStore = defineStore('speech', () => {
   const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
 
   function reset() {
-    speech.value = undefined
+    audio.value = undefined
   }
 
   function generate() {
@@ -34,16 +34,16 @@ export const useSpeechStore = defineStore('speech', () => {
       { text: '生成语音' },
       {
         body: {
-          type: 'speech',
+          type: 'audio',
           task: 'generate',
-          model: useModelStore().activeModels.speech,
+          model: useModelStore().activeModels.audio,
           reasoning: false,
         },
       },
     )
   }
 
-  return { version, speech, reset, generate, status }
+  return { version, audio, reset, generate, status }
 })
 
 // // Voice Model

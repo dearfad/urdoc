@@ -32,15 +32,15 @@ export const useRateStore = defineStore('rate', () => {
   const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
 
   watch(
-    () => chat.lastMessage?.parts,
+    () => [...(chat.lastMessage?.parts ?? [])],
     (parts) => {
-      if (!parts) return
-      for (const part of parts.slice(1)) {
+      if (!parts.length) return
+      if (chat.lastMessage?.role !== 'assistant') return
+      for (const part of parts) {
         useStateStore().rate.isReasoning = isReasoningUIPart(part)
         handlePart(part)
       }
     },
-    { deep: true },
   )
 
   function reset() {

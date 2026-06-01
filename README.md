@@ -14,7 +14,7 @@
 - 💬 **互动实践 (Act)** - 真实的医患问诊互动模拟
 - 📊 **评估能力 (Rate)** - 全面的学习效果评估和反馈系统
 - 🎯 **CSTAR 集成** - 五阶段医学能力培训闭环（Case-Story-Test-Act-Rate）
-- 🖼️ **多模态支持** - 集成 AI 图像创作、语音合成、视频渲染等功能
+- 🖼️ **多模态支持** - 集成 AI 图像创作、音频合成、影像渲染等功能
 - 📁 **项目管理** - 病例研究项目的创建、组织和协作功能
 - ⚙️ **个性化设置** - 用户偏好、工作流程和系统配置选项
 
@@ -71,8 +71,8 @@ urdoc/
 │   │   │   └── rate.vue        # 评估能力
 │   │   ├── multimodal/         # 多模态工具
 │   │   │   ├── image.vue       # 图像创作
-│   │   │   ├── speech.vue      # 语音合成
-│   │   │   └── video.vue       # 视频渲染
+│   │   │   ├── audio.vue       # 音频合成
+│   │   │   └── video.vue       # 影像渲染
 │   │   ├── project/            # 项目管理
 │   │   ├── settings/           # 系统设置
 │   │   └── docs/               # 应用内文档
@@ -80,7 +80,7 @@ urdoc/
 │   ├── stores/                 # Pinia 状态管理（14 个 store）
 │   │   ├── record.ts           # 顶层协调 store
 │   │   ├── case/story/test/act/rate.ts  # CSTAR 子 store
-│   │   ├── image/speech/video.ts        # 多模态子 store
+│   │   ├── image/audio/video.ts         # 多模态子 store
 │   │   └── model.ts/book.ts    # 模型选择、教科书数据
 │   ├── types/                  # TypeScript 类型定义
 │   └── utils/                  # 工具函数

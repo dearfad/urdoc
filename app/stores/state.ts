@@ -10,7 +10,12 @@ export const useStateStore = defineStore('state', () => {
   // //
   const apiBaseUrl = ref('/api/chat')
 
-  const caseItem = ref({
+  const case_ = ref<{
+    textbook: Book | null
+    custom: string[]
+    reasoning: boolean
+    isReasoning: boolean
+  }>({
     textbook: null,
     custom: [],
     reasoning: false,
@@ -98,7 +103,7 @@ export const useStateStore = defineStore('state', () => {
     toast,
     apiBaseUrl,
 
-    case: caseItem,
+    case: case_,
     story,
     test,
     act,

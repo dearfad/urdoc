@@ -23,7 +23,7 @@
         <UButton to="/docs" class="mt-6" label="返回文档首页" color="neutral" variant="subtle" />
       </div>
       <div v-else-if="loading" class="flex items-center justify-center py-20">
-        <ULoadingIcon class="size-8" />
+        <UIcon name="i-lucide-loader-circle" class="size-8 animate-spin" />
       </div>
       <div v-else class="mx-auto max-w-3xl px-6 py-8 lg:px-8">
         <article class="prose prose-zinc dark:prose-invert max-w-none">

@@ -2,9 +2,9 @@
   <UCard
     id="component-story-index"
     :ui="{
-      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
+      root: 'border border-default flex min-h-0 flex-1 flex-col',
       header: 'bg-elevated flex items-center py-2 ',
-      body: 'py-0 sm:py-2 flex-1',
+      body: 'py-0 sm:py-2 flex-1 overflow-y-auto min-h-0',
       footer: 'p-0 sm:p-0',
     }"
   >
@@ -20,11 +20,23 @@
     <template #header>
       <UButton icon="i-mdi-alpha-s-circle" variant="ghost" to="/cstar/story" />
       <span class="font-bold">故事</span>
-      <div class="ms-auto flex gap-2">
-        <ButtonCapture capture-id="component-story-index" />
-        <ButtonClipboard :text="storyStore.story.content" />
-        <UButton icon="i-lucide-file-volume" variant="ghost" />
+      <div class="ms-auto flex items-center gap-2">
         <ButtonGenerate type="story" task="generate" label="生成故事" />
+        <UPopover :dismissible="true" class="md:hidden" :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }">
+          <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
+          <template #content>
+            <div class="flex flex-col gap-1 p-1">
+              <ButtonCapture capture-id="component-story-index" />
+              <ButtonClipboard :text="storyStore.story.content" />
+              <UButton icon="i-lucide-file-volume" variant="ghost" />
+            </div>
+          </template>
+        </UPopover>
+        <div class="hidden md:flex items-center gap-2">
+          <ButtonCapture capture-id="component-story-index" />
+          <ButtonClipboard :text="storyStore.story.content" />
+          <UButton icon="i-lucide-file-volume" variant="ghost" />
+        </div>
       </div>
     </template>
 
@@ -65,7 +77,7 @@
     </template>
 
     <template #footer>
-      <div class="mx-4 my-2 flex flex-wrap gap-2" v-if="storyStore.story.custom && storyStore.story.custom.length > 0">
+      <div class="mx-4 my-2 flex flex-wrap gap-2 min-h-7">
         <UBadge
           v-for="custom in storyStore.story.custom"
           :key="custom"

@@ -17,8 +17,8 @@
 | &emsp;[评估能力](/docs/cstar/rate) | 多维度能力评估 |
 | [多模态工具](/docs/multimodal) | 拓展医学教育表达维度 |
 | &emsp;[图像创作](/docs/multimodal/image) | AI 生成医学图像 |
-| &emsp;[视频渲染](/docs/multimodal/video) | 姿态与动作视频生成 |
-| &emsp;[语音合成](/docs/multimodal/speech) | AI 语音对话生成 |
+| &emsp;[影像渲染](/docs/multimodal/video) | 姿态与动作影像生成 |
+| &emsp;[音频合成](/docs/multimodal/audio) | AI 音频对话生成 |
 
 ### 项目参考
 

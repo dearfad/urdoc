@@ -2,21 +2,34 @@
   <UCard
     id="component-case-index"
     :ui="{
-      root: 'border border-default overflow-auto flex min-h-0 flex-1 flex-col',
+      root: 'border border-default flex min-h-0 flex-1 flex-col',
       header: 'bg-elevated flex items-center py-2 ',
-      body: 'py-0 sm:py-2 flex-1',
+      body: 'py-0 sm:py-2 flex-1 overflow-y-auto min-h-0',
       footer: 'p-0 sm:p-0',
     }"
   >
     <template #header>
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
-      <div class="ms-auto flex gap-2">
-        <ButtonCapture capture-id="component-case-index" />
-        <ButtonClipboard :text="caseStore.markdown" />
-        <UButton icon="i-lucide-file-volume" variant="ghost" />
-        <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+      <div class="ms-auto flex items-center gap-2">
         <ButtonGenerate type="case" task="generate" label="生成病例" />
+        <UPopover :dismissible="true" class="md:hidden" :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }">
+          <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
+          <template #content>
+            <div class="flex flex-col gap-1 p-1">
+              <ButtonCapture capture-id="component-case-index" />
+              <ButtonClipboard :text="caseStore.markdown" />
+              <UButton icon="i-lucide-file-volume" variant="ghost" />
+              <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+            </div>
+          </template>
+        </UPopover>
+        <div class="hidden md:flex items-center gap-2">
+          <ButtonCapture capture-id="component-case-index" />
+          <ButtonClipboard :text="caseStore.markdown" />
+          <UButton icon="i-lucide-file-volume" variant="ghost" />
+          <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+        </div>
       </div>
     </template>
     <template #default>
@@ -41,10 +54,7 @@
     </template>
 
     <template #footer>
-      <div
-        class="mx-4 my-2 flex flex-wrap gap-2"
-        v-if="caseStore.case.custom?.length || Object.keys(caseStore.case.textbook?.meta ?? {}).length"
-      >
+      <div class="mx-4 my-2 flex flex-wrap gap-2 min-h-7">
         <UBadge
           v-for="sourceItem in filteredTextbookItems"
           :key="sourceItem"
