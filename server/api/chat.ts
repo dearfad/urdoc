@@ -33,6 +33,11 @@ export default defineEventHandler(async (event) => {
           effort: reasoning ? 'high' : 'none',
         },
       },
+      Agnes: {
+        chat_template_kwargs: {
+          enable_thinking: reasoning,
+        },
+      },
     },
   }).toUIMessageStreamResponse()
 })

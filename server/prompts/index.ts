@@ -21,9 +21,9 @@ const promptMap = {
 }
 
 type PromptType = keyof typeof promptMap
-type PromptTask = keyof (typeof promptMap)[PromptType]
+type PromptTask = { [K in PromptType]: keyof (typeof promptMap)[K] }[PromptType]
 
 export async function getPrompt(type: PromptType, task: PromptTask) {
-  const prompt = await promptMap[type]?.[task]?.()
+  const prompt = await (promptMap[type] as any)?.[task]?.()
   return prompt?.default ?? ''
 }
