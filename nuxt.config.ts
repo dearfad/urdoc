@@ -24,8 +24,6 @@ export default defineNuxtConfig({
     zhipuApiKey: '',
     openrouterApiKey: '',
     longcatApiKey: '',
+    agnesApiKey: '',
   },
-
-
-
 })

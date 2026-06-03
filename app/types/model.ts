@@ -16,6 +16,6 @@ export interface ProviderGroup {
   models: string[]
 }
 
-export type Models = ProviderGroup[]
+export type Models = Record<string, ProviderGroup[]>
 
 export type ActiveModels = Record<string, Model>

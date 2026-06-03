@@ -44,12 +44,9 @@ const slug = (Array.isArray(route.params.slug) ? route.params.slug.join('/') : r
 const title = getDocTitle(slug)
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', to: '/dashboard' },
-  { label: '文档', to: '/docs' },
-  {
-    label: title,
-    ...(slug !== 'index' ? {} : {}),
-  },
+  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+  { label: '文档', icon: 'i-lucide-book-open-text', to: '/docs' },
+  { label: title, to: route.path },
 ])
 
 const content = ref('')

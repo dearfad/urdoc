@@ -68,15 +68,7 @@ definePageMeta({
   title: '设置',
 })
 
-import type { BreadcrumbItem } from '@nuxt/ui'
-
-const items = ref<BreadcrumbItem[]>([
-  {
-    label: '设置',
-    icon: 'i-lucide-settings',
-    to: '/settings',
-  },
-])
+const { items } = useBreadcrumb()
 
 const toast = useToast()
 const modalOpen = ref(false)

@@ -43,6 +43,7 @@ export const docNav: (DocNavItem | DocGroup)[] = [
   { label: '项目背景', icon: 'i-lucide-info', slug: 'project', description: 'URDOC 平台的设计理念与愿景' },
   { label: '开发者指南', icon: 'i-lucide-code', slug: 'development', description: '架构、技术栈与部署说明' },
   { label: '数据组织结构', icon: 'i-lucide-tree-pine', slug: 'development/data-architecture', description: '通用树形节点模型与 Record 设计' },
+  { label: '图片生成系统', icon: 'i-lucide-image', slug: 'development/image-generation', description: '图片生成 API、Composable 与 Store 设计' },
 ]
 
 export function getDocTitle(slug: string): string {

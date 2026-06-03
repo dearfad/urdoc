@@ -11,9 +11,9 @@
           <AppHeader />
         </template>
       </UDashboardNavbar>
-      <!-- <UDashboardToolbar>
+      <UDashboardToolbar>
         <UBreadcrumb :items="items" />
-      </UDashboardToolbar> -->
+      </UDashboardToolbar>
     </template>
     <template #body>
       <div class="divide-border-muted divide-y">
@@ -168,6 +168,8 @@
 </template>
 
 <script setup lang="ts">
+const { items } = useBreadcrumb()
+
 const cstarItems = [
   {
     label: '生成病例',

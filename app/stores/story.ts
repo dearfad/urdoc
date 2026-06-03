@@ -62,7 +62,7 @@ export const useStoryStore = defineStore('story', () => {
     send(text, {
       type: 'story',
       task: 'generate',
-      model: useModelStore().activeModels.story,
+      model: useModelStore().activeModels.chat,
       reasoning: stateStore.story.reasoning,
     })
   }

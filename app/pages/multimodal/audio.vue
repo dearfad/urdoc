@@ -18,6 +18,22 @@
       </UDashboardNavbar>
       <UDashboardToolbar>
         <UBreadcrumb :items="items" />
+        <template #right v-if="siblings.length">
+          <div class="flex gap-1 overflow-x-auto">
+            <NuxtLink
+              v-for="sib in siblings"
+              :key="sib.to"
+              :to="sib.to"
+              class="size-6 flex items-center justify-center rounded-full text-[11px] font-bold leading-none transition-colors shrink-0"
+              :class="route.path === sib.to
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-muted hover:text-default hover:bg-muted'"
+              :title="sib.label"
+            >
+              {{ sib.abbr }}
+            </NuxtLink>
+          </div>
+        </template>
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -31,17 +47,6 @@ definePageMeta({
   title: '音频合成',
 })
 
-import type { BreadcrumbItem } from '@nuxt/ui'
-const items = ref<BreadcrumbItem[]>([
-  {
-    label: '概览',
-    icon: 'i-lucide-house',
-    to: '/dashboard',
-  },
-  {
-    label: '音频合成',
-    icon: 'i-lucide-mic',
-    to: '/multimodal/audio',
-  },
-])
+const route = useRoute()
+const { items, siblings } = useBreadcrumb()
 </script>

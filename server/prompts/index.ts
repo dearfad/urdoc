@@ -13,6 +13,11 @@ const promptMap = {
   act: {
     prompt: () => import('./act/prompt'),
   },
+  image: {
+    face: () => import('./face/generate'),
+    illustration: () => import('./illustration/generate'),
+    generate: () => Promise.resolve({ default: '' }),
+  },
 }
 
 type PromptType = keyof typeof promptMap

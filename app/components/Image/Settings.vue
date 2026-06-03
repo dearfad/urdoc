@@ -29,9 +29,9 @@
           </div> -->
         </template>
         <template #model>
-          <!-- <div class="m-4 flex flex-col">
+          <div class="m-4 flex flex-col">
             <SelectModel scene="image" />
-          </div> -->
+          </div>
         </template>
       </UTabs>
     </template>

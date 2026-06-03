@@ -62,7 +62,7 @@ export const useRateStore = defineStore('rate', () => {
       type: 'rate',
       text,
       body: {
-        model: useModelStore().activeModels.rate,
+         model: useModelStore().activeModels.chat,
         reasoning: stateStore.rate.reasoning,
       },
     }

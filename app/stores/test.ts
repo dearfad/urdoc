@@ -1,5 +1,5 @@
-import { parse } from 'partial-json'
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
+import { safeParseJson } from '~/utils/json'
 import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-05-06'
@@ -67,7 +67,7 @@ export const useTestStore = defineStore('test', () => {
       type: 'test',
       text,
       body: {
-        model: useModelStore().activeModels.test,
+        model: useModelStore().activeModels.chat,
         reasoning: stateStore.test.reasoning,
       },
     }
@@ -78,7 +78,7 @@ export const useTestStore = defineStore('test', () => {
       test.value.reasoning = part.text
     }
     if (isTextUIPart(part) && part.text?.trim()) {
-      test.value.content = parse(part.text)
+      test.value.content = safeParseJson(part.text)
     }
   }
 

@@ -59,7 +59,7 @@
 definePageMeta({
   title: '叙事医学',
 })
-import type { BreadcrumbItem } from '@nuxt/ui'
+const { items } = useBreadcrumb()
 const caseStore = useCaseStore()
 const storyStore = useStoryStore()
 const toast = useToast()
@@ -74,16 +74,5 @@ async function copyAll() {
   }
 }
 
-const items = ref<BreadcrumbItem[]>([
-  {
-    label: '概览',
-    icon: 'i-lucide-house',
-    to: '/dashboard',
-  },
-  {
-    label: '叙事医学',
-    icon: 'i-lucide-book',
-    to: '/project/narrative-medicine',
-  },
-])
+
 </script>

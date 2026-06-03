@@ -1,5 +1,6 @@
 import { parse } from 'partial-json'
 import { isReasoningUIPart, isTextUIPart } from 'ai'
+import { safeParseJson } from '~/utils/json'
 
 const VERSION = '2026-05-31'
 
@@ -47,7 +48,7 @@ export const useCaseStore = defineStore('case', () => {
       case_.value.reasoning = part.text
     }
     if (isTextUIPart(part) && part.text?.trim()) {
-      case_.value.content = parse(part.text)
+      case_.value.content = safeParseJson(part.text)
     }
   }
 
@@ -69,7 +70,7 @@ export const useCaseStore = defineStore('case', () => {
     send(text, {
       type: 'case',
       task: 'generate',
-      model: useModelStore().activeModels.case,
+      model: useModelStore().activeModels.chat,
       reasoning: stateStore.case.reasoning,
     })
   }

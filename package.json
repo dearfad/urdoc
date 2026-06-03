@@ -16,7 +16,7 @@
     "@nuxt/ui": "^4.8.1",
     "@pinia/nuxt": "0.11.3",
     "@zumer/snapdom": "^2.12.2",
-    "ai": "^6.0.193",
+    "ai": "^6.0.194",
     "nuxt": "^4.4.6",
     "partial-json": "^0.1.7",
     "pinia-plugin-unstorage": "1.0.0-beta.1"
