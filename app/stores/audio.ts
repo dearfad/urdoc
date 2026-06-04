@@ -1,4 +1,5 @@
 import { DefaultChatTransport } from 'ai'
+import { getPrompt } from '~/utils/prompts'
 import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-05-29'
@@ -9,7 +10,7 @@ export const useAudioStore = defineStore('audio', () => {
   const audio = ref()
 
   const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
     onError: (error) => {
       useStateStore().toast.add({
         title: '生成失败',
@@ -26,18 +27,21 @@ export const useAudioStore = defineStore('audio', () => {
     audio.value = undefined
   }
 
-  function generate() {
+  async function generate() {
     const stateStore = useStateStore()
     if (chat.status === 'error') chat.clearError()
     chat.stop()
+    const model = useModelStore().activeModels.audio
     chat.sendMessage(
       { text: '生成语音' },
       {
         body: {
           type: 'audio',
           task: 'generate',
-          model: useModelStore().activeModels.audio,
+          model,
           reasoning: false,
+          system: await getPrompt('audio', 'generate'),
+          providerOptions: useProviderStore().getProviderOptions(model.provider, false),
         },
       },
     )

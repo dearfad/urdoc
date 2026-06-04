@@ -1,4 +1,5 @@
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
+import { getPrompt } from '~/utils/prompts'
 import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-05-06'
@@ -18,7 +19,7 @@ export const useRateStore = defineStore('rate', () => {
   const rate = ref<Rate>({ ...rateDefault })
 
   const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
     onError: (error) => {
       useStateStore().toast.add({
         title: '生成失败',
@@ -77,11 +78,23 @@ export const useRateStore = defineStore('rate', () => {
     }
   }
 
-  function generate() {
+  async function generate() {
     const data = prepare()
     if (chat.status === 'error') chat.clearError()
     chat.stop()
-    chat.sendMessage({ text: data.text }, { body: { ...data.body, type: data.type, task: 'generate' } })
+    const model = data.body.model
+    chat.sendMessage(
+      { text: data.text },
+      {
+        body: {
+          ...data.body,
+          type: data.type,
+          task: 'generate',
+          system: await getPrompt('rate', 'generate') || '',
+          providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
+        },
+      },
+    )
   }
 
   return { version, rate, reset, prepare, handlePart, status, generate }

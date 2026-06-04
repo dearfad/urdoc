@@ -1,6 +1,7 @@
 import { parse } from 'partial-json'
 import { isReasoningUIPart, isTextUIPart } from 'ai'
 import { safeParseJson } from '~/utils/json'
+import { getPrompt } from '~/utils/prompts'
 
 const VERSION = '2026-05-31'
 
@@ -52,7 +53,7 @@ export const useCaseStore = defineStore('case', () => {
     }
   }
 
-  function generate() {
+  async function generate() {
     const stateStore = useStateStore()
     const recordStore = useRecordStore()
 
@@ -67,11 +68,14 @@ export const useCaseStore = defineStore('case', () => {
       ? `要点设定：${Object.values(stateStore.case.textbook.content).join(', ')}, ${customText}`
       : customText
 
+    const model = useModelStore().activeModels.chat
     send(text, {
       type: 'case',
       task: 'generate',
-      model: useModelStore().activeModels.chat,
+      model,
       reasoning: stateStore.case.reasoning,
+      system: await getPrompt('case', 'generate'),
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }
 

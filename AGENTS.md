@@ -21,8 +21,8 @@
 ## 项目结构
 
 - `app/` — Nuxt 4 应用代码（`app.vue`、`error.vue`、组件、页面、layouts、stores、types、utils）
-- `server/api/` — 服务端 API 路由（`chat.ts` 是主要 AI 对话接口）
-- `server/prompts/` — AI 提示词模板，通过 `#server/prompts` 别名动态导入（`index.ts` 定义 `type` + `task` → 动态 `import()` 映射，见 `server/api/chat.ts` 调用模式）
+- `server/api/` — 服务端 API 路由（`aisdk/text/` 是主要 AI 对话接口）
+- `server/prompts/` — AI 提示词模板，通过 `#server/prompts` 别名动态导入（`index.ts` 定义 `type` + `task` → 动态 `import()` 映射，见 `server/api/aisdk/text/index.ts` 调用模式）
 - `app-bak/` — 旧版代码备份（Nuxt 已通过 `ignore: ['/app-bak/**/*']` 排除）
 - `edge-functions/` — EdgeOne 无服务器函数（大部分为 `.bak` 备份文件）
 - `app/pages/index-v*.vue` — 旧版首页变体（非活跃，勿编辑）
@@ -43,7 +43,7 @@
 ## 环境变量
 
 - `.env` 中的运行时配置键（`nuxt.config.ts` `runtimeConfig`）：`shushengApiKey`、`zhipuApiKey`、`openrouterApiKey`
-- `process.env.GITHUB_API_TOKEN` — GitHub API 访问令牌，用于 `server/api/github/commit.js`，**不属于** runtimeConfig
+- `NUXT_GITHUB_API_TOKEN` — 通过 `runtimeConfig.githubApiToken` 读取，用于 `server/api/github/commit.js`
 - `process.env.DEARFAD_SHUSHENG_API_KEY` — 仅用于 `server/api/model/object.js`，**不属于** runtimeConfig
 
 ## UI 设计原则
@@ -65,7 +65,7 @@
 
 - 所有大模型通信优先使用 `ai` SDK（`ai` + `@ai-sdk/openai-compatible`），遵循 ai-sdk skill
 - 不依赖内部知识，始终以 `node_modules/ai/docs/` 或 ai-sdk.dev 文档为准
-- 流式对话使用 `streamText`，provider 配置参考 `server/api/chat.ts`
+- 流式对话使用 `streamText`，provider 配置参考 `server/api/aisdk/text/index.ts`
 
 ## 部署
 

@@ -1,4 +1,5 @@
 import { DefaultChatTransport } from 'ai'
+import { getPrompt } from '~/utils/prompts'
 import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-05-29'
@@ -9,7 +10,7 @@ export const useVideoStore = defineStore('video', () => {
   const video = ref()
 
   const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
     onError: (error) => {
       useStateStore().toast.add({
         title: '生成失败',
@@ -26,17 +27,20 @@ export const useVideoStore = defineStore('video', () => {
     video.value = undefined
   }
 
-  function generate() {
+  async function generate() {
     if (chat.status === 'error') chat.clearError()
     chat.stop()
+    const model = useModelStore().activeModels.video
     chat.sendMessage(
       { text: '生成视频' },
       {
         body: {
           type: 'video',
           task: 'generate',
-          model: useModelStore().activeModels.video,
+          model,
           reasoning: false,
+          system: await getPrompt('video', 'generate'),
+          providerOptions: useProviderStore().getProviderOptions(model.provider, false),
         },
       },
     )

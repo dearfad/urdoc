@@ -79,6 +79,7 @@
 <script setup>
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
+import { getPrompt } from '~/utils/prompts'
 
 const caseStore = useCaseStore()
 const actStore = useActStore()
@@ -98,17 +99,20 @@ const chat = new Chat({
   }),
 })
 
-function sendMessage() {
+async function sendMessage() {
   if (!userInput.value.trim() || !caseStore.case.content || chat.status === 'streaming') return
   const text = userInput.value
   userInput.value = ''
   actStore.act.content.push({ role: 'user', content: text })
+  const model = modelStore.activeModels.act
+  const reasoning = stateStore.act?.reasoning ?? false
   chat.sendMessage(
     { text: text },
     {
       body: {
-        reasoning: stateStore.act?.reasoning,
-        case: caseStore.case.content,
+        reasoning,
+        system: await getPrompt('act', 'prompt', caseStore.case.content),
+        providerOptions: useProviderStore().getProviderOptions(model.provider, reasoning),
       },
     },
   )

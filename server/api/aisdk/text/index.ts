@@ -2,17 +2,17 @@ import { streamText, convertToModelMessages } from 'ai'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
 export default defineEventHandler(async (event) => {
-  const { messages } = await readBody(event)
-
+  const { messages, model, system, providerOptions } = await readBody(event)
+  const config = useRuntimeConfig()
   const provider = createOpenAICompatible({
-    name: 'InternAi',
-    apiKey: process.env.DEARFAD_SHUSHENG_API_KEY,
-    baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+    name: model.provider,
+    apiKey: config[model.apiKey as string] as string,
+    baseURL: model.baseURL,
   })
-
   return streamText({
-    model: provider('intern-s1'),
+    model: provider(model.name),
+    system,
     messages: await convertToModelMessages(messages),
-    output: 'json',
+    providerOptions,
   }).toUIMessageStreamResponse()
 })

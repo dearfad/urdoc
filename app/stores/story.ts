@@ -1,4 +1,5 @@
 import { isReasoningUIPart, isTextUIPart } from 'ai'
+import { getPrompt } from '~/utils/prompts'
 
 const VERSION = '2026-05-31'
 
@@ -48,7 +49,7 @@ export const useStoryStore = defineStore('story', () => {
     }
   }
 
-  function generate() {
+  async function generate() {
     const stateStore = useStateStore()
     const caseStore = useCaseStore()
 
@@ -59,11 +60,14 @@ export const useStoryStore = defineStore('story', () => {
 
     const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
 
+    const model = useModelStore().activeModels.chat
     send(text, {
       type: 'story',
       task: 'generate',
-      model: useModelStore().activeModels.chat,
+      model,
       reasoning: stateStore.story.reasoning,
+      system: await getPrompt('story', 'generate'),
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
     })
   }
 

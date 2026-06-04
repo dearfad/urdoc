@@ -104,54 +104,7 @@
         <!-- 部署状态与快捷操作 -->
         <div class="px-6 py-8 lg:px-8">
           <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div class="space-y-3">
-              <h2 class="text-highlighted text-lg font-semibold">部署状态</h2>
-              <div class="space-y-2">
-                <div class="flex items-center gap-3">
-                  <UBadge
-                    :label="lastCommitDate.main || '--'"
-                    color="success"
-                    variant="soft"
-                    class="font-mono text-xs"
-                  />
-                  <span class="text-muted text-sm"
-                    >正式站：<a href="https://urdoc.dearfad.com" target="_blank" class="text-primary hover:underline"
-                      >urdoc.dearfad.com</a
-                    ></span
-                  >
-                </div>
-                <div class="flex items-center gap-3">
-                  <UBadge
-                    :label="lastCommitDate.develop || '--'"
-                    color="warning"
-                    variant="soft"
-                    class="font-mono text-xs"
-                  />
-                  <span class="text-muted text-sm"
-                    >开发站：<a
-                      href="https://dev.urdoc.dearfad.com"
-                      target="_blank"
-                      class="text-primary hover:underline"
-                      >dev.urdoc.dearfad.com</a
-                    ></span
-                  >
-                </div>
-                <div class="flex items-center gap-3">
-                  <UBadge label="最新" color="info" variant="soft" class="font-mono text-xs" />
-                  <span class="text-muted text-sm"
-                    >文档：<NuxtLink to="/docs" class="text-primary hover:underline">应用内文档中心</NuxtLink></span
-                  >
-                </div>
-              </div>
-              <UButton
-                label="刷新状态"
-                color="neutral"
-                variant="ghost"
-                size="sm"
-                icon="i-lucide-refresh-cw"
-                @click="getLastCommitDateAll"
-              />
-            </div>
+            <CardDeployStatus />
             <UButton
               label="开始生成病例"
               size="xl"
@@ -210,26 +163,4 @@ const multimodalItems = [
   { label: '影像渲染', icon: 'i-lucide-video', description: '姿态与动作相关影像生成', to: '/multimodal/video' },
   { label: '音频合成', icon: 'i-lucide-volume-2', description: 'AI 音频对话生成', to: '/multimodal/audio' },
 ]
-
-const lastCommitDate = ref({
-  main: '',
-  develop: '',
-})
-
-async function getLastCommitDate(branch: string): Promise<string> {
-  return await $fetch('/api/github/commit', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: {
-      branch: branch,
-    },
-  })
-}
-
-async function getLastCommitDateAll() {
-  lastCommitDate.value.main = await getLastCommitDate('main')
-  lastCommitDate.value.develop = await getLastCommitDate('develop')
-}
 </script>

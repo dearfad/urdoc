@@ -1,4 +1,5 @@
 import { DefaultChatTransport } from 'ai'
+import { getPrompt } from '~/utils/prompts'
 import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-06-03'
@@ -16,7 +17,7 @@ export const useImageStore = defineStore('image', () => {
   const imageApiStatus = computed(() => imageApi.status.value)
 
   const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/chat' }),
+    transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
     onError: (error) => {
       useStateStore().toast.add({
         title: '生成失败',
@@ -56,7 +57,7 @@ export const useImageStore = defineStore('image', () => {
   }
 
   // 基于当前病例生成患者头像
-  function face() {
+  async function face() {
     const caseContent = useCaseStore().case.content
     if (!caseContent) {
       useStateStore().toast.add({
@@ -70,11 +71,12 @@ export const useImageStore = defineStore('image', () => {
     imageApi.generate(JSON.stringify(caseContent, null, 2), {
       task: 'face',
       model: useModelStore().activeModels.image,
+      system: await getPrompt('image', 'face'),
     })
   }
 
   // 基于当前故事生成故事插图
-  function illustration() {
+  async function illustration() {
     const storyContent = useStoryStore().story.content
     if (!storyContent) {
       useStateStore().toast.add({
@@ -88,6 +90,7 @@ export const useImageStore = defineStore('image', () => {
     imageApi.generate(storyContent, {
       task: 'illustration',
       model: useModelStore().activeModels.image,
+      system: await getPrompt('image', 'illustration'),
     })
   }
 

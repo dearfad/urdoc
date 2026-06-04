@@ -12,7 +12,7 @@ export function useChatApi() {
 
   if (!chat) {
     chat = new Chat({
-      transport: new DefaultChatTransport({ api: '/api/chat' }),
+      transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
       onError: (error) => {
         stateStore.toast.add({
           title: '生成失败',
