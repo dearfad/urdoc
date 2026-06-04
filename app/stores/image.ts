@@ -68,10 +68,21 @@ export const useImageStore = defineStore('image', () => {
       })
       return
     }
-    imageApi.generate(JSON.stringify(caseContent, null, 2), {
+
+    const system = await getPrompt('face', 'generate')
+    const { result: refinedPrompt } = await $fetch('/api/aisdk/text', {
+      method: 'POST',
+      body: {
+        messages: [{ role: 'user', content: JSON.stringify(caseContent, null, 2) }],
+        system,
+        model: useModelStore().activeModels.chat,
+        mode: 'text',
+      },
+    })
+
+    imageApi.generate(refinedPrompt, {
       task: 'face',
       model: useModelStore().activeModels.image,
-      system: await getPrompt('image', 'face'),
     })
   }
 
@@ -87,10 +98,21 @@ export const useImageStore = defineStore('image', () => {
       })
       return
     }
-    imageApi.generate(storyContent, {
+
+    const system = await getPrompt('illustration', 'generate')
+    const { result: refinedPrompt } = await $fetch('/api/aisdk/text', {
+      method: 'POST',
+      body: {
+        messages: [{ role: 'user', content: storyContent }],
+        system,
+        model: useModelStore().activeModels.chat,
+        mode: 'text',
+      },
+    })
+
+    imageApi.generate(refinedPrompt, {
       task: 'illustration',
       model: useModelStore().activeModels.image,
-      system: await getPrompt('image', 'illustration'),
     })
   }
 

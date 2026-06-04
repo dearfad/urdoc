@@ -26,7 +26,11 @@ export function useImageApi() {
     _abortController = new AbortController()
 
     try {
-      const result: any = await $fetch('/api/aisdk/image', {
+      const endpoint = options.model.provider === 'Agnes'
+        ? '/api/agnes/image'
+        : '/api/aisdk/image'
+
+      const result: any = await $fetch(endpoint, {
         method: 'POST',
         signal: _abortController.signal,
         body: {

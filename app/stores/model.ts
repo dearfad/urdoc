@@ -58,7 +58,7 @@ export const useModelStore = defineStore(
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
           baseURL: 'https://apihub.agnes-ai.com/v1',
-          models: ['agnes-image-2.1-flash'],
+          models: ['agnes-image-2.0-flash', 'agnes-image-2.1-flash'],
         },
       ],
       audio: [],

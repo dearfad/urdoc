@@ -59,9 +59,13 @@ export function safeParseJson(text: string): any {
     return parse(text)
   } catch (e) {
     if (e instanceof MalformedJSON) {
-      const repaired = repairPartialJson(text)
-      return parse(repaired)
+      try {
+        const repaired = repairPartialJson(text)
+        return parse(repaired)
+      } catch {
+        return null
+      }
     }
-    throw e
+    return null
   }
 }

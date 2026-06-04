@@ -1,7 +1,17 @@
 <template>
   <UCard>
     <div class="space-y-3">
-      <h2 class="text-highlighted text-lg font-semibold">部署状态</h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-highlighted text-lg font-semibold">部署状态</h2>
+        <UButton
+          label="刷新状态"
+          color="neutral"
+          variant="ghost"
+          size="sm"
+          icon="i-lucide-refresh-cw"
+          @click="getLastCommitDateAll"
+        />
+      </div>
       <div class="space-y-2">
         <div class="flex items-center gap-3">
           <UBadge
@@ -32,21 +42,7 @@
             ></span
           >
         </div>
-        <div class="flex items-center gap-3">
-          <UBadge label="最新" color="info" variant="soft" class="font-mono text-xs" />
-          <span class="text-muted text-sm"
-            >文档：<NuxtLink to="/docs" class="text-primary hover:underline">应用内文档中心</NuxtLink></span
-          >
-        </div>
       </div>
-      <UButton
-        label="刷新状态"
-        color="neutral"
-        variant="ghost"
-        size="sm"
-        icon="i-lucide-refresh-cw"
-        @click="getLastCommitDateAll"
-      />
     </div>
   </UCard>
 </template>
@@ -60,24 +56,10 @@ const lastCommitDate = ref({
 })
 
 async function getLastCommitDate(branch: string): Promise<string> {
-  const data: any = await $fetch('/api/github/commit', {
+  return $fetch('/api/github/commit', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: {
-      branch,
-    },
+    body: { branch },
   })
-  const utcDate = new Date(data.commit.committer.date)
-  return utcDate
-    .toLocaleDateString('zh-CN', {
-      timeZone: 'Asia/Shanghai',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    })
-    .replace(/\//g, '-')
 }
 
 async function getLastCommitDateAll() {
@@ -87,7 +69,7 @@ async function getLastCommitDateAll() {
     lastCommitDate.value.main = ''
     toast.add({
       title: '获取正式站状态失败',
-      description: e.data?.message || e.message,
+      description: e.data?.message ?? e.message,
       color: 'error',
       icon: 'i-lucide-alert-circle',
     })
@@ -98,7 +80,7 @@ async function getLastCommitDateAll() {
     lastCommitDate.value.develop = ''
     toast.add({
       title: '获取开发站状态失败',
-      description: e.data?.message || e.message,
+      description: e.data?.message ?? e.message,
       color: 'error',
       icon: 'i-lucide-alert-circle',
     })

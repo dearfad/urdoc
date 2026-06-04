@@ -23,12 +23,16 @@ export const useCaseStore = defineStore('case', () => {
   watch(
     () => lastParts.value,
     (parts) => {
-      if (currentType.value !== 'case') return
-      if (!parts.length) return
-      if (lastMessageRole.value !== 'assistant') return
-      for (const part of parts) {
-        useStateStore().case.isReasoning = isReasoningUIPart(part)
-        handlePart(part)
+      try {
+        if (currentType.value !== 'case') return
+        if (!parts.length) return
+        if (lastMessageRole.value !== 'assistant') return
+        for (const part of parts) {
+          useStateStore().case.isReasoning = isReasoningUIPart(part)
+          handlePart(part)
+        }
+      } catch (e) {
+        console.error('病例解析出错:', e)
       }
     },
   )
