@@ -25,10 +25,10 @@ export const useModelStore = defineStore(
         baseURL: 'https://chat.intern-ai.org.cn/api/v1',
       },
       video: {
-        provider: 'InternAi',
-        name: 'intern-s1',
-        apiKey: 'shushengApiKey',
-        baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+        provider: 'Agnes',
+        name: 'agnes-video-v2.0',
+        apiKey: 'agnesApiKey',
+        baseURL: 'https://apihub.agnes-ai.com/v1',
       },
     })
 
@@ -62,7 +62,14 @@ export const useModelStore = defineStore(
         },
       ],
       audio: [],
-      video: [],
+      video: [
+        {
+          provider: 'Agnes',
+          apiKey: 'agnesApiKey',
+          baseURL: 'https://apihub.agnes-ai.com/v1',
+          models: ['agnes-video-v2.0'],
+        },
+      ],
     })
 
     return {

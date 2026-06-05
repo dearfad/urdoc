@@ -12,12 +12,12 @@
       <UButton icon="i-lucide-image" variant="ghost" to="/multimodal/image" />
       <span class="font-bold">图像创作</span>
       <div class="ms-auto flex gap-2">
-        <ButtonGenerate type="image" task="generate" label="生成图像" />
+        <ButtonGenerate type="image" :task="activeTab" :label="headerButtonLabel" />
       </div>
     </template>
 
     <template #default>
-      <UTabs :items="tabs" variant="link" class="w-full shrink-0" default-value="generate">
+      <UTabs v-model="activeTab" :items="tabs" variant="link" class="w-full shrink-0" default-value="generate">
         <template #generate>
           <div class="flex flex-col gap-3 p-4">
             <UInput
@@ -81,6 +81,17 @@
 
 <script setup lang="ts">
 const imageStore = useImageStore()
+
+const activeTab = ref('generate')
+
+const headerButtonLabel = computed(() => {
+  const map: Record<string, string> = {
+    generate: '生成图像',
+    face: '生成患者头像',
+    illustration: '生成故事插图',
+  }
+  return map[activeTab.value] || '生成'
+})
 
 const tabs = [
   { label: '自定义生成', value: 'generate', icon: 'i-lucide-pencil', slot: 'generate' },

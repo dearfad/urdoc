@@ -12,39 +12,51 @@
 ## 命令
 
 - `pnpm dev` — 启动开发服务器，带 `--host` 参数（局域网访问）
-- `pnpm build` — 已内置 `NODE_OPTIONS=--max-old-space-size=4096`
-- `pnpm postinstall` — 运行 `nuxt prepare`（安装后自动触发）
+- `pnpm build` — 生产构建
+- `pnpm edgeone` — EdgeOne 构建（已内置 `NODE_OPTIONS=--max-old-space-size=4096`）
 - `pnpm generate` — 静态生成，用于 EdgeOne 部署
+- `pnpm postinstall` — 运行 `nuxt prepare`（安装后自动触发）
 
 未配置测试框架。
 
 ## 项目结构
 
-- `app/` — Nuxt 4 应用代码（`app.vue`、`error.vue`、组件、页面、layouts、stores、types、utils）
-- `server/api/` — 服务端 API 路由（`aisdk/text/` 是主要 AI 对话接口）
-- `server/prompts/` — AI 提示词模板，通过 `#server/prompts` 别名动态导入（`index.ts` 定义 `type` + `task` → 动态 `import()` 映射，见 `server/api/aisdk/text/index.ts` 调用模式）
-- `app-bak/` — 旧版代码备份（Nuxt 已通过 `ignore: ['/app-bak/**/*']` 排除）
-- `edge-functions/` — EdgeOne 无服务器函数（大部分为 `.bak` 备份文件）
-- `app/pages/index-v*.vue` — 旧版首页变体（非活跃，勿编辑）
-- 项目中散布大量 `.bak` 文件（如 `stores/*.js.bak`、`types/*.d.ts.bak`、`server/api/**/*.bak`），均为旧版遗留，非活跃代码
+- `app/` — Nuxt 4 应用代码
+  - `app.vue`、`error.vue` — 根组件与全局错误页
+  - `layouts/` — `default.vue`（仪表盘布局，含 `UApp` + `UDashboardGroup` + 侧边栏）、`landing.vue`（落地页布局）
+  - `pages/` — `index.vue`（首页落地页）、`dashboard/`、`cstar/`（case/story/test/act/rate）、`multimodal/`（image/audio/video）、`docs/`、`project/`、`settings/`
+  - `components/` — Act、App（Sidebar/Header/Logo）、Button（Generate/Clipboard/Capture/Edit）、Card、Case、Editor（Object/Text）、Image、Rate、Select、Story、Test
+  - `stores/` — 15 个 Pinia store（`record.ts` 为顶层协调，其余为 CSTAR、多模态、模型等子 store）
+  - `types/` — TypeScript 类型定义（act、book、breadcrumb、case、model、rate、story、test）
+  - `composables/` — `useBreadcrumb`、`useChatApi`、`useImageApi`、`useVideoApi`
+  - `utils/` — `store.ts`（syncStoreVersion）、`prompts.ts`（prompt 加载）、`json.ts`（partial-json 解析）、`docs.ts`（文档导航）
+  - `assets/` — `css/main.css`（Tailwind CSS v4）、`prompts/`（AI 提示词模板，14 个子目录）、`books/`（教科书数据）
+- `server/api/` — 服务端 API 路由
+  - `aisdk/text/index.ts` — 主要 AI 对话接口（流式 + 非流式），使用 `ai` SDK
+  - `agnes/image/index.ts`、`agnes/video/index.ts` — 多模态生成 API
+  - `github/commit.js` — GitHub 提交日期查询
+- `.agents/` — AI agent 技能定义（ai-sdk、frontend-design、nuxt、nuxt-ui），通过 `skills-lock.json` 锁定
 
 ## 框架与工具链
 
-- **Nuxt UI v4**：使用 `UApp`、`UDashboardGroup` 等组件；需从 `@nuxt/ui/locale` 导入 `zh_cn` 作为区域设置（见 `app/layouts/default.vue`）
+- **Nuxt UI v4**（`^4.8.1`）：使用 `UApp`、`UDashboardGroup` 等组件；需从 `@nuxt/ui/locale` 导入 `zh_cn` 作为区域设置（见 `app/layouts/default.vue`）
 - **字体**：`ui: fonts: false`，禁用 Nuxt UI 内置字体，通过 CSS 自定义
-- **Tailwind CSS v4**：使用 `@import 'tailwindcss'` 语法（非 v3 `@tailwind` 指令），文件扩展名 `.css` 关联为 tailwindcss 语言模式
+- **Tailwind CSS v4**：使用 `@import 'tailwindcss'` + `@import '@nuxt/ui'` 语法，文件扩展名 `.css` 关联为 tailwindcss 语言模式
 - **Pinia**：所有 store 需调用 `syncStoreVersion(VERSION, 'pinia:<name>')` 实现 localStorage 版本控制（见 `app/utils/store.ts`）
-- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容（使用 `@comark/vue` 渲染），通过 Comark 和 ComarkRenderer 组件使用
+- **状态持久化**：`pinia-plugin-unstorage` 模块已注册
+- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容，通过 `Comark` 组件渲染（用于 CSTAR 输出与文档页）
+- **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话；provider 选项支持 InternAi、BigModel、OpenRouter、Agnes 的 reasoning/thinking 配置（见 `app/stores/provider.ts`）
+- **提示词模板**：位于 `app/assets/prompts/`，通过 `import.meta.glob('~/assets/prompts/**/*.md')` 动态加载（见 `app/utils/prompts.ts`）
+- **JSON 解析**：使用 `partial-json` 处理流式 JSON（见 `app/utils/json.ts`）
+- **类型校验**：`zod` 用于运行时类型验证
 - **自动导入类型**：`~/types` 被配置为类型扫描目录（`imports.dirs`）
-- **导入别名**：`#server/prompts` 用于从 `server/prompts/` 动态导入提示词模板
-- **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话（参见 ai-sdk skill）；provider 选项支持 InternAi、BigModel、OpenRouter 的 reasoning/thinking 配置
 - **Vite optimizeDeps**：包含 `ai`、`@ai-sdk/vue`、`partial-json`、`@zumer/snapdom`
 
 ## 环境变量
 
-- `.env` 中的运行时配置键（`nuxt.config.ts` `runtimeConfig`）：`shushengApiKey`、`zhipuApiKey`、`openrouterApiKey`
-- `NUXT_GITHUB_API_TOKEN` — 通过 `runtimeConfig.githubApiToken` 读取，用于 `server/api/github/commit.js`
-- `process.env.DEARFAD_SHUSHENG_API_KEY` — 仅用于 `server/api/model/object.js`，**不属于** runtimeConfig
+- `nuxt.config.ts` `runtimeConfig` 声明的运行时配置键：
+  `shushengApiKey`、`zhipuApiKey`、`openrouterApiKey`、`longcatApiKey`、`agnesApiKey`、`githubApiToken`
+- `.env` 中另有大量第三方平台 API Key（Clerk、Supabase、XFYUN、HUNYUAN 等），仅为环境变量，非运行时配置
 
 ## UI 设计原则
 
@@ -70,3 +82,4 @@
 ## 部署
 
 EdgeOne 无服务器部署。构建产物为 `.output/` 目录（见 `edgeone.json`），Node.js 版本 `24.5.0`。
+使用 `pnpm edgeone` 或 `pnpm build` 构建。

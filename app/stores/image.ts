@@ -9,10 +9,11 @@ export const useImageStore = defineStore('image', () => {
   syncStoreVersion(VERSION, 'pinia:image')
 
   const prompt = ref('')
+  const images = ref<{ url: string }[]>([])
+  const originalUrls = ref<string[]>([])
 
   const imageApi = useImageApi()
 
-  const images = computed(() => imageApi.images.value)
   const error = computed(() => imageApi.error.value)
   const imageApiStatus = computed(() => imageApi.status.value)
 
@@ -37,10 +38,12 @@ export const useImageStore = defineStore('image', () => {
   function reset() {
     imageApi.reset()
     prompt.value = ''
+    images.value = []
+    originalUrls.value = []
   }
 
   // 自定义 prompt 生成图片
-  function generate() {
+  async function generate() {
     if (!prompt.value?.trim()) {
       useStateStore().toast.add({
         title: '提示词不能为空',
@@ -50,10 +53,14 @@ export const useImageStore = defineStore('image', () => {
       })
       return
     }
-    imageApi.generate(prompt.value, {
+    const result = await imageApi.generate(prompt.value, {
       task: 'generate',
       model: useModelStore().activeModels.image,
     })
+    if (result) {
+      images.value = result.images
+      originalUrls.value = result.originalUrls
+    }
   }
 
   // 基于当前病例生成患者头像
@@ -76,14 +83,18 @@ export const useImageStore = defineStore('image', () => {
         messages: [{ role: 'user', content: JSON.stringify(caseContent, null, 2) }],
         system,
         model: useModelStore().activeModels.chat,
-        mode: 'text',
+        stream: false,
       },
     })
 
-    imageApi.generate(refinedPrompt, {
+    const result = await imageApi.generate(refinedPrompt, {
       task: 'face',
       model: useModelStore().activeModels.image,
     })
+    if (result) {
+      images.value = result.images
+      originalUrls.value = result.originalUrls
+    }
   }
 
   // 基于当前故事生成故事插图
@@ -106,15 +117,19 @@ export const useImageStore = defineStore('image', () => {
         messages: [{ role: 'user', content: storyContent }],
         system,
         model: useModelStore().activeModels.chat,
-        mode: 'text',
+        stream: false,
       },
     })
 
-    imageApi.generate(refinedPrompt, {
+    const result = await imageApi.generate(refinedPrompt, {
       task: 'illustration',
       model: useModelStore().activeModels.image,
     })
+    if (result) {
+      images.value = result.images
+      originalUrls.value = result.originalUrls
+    }
   }
 
-  return { version, prompt, images, error, reset, generate, face, illustration, status }
+  return { version, prompt, images, originalUrls, error, reset, generate, face, illustration, status }
 })
