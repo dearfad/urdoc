@@ -25,6 +25,8 @@ export default defineNuxtConfig({
     openrouterApiKey: '',
     longcatApiKey: '',
     agnesApiKey: '',
+    giteeApiKey: '',
     githubApiToken: '',
+    xiaomiApiKey: '',
   },
 })

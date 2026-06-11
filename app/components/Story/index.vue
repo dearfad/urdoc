@@ -28,14 +28,14 @@
             <div class="flex flex-col gap-1 p-1">
               <ButtonCapture capture-id="component-story-index" />
               <ButtonClipboard :text="storyStore.story.content" />
-              <UButton icon="i-lucide-file-volume" variant="ghost" />
+              <ButtonAudio :text="storyStore.story.content" />
             </div>
           </template>
         </UPopover>
         <div class="hidden md:flex items-center gap-2">
           <ButtonCapture capture-id="component-story-index" />
           <ButtonClipboard :text="storyStore.story.content" />
-          <UButton icon="i-lucide-file-volume" variant="ghost" />
+          <ButtonAudio :text="storyStore.story.content" />
         </div>
       </div>
     </template>

@@ -1,53 +1,64 @@
-import { DefaultChatTransport } from 'ai'
 import { getPrompt } from '~/utils/prompts'
-import { Chat } from '@ai-sdk/vue'
 
-const VERSION = '2026-05-29'
+const VERSION = '2026-06-11'
+
+export type AudioCacheEntry = {
+  url: string
+  base64?: string
+  mediaType?: string
+}
 
 export const useAudioStore = defineStore('audio', () => {
   const version = ref(VERSION)
   syncStoreVersion(VERSION, 'pinia:audio')
-  const audio = ref()
 
-  const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
-    onError: (error) => {
-      useStateStore().toast.add({
-        title: '生成失败',
-        description: error.message,
-        color: 'error',
-        icon: 'i-lucide-alert-circle',
-      })
-    },
-  })
+  const audioApi = useAudioApi()
 
-  const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
+  const cache = ref<Record<string, AudioCacheEntry>>({})
+
+  const status = computed(() => audioApi.chatStatus.value)
+  const audioUrl = computed(() => audioApi.audioUrl.value)
+  const synthesizeStatus = computed(() => audioApi.synthesizeStatus.value)
 
   function reset() {
-    audio.value = undefined
+    cache.value = {}
+    audioApi.reset()
   }
 
   async function generate() {
-    const stateStore = useStateStore()
-    if (chat.status === 'error') chat.clearError()
-    chat.stop()
     const model = useModelStore().activeModels.audio
-    chat.sendMessage(
-      { text: '生成语音' },
+    audioApi.sendGenerate(
+      '生成语音',
       {
-        body: {
-          type: 'audio',
-          task: 'generate',
-          model,
-          reasoning: false,
-          system: await getPrompt('audio', 'generate'),
-          providerOptions: useProviderStore().getProviderOptions(model.provider, false),
-        },
+        type: 'audio',
+        task: 'generate',
+        model,
+        reasoning: false,
+        system: await getPrompt('audio', 'generate'),
+        providerOptions: useProviderStore().getProviderOptions(model.provider, false),
       },
     )
   }
 
-  return { version, audio, reset, generate, status }
+  async function synthesize(text: string): Promise<AudioCacheEntry> {
+    if (cache.value[text]) {
+      return cache.value[text]
+    }
+    const model = useModelStore().activeModels.audio
+    const result = await audioApi.synthesize(text, model)
+    cache.value[text] = result
+    return result
+  }
+
+  function clearCache() {
+    cache.value = {}
+  }
+
+  function removeFromCache(text: string) {
+    delete cache.value[text]
+  }
+
+  return { version, cache, audioUrl, synthesizeStatus, reset, generate, synthesize, clearCache, removeFromCache, status }
 })
 
 // // Voice Model

@@ -154,7 +154,7 @@
                 <p class="mb-1 text-xs text-muted">模型</p>
                 <SelectModel scene="video" />
               </div>
-              <UDivider />
+              <hr class="border-t border-default" />
               <div class="flex items-center justify-between">
                 <span class="text-sm">分辨率</span>
                 <span class="text-sm text-muted">1152×768</span>

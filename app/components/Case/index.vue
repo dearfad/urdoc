@@ -19,7 +19,7 @@
             <div class="flex flex-col gap-1 p-1">
               <ButtonCapture capture-id="component-case-index" />
               <ButtonClipboard :text="caseStore.markdown" />
-              <UButton icon="i-lucide-file-volume" variant="ghost" />
+              <ButtonAudio :text="caseStore.markdown" />
               <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
             </div>
           </template>
@@ -27,7 +27,7 @@
         <div class="hidden md:flex items-center gap-2">
           <ButtonCapture capture-id="component-case-index" />
           <ButtonClipboard :text="caseStore.markdown" />
-          <UButton icon="i-lucide-file-volume" variant="ghost" />
+          <ButtonAudio :text="caseStore.markdown" />
           <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
         </div>
       </div>

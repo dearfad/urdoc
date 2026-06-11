@@ -13,7 +13,7 @@
       <span class="font-bold">考核理论</span>
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-test-index" />
-        <UButton icon="i-lucide-file-volume" variant="ghost" />
+        <ButtonAudio :text="content" />
         <ButtonGenerate type="test" task="generate" label="生成考核" />
       </div>
     </template>

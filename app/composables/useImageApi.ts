@@ -23,7 +23,8 @@ export function useImageApi() {
     _abortController = new AbortController()
 
     try {
-      const endpoint = '/api/agnes/image'
+      const provider = options.model.provider
+      const endpoint = provider === 'BigModel' ? '/api/bigmodel/image' : '/api/agnes/image'
 
       const result: any = await $fetch(endpoint, {
         method: 'POST',

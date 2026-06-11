@@ -23,7 +23,7 @@
       <div class="ms-auto flex gap-2">
         <ButtonCapture capture-id="component-rate-index" />
         <ButtonClipboard :text="rateStore.rate.content" />
-        <UButton icon="i-lucide-file-volume" variant="ghost" />
+        <ButtonAudio :text="rateStore.rate.content" />
         <ButtonGenerate type="rate" task="generate" label="生成评估" />
       </div>
     </template>

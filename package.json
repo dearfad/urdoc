@@ -13,13 +13,13 @@
     "@ai-sdk/openai-compatible": "^2.0.48",
     "@ai-sdk/provider": "^3.0.10",
     "@ai-sdk/provider-utils": "^4.0.27",
-    "@ai-sdk/vue": "^3.0.196",
-    "@comark/nuxt": "^0.3.1",
-    "@nuxt/ui": "^4.8.1",
+    "@ai-sdk/vue": "^3.0.200",
+    "@comark/nuxt": "^0.4.0",
+    "@nuxt/ui": "^4.8.2",
     "@pinia/nuxt": "0.11.3",
     "@zumer/snapdom": "^2.12.8",
-    "ai": "^6.0.196",
-    "nuxt": "^4.4.7",
+    "ai": "^6.0.200",
+    "nuxt": "^4.4.8",
     "partial-json": "^0.1.7",
     "pinia-plugin-unstorage": "1.0.0-beta.1",
     "zod": "^4.4.3"
@@ -27,9 +27,9 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.111",
     "@iconify-json/mdi": "^1.2.3",
-    "@iconify-json/simple-icons": "^1.2.85",
-    "@nuxt/eslint": "^1.15.2",
-    "prettier": "^3.8.3",
+    "@iconify-json/simple-icons": "^1.2.86",
+    "@nuxt/eslint": "^1.16.0",
+    "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.3.0"
   }

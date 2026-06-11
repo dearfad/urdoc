@@ -19,10 +19,10 @@ export const useModelStore = defineStore(
         baseURL: 'https://apihub.agnes-ai.com/v1',
       },
       audio: {
-        provider: 'InternAi',
-        name: 'intern-s1',
-        apiKey: 'shushengApiKey',
-        baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+        provider: 'XiaoMI',
+        name: 'mimo-v2.5-tts',
+        apiKey: 'xiaomiApiKey',
+        baseURL: 'https://api.xiaomimimo.com/v1',
       },
       video: {
         provider: 'Agnes',
@@ -55,13 +55,32 @@ export const useModelStore = defineStore(
       ],
       image: [
         {
+          provider: 'BigModel',
+          apiKey: 'zhipuApiKey',
+          baseURL: 'https://open.bigmodel.cn/api/paas/v4',
+          models: ['cogview-3-flash'],
+        },
+        {
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
           baseURL: 'https://apihub.agnes-ai.com/v1',
           models: ['agnes-image-2.0-flash', 'agnes-image-2.1-flash'],
         },
       ],
-      audio: [],
+      audio: [
+        {
+          provider: 'Gitee',
+          apiKey: 'giteeApiKey',
+          baseURL: 'https://api.moark.com/v1',
+          models: ['Spark-TTS-0.5B'],
+        },
+        {
+          provider: 'XiaoMI',
+          apiKey: 'xiaomiApiKey',
+          baseURL: 'https://api.xiaomimimo.com/v1',
+          models: ['mimo-v2.5-tts'],
+        },
+      ],
       video: [
         {
           provider: 'Agnes',

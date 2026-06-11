@@ -15,7 +15,7 @@
         <span class="font-bold">互动实践</span>
         <div class="ms-auto flex gap-2">
           <ButtonCapture capture-id="component-act-index" />
-          <UButton icon="i-lucide-file-volume" variant="ghost" />
+          <ButtonAudio :text="actStore.act.content.map(m => m.content).join('\n')" />
         </div>
       </template>
 
