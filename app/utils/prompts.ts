@@ -3,6 +3,19 @@ const promptCache = import.meta.glob('~/assets/prompts/**/*.md', {
   import: 'default',
 }) as Record<string, () => Promise<string>>
 
+export function getAvailablePrompts(): Record<string, string[]> {
+  const map: Record<string, string[]> = {}
+  for (const p in promptCache) {
+    const normalized = p.replace(/\\/g, '/')
+    const match = normalized.match(/assets\/prompts\/(\w+)\/(\w+)\.md$/)
+    if (match) {
+      const [, type, task] = match
+      ;(map[type] ??= []).push(task)
+    }
+  }
+  return map
+}
+
 export async function getPrompt(type: string, task: string, caseContent?: any): Promise<string> {
   const key = `${type}/${task}`
   let path = ''

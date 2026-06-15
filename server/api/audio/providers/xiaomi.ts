@@ -1,12 +1,18 @@
-export default defineEventHandler(async (event) => {
-  const { model, text, style, voice, format } = await readBody(event)
+export async function handle(body: {
+  model: { apiKey: string; baseURL: string; name?: string }
+  text: string
+  style?: string
+  voice?: string
+  format?: string
+}) {
+  const { model, text, style, voice, format } = body
 
   if (!text) {
     throw createError({ statusCode: 400, statusMessage: 'text（合成文本）不能为空' })
   }
 
   const config = useRuntimeConfig()
-  const apiKey = config[model?.apiKey as string] as string
+  const apiKey = config[model.apiKey as string] as string
   if (!apiKey) {
     throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })
   }
@@ -19,7 +25,7 @@ export default defineEventHandler(async (event) => {
   }
   messages.push({ role: 'assistant', content: text })
 
-  const body: Record<string, unknown> = {
+  const reqBody: Record<string, unknown> = {
     model: model.name || 'mimo-v2.5-tts',
     messages,
     audio: {
@@ -34,7 +40,7 @@ export default defineEventHandler(async (event) => {
       'api-key': apiKey,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(reqBody),
   })
 
   if (!res.ok) {
@@ -60,4 +66,4 @@ export default defineEventHandler(async (event) => {
     base64: audioData,
     mediaType,
   }
-})
+}

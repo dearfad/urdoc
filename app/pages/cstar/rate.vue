@@ -13,22 +13,7 @@
       </UDashboardNavbar>
       <UDashboardToolbar>
         <UBreadcrumb :items="items" />
-        <template #right v-if="siblings.length">
-          <div class="flex gap-1 overflow-x-auto">
-            <NuxtLink
-              v-for="sib in siblings"
-              :key="sib.to"
-              :to="sib.to"
-              class="size-6 flex items-center justify-center rounded-full text-[11px] font-bold leading-none transition-colors shrink-0"
-              :class="route.path === sib.to
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-muted hover:text-default hover:bg-muted'"
-              :title="sib.label"
-            >
-              {{ sib.abbr }}
-            </NuxtLink>
-          </div>
-        </template>
+
       </UDashboardToolbar>
     </template>
     <template #body>
@@ -41,9 +26,14 @@
 </template>
 
 <script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
+
 definePageMeta({
   title: '评估能力',
 })
-const route = useRoute()
-const { items, siblings } = useBreadcrumb()
+const items = computed<BreadcrumbItem[]>(() => [
+  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+  { label: 'CSTAR', icon: 'i-lucide-circle-star' },
+  { label: '评估能力', icon: 'i-mdi-alpha-r-circle', to: '/cstar/rate' },
+])
 </script>

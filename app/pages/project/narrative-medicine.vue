@@ -56,10 +56,15 @@
 </template>
 
 <script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
+
 definePageMeta({
   title: '叙事医学',
 })
-const { items } = useBreadcrumb()
+const items = computed<BreadcrumbItem[]>(() => [
+  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+  { label: '叙事医学', icon: 'i-lucide-book', to: '/project/narrative-medicine' },
+])
 const caseStore = useCaseStore()
 const storyStore = useStoryStore()
 const toast = useToast()

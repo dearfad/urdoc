@@ -28,7 +28,7 @@
   - `components/` — Act、App（Sidebar/Header/Logo）、Button（Generate/Clipboard/Capture/Edit）、Card、Case、Editor（Object/Text）、Image、Rate、Select、Story、Test
   - `stores/` — 15 个 Pinia store（`record.ts` 为顶层协调，其余为 CSTAR、多模态、模型等子 store）
   - `types/` — TypeScript 类型定义（act、book、breadcrumb、case、model、rate、story、test）
-  - `composables/` — `useBreadcrumb`、`useChatApi`、`useImageApi`、`useVideoApi`
+  - `composables/` — `useChatApi`、`useImageApi`、`useVideoApi`
   - `utils/` — `store.ts`（syncStoreVersion）、`prompts.ts`（prompt 加载）、`json.ts`（partial-json 解析）、`docs.ts`（文档导航）
   - `assets/` — `css/main.css`（Tailwind CSS v4）、`prompts/`（AI 提示词模板，14 个子目录）、`books/`（教科书数据）
 - `server/api/` — 服务端 API 路由

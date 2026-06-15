@@ -1,5 +1,4 @@
 import { DefaultChatTransport } from 'ai'
-import { getPrompt } from '~/utils/prompts'
 import { Chat } from '@ai-sdk/vue'
 
 const VERSION = '2026-06-03'
@@ -18,7 +17,7 @@ export const useImageStore = defineStore('image', () => {
   const imageApiStatus = computed(() => imageApi.status.value)
 
   const chat = new Chat({
-    transport: new DefaultChatTransport({ api: '/api/aisdk/text' }),
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
     onError: (error) => {
       useStateStore().toast.add({
         title: '生成失败',
@@ -76,8 +75,8 @@ export const useImageStore = defineStore('image', () => {
       return
     }
 
-    const system = await getPrompt('face', 'generate')
-    const { result: refinedPrompt } = await $fetch('/api/aisdk/text', {
+    const system = await usePromptStore().getEffectivePrompt('face', 'generate')
+    const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
         messages: [{ role: 'user', content: JSON.stringify(caseContent, null, 2) }],
@@ -110,8 +109,8 @@ export const useImageStore = defineStore('image', () => {
       return
     }
 
-    const system = await getPrompt('illustration', 'generate')
-    const { result: refinedPrompt } = await $fetch('/api/aisdk/text', {
+    const system = await usePromptStore().getEffectivePrompt('illustration', 'generate')
+    const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
         messages: [{ role: 'user', content: storyContent }],

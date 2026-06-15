@@ -1,4 +1,4 @@
-import { getPrompt } from '~/utils/prompts'
+import { usePromptStore } from '~/stores/prompt'
 
 const VERSION = '2026-06-05'
 
@@ -99,8 +99,8 @@ export const useVideoStore = defineStore('video', () => {
 
     savedVideoUrl.value = null
 
-    const system = await getPrompt('video', 'generate')
-    const { result: refinedPrompt } = await $fetch('/api/aisdk/text', {
+    const system = await usePromptStore().getEffectivePrompt('video', 'generate')
+    const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
         messages: [

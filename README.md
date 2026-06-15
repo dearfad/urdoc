@@ -78,7 +78,7 @@ urdoc/
 │   │   ├── Story/                  # 故事展示组件
 │   │   └── Test/                   # 考核展示组件
 │   ├── composables/
-│   │   ├── useBreadcrumb.ts        # 面包屑导航（CSTAR / 多模态分组）
+
 │   │   ├── useChatApi.ts           # AI 流式对话（@ai-sdk/vue Chat + DefaultChatTransport）
 │   │   ├── useImageApi.ts          # 图像生成 API 封装
 │   │   └── useVideoApi.ts          # 视频生成 API 封装（轮询进度）

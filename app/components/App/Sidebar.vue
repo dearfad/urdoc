@@ -202,6 +202,12 @@ const items = [
         to: '/docs/development/data-architecture',
         class: 'pl-8 text-sm',
       },
+      {
+        label: '  API 接口指南',
+        icon: 'i-lucide-route',
+        to: '/docs/development/api-guide',
+        class: 'pl-8 text-sm',
+      },
     ],
   },
 ] satisfies NavigationMenuItem[]

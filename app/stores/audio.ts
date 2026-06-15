@@ -1,4 +1,4 @@
-import { getPrompt } from '~/utils/prompts'
+import { usePromptStore } from '~/stores/prompt'
 
 const VERSION = '2026-06-11'
 
@@ -34,7 +34,7 @@ export const useAudioStore = defineStore('audio', () => {
         task: 'generate',
         model,
         reasoning: false,
-        system: await getPrompt('audio', 'generate'),
+        system: await usePromptStore().getEffectivePrompt('audio', 'generate'),
         providerOptions: useProviderStore().getProviderOptions(model.provider, false),
       },
     )

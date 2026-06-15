@@ -1,32 +1,26 @@
-let _status: ReturnType<typeof ref<string>> | null = null
-let _error: ReturnType<typeof ref<string | null>> | null = null
+let _status = ref<'idle' | 'streaming' | 'error'>('idle')
+let _error = ref<string | null>(null)
 let _abortController: AbortController | null = null
 
 export function useImageApi() {
-  if (!_status) _status = ref<'idle' | 'streaming' | 'error'>('idle')
-  if (!_error) _error = ref<string | null>(null)
-
   async function generate(
     prompt: string,
     options: {
       task?: string
       system?: string
-      model: { provider: string | null; name: string | null; apiKey: string | null; baseURL: string | null }
+      model: Model
       imageSize?: string
       n?: number
     },
   ): Promise<{ images: { url: string }[]; originalUrls: string[] } | null> {
     stop()
-    _status!.value = 'streaming'
-    _error!.value = null
+    _status.value = 'streaming'
+    _error.value = null
 
     _abortController = new AbortController()
 
     try {
-      const provider = options.model.provider
-      const endpoint = provider === 'BigModel' ? '/api/bigmodel/image' : '/api/agnes/image'
-
-      const result: any = await $fetch(endpoint, {
+      const result: any = await $fetch('/api/image', {
         method: 'POST',
         signal: _abortController.signal,
         body: {
@@ -42,16 +36,16 @@ export function useImageApi() {
       }))
       const originalUrls: string[] = result.originalUrls || []
 
-      _status!.value = 'idle'
+      _status.value = 'idle'
 
       return { images, originalUrls }
     } catch (err: any) {
       if (err.name === 'AbortError') {
-        _status!.value = 'idle'
+        _status.value = 'idle'
         return null
       }
-      _error!.value = err.data?.statusMessage || err.message || '图片生成失败'
-      _status!.value = 'error'
+      _error.value = err.data?.statusMessage || err.message || '图片生成失败'
+      _status.value = 'error'
       return null
     }
   }
@@ -61,15 +55,15 @@ export function useImageApi() {
       _abortController.abort()
       _abortController = null
     }
-    if (_status?.value === 'streaming') {
+    if (_status.value === 'streaming') {
       _status.value = 'idle'
     }
   }
 
   function reset() {
     stop()
-    _error!.value = null
-    _status!.value = 'idle'
+    _error.value = null
+    _status.value = 'idle'
   }
 
   return {

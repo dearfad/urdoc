@@ -1,7 +1,6 @@
 import { parse } from 'partial-json'
 import { isReasoningUIPart, isTextUIPart } from 'ai'
 import { safeParseJson } from '~/utils/json'
-import { getPrompt } from '~/utils/prompts'
 
 const VERSION = '2026-05-31'
 
@@ -18,18 +17,28 @@ export const useCaseStore = defineStore('case', () => {
     content: null,
   })
 
+  const verifyResult = ref<string | null>(null)
+  const verifyReasoning = ref<string | null>(null)
+  const fixReasoning = ref<string | null>(null)
+
   const { status, lastParts, currentType, lastMessageRole, send } = useChatApi()
 
   watch(
     () => lastParts.value,
     (parts) => {
       try {
-        if (currentType.value !== 'case') return
+        if (!['case', 'case-verify', 'case-fix'].includes(currentType.value)) return
         if (!parts.length) return
         if (lastMessageRole.value !== 'assistant') return
         for (const part of parts) {
-          useStateStore().case.isReasoning = isReasoningUIPart(part)
-          handlePart(part)
+          if (currentType.value === 'case-verify') {
+            handleVerifyPart(part)
+          } else if (currentType.value === 'case-fix') {
+            handleFixPart(part)
+          } else {
+            useStateStore().case.isReasoning = isReasoningUIPart(part)
+            handlePart(part)
+          }
         }
       } catch (e) {
         console.error('病例解析出错:', e)
@@ -46,11 +55,32 @@ export const useCaseStore = defineStore('case', () => {
       reasoning: null,
       content: null,
     }
+    verifyResult.value = null
+    verifyReasoning.value = null
+    fixReasoning.value = null
   }
 
   function handlePart(part: any) {
     if (isReasoningUIPart(part)) {
       case_.value.reasoning = part.text
+    }
+    if (isTextUIPart(part) && part.text?.trim()) {
+      case_.value.content = safeParseJson(part.text)
+    }
+  }
+
+  function handleVerifyPart(part: any) {
+    if (isReasoningUIPart(part)) {
+      verifyReasoning.value = part.text
+    }
+    if (isTextUIPart(part) && part.text?.trim()) {
+      verifyResult.value = part.text
+    }
+  }
+
+  function handleFixPart(part: any) {
+    if (isReasoningUIPart(part)) {
+      fixReasoning.value = part.text
     }
     if (isTextUIPart(part) && part.text?.trim()) {
       case_.value.content = safeParseJson(part.text)
@@ -78,7 +108,45 @@ export const useCaseStore = defineStore('case', () => {
       task: 'generate',
       model,
       reasoning: stateStore.case.reasoning,
-      system: await getPrompt('case', 'generate'),
+      system: await usePromptStore().getEffectivePrompt('case', 'generate'),
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
+    })
+  }
+
+  async function verify() {
+    const stateStore = useStateStore()
+    const content = case_.value.content
+    if (!content) return
+    verifyResult.value = null
+    verifyReasoning.value = null
+    const text = JSON.stringify(content)
+    const model = useModelStore().activeModels.chat
+    const system = await usePromptStore().getEffectivePrompt('case', 'verify')
+    send(text, {
+      type: 'case-verify',
+      task: 'verify',
+      model,
+      reasoning: stateStore.case.reasoning,
+      system: system ? `${system}\n\n病例内容：${text}` : `校验以下病例内容是否符合要求：\n\n${text}`,
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
+    })
+  }
+
+  async function fix() {
+    const stateStore = useStateStore()
+    const content = case_.value.content
+    const verify = verifyResult.value
+    if (!content || !verify) return
+    fixReasoning.value = null
+    const text = JSON.stringify({ 原始病例: content, 校验报告: verify })
+    const model = useModelStore().activeModels.chat
+    const system = await usePromptStore().getEffectivePrompt('case', 'fix')
+    send(text, {
+      type: 'case-fix',
+      task: 'fix',
+      model,
+      reasoning: stateStore.case.reasoning,
+      system: system ? `${system}\n\n${text}` : `根据校验报告修正以下病例：\n\n${text}`,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }
@@ -96,5 +164,5 @@ export const useCaseStore = defineStore('case', () => {
     }
   })
 
-  return { version, case: case_, markdown, reset, handlePart, status, generate }
+  return { version, case: case_, markdown, reset, handlePart, status, generate, verify, verifyResult, verifyReasoning, fix, fixReasoning, currentType }
 })

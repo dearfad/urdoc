@@ -1,6 +1,12 @@
-export default defineEventHandler(async (event) => {
-  const { task, model, input, prompt_audio_url, prompt_text, taskId } =
-    await readBody(event)
+export async function handle(body: {
+  task?: string
+  model: { apiKey: string; baseURL: string; name: string }
+  input?: string
+  prompt_audio_url?: string
+  prompt_text?: string
+  taskId?: string
+}) {
+  const { task, model, input, prompt_audio_url, prompt_text, taskId } = body
 
   if (!task) {
     throw createError({
@@ -10,7 +16,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const config = useRuntimeConfig()
-  const apiKey = config[model?.apiKey as string] as string
+  const apiKey = config[model.apiKey as string] as string
   if (!apiKey) {
     throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })
   }
@@ -21,12 +27,12 @@ export default defineEventHandler(async (event) => {
     }
 
     const baseURL = (model.baseURL as string)?.replace(/\/+$/, '')
-    const body: Record<string, unknown> = {
+    const reqBody: Record<string, unknown> = {
       model: model.name,
       inputs: input,
     }
-    if (prompt_audio_url) body.prompt_audio_url = prompt_audio_url
-    if (prompt_text) body.prompt_text = prompt_text
+    if (prompt_audio_url) reqBody.prompt_audio_url = prompt_audio_url
+    if (prompt_text) reqBody.prompt_text = prompt_text
 
     const res = await fetch(`${baseURL}/async/audio/speech`, {
       method: 'POST',
@@ -34,7 +40,7 @@ export default defineEventHandler(async (event) => {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(reqBody),
     })
 
     if (!res.ok) {
@@ -89,4 +95,4 @@ export default defineEventHandler(async (event) => {
     statusCode: 400,
     statusMessage: `未知 task: ${task}，仅支持 create 和 query`,
   })
-})
+}

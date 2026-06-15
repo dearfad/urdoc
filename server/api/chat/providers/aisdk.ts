@@ -1,8 +1,14 @@
 import { streamText, generateText, convertToModelMessages } from 'ai'
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible'
 
-export default defineEventHandler(async (event) => {
-  const { messages, model, system, providerOptions, stream = true } = await readBody(event)
+export async function handle(body: {
+  messages: any[]
+  model: { provider: string; apiKey: string; baseURL: string; name: string }
+  system?: string
+  providerOptions?: Record<string, unknown>
+  stream?: boolean
+}) {
+  const { messages, model, system, providerOptions, stream = true } = body
   const config = useRuntimeConfig()
   const provider = createOpenAICompatible({
     name: model.provider,
@@ -24,4 +30,4 @@ export default defineEventHandler(async (event) => {
     messages: await convertToModelMessages(messages),
     providerOptions,
   }).toUIMessageStreamResponse()
-})
+}

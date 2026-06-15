@@ -26,15 +26,15 @@
 
         <div class="px-6 py-8 lg:px-8">
           <div class="mx-auto max-w-4xl space-y-10">
-            <div v-for="section in docNav" :key="'label' in section ? section.slug : section.label" class="space-y-4">
+            <div v-for="section in docNav" :key="'slug' in section ? section.slug : section.label" class="space-y-4">
               <template v-if="'slug' in section">
                 <NuxtLink
                   :to="`/docs/${section.slug}`"
-                  class="group flex items-center gap-3 rounded-lg p-4 transition-colors hover:bg-(--ui-bg-elevated)"
+                  class="group flex items-center gap-3 rounded-lg p-4 transition-colors hover:bg-elevated"
                 >
                   <UIcon :name="section.icon" class="text-primary size-6 shrink-0" />
                   <div class="min-w-0 flex-1">
-                    <h3 class="text-highlighted font-semibold group-hover:text-(--ui-primary)">{{ section.label }}</h3>
+                    <h3 class="text-highlighted font-semibold group-hover:text-primary">{{ section.label }}</h3>
                     <p v-if="section.description" class="text-muted mt-0.5 text-sm">{{ section.description }}</p>
                   </div>
                   <UIcon name="i-lucide-chevron-right" class="text-muted size-5 shrink-0 transition-transform group-hover:translate-x-0.5" />
@@ -50,10 +50,10 @@
                     v-for="child in section.children"
                     :key="child.slug"
                     :to="`/docs/${child.slug}`"
-                    class="group flex items-center gap-3 rounded-lg border border-(--ui-border) p-4 transition-all hover:border-(--ui-primary) hover:shadow-sm"
+                    class="group flex items-center gap-3 rounded-lg border border-default p-4 transition-all hover:border-primary hover:shadow-sm"
                   >
                     <UIcon :name="child.icon" class="text-primary size-5 shrink-0" />
-                    <span class="text-highlighted font-medium group-hover:text-(--ui-primary)">{{ child.label }}</span>
+                    <span class="text-highlighted font-medium group-hover:text-primary">{{ child.label }}</span>
                   </NuxtLink>
                 </div>
               </template>

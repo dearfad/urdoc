@@ -17,6 +17,14 @@
           <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
           <template #content>
             <div class="flex flex-col gap-1 p-1">
+              <UButton
+                icon="i-lucide-check-circle"
+                variant="ghost"
+                :disabled="!caseStore.case?.content"
+                @click="handleVerify"
+              >
+                校验
+              </UButton>
               <ButtonCapture capture-id="component-case-index" />
               <ButtonClipboard :text="caseStore.markdown" />
               <ButtonAudio :text="caseStore.markdown" />
@@ -25,6 +33,14 @@
           </template>
         </UPopover>
         <div class="hidden md:flex items-center gap-2">
+          <UButton
+            icon="i-lucide-check-circle"
+            variant="ghost"
+            :disabled="!caseStore.case?.content"
+            @click="handleVerify"
+          >
+            校验
+          </UButton>
           <ButtonCapture capture-id="component-case-index" />
           <ButtonClipboard :text="caseStore.markdown" />
           <ButtonAudio :text="caseStore.markdown" />
@@ -51,6 +67,12 @@
           <Comark :markdown="caseStore.markdown" />
         </div>
       </ClientOnly>
+      <CaseVerify
+        v-if="showVerify && caseStore.case?.content"
+        class="mt-2"
+        @close="showVerify = false"
+        @edit="handleEdit"
+      />
     </template>
 
     <template #footer>
@@ -97,4 +119,33 @@ const filteredTextbookItems = computed(() => {
 })
 
 const isEditing = ref(false)
+const showVerify = ref(false)
+const pendingReverify = ref(false)
+
+watch(() => caseStore.currentType, (type, oldType) => {
+  if (type === 'case') {
+    showVerify.value = false
+    pendingReverify.value = false
+  }
+  if (oldType === 'case-fix' && type !== 'case-fix' && type !== 'case-verify') {
+    pendingReverify.value = true
+  }
+})
+
+function handleVerify() {
+  if (showVerify.value && pendingReverify.value) {
+    pendingReverify.value = false
+    caseStore.verify()
+    return
+  }
+  showVerify.value = !showVerify.value
+  if (showVerify.value) {
+    caseStore.verify()
+  }
+}
+
+function handleEdit() {
+  showVerify.value = false
+  isEditing.value = true
+}
 </script>

@@ -121,7 +121,11 @@
 </template>
 
 <script setup lang="ts">
-const { items } = useBreadcrumb()
+import type { BreadcrumbItem } from '@nuxt/ui'
+
+const items = computed<BreadcrumbItem[]>(() => [
+  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+])
 
 const cstarItems = [
   {

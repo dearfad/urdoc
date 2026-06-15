@@ -1,13 +1,13 @@
-export default defineEventHandler(async (event) => {
-  const {
-    prompt,
-    model,
-    n,
-    size,
-    seed,
-    tags,
-    image,
-  } = await readBody(event)
+export async function handle(body: {
+  prompt: string
+  model: { apiKey: string; baseURL: string; name: string }
+  n?: number
+  size?: string
+  seed?: number
+  tags?: string
+  image?: string
+}) {
+  const { prompt, model, n, size, seed, tags, image } = body
 
   if (!prompt) {
     throw createError({ statusCode: 400, statusMessage: 'prompt 不能为空' })
@@ -20,15 +20,15 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })
   }
 
-  const body: Record<string, unknown> = {
+  const reqBody: Record<string, unknown> = {
     model: model.name,
     prompt,
     n: n ?? 1,
   }
-  if (size) body.size = size
-  if (seed != null) body.seed = seed
-  if (tags) body.tags = tags
-  if (image) body.extra_body = { image }
+  if (size) reqBody.size = size
+  if (seed != null) reqBody.seed = seed
+  if (tags) reqBody.tags = tags
+  if (image) reqBody.extra_body = { image }
 
   const url = `${model.baseURL.replace(/\/$/, '')}/images/generations`
 
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(reqBody),
   })
 
   if (!res.ok) {
@@ -65,4 +65,4 @@ export default defineEventHandler(async (event) => {
   )
 
   return { images, originalUrls: imageUrls }
-})
+}

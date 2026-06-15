@@ -8,7 +8,7 @@ export const useStateStore = defineStore('state', () => {
   // //
   // // API 地址设定
   // //
-  const apiBaseUrl = ref('/api/aisdk/text')
+  const apiBaseUrl = ref('/api/chat')
 
   const case_ = ref<{
     textbook: Book | null

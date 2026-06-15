@@ -1,5 +1,17 @@
-export default defineEventHandler(async (event) => {
-  const { task, model, prompt, image, taskId, num_frames, frame_rate, width, height, negative_prompt, seed } = await readBody(event)
+export async function handle(body: {
+  task: string
+  model: { apiKey: string; baseURL: string; name: string }
+  prompt?: string
+  image?: string
+  taskId?: string
+  num_frames?: number
+  frame_rate?: number
+  width?: number
+  height?: number
+  negative_prompt?: string
+  seed?: number
+}) {
+  const { task, model, prompt, image, taskId, num_frames, frame_rate, width, height, negative_prompt, seed } = body
 
   if (!task) {
     throw createError({ statusCode: 400, statusMessage: 'task 不能为空（create 或 query）' })
@@ -22,18 +34,18 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 400, statusMessage: 'prompt 不能为空' })
     }
 
-    const body: Record<string, unknown> = {
+    const reqBody: Record<string, unknown> = {
       model: model.name,
       prompt,
     }
 
-    if (image) body.image = image
-    if (num_frames != null) body.num_frames = num_frames
-    if (frame_rate != null) body.frame_rate = frame_rate
-    if (width != null) body.width = width
-    if (height != null) body.height = height
-    if (negative_prompt) body.negative_prompt = negative_prompt
-    if (seed != null) body.seed = seed
+    if (image) reqBody.image = image
+    if (num_frames != null) reqBody.num_frames = num_frames
+    if (frame_rate != null) reqBody.frame_rate = frame_rate
+    if (width != null) reqBody.width = width
+    if (height != null) reqBody.height = height
+    if (negative_prompt) reqBody.negative_prompt = negative_prompt
+    if (seed != null) reqBody.seed = seed
 
     const res = await fetch(`${baseURL}/videos`, {
       method: 'POST',
@@ -41,7 +53,7 @@ export default defineEventHandler(async (event) => {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(reqBody),
     })
 
     if (!res.ok) {
@@ -100,4 +112,4 @@ export default defineEventHandler(async (event) => {
   }
 
   throw createError({ statusCode: 400, statusMessage: `未知 task: ${task}，仅支持 create 和 query` })
-})
+}

@@ -64,11 +64,16 @@
 </template>
 
 <script lang="ts" setup>
+import type { BreadcrumbItem } from '@nuxt/ui'
+
 definePageMeta({
   title: '设置',
 })
 
-const { items } = useBreadcrumb()
+const items = computed<BreadcrumbItem[]>(() => [
+  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+  { label: '设置', icon: 'i-lucide-settings', to: '/settings' },
+])
 
 const toast = useToast()
 const modalOpen = ref(false)
