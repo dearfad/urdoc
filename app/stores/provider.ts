@@ -9,6 +9,9 @@ export const useProviderStore = defineStore('provider', () => {
         return { OpenRouter: { reasoning: { effort: reasoning ? 'high' : 'none' } } }
       case 'Agnes':
         return { Agnes: { chat_template_kwargs: { enable_thinking: reasoning } } }
+      // 暂时不支持
+      // case 'Makers':
+      //   return { Makers: { thinking_mode: reasoning } }
       default:
         return {}
     }

@@ -52,6 +52,12 @@ export const useModelStore = defineStore(
           baseURL: 'https://apihub.agnes-ai.com/v1',
           models: ['agnes-1.5-flash', 'agnes-2.0-flash'],
         },
+        {
+          provider: 'Makers',
+          apiKey: 'makersModelsKey',
+          baseURL: 'https://ai-gateway.edgeone.link/v1',
+          models: ['@makers/hy3-preview', '@makers/deepseek-v4-flash', '@makers/minimax-m2.7'],
+        },
       ],
       image: [
         {
