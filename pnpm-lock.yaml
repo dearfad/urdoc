@@ -23,9 +23,6 @@ importers:
       '@comark/nuxt':
         specifier: ^0.4.0
         version: 0.4.0(magicast@0.5.3)(nuxt@4.4.8(@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7))(@babel/plugin-syntax-typescript@7.29.7(@babel/core@7.29.7))(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.35)(cac@6.7.14)(db0@0.3.4)(eslint@10.4.1(jiti@2.7.0))(ioredis@5.11.1)(lightningcss@1.32.0)(magicast@0.5.3)(optionator@0.9.4)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.35(typescript@6.0.3)))(rollup-plugin-visualizer@7.0.1(rollup@4.61.1))(rollup@4.61.1)(srvx@0.11.16)(terser@5.48.0)(typescript@6.0.3)(vite@7.3.5(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))(yaml@2.9.0))(vue@3.5.35(typescript@6.0.3))
-      '@edgeone/makers-models-provider':
-        specifier: 1.0.0-beta.1
-        version: 1.0.0-beta.1(ai@6.0.207(zod@4.4.3))(zod@4.4.3)
       '@nuxt/ui':
         specifier: ^4.8.2
         version: 4.8.2(@internationalized/date@3.12.2)(@internationalized/number@3.6.7)(@tiptap/extensions@3.26.0(@tiptap/core@3.26.0(@tiptap/pm@3.26.0))(@tiptap/pm@3.26.0))(@tiptap/y-tiptap@3.0.4(prosemirror-model@1.25.7)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31))(change-case@5.4.4)(db0@0.3.4)(embla-carousel@8.6.0)(ioredis@5.11.1)(magicast@0.5.3)(tailwindcss@4.3.1)(typescript@6.0.3)(valibot@1.4.1(typescript@6.0.3))(vite@7.3.5(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))(vue-router@5.1.0(@vue/compiler-sfc@3.5.35)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.35(typescript@6.0.3)))(vite@7.3.5(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.48.0)(yaml@2.9.0))(vue@3.5.35(typescript@6.0.3)))(vue@3.5.35(typescript@6.0.3))(yjs@13.6.31)(zod@4.4.3)
@@ -81,20 +78,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/openai-compatible@2.0.50':
-    resolution: {integrity: sha512-HyuxddF2Yv5G8qxK/0uksAINjQ4h6TpwOqHuqzsCM0u78/JWAW2OXcIplQeB44PIAORgPjbMzrw9DhnPYHMskA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
-
   '@ai-sdk/openai-compatible@2.0.51':
     resolution: {integrity: sha512-A6qfyaVs4lxmRxRux6U3ViOa8mMbsSd0OaHghpei2MpiBT6791J4zFH5MN7kaW1tLfQ246rSC2DVTMOavsycjQ==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      zod: ^3.25.76 || ^4.1.8
-
-  '@ai-sdk/provider-utils@4.0.29':
-    resolution: {integrity: sha512-uhukHaCBvqkwBHkT8C2PrnqKTCoLn3pdHXqtcR9I8ErH+flbzgW4o7VHSNIup9LRu+WBvZIZDQLsx6rwl2tiOA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -328,12 +313,6 @@ packages:
 
   '@dxup/unimport@0.1.2':
     resolution: {integrity: sha512-/B8YJGPzaYq1NbsQmwgP8EZqg40NpTw4ZB3suuI0TplbxKHeK94jeaawLmVhCv+YwUnOpiWEz9U6SeThku/8JQ==}
-
-  '@edgeone/makers-models-provider@1.0.0-beta.1':
-    resolution: {integrity: sha512-SfzH2kIMk+lTl0J3PmBp5CLxoY1HHbsRii49GlVUPgU0kb0U0otWJD0iSsVYwwGrqrGYwJZjopybL1uqniYAUw==}
-    engines: {node: '>=20.0.0'}
-    peerDependencies:
-      ai: ^6.0.0
 
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
@@ -5620,23 +5599,10 @@ snapshots:
       '@vercel/oidc': 3.2.0
       zod: 4.4.3
 
-  '@ai-sdk/openai-compatible@2.0.50(zod@4.4.3)':
-    dependencies:
-      '@ai-sdk/provider': 3.0.10
-      '@ai-sdk/provider-utils': 4.0.29(zod@4.4.3)
-      zod: 4.4.3
-
   '@ai-sdk/openai-compatible@2.0.51(zod@4.4.3)':
     dependencies:
       '@ai-sdk/provider': 3.0.10
       '@ai-sdk/provider-utils': 4.0.30(zod@4.4.3)
-      zod: 4.4.3
-
-  '@ai-sdk/provider-utils@4.0.29(zod@4.4.3)':
-    dependencies:
-      '@ai-sdk/provider': 3.0.10
-      '@standard-schema/spec': 1.1.0
-      eventsource-parser: 3.1.0
       zod: 4.4.3
 
   '@ai-sdk/provider-utils@4.0.30(zod@4.4.3)':
@@ -5916,14 +5882,6 @@ snapshots:
       - magicast
 
   '@dxup/unimport@0.1.2': {}
-
-  '@edgeone/makers-models-provider@1.0.0-beta.1(ai@6.0.207(zod@4.4.3))(zod@4.4.3)':
-    dependencies:
-      '@ai-sdk/openai-compatible': 2.0.50(zod@4.4.3)
-      '@ai-sdk/provider': 3.0.10
-      ai: 6.0.207(zod@4.4.3)
-    transitivePeerDependencies:
-      - zod
 
   '@emnapi/core@1.10.0':
     dependencies:
