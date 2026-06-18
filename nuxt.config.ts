@@ -28,5 +28,6 @@ export default defineNuxtConfig({
     giteeApiKey: '',
     githubApiToken: '',
     xiaomiApiKey: '',
+    makersModelsKey: '',
   },
 })
