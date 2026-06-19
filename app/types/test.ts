@@ -7,6 +7,9 @@ export interface Test {
   custom: string[] | null
   reasoning: string | null
   content: string | null
+  userAnswers: Record<string, string> | null
+  submitted: boolean
+  score: number | null
 }
 
 export type Tests = Test[]

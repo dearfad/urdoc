@@ -14,6 +14,9 @@ export const useTestStore = defineStore('test', () => {
     custom: [],
     reasoning: null,
     content: null,
+    userAnswers: null,
+    submitted: false,
+    score: null,
   })
 
   const chat = new Chat({
@@ -28,7 +31,7 @@ export const useTestStore = defineStore('test', () => {
     },
   })
 
-  const status = computed(() => chat.status === 'idle' ? 'ready' : chat.status)
+  const status = computed(() => (chat.status === 'idle' ? 'ready' : chat.status))
 
   watch(
     () => [...(chat.lastMessage?.parts ?? [])],
@@ -49,6 +52,9 @@ export const useTestStore = defineStore('test', () => {
       custom: [],
       reasoning: null,
       content: null,
+      userAnswers: null,
+      submitted: false,
+      score: null,
     }
   }
 
@@ -101,5 +107,38 @@ export const useTestStore = defineStore('test', () => {
     )
   }
 
-  return { version, test, reset, prepare, handlePart, status, generate }
+  function setUserAnswer(key: string, answer: string) {
+    if (!test.value.userAnswers) {
+      test.value.userAnswers = {}
+    }
+    test.value.userAnswers[key] = answer
+  }
+
+  function submitTest() {
+    const content = test.value.content
+    if (!content) return
+
+    const questions = typeof content === 'string' ? safeParseJson(content) : content
+    if (!questions || typeof questions !== 'object') return
+
+    const entries = Object.entries(questions) as [string, any][]
+    let correct = 0
+    const total = entries.length
+    for (const [key, q] of entries) {
+      const userAns = test.value.userAnswers?.[key]
+      if (userAns && q.答案 && userAns === q.答案) {
+        correct++
+      }
+    }
+    test.value.score = total > 0 ? Math.round((correct / total) * 100) : 0
+    test.value.submitted = true
+  }
+
+  function resetTest() {
+    test.value.userAnswers = null
+    test.value.submitted = false
+    test.value.score = null
+  }
+
+  return { version, test, reset, prepare, handlePart, status, generate, setUserAnswer, submitTest, resetTest }
 })

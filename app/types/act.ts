@@ -6,6 +6,13 @@ export interface ActMessage {
   content: string
 }
 
+// 结束问诊考题
+export interface ActQuizItem {
+  question: string
+  options: Record<string, string>
+  answer: string
+}
+
 // 互动实践结构
 export interface Act {
   id: number | null
@@ -13,6 +20,10 @@ export interface Act {
   custom: string[] | null
   reasoning: string | null
   content: ActMessage[]
+  quiz: ActQuizItem[] | null
+  userAnswers: Record<string, string> | null
+  quizSubmitted: boolean
+  quizScore: number | null
 }
 
 export type Acts = Act[]
