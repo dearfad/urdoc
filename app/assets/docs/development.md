@@ -84,9 +84,9 @@ pnpm generate
 
 ## 文档
 
-文档内容位于 `public/docs/` 目录下，采用 Markdown 格式，通过应用内文档中心展示。如需新增文档：
+文档内容位于 `app/assets/docs/` 目录下，采用 Markdown 格式，通过应用内文档中心展示。如需新增文档：
 
-1. 在 `public/docs/` 创建 `.md` 文件
+1. 在 `app/assets/docs/` 创建 `.md` 文件
 2. 在 `app/utils/docs.ts` 中注册导航项
 3. 在 `app/components/App/Sidebar.vue` 中添加导航链接
 

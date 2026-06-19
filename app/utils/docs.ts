@@ -12,7 +12,7 @@ export interface DocGroup {
 }
 
 /**
- * 文档导航树，与 public/docs/ 目录结构对应
+ * 文档导航树，与 app/assets/docs/ 目录结构对应
  */
 export const docNav: (DocNavItem | DocGroup)[] = [
   { label: '文档概览', icon: 'i-lucide-book-open', slug: 'index', description: 'URDOC 平台文档总览' },

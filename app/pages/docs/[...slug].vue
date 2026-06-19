@@ -26,9 +26,7 @@
         <UIcon name="i-lucide-loader-circle" class="size-8 animate-spin" />
       </div>
       <div v-else class="mx-auto max-w-3xl px-6 py-8 lg:px-8">
-        <article class="prose prose-zinc dark:prose-invert max-w-none">
-          <Comark :markdown="content" />
-        </article>
+        <Comark :markdown="content" />
       </div>
     </template>
   </UDashboardPanel>
@@ -37,52 +35,23 @@
 <script setup lang="ts">
 import type { BreadcrumbItem } from '@nuxt/ui'
 import { getDocTitle } from '~/utils/docs'
+import { getDocContent } from '~/utils/docs-loader'
 
 const route = useRoute()
-const slug = (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug) || 'index'
+const slug = computed(() =>
+  (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug) || 'index',
+)
 
-const title = getDocTitle(slug)
+const title = computed(() => getDocTitle(slug.value))
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
   { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
   { label: '文档', icon: 'i-lucide-book-open-text', to: '/docs' },
-  { label: title, to: route.path },
+  { label: title.value, to: route.path },
 ])
 
-const content = ref('')
-const loading = ref(true)
-const error = ref(false)
-
-onMounted(async () => {
-  try {
-    const text = await $fetch<string>(`/docs/${slug}.md`, {
-      responseType: 'text',
-    })
-    content.value = text
-  } catch {
-    error.value = true
-  } finally {
-    loading.value = false
-  }
-})
-
-// 页面切换时重新加载
-watch(
-  () => slug,
-  async () => {
-    loading.value = true
-    error.value = false
-    content.value = ''
-    try {
-      const text = await $fetch<string>(`/docs/${slug}.md`, {
-        responseType: 'text',
-      })
-      content.value = text
-    } catch {
-      error.value = true
-    } finally {
-      loading.value = false
-    }
-  },
+const { data: content, error, pending: loading } = useAsyncData(
+  () => getDocContent(slug.value),
+  { watch: [slug] },
 )
 </script>
