@@ -1,3 +1,5 @@
+import type { NavigationMenuItem } from '@nuxt/ui'
+
 export interface DocNavItem {
   label: string
   icon: string
@@ -16,6 +18,7 @@ export interface DocGroup {
  */
 export const docNav: (DocNavItem | DocGroup)[] = [
   { label: '文档概览', icon: 'i-lucide-book-open', slug: 'index', description: 'URDOC 平台文档总览' },
+  { label: '项目背景', icon: 'i-lucide-info', slug: 'project', description: 'URDOC 平台的设计理念与愿景' },
   { label: '快速开始', icon: 'i-lucide-rocket', slug: 'getting-started', description: '快速上手平台功能' },
   {
     label: 'CSTAR 框架',
@@ -23,7 +26,6 @@ export const docNav: (DocNavItem | DocGroup)[] = [
     children: [
       { label: '框架说明', icon: 'i-lucide-circle-star', slug: 'cstar/index' },
       { label: '生成病例', icon: 'i-mdi-alpha-c-circle', slug: 'cstar/case' },
-      { label: '自定义教科书', icon: 'i-lucide-book-type', slug: 'development/custom-textbook', description: '自定义教科书数据结构' },
       { label: '编写故事', icon: 'i-mdi-alpha-s-circle', slug: 'cstar/story' },
       { label: '考核理论', icon: 'i-mdi-alpha-t-circle', slug: 'cstar/test' },
       { label: '互动实践', icon: 'i-mdi-alpha-a-circle', slug: 'cstar/act' },
@@ -40,11 +42,17 @@ export const docNav: (DocNavItem | DocGroup)[] = [
       { label: '音频合成', icon: 'i-lucide-audio-lines', slug: 'multimodal/audio' },
     ],
   } as DocGroup,
-  { label: '项目背景', icon: 'i-lucide-info', slug: 'project', description: 'URDOC 平台的设计理念与愿景' },
-  { label: '开发者指南', icon: 'i-lucide-code', slug: 'development', description: '架构、技术栈与部署说明' },
-  { label: '数据组织结构', icon: 'i-lucide-tree-pine', slug: 'development/data-architecture', description: '通用树形节点模型与 Record 设计' },
-  { label: '图片生成系统', icon: 'i-lucide-image', slug: 'development/image-generation', description: '图片生成 API、Composable 与 Store 设计' },
-  { label: 'API 接口指南', icon: 'i-lucide-route', slug: 'development/api-guide', description: '后端 API 统一入口与 Provider 开发规范' },
+  {
+    label: '开发者指南',
+    icon: 'i-lucide-code',
+    children: [
+      { label: '开发指南', icon: 'i-lucide-code', slug: 'development', description: '架构、技术栈与部署说明' },
+      { label: '自定义教科书', icon: 'i-lucide-book-type', slug: 'development/custom-textbook', description: '自定义教科书数据结构' },
+      { label: '数据组织结构', icon: 'i-lucide-tree-pine', slug: 'development/data-architecture', description: '通用树形节点模型与 Record 设计' },
+      { label: '图片生成系统', icon: 'i-lucide-image', slug: 'development/image-generation', description: '图片生成 API、Composable 与 Store 设计' },
+      { label: 'API 接口指南', icon: 'i-lucide-route', slug: 'development/api-guide', description: '后端 API 统一入口与 Provider 开发规范' },
+    ],
+  } as DocGroup,
 ]
 
 export function getDocTitle(slug: string): string {
@@ -68,4 +76,50 @@ export function flattenDocNav(): DocNavItem[] {
     }
   }
   return result
+}
+
+const docCache = import.meta.glob('~/assets/docs/**/*.md', {
+  query: '?raw',
+  import: 'default',
+}) as Record<string, () => Promise<string>>
+
+export function getDocContent(slug: string): Promise<string> {
+  const key = slug === 'index' ? 'index' : slug
+  for (const path in docCache) {
+    const normalized = path.replace(/\\/g, '/')
+    const match = normalized.match(/assets\/docs\/(.+)\.md$/)
+    if (match && match[1] === key) {
+      return docCache[path]!()
+    }
+  }
+  throw createError({ statusCode: 404, message: `Document not found: ${slug}` })
+}
+
+function toDocHref(slug: string): string {
+  return slug === 'index' ? '/docs' : `/docs/${slug}`
+}
+
+export function generateDocSidebarItems(): NavigationMenuItem[] {
+  return docNav.map((item) => {
+    if ('children' in item) {
+      return {
+        label: item.label,
+        icon: item.icon,
+        defaultOpen: false,
+        children: item.children.map((child) => ({
+          label: child.label,
+          icon: child.icon,
+          to: toDocHref(child.slug),
+          onSelect: () => navigateTo(toDocHref(child.slug)),
+        })),
+      } satisfies NavigationMenuItem
+    }
+    return {
+      label: item.label,
+      icon: item.icon,
+      to: toDocHref(item.slug),
+      description: item.description,
+      onSelect: () => navigateTo(toDocHref(item.slug)),
+    } satisfies NavigationMenuItem
+  })
 }

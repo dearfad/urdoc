@@ -34,8 +34,7 @@
 
 <script setup lang="ts">
 import type { BreadcrumbItem } from '@nuxt/ui'
-import { getDocTitle } from '~/utils/docs'
-import { getDocContent } from '~/utils/docs-loader'
+import { getDocTitle, getDocContent } from '~/utils/docs'
 
 const route = useRoute()
 const slug = computed(() =>
@@ -51,6 +50,7 @@ const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
 ])
 
 const { data: content, error, pending: loading } = useAsyncData(
+  `doc-${slug.value}`,
   () => getDocContent(slug.value),
   { watch: [slug] },
 )

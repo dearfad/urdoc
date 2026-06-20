@@ -18,28 +18,25 @@
           <div class="mx-auto max-w-3xl text-center">
             <h1 class="text-highlighted text-4xl font-bold tracking-tight">文档</h1>
             <p class="text-muted mt-2 text-lg">URDOC 平台使用指南与开发参考</p>
-            <p class="text-default mt-4 leading-relaxed">
-              浏览以下文档了解平台的各项功能、使用方法和最佳实践。
-            </p>
           </div>
         </div>
 
         <div class="px-6 py-8 lg:px-8">
           <div class="mx-auto max-w-4xl space-y-10">
-            <div v-for="section in docNav" :key="'slug' in section ? section.slug : section.label" class="space-y-4">
-              <template v-if="'slug' in section">
-                <NuxtLink
-                  :to="`/docs/${section.slug}`"
-                  class="group flex items-center gap-3 rounded-lg p-4 transition-colors hover:bg-elevated"
-                >
-                  <UIcon :name="section.icon" class="text-primary size-6 shrink-0" />
-                  <div class="min-w-0 flex-1">
-                    <h3 class="text-highlighted font-semibold group-hover:text-primary">{{ section.label }}</h3>
-                    <p v-if="section.description" class="text-muted mt-0.5 text-sm">{{ section.description }}</p>
-                  </div>
-                  <UIcon name="i-lucide-chevron-right" class="text-muted size-5 shrink-0 transition-transform group-hover:translate-x-0.5" />
-                </NuxtLink>
-              </template>
+            <div v-for="section in sections" :key="section.key" class="space-y-4">
+              <NuxtLink
+                v-if="section.type === 'link'"
+                :to="section.to"
+                class="group flex items-center gap-3 rounded-lg p-4 transition-colors hover:bg-elevated"
+              >
+                <UIcon :name="section.icon" class="text-primary size-6 shrink-0" />
+                <div class="min-w-0 flex-1">
+                  <h3 class="text-highlighted font-semibold group-hover:text-primary">{{ section.label }}</h3>
+                  <p v-if="section.description" class="text-muted mt-0.5 text-sm">{{ section.description }}</p>
+                </div>
+                <UIcon name="i-lucide-chevron-right" class="text-muted size-5 shrink-0 transition-transform group-hover:translate-x-0.5" />
+              </NuxtLink>
+
               <template v-else>
                 <div class="mb-3 flex items-center gap-2">
                   <UIcon :name="section.icon" class="text-primary size-5" />
@@ -66,5 +63,25 @@
 </template>
 
 <script setup lang="ts">
+import type { DocNavItem, DocGroup } from '~/utils/docs'
 import { docNav } from '~/utils/docs'
+
+interface LinkSection extends DocNavItem {
+  type: 'link'
+  key: string
+  to: string
+}
+interface GroupSection extends DocGroup {
+  type: 'group'
+  key: string
+}
+
+const sections = computed<(LinkSection | GroupSection)[]>(() =>
+  docNav.map((item) => {
+    if ('children' in item) {
+      return { ...item, type: 'group' as const, key: item.label }
+    }
+    return { ...item, type: 'link' as const, key: item.slug, to: `/docs/${item.slug}` }
+  }),
+)
 </script>

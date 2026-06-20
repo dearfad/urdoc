@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
+import { generateDocSidebarItems } from '~/utils/docs'
 const items = [
   {
     label: '概览',
@@ -111,104 +112,7 @@ const items = [
     label: '文档',
     icon: 'i-lucide-book-open-text',
     defaultOpen: false,
-    children: [
-      {
-        label: '文档概览',
-        icon: 'i-lucide-book-open',
-        to: '/docs',
-      },
-      {
-        label: '快速开始',
-        icon: 'i-lucide-rocket',
-        to: '/docs/getting-started',
-      },
-      {
-        label: 'CSTAR 框架',
-        icon: 'i-lucide-circle-star',
-        to: '/docs/cstar/index',
-      },
-      {
-        label: '  生成病例',
-        icon: 'i-mdi-alpha-c-circle',
-        to: '/docs/cstar/case',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  编写故事',
-        icon: 'i-mdi-alpha-s-circle',
-        to: '/docs/cstar/story',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  考核理论',
-        icon: 'i-mdi-alpha-t-circle',
-        to: '/docs/cstar/test',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  互动实践',
-        icon: 'i-mdi-alpha-a-circle',
-        to: '/docs/cstar/act',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  评估能力',
-        icon: 'i-mdi-alpha-r-circle',
-        to: '/docs/cstar/rate',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '多模态工具',
-        icon: 'i-lucide-file-stack',
-        to: '/docs/multimodal/index',
-      },
-      {
-        label: '  图像创作',
-        icon: 'i-lucide-image',
-        to: '/docs/multimodal/image',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  影像渲染',
-        icon: 'i-lucide-video',
-        to: '/docs/multimodal/video',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  音频合成',
-        icon: 'i-lucide-audio-lines',
-        to: '/docs/multimodal/audio',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '项目背景',
-        icon: 'i-lucide-info',
-        to: '/docs/project',
-      },
-      {
-        label: '开发者指南',
-        icon: 'i-lucide-code',
-        to: '/docs/development',
-      },
-      {
-        label: '  自定义教科书',
-        icon: 'i-lucide-book-type',
-        to: '/docs/development/custom-textbook',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  数据组织结构',
-        icon: 'i-lucide-tree-pine',
-        to: '/docs/development/data-architecture',
-        class: 'pl-8 text-sm',
-      },
-      {
-        label: '  API 接口指南',
-        icon: 'i-lucide-route',
-        to: '/docs/development/api-guide',
-        class: 'pl-8 text-sm',
-      },
-    ],
+    children: generateDocSidebarItems(),
   },
 ] satisfies NavigationMenuItem[]
 </script>
