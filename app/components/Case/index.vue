@@ -12,82 +12,16 @@
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
       <div v-if="props.showActions" class="ms-auto flex items-center gap-2">
-        <div class="flex items-center gap-0 md:hidden">
-          <UButton
-            icon="i-lucide-file-plus-2"
-            variant="ghost"
-            size="sm"
-            :loading="isGenerating"
-            @click="caseStore.generate()"
-          />
-          <UButton
-            icon="i-lucide-settings"
-            variant="ghost"
-            size="sm"
-            @click="$emit('toggleSettings')"
-          />
-        </div>
-        <UPopover
-          v-model:open="isMenuOpen"
-          :dismissible="true"
-          class="md:hidden"
-          :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }"
-        >
-          <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
-          <template #content>
-            <div class="flex flex-col gap-1 p-1" @click="isMenuOpen = false">
-              <UButton
-                icon="i-lucide-check-circle"
-                variant="ghost"
-                :disabled="!caseStore.case?.content"
-                @click="handleVerify"
-              >
-                校验
-              </UButton>
-              <ButtonCapture capture-id="component-case-index" label="截屏" />
-              <ButtonClipboard :text="caseStore.markdown" label="复制" />
-              <ButtonAudio :text="caseStore.markdown" label="朗读" />
-              <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" label="编辑" />
-            </div>
-          </template>
-        </UPopover>
-        <div class="hidden items-center gap-2 md:flex">
-          <UTooltip text="生成">
-            <UButton
-              icon="i-lucide-file-plus-2"
-              variant="ghost"
-              :loading="isGenerating"
-              @click="caseStore.generate()"
-            />
-          </UTooltip>
-          <UTooltip text="设定">
-            <UButton
-              icon="i-lucide-settings"
-              variant="ghost"
-              @click="$emit('toggleSettings')"
-            />
-          </UTooltip>
-          <UTooltip text="校验">
-            <UButton
-              icon="i-lucide-check-circle"
-              variant="ghost"
-              :disabled="!caseStore.case?.content"
-              @click="handleVerify"
-            />
-          </UTooltip>
-          <UTooltip text="截屏">
-            <ButtonCapture capture-id="component-case-index" />
-          </UTooltip>
-          <UTooltip text="复制">
-            <ButtonClipboard :text="caseStore.markdown" />
-          </UTooltip>
-          <UTooltip text="朗读">
-            <ButtonAudio :text="caseStore.markdown" />
-          </UTooltip>
-          <UTooltip text="编辑">
-            <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
-          </UTooltip>
-        </div>
+        <CaseToolbar
+          :is-generating="isGenerating"
+          :has-content="!!caseStore.case?.content"
+          :markdown="caseStore.markdown"
+          capture-id="component-case-index"
+          v-model:editing="isEditing"
+          @generate="caseStore.generate()"
+          @toggle-settings="$emit('toggleSettings')"
+          @verify="handleVerify"
+        />
       </div>
     </template>
     <template #default>
@@ -243,7 +177,6 @@ const textContent = computed(() => {
 })
 
 const isEditing = ref(false)
-const isMenuOpen = ref(false)
 const showVerify = ref(false)
 const pendingReverify = ref(false)
 

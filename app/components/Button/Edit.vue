@@ -2,7 +2,6 @@
   <UButton
     :icon="modelValue ? 'i-lucide-x' : 'i-lucide-pencil'"
     :disabled="disabled"
-    :color="disabled ? 'error' : undefined"
     variant="ghost"
     @click="$emit('update:modelValue', !modelValue)"
   >
