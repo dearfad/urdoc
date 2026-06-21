@@ -48,7 +48,7 @@
     </template>
     <template #body>
       <div class="flex flex-col gap-4 xl:flex-row">
-        <Case class="xl:w-2/5" />
+        <Case class="xl:w-2/5" :show-footer="false" :show-actions="false" mode="text" />
         <Story class="xl:w-3/5" />
       </div>
     </template>
@@ -78,6 +78,4 @@ async function copyAll() {
     toast.add({ title: '复制失败', color: 'error', icon: 'i-lucide-alert-circle' })
   }
 }
-
-
 </script>

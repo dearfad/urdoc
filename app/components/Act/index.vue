@@ -12,9 +12,35 @@
       <template #header>
         <UButton icon="i-mdi-alpha-a-circle" variant="ghost" to="/cstar/act" />
         <span class="font-bold">互动实践</span>
-        <div class="ms-auto flex gap-2">
-          <ButtonCapture capture-id="component-act-index" />
-          <ButtonAudio :text="dialogueText" />
+        <div class="ms-auto flex items-center gap-2">
+          <UPopover v-model:open="isMenuOpen" :dismissible="true" class="md:hidden" :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }">
+            <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
+            <template #content>
+              <div class="flex flex-col gap-1 p-1" @click="isMenuOpen = false">
+                <UButton
+                  :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+                  variant="ghost"
+                  @click="$emit('toggleSettings')"
+                >
+                  {{ settingsVisible ? '关闭' : '设定' }}
+                </UButton>
+                <ButtonCapture capture-id="component-act-index" label="截屏" />
+                <ButtonAudio :text="dialogueText" label="朗读" />
+              </div>
+            </template>
+          </UPopover>
+          <div class="hidden md:flex items-center gap-2">
+            <UTooltip :text="settingsVisible ? '关闭' : '设定'">
+              <UButton
+                :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+                variant="ghost"
+                :color="settingsVisible ? 'neutral' : 'default'"
+                @click="$emit('toggleSettings')"
+              />
+            </UTooltip>
+            <ButtonCapture capture-id="component-act-index" />
+            <ButtonAudio :text="dialogueText" />
+          </div>
         </div>
       </template>
 
@@ -96,6 +122,11 @@
 </template>
 
 <script setup>
+defineProps({
+  settingsVisible: { type: Boolean, default: true },
+})
+defineEmits(['toggleSettings'])
+const isMenuOpen = ref(false)
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import { getPrompt } from '~/utils/prompts'

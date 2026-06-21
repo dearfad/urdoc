@@ -1,12 +1,15 @@
 <template>
-  <UButton icon="i-lucide-camera" variant="ghost" @click="capture" />
+  <UButton icon="i-lucide-camera" variant="ghost" @click="capture">
+    {{ label }}
+  </UButton>
 </template>
 
 <script setup>
 import { snapdom } from '@zumer/snapdom'
 
-const { captureId } = defineProps({
+defineProps({
   captureId: { type: String, required: true },
+  label: { type: String, default: undefined },
 })
 
 function expandElement(el) {

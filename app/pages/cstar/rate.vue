@@ -18,8 +18,13 @@
     </template>
     <template #body>
       <div class="flex min-h-0 flex-1 flex-col gap-2 md:flex-row">
-        <Rate class="flex min-h-0 w-full flex-col md:flex-2" />
-        <RateSettings class="flex min-h-0 w-full flex-col md:flex-1" />
+        <Rate
+          v-show="isDesktop || !settingsVisible"
+          :settingsVisible="settingsVisible"
+          class="flex min-h-0 w-full flex-col flex-1 md:flex-2"
+          @toggleSettings="toggleSettings"
+        />
+        <RateSettings v-show="settingsVisible" class="flex min-h-0 w-full flex-col flex-1" />
       </div>
     </template>
   </UDashboardPanel>
@@ -31,6 +36,20 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 definePageMeta({
   title: '评估能力',
 })
+const settingsVisible = ref(true)
+const isDesktop = ref(true)
+
+onMounted(() => {
+  const mq = window.matchMedia('(min-width: 768px)')
+  isDesktop.value = mq.matches
+  settingsVisible.value = mq.matches
+  mq.addEventListener('change', (e) => { isDesktop.value = e.matches })
+})
+
+function toggleSettings() {
+  settingsVisible.value = !settingsVisible.value
+}
+
 const items = computed<BreadcrumbItem[]>(() => [
   { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
   { label: 'CSTAR', icon: 'i-lucide-circle-star' },

@@ -12,7 +12,15 @@
       <UButton icon="i-lucide-image" variant="ghost" to="/multimodal/image" />
       <span class="font-bold">图像创作</span>
       <div class="ms-auto flex gap-2">
-        <ButtonGenerate type="image" :task="activeTab" :label="headerButtonLabel" />
+        <UTooltip :text="settingsVisible ? '关闭' : '设定'">
+          <UButton
+            :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+            variant="ghost"
+            :color="settingsVisible ? 'neutral' : 'default'"
+            @click="$emit('toggleSettings')"
+          />
+        </UTooltip>
+        <ButtonGenerate type="image" :task="activeTab" :header-button-label="headerButtonLabel" />
       </div>
     </template>
 
@@ -80,6 +88,11 @@
 </template>
 
 <script setup lang="ts">
+defineProps({
+  settingsVisible: { type: Boolean, default: true },
+})
+defineEmits(['toggleSettings'])
+
 const imageStore = useImageStore()
 
 const activeTab = ref('generate')

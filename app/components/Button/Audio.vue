@@ -6,12 +6,15 @@
     :class="iconClass"
     :disabled="status === 'loading'"
     @click="handleClick"
-  />
+  >
+    {{ label }}
+  </UButton>
 </template>
 
 <script setup>
 const props = defineProps({
   text: { type: String, default: '' },
+  label: { type: String, default: undefined },
 })
 
 const audioStore = useAudioStore()
@@ -32,7 +35,7 @@ const iconClass = computed(() => ({
 
 const color = computed(() => {
   if (status.value === 'playing') return 'success'
-  return 'neutral'
+  return undefined
 })
 
 async function handleClick() {

@@ -8,15 +8,34 @@
       footer: 'p-0 sm:p-0',
     }"
   >
-    <template #header>
+    <template v-if="props.showHeader" #header>
       <UButton icon="i-mdi-alpha-c-circle" variant="ghost" to="/cstar/case" />
       <span class="font-bold">病历</span>
-      <div class="ms-auto flex items-center gap-2">
-        <ButtonGenerate type="case" task="generate" label="生成病例" />
-        <UPopover :dismissible="true" class="md:hidden" :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }">
+      <div v-if="props.showActions" class="ms-auto flex items-center gap-2">
+        <div class="flex items-center gap-0 md:hidden">
+          <UButton
+            icon="i-lucide-file-plus-2"
+            variant="ghost"
+            size="sm"
+            :loading="isGenerating"
+            @click="caseStore.generate()"
+          />
+          <UButton
+            icon="i-lucide-settings"
+            variant="ghost"
+            size="sm"
+            @click="$emit('toggleSettings')"
+          />
+        </div>
+        <UPopover
+          v-model:open="isMenuOpen"
+          :dismissible="true"
+          class="md:hidden"
+          :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }"
+        >
           <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
           <template #content>
-            <div class="flex flex-col gap-1 p-1">
+            <div class="flex flex-col gap-1 p-1" @click="isMenuOpen = false">
               <UButton
                 icon="i-lucide-check-circle"
                 variant="ghost"
@@ -25,46 +44,81 @@
               >
                 校验
               </UButton>
-              <ButtonCapture capture-id="component-case-index" />
-              <ButtonClipboard :text="caseStore.markdown" />
-              <ButtonAudio :text="caseStore.markdown" />
-              <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+              <ButtonCapture capture-id="component-case-index" label="截屏" />
+              <ButtonClipboard :text="caseStore.markdown" label="复制" />
+              <ButtonAudio :text="caseStore.markdown" label="朗读" />
+              <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" label="编辑" />
             </div>
           </template>
         </UPopover>
-        <div class="hidden md:flex items-center gap-2">
-          <UButton
-            icon="i-lucide-check-circle"
-            variant="ghost"
-            :disabled="!caseStore.case?.content"
-            @click="handleVerify"
-          >
-            校验
-          </UButton>
-          <ButtonCapture capture-id="component-case-index" />
-          <ButtonClipboard :text="caseStore.markdown" />
-          <ButtonAudio :text="caseStore.markdown" />
-          <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+        <div class="hidden items-center gap-2 md:flex">
+          <UTooltip text="生成">
+            <UButton
+              icon="i-lucide-file-plus-2"
+              variant="ghost"
+              :loading="isGenerating"
+              @click="caseStore.generate()"
+            />
+          </UTooltip>
+          <UTooltip text="设定">
+            <UButton
+              icon="i-lucide-settings"
+              variant="ghost"
+              @click="$emit('toggleSettings')"
+            />
+          </UTooltip>
+          <UTooltip text="校验">
+            <UButton
+              icon="i-lucide-check-circle"
+              variant="ghost"
+              :disabled="!caseStore.case?.content"
+              @click="handleVerify"
+            />
+          </UTooltip>
+          <UTooltip text="截屏">
+            <ButtonCapture capture-id="component-case-index" />
+          </UTooltip>
+          <UTooltip text="复制">
+            <ButtonClipboard :text="caseStore.markdown" />
+          </UTooltip>
+          <UTooltip text="朗读">
+            <ButtonAudio :text="caseStore.markdown" />
+          </UTooltip>
+          <UTooltip text="编辑">
+            <ButtonEdit v-model="isEditing" :disabled="!caseStore.case?.content" />
+          </UTooltip>
         </div>
       </div>
     </template>
     <template #default>
       <ClientOnly>
-        <EditorObject
-          v-if="isEditing && caseStore.case?.content"
-          v-model="caseStore.case.content"
-        />
+        <div
+          v-if="!caseStore.case?.content && caseStore.status === 'ready'"
+          class="flex min-h-full flex-col items-center justify-center gap-6 px-4 py-16"
+        >
+          <div class="bg-muted rounded-full p-5">
+            <UIcon name="i-lucide-stethoscope" class="text-muted size-10" />
+          </div>
+          <p class="text-muted text-center">尚未生成病历，点击下方按钮开始</p>
+          <ButtonGenerate type="case" task="generate" label="生成病例" />
+        </div>
         <div v-else>
-          <UChatReasoning
-            v-if="stateStore.case.isReasoning"
-            :text="caseStore.case.reasoning"
-            defaultOpen
-            :ui="{ body: 'max-h-none pt-2' }"
-            class="pt-2"
-          >
-            <Comark :markdown="caseStore.case.reasoning" class="*:first:mt-0 *:last:mb-0" />
-          </UChatReasoning>
-          <Comark :markdown="caseStore.markdown" />
+          <EditorObject v-if="isEditing && caseStore.case?.content" v-model="caseStore.case.content" />
+          <div v-else>
+            <UChatReasoning
+              v-if="stateStore.case.isReasoning"
+              :text="caseStore.case.reasoning"
+              defaultOpen
+              :ui="{ body: 'max-h-none pt-2' }"
+              class="pt-2"
+            >
+              <Comark :markdown="caseStore.case.reasoning" class="*:first:mt-0 *:last:mb-0" />
+            </UChatReasoning>
+            <div v-if="props.mode === 'text'" class="whitespace-pre-wrap leading-relaxed">
+              {{ textContent }}
+            </div>
+            <Comark v-else :markdown="filteredMarkdown" />
+          </div>
         </div>
       </ClientOnly>
       <CaseVerify
@@ -76,7 +130,7 @@
     </template>
 
     <template #footer>
-      <div class="mx-4 my-2 flex flex-wrap gap-2 min-h-7">
+      <div v-if="isFooterVisible" class="mx-4 my-2 flex min-h-7 flex-wrap gap-2">
         <UBadge
           v-for="sourceItem in filteredTextbookItems"
           :key="sourceItem"
@@ -103,8 +157,23 @@
 </template>
 
 <script setup>
+const props = defineProps({
+  settingsVisible: { type: Boolean, default: true },
+  showFooter: { type: Boolean, default: undefined },
+  showActions: { type: Boolean, default: true },
+  showHeader: { type: Boolean, default: true },
+  contentInclude: { type: Array, default: undefined },
+  contentExclude: { type: Array, default: undefined },
+  mode: { type: String, default: 'markdown' }, // 'markdown' | 'text'
+})
+defineEmits(['toggleSettings'])
+
 const caseStore = useCaseStore()
 const stateStore = useStateStore()
+
+const isFooterVisible = computed(() => {
+  return props.showFooter !== undefined ? props.showFooter : stateStore.showCaseFooter
+})
 const textbookItems = ref([
   { icon: 'i-lucide-book', name: 'book' },
   { icon: 'i-lucide-bookmark', name: 'part' },
@@ -118,19 +187,78 @@ const filteredTextbookItems = computed(() => {
   return textbookItems.value.filter((item) => caseStore.case.textbook?.content?.[item.name])
 })
 
+const isGenerating = computed(() => caseStore.status === 'submitted' || caseStore.status === 'streaming')
+
+const filteredContent = computed(() => {
+  const content = caseStore.case.content
+  if (!content) return null
+  let entries = Object.entries(content)
+  if (props.contentInclude?.length) {
+    const set = new Set(props.contentInclude)
+    entries = entries.filter(([k]) => set.has(k))
+  }
+  if (props.contentExclude?.length) {
+    const set = new Set(props.contentExclude)
+    entries = entries.filter(([k]) => !set.has(k))
+  }
+  return Object.fromEntries(entries)
+})
+
+const filteredMarkdown = computed(() => {
+  if (!filteredContent.value) return ''
+  return Object.entries(filteredContent.value)
+    .map(([k, v]) => `**${k}**：${v}`)
+    .join('\n\n')
+})
+
+const textContent = computed(() => {
+  const content = filteredContent.value
+  if (!content) return ''
+
+  const firstFields = ['姓名', '性别', '年龄', '主诉']
+  const firstParts = firstFields
+    .filter(k => content[k])
+    .map(k => content[k])
+
+  let result = firstParts.join('，') + '。'
+
+  const removeLabel = new Set(['现病史', '既往史'])
+  const excludeFields = new Set(['专科查体'])
+
+  const remaining = Object.entries(content)
+    .filter(([k]) => !firstFields.includes(k))
+    .filter(([k]) => !excludeFields.has(k))
+    .filter(([, v]) => v && v !== '无')
+    .map(([k, v]) => {
+      const value = v.endsWith('。') ? v : v + '。'
+      if (removeLabel.has(k)) return value
+      return `${k} ${value}`
+    })
+
+  if (remaining.length > 0) {
+    result += remaining.join(' ')
+  }
+
+  return result
+})
+
 const isEditing = ref(false)
+const isMenuOpen = ref(false)
 const showVerify = ref(false)
 const pendingReverify = ref(false)
 
-watch(() => caseStore.currentType, (type, oldType) => {
-  if (type === 'case') {
-    showVerify.value = false
-    pendingReverify.value = false
-  }
-  if (oldType === 'case-fix' && type !== 'case-fix' && type !== 'case-verify') {
-    pendingReverify.value = true
-  }
-})
+watch(
+  () => caseStore.currentType,
+  (type, oldType) => {
+    if (type === 'case') {
+      showVerify.value = false
+      pendingReverify.value = false
+    }
+    if (oldType === 'case-fix' && type !== 'case-fix' && type !== 'case-verify') {
+      pendingReverify.value = true
+    }
+  },
+)
 
 function handleVerify() {
   if (showVerify.value && pendingReverify.value) {

@@ -11,10 +11,36 @@
     <template #header>
       <UButton icon="i-mdi-alpha-t-circle" variant="ghost" to="/cstar/test" />
       <span class="font-bold">考核理论</span>
-      <div class="ms-auto flex gap-2">
-        <ButtonCapture capture-id="component-test-index" />
-        <ButtonAudio :text="audioText" />
+      <div class="ms-auto flex items-center gap-2">
         <ButtonGenerate type="test" task="generate" label="生成考核" />
+        <UPopover v-model:open="isMenuOpen" :dismissible="true" class="md:hidden" :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }">
+          <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
+          <template #content>
+            <div class="flex flex-col gap-1 p-1" @click="isMenuOpen = false">
+              <UButton
+                :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+                variant="ghost"
+                @click="$emit('toggleSettings')"
+              >
+                {{ settingsVisible ? '关闭' : '设定' }}
+              </UButton>
+              <ButtonCapture capture-id="component-test-index" label="截屏" />
+              <ButtonAudio :text="audioText" label="朗读" />
+            </div>
+          </template>
+        </UPopover>
+        <div class="hidden md:flex items-center gap-2">
+          <UTooltip :text="settingsVisible ? '关闭' : '设定'">
+            <UButton
+              :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+              variant="ghost"
+              :color="settingsVisible ? 'neutral' : 'default'"
+              @click="$emit('toggleSettings')"
+            />
+          </UTooltip>
+          <ButtonCapture capture-id="component-test-index" />
+          <ButtonAudio :text="audioText" />
+        </div>
       </div>
     </template>
 
@@ -114,6 +140,11 @@
 
 <script setup>
 import { parse } from 'partial-json'
+defineProps({
+  settingsVisible: { type: Boolean, default: true },
+})
+defineEmits(['toggleSettings'])
+const isMenuOpen = ref(false)
 const testStore = useTestStore()
 const stateStore = useStateStore()
 

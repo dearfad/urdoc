@@ -46,6 +46,15 @@
             </div>
           </div>
         </UCard>
+
+        <UCard>
+          <template #header>
+            <h2 class="text-lg font-semibold">病历显示</h2>
+          </template>
+          <UFormField label="显示来源标签" description="在病历卡片底部显示教科书来源和自定义标签">
+            <USwitch v-model="stateStore.showCaseFooter" />
+          </UFormField>
+        </UCard>
       </div>
     </template>
   </UDashboardPanel>
@@ -76,6 +85,7 @@ const items = computed<BreadcrumbItem[]>(() => [
 ])
 
 const toast = useToast()
+const stateStore = useStateStore()
 const modalOpen = ref(false)
 const clearType = ref<'local' | 'cookie'>('local')
 

@@ -32,6 +32,13 @@
               <UButton icon="i-lucide-video" variant="ghost" to="/multimodal/video" />
               <span class="font-bold">影像渲染</span>
               <div class="ms-auto flex gap-2">
+                <UTooltip :text="settingsVisible ? '关闭设定' : '设定'">
+                  <UButton
+                    :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+                    variant="ghost"
+                    @click="toggleSettings"
+                  />
+                </UTooltip>
                 <ButtonGenerate type="video" task="generate" label="生成视频" />
               </div>
             </template>
@@ -122,7 +129,7 @@
             <template #footer />
           </UCard>
         </div>
-        <div class="w-full md:flex-1">
+        <div v-show="settingsVisible" class="w-full md:flex-1">
           <UCard
             :ui="{
               root: 'border border-default',
@@ -177,6 +184,16 @@ import { DURATION_OPTIONS, getDurationByContent } from '~/stores/video'
 definePageMeta({
   title: '影像渲染',
 })
+const settingsVisible = ref(true)
+
+onMounted(() => {
+  settingsVisible.value = window.innerWidth >= 768
+})
+
+function toggleSettings() {
+  settingsVisible.value = !settingsVisible.value
+}
+
 const items = computed<BreadcrumbItem[]>(() => [
   { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
   { label: '多模态', icon: 'i-lucide-file-stack' },

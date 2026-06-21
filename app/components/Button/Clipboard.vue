@@ -1,15 +1,18 @@
 <template>
   <UButton
     :icon="copied ? 'i-lucide-check' : 'i-lucide-clipboard'"
-    :color="copied ? 'success' : 'neutral'"
+    :color="copied ? 'success' : undefined"
     variant="ghost"
     @click="copy"
-  />
+  >
+    {{ label }}
+  </UButton>
 </template>
 
 <script setup>
 const props = defineProps({
   text: { type: String, default: '' },
+  label: { type: String, default: undefined },
 })
 
 const toast = useToast()

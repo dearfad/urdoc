@@ -26,8 +26,12 @@
     </template>
     <template #body>
       <div class="flex flex-col gap-2 md:flex-row">
-        <Image class="w-full md:flex-2" />
-        <ImageSettings class="w-full md:flex-1" />
+        <Image
+          :settingsVisible="settingsVisible"
+          class="w-full md:flex-2"
+          @toggleSettings="toggleSettings"
+        />
+        <ImageSettings v-show="settingsVisible" class="w-full md:flex-1" />
       </div>
     </template>
   </UDashboardPanel>
@@ -39,6 +43,16 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 definePageMeta({
   title: '图像创作',
 })
+const settingsVisible = ref(true)
+
+onMounted(() => {
+  settingsVisible.value = window.innerWidth >= 768
+})
+
+function toggleSettings() {
+  settingsVisible.value = !settingsVisible.value
+}
+
 const items = computed<BreadcrumbItem[]>(() => [
   { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
   { label: '多模态', icon: 'i-lucide-file-stack' },

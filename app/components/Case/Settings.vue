@@ -17,6 +17,13 @@
         class="ms-auto"
         @click="collapsed = !collapsed"
       />
+      <UButton
+        icon="i-lucide-x"
+        variant="ghost"
+        size="sm"
+        color="neutral"
+        @click="$emit('close')"
+      />
     </template>
     <template #default>
       <UTabs v-show="!collapsed" :items="tabItems" variant="link" class="w-full flex flex-col min-h-0" :ui="{ trigger: 'grow', content: 'flex-1 min-h-0 overflow-auto' }" defaultValue="textbook">
@@ -79,32 +86,42 @@ const collapsed = ref(false)
 const stateStore = useStateStore()
 const bookStore = useBookStore()
 
-const tabItems = [
+const isMobile = ref(false)
+
+onMounted(() => {
+  const mq = window.matchMedia('(max-width: 767px)')
+  isMobile.value = mq.matches
+  mq.addEventListener('change', (e) => { isMobile.value = e.matches })
+})
+
+const tabItems = computed(() => [
   {
     label: '教科书',
     value: 'textbook',
-    icon: 'i-lucide-book',
     slot: 'textbook',
+    ...(isMobile.value ? {} : { icon: 'i-lucide-book' }),
   },
   {
     label: '自定义',
     value: 'custom',
-    icon: 'i-lucide-pencil',
     slot: 'custom',
+    ...(isMobile.value ? {} : { icon: 'i-lucide-pencil' }),
   },
   {
     label: '提示词',
     value: 'prompt',
-    icon: 'i-lucide-file-text',
     slot: 'prompt',
+    ...(isMobile.value ? {} : { icon: 'i-lucide-file-text' }),
   },
   {
     label: '模型',
     value: 'model',
-    icon: 'i-lucide-cpu',
     slot: 'model',
+    ...(isMobile.value ? {} : { icon: 'i-lucide-cpu' }),
   },
-]
+])
+
+defineEmits(['close'])
 
 const { isTitleShow } = defineProps({
   isTitleShow: { type: Boolean, required: false, default: true },
