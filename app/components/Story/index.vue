@@ -8,91 +8,198 @@
       footer: 'p-0 sm:p-0',
     }"
   >
-    <!-- 
-      <v-btn
-        :icon="isReasoningContentShow ? mdiHeadCogOutline : mdiHeadMinusOutline"
-        @click="isReasoningContentShowSwitches = !isReasoningContentShowSwitches"
-      />
-      <CommonAudioButton audio-type="case" />
-      <CommonCaptureButton capture-id="case-card" /> 
-    -->
-
-    <template #header>
+    <template v-if="props.showHeader" #header>
       <UButton icon="i-mdi-alpha-s-circle" variant="ghost" to="/cstar/story" />
       <span class="font-bold">故事</span>
-      <div class="ms-auto flex items-center gap-2">
-        <ButtonGenerate type="story" task="generate" label="生成故事" />
-        <UPopover v-model:open="isMenuOpen" :dismissible="true" class="md:hidden" :ui="{ content: 'bg-default shadow-2xl rounded-xl ring border border-default' }">
-          <UButton icon="i-lucide-ellipsis-vertical" variant="ghost" size="sm" />
-          <template #content>
-            <div class="flex flex-col gap-1 p-1" @click="isMenuOpen = false">
-              <UButton
-                :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
-                variant="ghost"
-                @click="$emit('toggleSettings')"
-              >
-                {{ settingsVisible ? '关闭' : '设定' }}
-              </UButton>
-              <ButtonCapture capture-id="component-story-index" label="截屏" />
-              <ButtonClipboard :text="storyStore.story.content" label="复制" />
-              <ButtonAudio :text="storyStore.story.content" label="朗读" />
-            </div>
-          </template>
-        </UPopover>
-        <div class="hidden md:flex items-center gap-2">
-          <UTooltip :text="settingsVisible ? '关闭' : '设定'">
+      <UBadge
+        v-if="verifyBadge"
+        v-bind="verifyBadge.attrs"
+        :ui="verifyBadge.ui"
+        size="sm"
+        class="ml-1.5"
+      >
+        {{ verifyBadge.label }}
+      </UBadge>
+      <div v-if="props.showActions" class="ms-auto flex items-center gap-2">
+        <div v-if="viewMode === 'content'" class="flex items-center">
+          <UTooltip text="Markdown 格式">
             <UButton
-              :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
-              variant="ghost"
-              :color="settingsVisible ? 'neutral' : 'default'"
-              @click="$emit('toggleSettings')"
+              icon="i-mdi-language-markdown"
+              :variant="contentMode === 'markdown' ? 'soft' : 'ghost'"
+              @click="contentMode = 'markdown'"
+              class="rounded-r-none"
             />
           </UTooltip>
-          <ButtonCapture capture-id="component-story-index" />
-          <ButtonClipboard :text="storyStore.story.content" />
-          <ButtonAudio :text="storyStore.story.content" />
+          <UTooltip text="纯文本格式">
+            <UButton
+              icon="i-mdi-alpha-t-box-outline"
+              :variant="contentMode === 'text' ? 'soft' : 'ghost'"
+              @click="contentMode = 'text'"
+              class="rounded-l-none"
+            />
+          </UTooltip>
         </div>
+        <div class="bg-border mx-0.5 h-5 w-0.5" />
+        <StoryToolbar
+          v-if="viewMode !== 'verify'"
+          :is-generating="isGenerating"
+          :has-content="!!storyStore.story.content"
+          :markdown="storyStore.story.content ?? ''"
+          capture-id="component-story-index"
+          v-model:editing="isEditing"
+          @generate="storyStore.generate()"
+          @toggle-settings="$emit('toggleSettings')"
+          @verify="handleVerify"
+        />
+        <template v-if="viewMode === 'verify'">
+          <UTooltip text="关闭校验">
+            <UButton
+              icon="i-lucide-x"
+              variant="ghost"
+              size="sm"
+              @click="viewMode = 'content'"
+            />
+          </UTooltip>
+          <UTooltip text="再次校验">
+            <UButton
+              icon="i-lucide-rotate-ccw"
+              variant="ghost"
+              size="sm"
+              :loading="isVerifying"
+              @click="handleReverify"
+            />
+          </UTooltip>
+          <UTooltip v-if="!isVerifyPassed" text="自动更正">
+            <UButton
+              icon="i-lucide-wand-sparkles"
+              variant="ghost"
+              color="primary"
+              size="sm"
+              :loading="storyStore.currentType === 'story-fix'"
+              :disabled="storyStore.currentType === 'story-fix'"
+              @click="handleAutoFix"
+            />
+          </UTooltip>
+          <UTooltip text="手动更正">
+            <UButton
+              icon="i-lucide-pencil"
+              variant="ghost"
+              size="sm"
+              @click="handleEdit"
+            />
+          </UTooltip>
+        </template>
       </div>
     </template>
 
     <template #default>
-      <!-- <MDC :value="content" :key="content" cache-key="case-chat-content-show" /> -->
-      <!-- <MarkdownRender :content="content" custom-id="case-content" /> -->
       <ClientOnly>
-        <UChatReasoning
-          v-if="stateStore.story.isReasoning"
-          :text="storyStore.story.reasoning"
-          defaultOpen
-          :ui="{ body: 'max-h-none pt-2' }"
-          class="pt-2"
+        <div
+          v-if="!storyStore.story.content && storyStore.status === 'ready'"
+          class="flex min-h-full flex-col items-center justify-center gap-6 px-4 py-16"
         >
-          <Comark :markdown="storyStore.story.reasoning" class="*:first:mt-0 *:last:mb-0" />
-        </UChatReasoning>
-        <Comark :markdown="storyStore.story.content" />
-      </ClientOnly>
+          <div class="bg-muted rounded-full p-5">
+            <UIcon name="i-lucide-book-open" class="text-muted size-10" />
+          </div>
+          <p class="text-muted text-center">尚未生成故事，点击下方按钮开始</p>
+          <ButtonGenerate type="story" task="generate" label="生成故事" />
+        </div>
+        <div v-else>
+          <EditorText
+            v-if="isEditing && storyStore.story.content"
+            v-model="storyStore.story.content"
+          />
+          <div v-else-if="viewMode === 'verify'">
+            <div
+              v-if="!storyStore.verifyResult"
+              class="text-muted flex items-center justify-center gap-2 py-8"
+            >
+              <UIcon
+                v-if="isVerifying"
+                name="i-lucide-loader-circle"
+                class="size-5 animate-spin"
+              />
+              <span>{{ isVerifying ? '正在校验...' : '准备校验...' }}</span>
+            </div>
+            <template v-else>
+              <UChatReasoning
+                v-if="storyStore.verifyReasoning"
+                :text="storyStore.verifyReasoning ?? undefined"
+                defaultOpen
+                :ui="{ body: 'max-h-none pt-2' }"
+                class="pt-2"
+              >
+                <Comark
+                  :markdown="storyStore.verifyReasoning"
+                  class="*:first:mt-0 *:last:mb-0"
+                />
+              </UChatReasoning>
 
-      <!-- 
-        <v-card-text>
-          <div v-if="isReasoningContentShow" class="reasoning my-4">
-            <details open>
-              <summary class="font-weight-bold">思考过程</summary>
-              <v-divider class="my-2" />
-              <MarkdownRender :content="reasoningContent" />
-              <v-divider class="my-2" />
-            </details>
+              <div class="space-y-6 px-1 sm:px-2 pb-4 pt-3">
+                <template
+                  v-for="section in parsedVerifySections"
+                  :key="section.heading"
+                >
+                  <div class="border-b border-default pb-1.5">
+                    <span class="text-muted text-base font-semibold tracking-wider">{{
+                      cleanHeading(section.heading)
+                    }}</span>
+                  </div>
+                  <template v-if="section.type === 'conclusion'">
+                    <div
+                      v-if="getConclusionText(section)"
+                      class="rounded-md border border-default border-l-4 px-4 py-3"
+                      :class="conclusionBorder(section)"
+                    >
+                      <div class="flex items-center justify-between">
+                        <span class="text-muted text-base font-medium">校验结论</span>
+                        <span
+                          class="text-base font-semibold"
+                          :class="conclusionTextClass(section)"
+                        >{{ getConclusionText(section) }}</span>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <Comark
+                      :markdown="section.content"
+                      class="*:first:mt-0 *:last:mb-0"
+                    />
+                  </template>
+                </template>
+              </div>
+            </template>
           </div>
-          <div v-if="stateStore.isModelResponseShow.case" class="case">
-            <MarkdownRender :content="streamChatContentMarkdown" />
+          <div v-else>
+            <UChatReasoning
+              v-if="stateStore.story.isReasoning"
+              :text="storyStore.story.reasoning ?? undefined"
+              defaultOpen
+              :ui="{ body: 'max-h-none pt-2' }"
+              class="pt-2"
+            >
+              <Comark
+                :markdown="storyStore.story.reasoning"
+                class="*:first:mt-0 *:last:mb-0"
+              />
+            </UChatReasoning>
+            <div
+              v-if="contentMode === 'text'"
+              class="whitespace-pre-wrap leading-relaxed"
+            >
+              {{ storyStore.story.content }}
+            </div>
+            <Comark v-else :markdown="storyStore.story.content" />
           </div>
-          <div v-else class="case">
-            <MarkdownRender :content="recordStore.view.case.markdown" />
-          </div>
-        </v-card-text> 
-      -->
+        </div>
+      </ClientOnly>
     </template>
 
     <template #footer>
-      <div class="mx-4 my-2 flex flex-wrap gap-2 min-h-7">
+      <div
+        v-if="isFooterVisible"
+        class="mx-4 my-2 flex min-h-7 flex-wrap gap-2"
+      >
         <UBadge
           v-for="custom in storyStore.story.custom"
           :key="custom"
@@ -108,42 +215,201 @@
   </UCard>
 </template>
 
-<script setup>
-defineProps({
+<script setup lang="ts">
+const props = defineProps({
   settingsVisible: { type: Boolean, default: true },
+  showFooter: { type: Boolean, default: undefined },
+  showActions: { type: Boolean, default: true },
+  showHeader: { type: Boolean, default: true },
+  mode: { type: String, default: 'markdown' },
 })
 defineEmits(['toggleSettings'])
-const isMenuOpen = ref(false)
 
 const storyStore = useStoryStore()
 const stateStore = useStateStore()
-// import { mdiAlphaCCircle, mdiHeadCogOutline, mdiHeadMinusOutline } from '@mdi/js'
 
+const isFooterVisible = computed(() => {
+  return props.showFooter !== undefined ? props.showFooter : true
+})
 
+const isGenerating = computed(() => storyStore.status === 'submitted' || storyStore.status === 'streaming')
 
-// const recordStore = useRecordStore()
-// const stateStore = useStateStore()
-// const modelStore = useModelStore()
+const isVerifying = computed(() => {
+  return (
+    storyStore.currentType === 'story-verify' &&
+    (storyStore.status === 'submitted' || storyStore.status === 'streaming')
+  )
+})
 
-// 是否显示思考过程
-// const isReasoningContentShowSwitches = ref(true)
-// const isReasoningContentShow = computed(
-//   () =>
-//     (stateStore.isModelResponseShow.case && modelStore.modelResponse.chat.reasoning_content) ||
-//     (isReasoningContentShowSwitches.value && recordStore.record.reasoning.case),
-// )
+const isFixing = computed(() => {
+  return (
+    storyStore.currentType === 'story-fix' &&
+    (storyStore.status === 'submitted' || storyStore.status === 'streaming')
+  )
+})
 
-// 思考内容
-// const reasoningContent = computed(
-//   () => recordStore.record.reasoning.case || modelStore.modelResponse.chat.reasoning_content,
-// )
+const isEditing = ref(false)
+const contentMode = ref(props.mode)
+const viewMode = ref('content')
 
-// 是否显示流式内容
-// const streamChatContentMarkdown = computed(() => {
-//   return Object.entries(modelStore.modelResponse.chat.content)
-//     .map(([key, value]) => `**${key}**：${value}`)
-//     .join('\n\n')
-// })
+const verifyBadge = computed(() => {
+  const ct = storyStore.currentType
+  const busy = storyStore.status === 'submitted' || storyStore.status === 'streaming'
+  const spin = { icon: 'i-lucide-loader-circle', color: 'info' as const, variant: 'soft' as const }
+
+  if (ct === 'story' && busy) {
+    return { label: '生成中', attrs: { ...spin }, ui: { leadingIcon: 'animate-spin' } }
+  }
+  if (ct === 'story-verify' && busy) {
+    return { label: '校验中', attrs: { ...spin }, ui: { leadingIcon: 'animate-spin' } }
+  }
+  if (ct === 'story-fix' && busy) {
+    return { label: '修改中', attrs: { ...spin }, ui: { leadingIcon: 'animate-spin' } }
+  }
+
+  if (!storyStore.story.content) return null
+
+  if (!storyStore.verifyResult) {
+    return { label: '未校验', attrs: { color: 'neutral' as const, variant: 'soft' as const } }
+  }
+  if (isVerifyPassed.value) {
+    return { label: '已校验', attrs: { color: 'success' as const, variant: 'soft' as const } }
+  }
+  return { label: '未通过', attrs: { color: 'warning' as const, variant: 'soft' as const } }
+})
+
+interface VerifySection {
+  heading: string
+  content: string
+  type: 'analysis' | 'issues' | 'conclusion'
+}
+
+function detectSectionType(heading: string): VerifySection['type'] {
+  if (/逐项分析/.test(heading)) return 'analysis'
+  if (/问题汇总/.test(heading)) return 'issues'
+  if (/校验结论/.test(heading)) return 'conclusion'
+  return 'analysis'
+}
+
+function parseVerifySections(markdown: string): VerifySection[] {
+  const sections: VerifySection[] = []
+  const lines = markdown.split('\n')
+  let currentHeading = ''
+  let currentLines: string[] = []
+
+  for (const line of lines) {
+    if (line.startsWith('### ')) {
+      if (currentHeading) {
+        sections.push({
+          heading: currentHeading,
+          content: currentLines.join('\n').trim(),
+          type: detectSectionType(currentHeading),
+        })
+      }
+      currentHeading = line.slice(4).trim()
+      currentLines = []
+    } else {
+      currentLines.push(line)
+    }
+  }
+
+  if (currentHeading) {
+    sections.push({
+      heading: currentHeading,
+      content: currentLines.join('\n').trim(),
+      type: detectSectionType(currentHeading),
+    })
+  }
+
+  for (const section of sections) {
+    section.content = section.content.replace(/^---\s*[\n\r]/, '').replace(/[\n\r]---\s*$/, '')
+  }
+
+  return sections
+}
+
+const parsedVerifySections = computed(() => {
+  return parseVerifySections(storyStore.verifyResult || '')
+})
+
+function cleanHeading(heading: string): string {
+  const text = heading.replace(/[\u{1F000}-\u{1FFFF}]/gu, '').trim()
+  if (/^[一二三]、/.test(text)) return text
+  const labels: Record<string, string> = {
+    analysis: '一、逐项分析',
+    issues: '二、问题汇总',
+    conclusion: '三、校验结论',
+  }
+  return labels[detectSectionType(text)] || text
+}
+
+function getConclusionText(section: VerifySection): string {
+  const match = section.content.match(/\*\*(.+?)\*\*/)
+  return match?.[1]?.trim() ?? ''
+}
+
+function conclusionBorder(section: VerifySection): string {
+  const text = getConclusionText(section)
+  if (text === '通过') return 'border-l-success'
+  if (text === '需修改') return 'border-l-warning'
+  if (text === '不通过') return 'border-l-error'
+  return 'border-l-default'
+}
+
+function conclusionTextClass(section: VerifySection): string {
+  const text = getConclusionText(section)
+  if (text === '通过') return 'text-success'
+  if (text === '需修改') return 'text-warning'
+  if (text === '不通过') return 'text-error'
+  return 'text-default'
+}
+
+const isVerifyPassed = computed(() => {
+  const conclusionSection = parsedVerifySections.value.find(s => s.type === 'conclusion')
+  if (!conclusionSection) return false
+  return getConclusionText(conclusionSection) === '通过'
+})
+
+watch(
+  () => storyStore.currentType,
+  (type) => {
+    if (type === 'story') {
+      viewMode.value = 'content'
+    }
+    if (type === 'story-fix') {
+      storyStore.verifyResult = null
+      storyStore.verifyReasoning = null
+    }
+  },
+)
+
+function handleVerify() {
+  if (viewMode.value === 'verify') {
+    viewMode.value = 'content'
+  } else if (storyStore.verifyResult) {
+    viewMode.value = 'verify'
+  } else {
+    viewMode.value = 'verify'
+    storyStore.verify()
+  }
+}
+
+function handleReverify() {
+  storyStore.verifyResult = null
+  storyStore.verifyReasoning = null
+  storyStore.verify()
+}
+
+function handleAutoFix() {
+  viewMode.value = 'content'
+  contentMode.value = 'markdown'
+  storyStore.fix()
+}
+
+function handleEdit() {
+  viewMode.value = 'content'
+  isEditing.value = true
+}
 </script>
 
 <style scoped>
