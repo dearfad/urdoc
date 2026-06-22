@@ -51,6 +51,7 @@ export const docNav: (DocNavItem | DocGroup)[] = [
       { label: '数据组织结构', icon: 'i-lucide-tree-pine', slug: 'development/data-architecture', description: '通用树形节点模型与 Record 设计' },
       { label: '图片生成系统', icon: 'i-lucide-image', slug: 'development/image-generation', description: '图片生成 API、Composable 与 Store 设计' },
       { label: 'API 接口指南', icon: 'i-lucide-route', slug: 'development/api-guide', description: '后端 API 统一入口与 Provider 开发规范' },
+      { label: '病历组件指南', icon: 'i-mdi-alpha-c-circle', slug: 'development/case-guide', description: 'Case 组件 Props、Slots 与 Store 开发参考' },
     ],
   } as DocGroup,
 ]

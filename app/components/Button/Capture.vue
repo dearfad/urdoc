@@ -7,7 +7,7 @@
 <script setup>
 import { snapdom } from '@zumer/snapdom'
 
-defineProps({
+const { captureId, label } = defineProps({
   captureId: { type: String, required: true },
   label: { type: String, default: undefined },
 })
@@ -50,7 +50,7 @@ async function capture() {
     filename: 'capture',
     backgroundColor: '#fff',
     plugins: [{
-      afterClone: ({ clonedElement }) => {
+      afterClone: ({ clone: clonedElement }) => {
         clonedElement.style.overflow = 'visible'
         clonedElement.style.maxHeight = 'none'
         clonedElement.style.height = 'auto'

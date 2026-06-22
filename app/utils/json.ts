@@ -55,12 +55,21 @@ function repairPartialJson(text: string): string {
 }
 
 export function safeParseJson(text: string): any {
+  let cleaned = text.trim()
+  // 移除 markdown 代码块标记
+  cleaned = cleaned.replace(/^```(?:json)?\s*\n?/, '')
+  // 定位 JSON 起始位置（丢弃前导非 JSON 文本）
+  const objStart = cleaned.indexOf('{')
+  const arrStart = cleaned.indexOf('[')
+  const jsonStart = objStart === -1 ? arrStart : (arrStart === -1 ? objStart : Math.min(objStart, arrStart))
+  if (jsonStart > 0) cleaned = cleaned.slice(jsonStart)
+  if (!cleaned) return null
   try {
-    return parse(text)
+    return parse(cleaned)
   } catch (e) {
     if (e instanceof MalformedJSON) {
       try {
-        const repaired = repairPartialJson(text)
+        const repaired = repairPartialJson(cleaned)
         return parse(repaired)
       } catch {
         return null

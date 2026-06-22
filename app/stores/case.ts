@@ -19,7 +19,6 @@ export const useCaseStore = defineStore('case', () => {
 
   const verifyResult = ref<string | null>(null)
   const verifyReasoning = ref<string | null>(null)
-  const fixReasoning = ref<string | null>(null)
 
   const { status, lastParts, currentType, lastMessageRole, send } = useChatApi()
 
@@ -33,8 +32,6 @@ export const useCaseStore = defineStore('case', () => {
         for (const part of parts) {
           if (currentType.value === 'case-verify') {
             handleVerifyPart(part)
-          } else if (currentType.value === 'case-fix') {
-            handleFixPart(part)
           } else {
             useStateStore().case.isReasoning = isReasoningUIPart(part)
             handlePart(part)
@@ -45,6 +42,32 @@ export const useCaseStore = defineStore('case', () => {
       }
     },
   )
+
+  watch(
+    () => status.value,
+    (newStatus) => {
+      if (newStatus !== 'ready') return
+      const stateStore = useStateStore()
+      if (currentType.value === 'case' && stateStore.autoVerify) {
+        if (case_.value.content) {
+          nextTick(() => verify())
+        }
+      } else if (currentType.value === 'case-verify' && stateStore.autoFix) {
+        if (verifyResult.value && !/\*\*通过\*\*/.test(verifyResult.value)) {
+          if (!_hasAutoFixed) {
+            _hasAutoFixed = true
+            nextTick(() => fix())
+          }
+        }
+      } else if (currentType.value === 'case-fix' && stateStore.autoVerify) {
+        if (case_.value.content) {
+          nextTick(() => verify())
+        }
+      }
+    },
+  )
+
+  let _hasAutoFixed = false
 
   function reset() {
     case_.value = {
@@ -57,7 +80,7 @@ export const useCaseStore = defineStore('case', () => {
     }
     verifyResult.value = null
     verifyReasoning.value = null
-    fixReasoning.value = null
+    _hasAutoFixed = false
   }
 
   function handlePart(part: any) {
@@ -65,7 +88,10 @@ export const useCaseStore = defineStore('case', () => {
       case_.value.reasoning = part.text
     }
     if (isTextUIPart(part) && part.text?.trim()) {
-      case_.value.content = safeParseJson(part.text)
+      const parsed = safeParseJson(part.text)
+      if (parsed !== null) {
+        case_.value.content = parsed
+      }
     }
   }
 
@@ -75,15 +101,6 @@ export const useCaseStore = defineStore('case', () => {
     }
     if (isTextUIPart(part) && part.text?.trim()) {
       verifyResult.value = part.text
-    }
-  }
-
-  function handleFixPart(part: any) {
-    if (isReasoningUIPart(part)) {
-      fixReasoning.value = part.text
-    }
-    if (isTextUIPart(part) && part.text?.trim()) {
-      case_.value.content = safeParseJson(part.text)
     }
   }
 
@@ -137,7 +154,9 @@ export const useCaseStore = defineStore('case', () => {
     const content = case_.value.content
     const verify = verifyResult.value
     if (!content || !verify) return
-    fixReasoning.value = null
+    verifyResult.value = null
+    verifyReasoning.value = null
+    case_.value.reasoning = null
     const text = JSON.stringify({ 原始病例: content, 校验报告: verify })
     const model = useModelStore().activeModels.chat
     const system = await usePromptStore().getEffectivePrompt('case', 'fix')
@@ -146,7 +165,7 @@ export const useCaseStore = defineStore('case', () => {
       task: 'fix',
       model,
       reasoning: stateStore.case.reasoning,
-      system: system ? `${system}\n\n${text}` : `根据校验报告修正以下病例：\n\n${text}`,
+      system,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }
@@ -164,5 +183,5 @@ export const useCaseStore = defineStore('case', () => {
     }
   })
 
-  return { version, case: case_, markdown, reset, handlePart, status, generate, verify, verifyResult, verifyReasoning, fix, fixReasoning, currentType }
+  return { version, case: case_, markdown, reset, handlePart, status, generate, verify, verifyResult, verifyReasoning, fix, currentType }
 })

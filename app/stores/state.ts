@@ -1,4 +1,4 @@
-const VERSION = '2026-05-06'
+const VERSION = '2026-06-22'
 export const useStateStore = defineStore('state', () => {
   const version = ref(VERSION)
   syncStoreVersion(VERSION, 'pinia:state')
@@ -45,6 +45,9 @@ export const useStateStore = defineStore('state', () => {
 
   const showCaseFooter = ref(true)
 
+  const autoVerify = ref(false)
+  const autoFix = ref(false)
+
   return {
     version,
     toast,
@@ -56,5 +59,7 @@ export const useStateStore = defineStore('state', () => {
     act,
     rate,
     showCaseFooter,
+    autoVerify,
+    autoFix,
   }
 })

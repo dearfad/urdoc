@@ -13,47 +13,84 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <div class="p-4 md:p-6">
+      <div class="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
         <UCard>
           <template #header>
             <h2 class="text-lg font-semibold">存储管理</h2>
           </template>
           <div class="space-y-4">
-            <div>
-              <div class="mb-1 flex items-center justify-between">
-                <span class="text-sm text-muted">localStorage 已用空间</span>
-                <span class="font-mono text-sm">{{ storageText }} / 5 MB</span>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-2 min-w-0">
+                  <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-elevated">
+                    <Icon name="i-lucide-database" class="size-4" />
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-sm font-medium">本地存储</div>
+                    <div class="font-mono text-xs text-muted truncate">{{ storageText }} / 5 MB</div>
+                  </div>
+                </div>
+                <UButton
+                  color="warning"
+                  variant="solid"
+                  size="sm"
+                  label="清除"
+                  @click="openConfirm('local')"
+                />
               </div>
               <UProgress :model-value="storagePercent" size="sm" />
-            </div>
-            <div class="flex flex-col gap-3 sm:flex-row">
-              <UButton
-                color="error"
-                variant="solid"
-                size="lg"
-                label="清除 localStorage"
-                class="flex-1"
-                @click="openConfirm('local')"
-              />
-              <UButton
-                color="error"
-                variant="outline"
-                size="lg"
-                label="清除 Cookie"
-                class="flex-1"
-                @click="openConfirm('cookie')"
-              />
+              <div class="flex items-center justify-between gap-4">
+                <div class="flex items-center gap-2 min-w-0">
+                  <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-elevated">
+                    <Icon name="i-lucide-cookie" class="size-4" />
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-sm font-medium">Cookie</div>
+                    <div class="font-mono text-xs text-muted truncate">{{ cookieText }}</div>
+                  </div>
+                </div>
+                <UButton
+                  color="warning"
+                  variant="ghost"
+                  size="sm"
+                  label="清除"
+                  @click="openConfirm('cookie')"
+                />
+              </div>
             </div>
           </div>
         </UCard>
 
         <UCard>
           <template #header>
-            <h2 class="text-lg font-semibold">病历显示</h2>
+            <h2 class="text-lg font-semibold">病历</h2>
           </template>
-          <UFormField label="显示来源标签" description="在病历卡片底部显示教科书来源和自定义标签">
-            <USwitch v-model="stateStore.showCaseFooter" />
-          </UFormField>
+          <div class="space-y-6">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <div class="text-sm font-medium">显示来源标签</div>
+                <div class="text-xs text-muted">在病历卡片底部显示教科书来源和自定义标签</div>
+              </div>
+              <USwitch v-model="stateStore.showCaseFooter" />
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <div class="text-sm font-medium">生成后自动校验</div>
+                <div class="text-xs text-muted">病历生成完成后自动进行校验</div>
+              </div>
+              <USwitch v-model="stateStore.autoVerify" />
+            </div>
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <div class="text-sm font-medium">校验不通过时自动更正</div>
+                <div class="text-xs text-muted">校验未通过时自动进行更正</div>
+              </div>
+              <USwitch
+                v-model="stateStore.autoFix"
+                :disabled="!stateStore.autoVerify"
+              />
+            </div>
+          </div>
         </UCard>
       </div>
     </template>
@@ -102,6 +139,7 @@ function openConfirm(type: 'local' | 'cookie') {
 }
 
 const storageBytes = ref(0)
+const cookieBytes = ref(0)
 const STORAGE_LIMIT = 5 * 1024 * 1024
 
 function calcStorageUsage() {
@@ -129,6 +167,31 @@ const storagePercent = computed(() => {
   return Math.min((storageBytes.value / STORAGE_LIMIT) * 100, 100)
 })
 
+const cookieText = computed(() => {
+  const b = cookieBytes.value
+  if (b < 1024) return `${b} B`
+  if (b < 1048576) return `${(b / 1024).toFixed(1)} KB`
+  return `${(b / 1048576).toFixed(2)} MB`
+})
+
+function calcCookieUsage() {
+  try {
+    const cookies = document.cookie.split(';')
+    let total = 0
+    for (const c of cookies) {
+      const eq = c.indexOf('=')
+      if (eq > -1) {
+        total += c.substring(0, eq).trim().length + c.substring(eq + 1).length
+      } else {
+        total += c.trim().length
+      }
+    }
+    cookieBytes.value = total
+  } catch {
+    cookieBytes.value = 0
+  }
+}
+
 function handleClear() {
   if (clearType.value === 'local') {
     localStorage.clear()
@@ -136,6 +199,7 @@ function handleClear() {
     toast.add({ title: '已清除 localStorage', color: 'success' })
   } else {
     clearAllCookies()
+    calcCookieUsage()
     toast.add({
       title: '已清除 Cookie',
       description: '部分 HttpOnly Cookie 无法通过 JS 清除',
@@ -155,7 +219,12 @@ function clearAllCookies() {
   })
 }
 
+watch(() => stateStore.autoVerify, (val) => {
+  if (!val) stateStore.autoFix = false
+})
+
 onMounted(() => {
   calcStorageUsage()
+  calcCookieUsage()
 })
 </script>
