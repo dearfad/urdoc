@@ -7,7 +7,8 @@ export async function handle(body: {
   tags?: string
   image?: string
 }) {
-  const { prompt, model, n, size, seed, tags, image } = body
+  const { prompt, model, n, size: rawSize, seed, tags, image } = body
+  const size = rawSize || (model.name === 'agnes-image-2.1-flash' ? '4096x4096' : undefined)
 
   if (!prompt) {
     throw createError({ statusCode: 400, statusMessage: 'prompt 不能为空' })

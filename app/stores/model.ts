@@ -44,7 +44,7 @@ export const useModelStore = defineStore(
           provider: 'LongCat',
           apiKey: 'longcatApiKey',
           baseURL: 'https://api.longcat.chat/openai/v1',
-          models: ['LongCat-Flash-Lite', 'LongCat-Flash-Chat'],
+          models: ['LongCat-2.0-Preview'],
         },
         {
           provider: 'Agnes',

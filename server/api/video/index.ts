@@ -6,7 +6,7 @@ const handlers: Record<string, (body: any) => any> = {
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const provider = body?.model?.provider
+  const provider = body?.model?.provider?.toLowerCase()
   if (!provider || !handlers[provider]) {
     throw createError({
       statusCode: 400,

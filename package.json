@@ -27,7 +27,7 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.114",
     "@iconify-json/mdi": "^1.2.3",
-    "@iconify-json/simple-icons": "^1.2.86",
+    "@iconify-json/simple-icons": "^1.2.87",
     "@nuxt/eslint": "^1.16.0",
     "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
