@@ -1,4 +1,4 @@
-const VERSION = '2026-05-19'
+const VERSION = '2026-07-20'
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -38,25 +38,27 @@ export const useModelStore = defineStore(
           provider: 'InternAi',
           apiKey: 'shushengApiKey',
           baseURL: 'https://chat.intern-ai.org.cn/api/v1',
-          models: ['intern-latest', 'intern-s1'],
-        },
-        {
-          provider: 'LongCat',
-          apiKey: 'longcatApiKey',
-          baseURL: 'https://api.longcat.chat/openai/v1',
-          models: ['LongCat-2.0-Preview'],
+          models: ['intern-latest', 'intern-s1-pro', 'intern-s1'],
         },
         {
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
           baseURL: 'https://apihub.agnes-ai.com/v1',
-          models: ['agnes-1.5-flash', 'agnes-2.0-flash'],
+          models: ['agnes-2.0-flash'],
         },
         {
           provider: 'Makers',
           apiKey: 'makersModelsKey',
           baseURL: 'https://ai-gateway.edgeone.link/v1',
-          models: ['@makers/hy3-preview', '@makers/deepseek-v4-flash', '@makers/minimax-m2.7'],
+          models: [
+            '@makers/hy3',
+            '@makers/hy3-preview',
+            '@makers/deepseek-v4-pro',
+            '@makers/deepseek-v4-flash',
+            '@makers/minimax-m3',
+            '@makers/minimax-m2.7',
+            '@makers/kimi-k2.6',
+          ],
         },
       ],
       image: [

@@ -1,19 +1,14 @@
 export async function handle(body: {
   task?: string
   model: { apiKey: string; baseURL: string; name: string }
-  input?: string
+  text?: string
   prompt_audio_url?: string
   prompt_text?: string
   taskId?: string
 }) {
-  const { task, model, input, prompt_audio_url, prompt_text, taskId } = body
+  const { task, model, text, prompt_audio_url, prompt_text, taskId } = body
 
-  if (!task) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'task 不能为空（create 或 query）',
-    })
-  }
+  const finalTask = task || 'create'
 
   const config = useRuntimeConfig()
   const apiKey = config[model.apiKey as string] as string
@@ -21,15 +16,15 @@ export async function handle(body: {
     throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })
   }
 
-  if (task === 'create') {
-    if (!input) {
-      throw createError({ statusCode: 400, statusMessage: 'input（合成文本）不能为空' })
+  if (finalTask === 'create') {
+    if (!text) {
+      throw createError({ statusCode: 400, statusMessage: 'text（合成文本）不能为空' })
     }
 
     const baseURL = (model.baseURL as string)?.replace(/\/+$/, '')
     const reqBody: Record<string, unknown> = {
       model: model.name,
-      inputs: input,
+      inputs: text,
     }
     if (prompt_audio_url) reqBody.prompt_audio_url = prompt_audio_url
     if (prompt_text) reqBody.prompt_text = prompt_text
@@ -58,7 +53,7 @@ export async function handle(body: {
     }
   }
 
-  if (task === 'query') {
+  if (finalTask === 'query') {
     if (!taskId) {
       throw createError({
         statusCode: 400,
@@ -93,6 +88,6 @@ export async function handle(body: {
 
   throw createError({
     statusCode: 400,
-    statusMessage: `未知 task: ${task}，仅支持 create 和 query`,
+    statusMessage: `未知 task: ${finalTask}，仅支持 create 和 query`,
   })
 }
