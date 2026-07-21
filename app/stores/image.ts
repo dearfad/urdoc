@@ -75,12 +75,12 @@ export const useImageStore = defineStore('image', () => {
       return
     }
 
-    const system = await usePromptStore().getEffectivePrompt('face', 'generate')
+    const instructions = await usePromptStore().getEffectivePrompt('face', 'generate')
     const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
         messages: [{ role: 'user', content: JSON.stringify(caseContent, null, 2) }],
-        system,
+        instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
       },
@@ -109,12 +109,12 @@ export const useImageStore = defineStore('image', () => {
       return
     }
 
-    const system = await usePromptStore().getEffectivePrompt('illustration', 'generate')
+    const instructions = await usePromptStore().getEffectivePrompt('illustration', 'generate')
     const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
         messages: [{ role: 'user', content: storyContent }],
-        system,
+        instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
       },

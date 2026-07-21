@@ -114,7 +114,7 @@ export const useStoryStore = defineStore('story', () => {
       task: 'generate',
       model,
       reasoning: stateStore.story.reasoning,
-      system: await usePromptStore().getEffectivePrompt('story', 'generate'),
+      instructions: await usePromptStore().getEffectivePrompt('story', 'generate'),
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
     })
   }
@@ -126,13 +126,13 @@ export const useStoryStore = defineStore('story', () => {
     verifyResult.value = null
     verifyReasoning.value = null
     const model = useModelStore().activeModels.chat
-    const system = await usePromptStore().getEffectivePrompt('story', 'verify')
+    const instructions = await usePromptStore().getEffectivePrompt('story', 'verify')
     send(content, {
       type: 'story-verify',
       task: 'verify',
       model,
       reasoning: stateStore.story.reasoning,
-      system: system ? `${system}\n\n故事内容：${content}` : `校验以下故事内容是否符合要求：\n\n${content}`,
+      instructions: instructions ? `${instructions}\n\n故事内容：${content}` : `校验以下故事内容是否符合要求：\n\n${content}`,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
     })
   }
@@ -147,13 +147,13 @@ export const useStoryStore = defineStore('story', () => {
     story.value.reasoning = null
     const text = `原始故事：\n${content}\n\n校验报告：\n${verify}`
     const model = useModelStore().activeModels.chat
-    const system = await usePromptStore().getEffectivePrompt('story', 'fix')
+    const instructions = await usePromptStore().getEffectivePrompt('story', 'fix')
     send(text, {
       type: 'story-fix',
       task: 'fix',
       model,
       reasoning: stateStore.story.reasoning,
-      system,
+      instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
     })
   }

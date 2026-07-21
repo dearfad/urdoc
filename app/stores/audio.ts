@@ -34,7 +34,7 @@ export const useAudioStore = defineStore('audio', () => {
         task: 'generate',
         model,
         reasoning: false,
-        system: await usePromptStore().getEffectivePrompt('audio', 'generate'),
+        instructions: await usePromptStore().getEffectivePrompt('audio', 'generate'),
         providerOptions: useProviderStore().getProviderOptions(model.provider, false),
       },
     )

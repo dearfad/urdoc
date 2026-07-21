@@ -100,7 +100,7 @@ export const useTestStore = defineStore('test', () => {
           ...data.body,
           type: data.type,
           task: 'generate',
-          system: await usePromptStore().getEffectivePrompt('test', 'generate'),
+          instructions: await usePromptStore().getEffectivePrompt('test', 'generate'),
           providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
         },
       },

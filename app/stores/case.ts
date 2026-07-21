@@ -125,7 +125,7 @@ export const useCaseStore = defineStore('case', () => {
       task: 'generate',
       model,
       reasoning: stateStore.case.reasoning,
-      system: await usePromptStore().getEffectivePrompt('case', 'generate'),
+      instructions: await usePromptStore().getEffectivePrompt('case', 'generate'),
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }
@@ -138,13 +138,13 @@ export const useCaseStore = defineStore('case', () => {
     verifyReasoning.value = null
     const text = JSON.stringify(content)
     const model = useModelStore().activeModels.chat
-    const system = await usePromptStore().getEffectivePrompt('case', 'verify')
+    const instructions = await usePromptStore().getEffectivePrompt('case', 'verify')
     send(text, {
       type: 'case-verify',
       task: 'verify',
       model,
       reasoning: stateStore.case.reasoning,
-      system: system ? `${system}\n\n病例内容：${text}` : `校验以下病例内容是否符合要求：\n\n${text}`,
+      instructions: instructions ? `${instructions}\n\n病例内容：${text}` : `校验以下病例内容是否符合要求：\n\n${text}`,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }
@@ -159,13 +159,13 @@ export const useCaseStore = defineStore('case', () => {
     case_.value.reasoning = null
     const text = JSON.stringify({ 原始病例: content, 校验报告: verify })
     const model = useModelStore().activeModels.chat
-    const system = await usePromptStore().getEffectivePrompt('case', 'fix')
+    const instructions = await usePromptStore().getEffectivePrompt('case', 'fix')
     send(text, {
       type: 'case-fix',
       task: 'fix',
       model,
       reasoning: stateStore.case.reasoning,
-      system,
+      instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }

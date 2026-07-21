@@ -99,7 +99,7 @@ export const useVideoStore = defineStore('video', () => {
 
     savedVideoUrl.value = null
 
-    const system = await usePromptStore().getEffectivePrompt('video', 'generate')
+    const instructions = await usePromptStore().getEffectivePrompt('video', 'generate')
     const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
@@ -109,7 +109,7 @@ export const useVideoStore = defineStore('video', () => {
             content: `病例：${JSON.stringify(caseContent, null, 2)}\n\n故事：${storyContent}`,
           },
         ],
-        system,
+        instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
       },

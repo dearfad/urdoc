@@ -141,7 +141,7 @@ export const useRateStore = defineStore('rate', () => {
           ...data.body,
           type: data.type,
           task: 'generate',
-          system: await usePromptStore().getEffectivePrompt('rate', 'generate') || '',
+          instructions: await usePromptStore().getEffectivePrompt('rate', 'generate') || '',
           providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
         },
       },

@@ -7,7 +7,6 @@ export function useImageApi() {
     prompt: string,
     options: {
       task?: string
-      system?: string
       model: Model
       imageSize?: string
       n?: number

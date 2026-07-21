@@ -7,11 +7,71 @@
       "skillPath": "skills/use-ai-sdk/SKILL.md",
       "computedHash": "c99d2a95b3a5f8fad218f288503f9e724ba0f12bf4e8aaf2c792a9f2bc318ab6"
     },
+    "edgeone-makers-agents": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-agents/SKILL.md",
+      "computedHash": "bf85f8ef5115915a1a3f72fa9f5f0ef2f490ff9472f9d8e28b0bbdd7eba3756f"
+    },
+    "edgeone-makers-deploy": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-deploy/SKILL.md",
+      "computedHash": "4baa6509627627952710ce255c92653cb469530dfb3c3d21c8a497df527b0e21"
+    },
+    "edgeone-makers-edge-functions": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-edge-functions/SKILL.md",
+      "computedHash": "2aed22db6bbef6c067c3469aeea11156175e927eacba3605cf2f8b27b1f882e0"
+    },
+    "edgeone-makers-env-adaption": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-env-adaption/SKILL.md",
+      "computedHash": "ce7c25ac5d77b01bfe02b5d1f3938a5420e77fdae32014e64ffff07b74ef485d"
+    },
+    "edgeone-makers-middleware": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-middleware/SKILL.md",
+      "computedHash": "993914067e822bd60b76815df5d764e4361abda9d04696de5611b6b714c7e8f2"
+    },
+    "edgeone-makers-recipes": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-recipes/SKILL.md",
+      "computedHash": "0c88c910c28ab0362bb03fc9d9c8dfb081b12d26a364603ed7b5e878ee88545d"
+    },
+    "edgeone-makers-storage": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-storage/SKILL.md",
+      "computedHash": "246e040c086e31a6e9a549f020d875f9fe78ae0c05fc11f8cd231d58c0b8e585"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "makers-cli": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-cli/SKILL.md",
+      "computedHash": "0812bf635f66524d761bfbb47516fe4c500b930e14ad11ec2ec2cfc3dfa6d9a5"
+    },
+    "makers-cloud-functions": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-cloud-functions/SKILL.md",
+      "computedHash": "6d81986fcf6a3045cce41d4cfc9a509c56d55c7f6ed8d9baec0a4b98f3cc3887"
+    },
+    "makers-migration": {
+      "source": "TencentEdgeOne/edgeone-makers-tools",
+      "sourceType": "github",
+      "skillPath": "skills/makers-migration/SKILL.md",
+      "computedHash": "a8ba25d32982a78e639a0476ee46d2e19e0a8752e9e25de585aea4befbfb0321"
     },
     "nuxt": {
       "source": "onmax/nuxt-skills",
