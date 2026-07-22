@@ -29,5 +29,9 @@ export default defineNuxtConfig({
     githubApiToken: '',
     xiaomiApiKey: '',
     makersModelsKey: '',
+    turso: {
+      databaseUrl: '',
+      authToken: '',
+    },
   },
 })
