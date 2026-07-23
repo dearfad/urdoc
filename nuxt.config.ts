@@ -7,7 +7,6 @@ export default defineNuxtConfig({
   clerk: {
     localization: zhCN,
     afterSignOutUrl: '/dashboard',
-    proxyUrl: 'https://urdoc.dearfad.com',
   },
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
