@@ -14,6 +14,8 @@
     "@ai-sdk/provider": "^4.0.3",
     "@ai-sdk/provider-utils": "^5.0.11",
     "@ai-sdk/vue": "^4.0.31",
+    "@clerk/localizations": "^4.13.6",
+    "@clerk/nuxt": "^2.6.20",
     "@comark/nuxt": "^0.5.1",
     "@nuxt/ui": "^4.10.0",
     "@pinia/nuxt": "1.0.1",

@@ -1,7 +1,13 @@
+import { zhCN } from '@clerk/localizations'
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-05-10',
   devtools: { enabled: false },
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt'],
+  modules: ['@clerk/nuxt', '@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt'],
+  clerk: {
+    localization: zhCN,
+    afterSignOutUrl: '/dashboard',
+  },
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
   ignore: ['/app-bak/**/*'],
