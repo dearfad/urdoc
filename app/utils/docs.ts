@@ -52,6 +52,7 @@ export const docNav: (DocNavItem | DocGroup)[] = [
       { label: '图片生成系统', icon: 'i-lucide-image', slug: 'development/image-generation', description: '图片生成 API、Composable 与 Store 设计' },
       { label: 'API 接口指南', icon: 'i-lucide-route', slug: 'development/api-guide', description: '后端 API 统一入口与 Provider 开发规范' },
       { label: '病历组件指南', icon: 'i-mdi-alpha-c-circle', slug: 'development/case-guide', description: 'Case 组件 Props、Slots 与 Store 开发参考' },
+      { label: '数据库开发路线', icon: 'i-lucide-database', slug: 'development/database-plan', description: 'Turso 数据库集成开发大纲' },
     ],
   } as DocGroup,
 ]

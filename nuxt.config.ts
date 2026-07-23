@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-05-10',
   devtools: { enabled: false },
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt'],
+  modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt', 'nuxt-auth-utils'],
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
   ignore: ['/app-bak/**/*'],

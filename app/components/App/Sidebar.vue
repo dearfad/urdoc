@@ -13,12 +13,20 @@
 
     <template #footer="{ collapsed }">
       <UButton
+        :label="collapsed ? '' : '登录'"
+        icon="i-lucide-user"
+        to="/user"
+        color="neutral"
+        variant="ghost"
+        class="w-full text-base font-bold"
+      />
+      <UButton
         :label="collapsed ? '' : '设置'"
         icon="i-lucide-settings"
         to="/settings"
         color="neutral"
         variant="ghost"
-        class="font-bold text-base w-full"
+        class="w-full text-base font-bold"
       />
     </template>
   </UDashboardSidebar>
