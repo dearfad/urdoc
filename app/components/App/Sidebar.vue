@@ -18,7 +18,7 @@
         to="/settings"
         color="neutral"
         variant="ghost"
-        class="w-full text-base font-bold"
+        class="font-bold text-base w-full"
       />
     </template>
   </UDashboardSidebar>
