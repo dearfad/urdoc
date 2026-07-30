@@ -20,7 +20,7 @@
             @click="$emit('toggleSettings')"
           />
         </UTooltip>
-        <ButtonGenerate type="image" :task="activeTab" :header-button-label="headerButtonLabel" />
+        <ButtonGenerate type="image" :task="activeTab" :label="headerButtonLabel" />
       </div>
     </template>
 

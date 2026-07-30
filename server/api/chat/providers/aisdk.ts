@@ -21,7 +21,15 @@ export async function handle(body: {
     apiKey: config[model.apiKey as string] as string,
     baseURL: model.baseURL,
   })
-  const converted = await convertToModelMessages(messages)
+  const normalizedMessages = (messages ?? []).map((m: any) => {
+    if (m.parts) return m
+    return {
+      id: m.id || crypto.randomUUID(),
+      role: m.role,
+      parts: [{ type: 'text', text: m.content ?? '' }],
+    }
+  })
+  const converted = await convertToModelMessages(normalizedMessages)
   if (stream === false) {
     const { text } = await generateText({
       model: provider(model.name),

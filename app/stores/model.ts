@@ -43,8 +43,8 @@ export const useModelStore = defineStore(
         {
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
-          baseURL: 'https://apihub.agnes-ai.com/v1',
-          models: ['agnes-2.0-flash'],
+          baseURL: 'https://api.agnes-ai.cn/v1',
+          models: ['agnes-2.0-flash', 'agnes-2.5-flash'],
         },
         {
           provider: 'Makers',
@@ -71,8 +71,8 @@ export const useModelStore = defineStore(
         {
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
-          baseURL: 'https://apihub.agnes-ai.com/v1',
-          models: ['agnes-image-2.0-flash', 'agnes-image-2.1-flash'],
+          baseURL: 'https://api.agnes-ai.cn/v1',
+          models: ['agnes-image-2.1-flash'],
         },
       ],
       audio: [
@@ -93,7 +93,7 @@ export const useModelStore = defineStore(
         {
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
-          baseURL: 'https://apihub.agnes-ai.com/v1',
+          baseURL: 'https://api.agnes-ai.cn/v1',
           models: ['agnes-video-v2.0'],
         },
       ],
