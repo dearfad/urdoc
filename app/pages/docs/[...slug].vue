@@ -26,7 +26,7 @@
         <UIcon name="i-lucide-loader-circle" class="size-8 animate-spin" />
       </div>
       <div v-else class="mx-auto max-w-3xl px-6 py-8 lg:px-8">
-        <Comark :markdown="content" />
+        <Markdown :value="content" />
       </div>
     </template>
   </UDashboardPanel>

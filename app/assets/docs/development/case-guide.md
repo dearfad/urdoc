@@ -45,7 +45,7 @@
 展示病历内容，用户可通过 `CaseToolbar` 触发生成、校验、复制等操作。
 
 - **空状态**：当 `caseStore.case.content` 为空且 `status === 'ready'`，显示引导界面 + `ButtonGenerate`
-- **有内容**：根据 `contentMode` 显示 Markdown（`Comark`）或纯文本格式
+- **有内容**：根据 `contentMode` 显示 Markdown（`Markdown` 组件）或纯文本格式
 - **编辑状态**：`isEditing` 为 `true` 时使用 `EditorObject` 组件进行对象字段编辑
 - **推理面板**：当 `stateStore.case.isReasoning` 为 `true`，显示 `UChatReasoning` 推理面板
 
@@ -151,7 +151,7 @@ if (props.contentExclude?.length) {
 | `ButtonCapture` | 截图功能（由 `CaseToolbar` 内部调用） |
 | `ButtonClipboard` | 复制到剪贴板（由 `CaseToolbar` 内部调用，传 `markdown`） |
 | `ButtonAudio` | 朗读功能（由 `CaseToolbar` 内部调用，传 `markdown`） |
-| `Comark` | Markdown 渲染组件（`@comark/nuxt`） |
+| `Markdown` | Markdown 渲染组件（`@comark/nuxt`） |
 
 ## 状态 Badge
 

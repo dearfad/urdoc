@@ -30,7 +30,7 @@ urdoc/
 - **代码风格**：Prettier（无分号、单引号、120 字符行宽）
 - **状态管理**：Pinia store 需调用 `syncStoreVersion(VERSION, 'pinia:<name>')`
 - **导入别名**：`#server/prompts` 用于服务端提示词
-- **Markdown 渲染**：使用 `<Comark :markdown="content" />` 组件
+- **Markdown 渲染**：使用 `<Markdown :value="content" />` 组件
 - **环境变量**：运行时配置通过 `runtimeConfig` 注入
 
 ## 本地开发

@@ -44,7 +44,7 @@
 - **Tailwind CSS v4**：使用 `@import 'tailwindcss'` + `@import '@nuxt/ui'` 语法，文件扩展名 `.css` 关联为 tailwindcss 语言模式
 - **Pinia**：所有 store 需调用 `syncStoreVersion(VERSION, 'pinia:<name>')` 实现 localStorage 版本控制（见 `app/utils/store.ts`）
 - **状态持久化**：`pinia-plugin-unstorage` 模块已注册
-- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容，通过 `Comark` 组件渲染（用于 CSTAR 输出与文档页）
+- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容，通过 `Markdown` 组件渲染（用于 CSTAR 输出与文档页）
 - **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话；provider 选项支持 InternAi、BigModel、OpenRouter、Agnes 的 reasoning/thinking 配置（见 `app/stores/provider.ts`）
 - **提示词模板**：位于 `app/assets/prompts/`，通过 `import.meta.glob('~/assets/prompts/**/*.md')` 动态加载（见 `app/utils/prompts.ts`）
 - **JSON 解析**：使用 `partial-json` 处理流式 JSON（见 `app/utils/json.ts`）

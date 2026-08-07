@@ -53,7 +53,7 @@
           :ui="{ body: 'max-h-none pt-2' }"
           class="pt-2"
         >
-          <Comark :markdown="testStore.test.reasoning" class="*:first:mt-0 *:last:mb-0" />
+          <Markdown :value="testStore.test.reasoning" class="*:first:mt-0 *:last:mb-0" />
         </UChatReasoning>
 
         <div v-if="questions.length > 0" class="flex flex-col gap-4 p-2">

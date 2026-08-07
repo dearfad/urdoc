@@ -66,9 +66,9 @@
           :ui="{ body: 'max-h-none pt-2' }"
           class="pt-2"
         >
-          <Comark :markdown="rateStore.rate.reasoning" class="*:first:mt-0 *:last:mb-0" />
+          <Markdown :value="rateStore.rate.reasoning" class="*:first:mt-0 *:last:mb-0" />
         </UChatReasoning>
-        <Comark :markdown="rateStore.rate.content" />
+        <Markdown :value="rateStore.rate.content" />
       </ClientOnly>
 
       <!-- 

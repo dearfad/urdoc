@@ -129,8 +129,8 @@
                 :ui="{ body: 'max-h-none pt-2' }"
                 class="pt-2"
               >
-                <Comark
-                  :markdown="storyStore.verifyReasoning"
+                <Markdown
+                  :value="storyStore.verifyReasoning"
                   class="*:first:mt-0 *:last:mb-0"
                 />
               </UChatReasoning>
@@ -161,8 +161,8 @@
                     </div>
                   </template>
                   <template v-else>
-                    <Comark
-                      :markdown="section.content"
+                    <Markdown
+                      :value="section.content"
                       class="*:first:mt-0 *:last:mb-0"
                     />
                   </template>
@@ -178,8 +178,8 @@
               :ui="{ body: 'max-h-none pt-2' }"
               class="pt-2"
             >
-              <Comark
-                :markdown="storyStore.story.reasoning"
+              <Markdown
+                :value="storyStore.story.reasoning"
                 class="*:first:mt-0 *:last:mb-0"
               />
             </UChatReasoning>
@@ -189,7 +189,7 @@
             >
               {{ storyStore.story.content }}
             </div>
-            <Comark v-else :markdown="storyStore.story.content" />
+            <Markdown v-else :value="storyStore.story.content" />
           </div>
         </div>
       </ClientOnly>

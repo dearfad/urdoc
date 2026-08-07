@@ -91,7 +91,7 @@ CSTAR 是五个英文词组的首字母缩写，代表五个教学环节：
 | UI 组件库 | Nuxt UI v4（Tailwind CSS v4） |
 | 状态管理 | Pinia |
 | AI 引擎 | ai + @ai-sdk/openai-compatible |
-| 内容渲染 | @comark/nuxt（Comark） |
+| 内容渲染 | @comark/nuxt（Markdown） |
 | 部署平台 | EdgeOne 无服务器函数 |
 
 ## 核心设计原则
