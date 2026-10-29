@@ -6,10 +6,10 @@
   "nodeVersion": "24.11.0",
   "cloudFunctions": {
     "nodejs": {
-      "maxDuration": 120
+      "cloudFunctions.maxDuration": 120
     },
     "python": {
-      "maxDuration": 120
+      "cloudFunctions.maxDuration": 120
     }
   }
 }
