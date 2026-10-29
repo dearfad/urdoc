@@ -24,6 +24,7 @@
     "nuxt": "^4.5.2",
     "nuxt-auth-utils": "^0.5.30",
     "partial-json": "^0.1.7",
+    "pinia": "^4.1.0",
     "pinia-plugin-unstorage": "1.0.0-beta.1",
     "zod": "^4.4.3"
   },
