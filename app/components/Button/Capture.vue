@@ -50,6 +50,7 @@ async function capture() {
     filename: 'capture',
     backgroundColor: '#fff',
     plugins: [{
+      name: 'expand-overflow',
       afterClone: ({ clone: clonedElement }) => {
         clonedElement.style.overflow = 'visible'
         clonedElement.style.maxHeight = 'none'
