@@ -4,6 +4,18 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', 'pinia-plugin-unstorage/nuxt', '@comark/nuxt', 'nuxt-auth-utils'],
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
+
+  app: {
+    head: {
+      script: [
+        {
+          defer: true,
+          src: 'https://cloud.umami.is/script.js',
+          'data-website-id': '1b97f530-f90b-4f83-9dc0-c57e6c830ee3',
+        },
+      ],
+    },
+  },
   ignore: ['/app-bak/**/*'],
   nitro: { ignore: ['/app-bak/**/*'] },
 
