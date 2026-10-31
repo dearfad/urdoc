@@ -88,23 +88,8 @@
 
               <!-- 内容区块：病例、故事、对话、讨论、点评 -->
               <div class="flex flex-col gap-5">
-                <!-- 1. 病例（左侧头像 + 右侧卡片） -->
-                <div class="flex flex-col items-center gap-4 sm:flex-row sm:items-stretch">
-                  <!-- 左：患者头像 -->
-                  <div
-                    class="avatar-placeholder group relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10 sm:h-32 sm:w-32"
-                  >
-                    <img
-                      :src="avatarSrc"
-                      :alt="`${caseStore.case.content?.姓名 || '患者'}头像`"
-                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div
-                      class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/80 ring-offset-2 ring-offset-rose-100/60"
-                    />
-                  </div>
-                  <!-- 右：病例卡片 -->
-                  <section class="block-card group relative flex-1 overflow-hidden rounded-xl">
+                <!-- 1. 病例（头像内置于卡片右侧） -->
+                <section class="block-card group relative overflow-hidden rounded-xl">
                   <div class="block-card-accent from-rose-400/70 via-fuchsia-400/70 to-pink-400/70" />
                   <UCard
                     :ui="{
@@ -133,8 +118,37 @@
                     </template>
                     <div class="flex flex-col gap-4">
                       <template v-if="caseEntries.length">
+                        <!-- 头部：左侧 姓名/性别/年龄/主诉（逐行） + 右侧患者头像 -->
+                        <div class="flex items-start gap-4">
+                          <div class="flex flex-1 flex-col gap-3">
+                            <div
+                              v-for="[key, value] in caseHeaderEntries"
+                              :key="key"
+                              class="flex flex-col gap-1"
+                            >
+                              <p class="text-sm font-semibold text-rose-600">{{ key }}</p>
+                              <p class="leading-relaxed text-gray-700 whitespace-pre-wrap">{{ value }}</p>
+                            </div>
+                          </div>
+                          <!-- 右侧：患者头像 -->
+                          <div
+                            class="avatar-placeholder group relative flex h-40 w-40 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10 sm:h-60 sm:w-60"
+                          >
+                            <img
+                              :src="avatarSrc"
+                              :alt="`${caseStore.case.content?.姓名 || '患者'}头像`"
+                              width="1024"
+                              height="1024"
+                              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div
+                              class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/80 ring-offset-2 ring-offset-rose-100/60"
+                            />
+                          </div>
+                        </div>
+                        <!-- 其余字段 -->
                         <div
-                          v-for="[key, value] in caseEntries"
+                          v-for="[key, value] in caseOtherEntries"
                           :key="key"
                           class="flex flex-col gap-1"
                         >
@@ -151,7 +165,6 @@
                     </div>
                   </UCard>
                 </section>
-                </div>
 
                 <!-- 2. 故事 -->
                 <section class="block-card group relative overflow-hidden rounded-xl">
@@ -440,6 +453,7 @@ definePageMeta({
 const disease = ref('')
 const generating = ref(false)
 const caseStore = useCaseStore()
+const imageStore = useImageStore()
 const diseaseName = computed(() => disease.value || caseStore.case.content?.诊断 || '')
 
 // 病例内容字段列表（过滤空值），用于替换占位文字
@@ -451,8 +465,22 @@ const caseEntries = computed<[string, string][]>(() => {
   ) as [string, string][]
 })
 
-// 患者头像：根据病例性别切换占位图
+// 头部字段（姓名、性别、年龄、主诉），各自成行，置于头像左侧
+const HEADER_KEYS = ['姓名', '性别', '年龄', '主诉']
+const caseHeaderEntries = computed<[string, string][]>(() =>
+  HEADER_KEYS.map((key) => [key, caseStore.case.content?.[key] ?? ''] as [string, string]).filter(
+    ([, value]) => value !== '',
+  ),
+)
+// 其余字段（排除 姓名/性别/年龄/主诉）
+const caseOtherEntries = computed<[string, string][]>(() =>
+  caseEntries.value.filter(([key]) => !HEADER_KEYS.includes(key)),
+)
+
+// 患者头像：优先使用已生成的图像，否则按性别回退到占位图
 const avatarSrc = computed(() => {
+  const generated = imageStore.images?.[0]?.url
+  if (generated) return generated
   const gender = caseStore.case.content?.性别
   if (gender && /男/.test(gender)) return '/images/placeholder_male.png'
   return '/images/placeholder_female.png'
