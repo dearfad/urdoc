@@ -25,6 +25,24 @@ export const useStateStore = defineStore('state', () => {
     isReasoning: false,
   })
 
+  const conversation = ref({
+    custom: [],
+    reasoning: false,
+    isReasoning: false,
+  })
+
+  const discussion = ref({
+    custom: [],
+    reasoning: false,
+    isReasoning: false,
+  })
+
+  const comment = ref({
+    custom: [],
+    reasoning: false,
+    isReasoning: false,
+  })
+
   const test = ref({
     custom: [],
     reasoning: false,
@@ -55,6 +73,9 @@ export const useStateStore = defineStore('state', () => {
 
     case: case_,
     story,
+    conversation,
+    discussion,
+    comment,
     test,
     act,
     rate,

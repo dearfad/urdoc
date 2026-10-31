@@ -17,39 +17,55 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <div class="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
+      <div class="flex min-h-0 flex-1 flex-col">
         <div
-          v-show="isDesktop || !settingsVisible"
-          class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-1 md:flex-2"
+          class="flex items-center gap-1 border-b border-default bg-elevated/60 px-2 py-2 sm:px-4 overflow-x-auto"
         >
-          <Story
-            :settingsVisible="settingsVisible"
-            class="w-full max-h-[75vh]"
-            @toggleSettings="toggleSettings"
-          />
-          <StoryContent
-            type="conversation"
-            title="对话"
-            icon="i-lucide-messages-square"
-            :depends-on="'story'"
-            class="w-full max-h-[75vh]"
-          />
-          <StoryContent
-            type="discussion"
-            title="讨论"
-            icon="i-lucide-message-circle"
-            :depends-on="'conversation'"
-            class="w-full max-h-[75vh]"
-          />
-          <StoryContent
-            type="comment"
-            title="点评"
-            icon="i-lucide-star"
-            :depends-on="'discussion'"
-            class="w-full max-h-[75vh]"
+          <UButton
+            v-for="tab in tabs"
+            :key="tab.value"
+            :icon="tab.icon"
+            :variant="activeTab === tab.value ? 'solid' : 'ghost'"
+            :color="activeTab === tab.value ? 'primary' : 'neutral'"
+            size="md"
+            class="shrink-0 rounded-full transition-all duration-200"
+            @click="activeTab = tab.value"
+          >
+            {{ tab.label }}
+          </UButton>
+          <div class="ms-auto flex shrink-0 items-center">
+            <UTooltip :text="settingsVisible ? '隐藏设置' : '显示设置'">
+              <UButton
+                :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
+                variant="ghost"
+                size="md"
+                @click="toggleSettings"
+              />
+            </UTooltip>
+          </div>
+        </div>
+
+        <div class="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
+          <div
+            v-show="isDesktop || !settingsVisible"
+            class="flex min-h-0 flex-1 flex-col p-1 sm:p-2 md:min-w-0"
+          >
+            <Story
+              v-show="activeTab === 'story'"
+              :settings-visible="settingsVisible"
+              class="h-full w-full"
+              @toggle-settings="toggleSettings"
+            />
+            <Conversation v-show="activeTab === 'conversation'" class="h-full w-full" />
+            <Discussion v-show="activeTab === 'discussion'" class="h-full w-full" />
+            <Comment v-show="activeTab === 'comment'" class="h-full w-full" />
+          </div>
+          <StorySettings
+            :scene="activeTab"
+            v-show="settingsVisible"
+            class="flex min-h-0 w-full flex-col md:w-96 md:max-w-96 md:basis-96 md:shrink-0"
           />
         </div>
-        <StorySettings v-show="settingsVisible" class="flex min-h-0 w-full flex-col md:w-96 md:shrink-0" />
       </div>
     </template>
   </UDashboardPanel>
@@ -61,8 +77,17 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 definePageMeta({
   title: '编写故事',
 })
+
 const settingsVisible = ref(true)
 const isDesktop = ref(true)
+const activeTab = ref<'story' | 'conversation' | 'discussion' | 'comment'>('story')
+
+const tabs = [
+  { label: '故事', value: 'story', icon: 'i-mdi-alpha-s-circle' },
+  { label: '对话', value: 'conversation', icon: 'i-lucide-messages-square' },
+  { label: '讨论', value: 'discussion', icon: 'i-lucide-message-circle' },
+  { label: '点评', value: 'comment', icon: 'i-lucide-star' },
+] as const
 
 onMounted(() => {
   const mq = window.matchMedia('(min-width: 768px)')

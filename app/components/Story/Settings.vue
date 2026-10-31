@@ -9,7 +9,7 @@
   >
     <template #header v-if="isTitleShow">
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">故事设定</span>
+      <span class="font-bold">{{ title }}</span>
       <UButton
         :icon="collapsed ? 'i-lucide-chevron-down' : 'i-lucide-chevron-up'"
         variant="ghost"
@@ -21,16 +21,16 @@
     <template #default>
       <UTabs v-show="!collapsed" :items="tabItems" variant="link" class="w-full flex flex-col min-h-0" :ui="{ trigger: 'grow', content: 'flex-1 min-h-0 overflow-auto' }" defaultValue="custom">
         <template #custom>
-          <SelectCustom scene="story" />
+          <SelectCustom :scene="scene" />
         </template>
         <template #model>
           <div class="m-4 flex flex-col">
-            <SelectModel scene="story" />
+            <SelectModel :scene="scene" />
           </div>
         </template>
         <template #prompt>
           <div class="m-4 flex flex-1 flex-col min-h-0">
-            <SelectPrompt scene="story" />
+            <SelectPrompt :scene="scene" />
           </div>
         </template>
       </UTabs>
@@ -39,7 +39,21 @@
 </template>
 
 <script setup>
+const props = defineProps({
+  isTitleShow: { type: Boolean, required: false, default: true },
+  scene: { type: String, required: false, default: 'story' },
+})
+
 const collapsed = ref(false)
+
+const sceneLabels = {
+  story: '故事',
+  conversation: '对话',
+  discussion: '讨论',
+  comment: '点评',
+}
+
+const title = computed(() => `${sceneLabels[props.scene] ?? '故事'}设定`)
 
 const tabItems = [
   {
@@ -61,8 +75,4 @@ const tabItems = [
     slot: 'model',
   },
 ]
-
-const { isTitleShow } = defineProps({
-  isTitleShow: { type: Boolean, required: false, default: true },
-})
 </script>

@@ -32,8 +32,15 @@ const stateStore = useStateStore()
 
 const sceneToModelType: Record<string, string> = {
   case: 'chat', story: 'chat', test: 'chat', act: 'chat', rate: 'chat',
+  conversation: 'chat', discussion: 'chat', comment: 'chat',
   image: 'image', audio: 'audio', video: 'video',
 }
+
+const STORY_SCENES = ['story', 'conversation', 'discussion', 'comment']
+const isStorySub = computed(() => STORY_SCENES.includes(props.scene))
+// 故事四类场景拥有各自独立的模型配置（sceneModels），其余场景沿用按 modelType 的 activeModels
+const modelMap = computed(() => (isStorySub.value ? modelStore.sceneModels : modelStore.activeModels))
+const modelKey = computed(() => (isStorySub.value ? props.scene : modelType.value))
 
 const modelType = computed(() => sceneToModelType[props.scene] || props.scene)
 
@@ -65,12 +72,12 @@ const providerOptions = computed(() =>
 )
 
 const selectedProvider = computed({
-  get: () => modelStore.activeModels[modelType.value]?.provider ?? undefined,
+  get: () => modelMap.value[modelKey.value]?.provider ?? undefined,
   set: (val: string | undefined) => {
     if (!val) return
     const group = (modelStore.models[modelType.value] ?? []).find((g) => g.provider === val)
     if (!group) return
-    modelStore.activeModels[modelType.value] = {
+    modelMap.value[modelKey.value] = {
       provider: group.provider,
       name: group.models[0] ?? null,
       apiKey: group.apiKey,
@@ -80,21 +87,21 @@ const selectedProvider = computed({
 })
 
 const modelNameOptions = computed(() => {
-  const active = modelStore.activeModels[modelType.value]
+  const active = modelMap.value[modelKey.value]
   const group = (modelStore.models[modelType.value] ?? []).find((g) => g.provider === active?.provider)
   return group ? group.models.map((m) => ({ label: m, value: m })) : []
 })
 
 const selectedModelName = computed({
-  get: () => modelStore.activeModels[modelType.value]?.name ?? undefined,
+  get: () => modelMap.value[modelKey.value]?.name ?? undefined,
   set: (val: string | undefined) => {
     if (!val) return
-    const active = modelStore.activeModels[modelType.value]
+    const active = modelMap.value[modelKey.value]
     const provider = active?.provider
     if (!provider) return
     const group = (modelStore.models[modelType.value] ?? []).find((g) => g.provider === provider)
     if (!group) return
-    modelStore.activeModels[modelType.value] = {
+    modelMap.value[modelKey.value] = {
       provider: group.provider,
       name: val,
       apiKey: group.apiKey,

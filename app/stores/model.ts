@@ -32,6 +32,22 @@ export const useModelStore = defineStore(
       },
     })
 
+    const sceneModels = ref<ActiveModels>({
+      story: { ...activeModels.value.chat },
+      conversation: { ...activeModels.value.chat },
+      discussion: { ...activeModels.value.chat },
+      comment: { ...activeModels.value.chat },
+    })
+
+    const STORY_SCENES = ['story', 'conversation', 'discussion', 'comment']
+
+    function resolveModel(scene: string): Model {
+      if (STORY_SCENES.includes(scene)) {
+        return sceneModels.value[scene]
+      }
+      return activeModels.value[scene] ?? activeModels.value.chat
+    }
+
     const models = ref<Models>({
       chat: [
         {
@@ -102,6 +118,8 @@ export const useModelStore = defineStore(
     return {
       version,
       activeModels,
+      sceneModels,
+      resolveModel,
       models,
     }
   },

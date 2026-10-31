@@ -7,3 +7,6 @@ node_modules
 
 # Local env files
 .env
+
+# CodeBuddy
+.codebuddy
