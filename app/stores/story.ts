@@ -1,6 +1,7 @@
 import { isReasoningUIPart, isTextUIPart } from 'ai'
+import type { StorySubContent } from '~/types/story'
 
-const VERSION = '2026-06-23'
+const VERSION = '2026-10-31'
 
 export const useStoryStore = defineStore('story', () => {
   const version = ref(VERSION)
@@ -17,18 +18,31 @@ export const useStoryStore = defineStore('story', () => {
   const verifyResult = ref<string | null>(null)
   const verifyReasoning = ref<string | null>(null)
 
+  const conversation = ref<StorySubContent>({ content: null, reasoning: null })
+  const discussion = ref<StorySubContent>({ content: null, reasoning: null })
+  const comment = ref<StorySubContent>({ content: null, reasoning: null })
+
   const { status, lastParts, currentType, lastMessageRole, send } = useChatApi()
 
   watch(
     () => lastParts.value,
     (parts) => {
       try {
-        if (!['story', 'story-verify', 'story-fix'].includes(currentType.value)) return
+        if (!['story', 'story-verify', 'story-fix', 'story-conversation', 'story-discussion', 'story-comment'].includes(currentType.value)) return
         if (!parts.length) return
         if (lastMessageRole.value !== 'assistant') return
         for (const part of parts) {
           if (currentType.value === 'story-verify') {
             handleVerifyPart(part)
+          } else if (currentType.value === 'story-conversation') {
+            useStateStore().story.isReasoning = isReasoningUIPart(part)
+            handleSubPart(part, conversation)
+          } else if (currentType.value === 'story-discussion') {
+            useStateStore().story.isReasoning = isReasoningUIPart(part)
+            handleSubPart(part, discussion)
+          } else if (currentType.value === 'story-comment') {
+            useStateStore().story.isReasoning = isReasoningUIPart(part)
+            handleSubPart(part, comment)
           } else {
             useStateStore().story.isReasoning = isReasoningUIPart(part)
             handlePart(part)
@@ -76,6 +90,9 @@ export const useStoryStore = defineStore('story', () => {
     }
     verifyResult.value = null
     verifyReasoning.value = null
+    conversation.value = { content: null, reasoning: null }
+    discussion.value = { content: null, reasoning: null }
+    comment.value = { content: null, reasoning: null }
     _hasAutoFixed = false
   }
 
@@ -85,6 +102,15 @@ export const useStoryStore = defineStore('story', () => {
     }
     if (isTextUIPart(part) && part.text?.trim()) {
       story.value.content = part.text
+    }
+  }
+
+  function handleSubPart(part: any, target: Ref<StorySubContent>) {
+    if (isReasoningUIPart(part)) {
+      target.value.reasoning = part.text
+    }
+    if (isTextUIPart(part) && part.text?.trim()) {
+      target.value.content = part.text
     }
   }
 
@@ -158,17 +184,92 @@ export const useStoryStore = defineStore('story', () => {
     })
   }
 
+  async function generateConversation() {
+    const stateStore = useStateStore()
+    const caseStore = useCaseStore()
+    const storyContent = story.value.content
+    if (!storyContent) return
+    conversation.value = { content: null, reasoning: null }
+    const model = useModelStore().activeModels.chat
+    const roleHint = story.value.custom?.length
+      ? `角色设定：${story.value.custom.join('，')}`
+      : '角色设定：医生与患者'
+    const text = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n${roleHint}`
+    const instructions = await usePromptStore().getEffectivePrompt('conversation', 'prompt')
+    send(text, {
+      type: 'story-conversation',
+      task: 'conversation',
+      model,
+      reasoning: stateStore.story.reasoning,
+      instructions: instructions
+        ? `${instructions}\n\n${roleHint}\n\n病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}`
+        : `基于以下病例和患者小故事，生成一段两位角色（${roleHint.replace('角色设定：', '')}）的专业对话：\n\n病例：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}`,
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
+    })
+  }
+
+  async function generateDiscussion() {
+    const stateStore = useStateStore()
+    const caseStore = useCaseStore()
+    const storyContent = story.value.content
+    const conversationContent = conversation.value.content
+    if (!storyContent || !conversationContent) return
+    discussion.value = { content: null, reasoning: null }
+    const model = useModelStore().activeModels.chat
+    const text = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`
+    const instructions = await usePromptStore().getEffectivePrompt('discussion', 'prompt')
+    send(text, {
+      type: 'story-discussion',
+      task: 'discussion',
+      model,
+      reasoning: stateStore.story.reasoning,
+      instructions: instructions
+        ? `${instructions}\n\n病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`
+        : `基于以下病例、小故事和人物对话，生成一组网络评论区风格的精选讨论：\n\n病例：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`,
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
+    })
+  }
+
+  async function generateComment() {
+    const stateStore = useStateStore()
+    const caseStore = useCaseStore()
+    const storyContent = story.value.content
+    const conversationContent = conversation.value.content
+    const discussionContent = discussion.value.content
+    if (!storyContent || !conversationContent || !discussionContent) return
+    comment.value = { content: null, reasoning: null }
+    const model = useModelStore().activeModels.chat
+    const context = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}\n\n网友讨论：\n${discussionContent}`
+    const instructions = await usePromptStore().getEffectivePrompt('comment', 'prompt')
+    send(context, {
+      type: 'story-comment',
+      task: 'comment',
+      model,
+      reasoning: stateStore.story.reasoning,
+      instructions: instructions
+        ? `${instructions}\n\n${context}`
+        : `基于以下病例、故事、对话和讨论，生成五段式专家点评：\n\n${context}`,
+      providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
+    })
+  }
+
   return {
     version,
     story,
     verifyResult,
     verifyReasoning,
+    conversation,
+    discussion,
+    comment,
     reset,
     handlePart,
     status,
     generate,
     verify,
     fix,
+    generateConversation,
+    generateDiscussion,
+    generateComment,
     currentType,
   }
 })

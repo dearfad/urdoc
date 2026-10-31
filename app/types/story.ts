@@ -10,3 +10,9 @@ export interface Story {
 }
 
 export type Stories = Story[]
+
+// 故事衍生内容（对话 / 讨论 / 点评）结构
+export interface StorySubContent {
+  content: string | null
+  reasoning: string | null
+}

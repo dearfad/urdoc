@@ -44,7 +44,7 @@ export const useModelStore = defineStore(
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
           baseURL: 'https://api.agnes-ai.cn/v1',
-          models: ['agnes-2.0-flash', 'agnes-2.5-flash'],
+          models: ['agnes-2.5-flash', 'agnes-3.0-flash'],
         },
         {
           provider: 'Makers',

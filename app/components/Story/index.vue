@@ -2,7 +2,7 @@
   <UCard
     id="component-story-index"
     :ui="{
-      root: 'border border-default flex min-h-0 flex-1 flex-col',
+      root: 'border border-default flex min-h-0 flex-col',
       header: 'bg-elevated flex items-center py-2 ',
       body: 'py-0 sm:py-2 flex-1 overflow-y-auto min-h-0',
       footer: 'p-0 sm:p-0',

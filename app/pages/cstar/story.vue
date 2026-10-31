@@ -17,14 +17,39 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto md:flex-row">
-        <Story
+      <div class="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
+        <div
           v-show="isDesktop || !settingsVisible"
-          :settingsVisible="settingsVisible"
-          class="flex min-h-0 w-full flex-col flex-1 md:flex-2"
-          @toggleSettings="toggleSettings"
-        />
-        <StorySettings v-show="settingsVisible" class="flex min-h-0 w-full flex-col flex-1" />
+          class="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-1 md:flex-2"
+        >
+          <Story
+            :settingsVisible="settingsVisible"
+            class="w-full max-h-[75vh]"
+            @toggleSettings="toggleSettings"
+          />
+          <StoryContent
+            type="conversation"
+            title="对话"
+            icon="i-lucide-messages-square"
+            :depends-on="'story'"
+            class="w-full max-h-[75vh]"
+          />
+          <StoryContent
+            type="discussion"
+            title="讨论"
+            icon="i-lucide-message-circle"
+            :depends-on="'conversation'"
+            class="w-full max-h-[75vh]"
+          />
+          <StoryContent
+            type="comment"
+            title="点评"
+            icon="i-lucide-star"
+            :depends-on="'discussion'"
+            class="w-full max-h-[75vh]"
+          />
+        </div>
+        <StorySettings v-show="settingsVisible" class="flex min-h-0 w-full flex-col md:w-96 md:shrink-0" />
       </div>
     </template>
   </UDashboardPanel>
