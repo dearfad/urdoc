@@ -11,7 +11,10 @@
           <AppHeader />
         </template>
       </UDashboardNavbar>
+      <UDashboardToolbar>
+        <UBreadcrumb :items="items" />
 
+      </UDashboardToolbar>
     </template>
     <template #body>
       <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto md:flex-row">
@@ -28,6 +31,8 @@
 </template>
 
 <script setup lang="ts">
+import type { BreadcrumbItem } from '@nuxt/ui'
+
 definePageMeta({
   title: '生成病例',
 })
@@ -44,5 +49,11 @@ onMounted(() => {
 function toggleSettings() {
   settingsVisible.value = !settingsVisible.value
 }
+
+const items = computed<BreadcrumbItem[]>(() => [
+  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+  { label: 'CSTAR', icon: 'i-lucide-circle-star' },
+  { label: '生成病例', icon: 'i-mdi-alpha-c-circle', to: '/cstar/case' },
+])
 
 </script>

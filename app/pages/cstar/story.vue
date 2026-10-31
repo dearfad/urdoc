@@ -45,10 +45,10 @@
           </div>
         </div>
 
-        <div class="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
+        <div class="m-1 flex min-h-0 flex-1 flex-col gap-2 overflow-hidden sm:m-2 md:flex-row">
           <div
             v-show="isDesktop || !settingsVisible"
-            class="flex min-h-0 flex-1 flex-col p-1 sm:p-2 md:min-w-0"
+            class="flex min-h-0 flex-1 flex-col md:min-w-0"
           >
             <Story
               v-show="activeTab === 'story'"

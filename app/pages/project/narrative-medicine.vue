@@ -28,7 +28,7 @@
     </v-row>
   </v-container> -->
   <UDashboardPanel id="pages-project-narrative-medicine">
-    <template #header>
+    <!-- <template #header>
       <UDashboardNavbar title="叙事医学">
         <template #leading>
           <UTooltip text="侧边栏">
@@ -45,37 +45,37 @@
           <UButton icon="i-lucide-copy-plus" variant="ghost" @click="copyAll" />
         </div>
       </UDashboardToolbar>
-    </template>
+    </template> -->
     <template #body>
-      <div class="flex flex-col gap-4 xl:flex-row">
+      <!-- <div class="flex flex-col gap-4 xl:flex-row">
         <Case class="xl:w-2/5" :show-footer="false" :show-actions="false" mode="text" />
         <Story class="xl:w-3/5" />
-      </div>
+      </div> -->
     </template>
   </UDashboardPanel>
 </template>
 
 <script setup lang="ts">
-import type { BreadcrumbItem } from '@nuxt/ui'
+// import type { BreadcrumbItem } from '@nuxt/ui'
 
 definePageMeta({
   title: '叙事医学',
 })
-const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '叙事医学', icon: 'i-lucide-book', to: '/project/narrative-medicine' },
-])
-const caseStore = useCaseStore()
-const storyStore = useStoryStore()
-const toast = useToast()
+// const items = computed<BreadcrumbItem[]>(() => [
+//   { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
+//   { label: '叙事医学', icon: 'i-lucide-book', to: '/project/narrative-medicine' },
+// ])
+// const caseStore = useCaseStore()
+// const storyStore = useStoryStore()
+// const toast = useToast()
 
-async function copyAll() {
-  const text = `病例内容：\n${JSON.stringify(caseStore.case.content, null, 2)}\n\n故事内容：\n${storyStore.story.content}`
-  try {
-    await navigator.clipboard.writeText(text)
-    toast.add({ title: '已复制到剪贴板', color: 'success', icon: 'i-lucide-check-circle', duration: 2000 })
-  } catch {
-    toast.add({ title: '复制失败', color: 'error', icon: 'i-lucide-alert-circle' })
-  }
-}
+// async function copyAll() {
+//   const text = `病例内容：\n${JSON.stringify(caseStore.case.content, null, 2)}\n\n故事内容：\n${storyStore.story.content}`
+//   try {
+//     await navigator.clipboard.writeText(text)
+//     toast.add({ title: '已复制到剪贴板', color: 'success', icon: 'i-lucide-check-circle', duration: 2000 })
+//   } catch {
+//     toast.add({ title: '复制失败', color: 'error', icon: 'i-lucide-alert-circle' })
+//   }
+// }
 </script>
