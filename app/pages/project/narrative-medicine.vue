@@ -5,10 +5,16 @@
   >
     <template #body>
       <div class="min-h-full w-full overflow-auto py-6 sm:py-8 md:py-10">
+        <!-- 截屏按钮：内容页右上角（位于被截取元素之外，避免截图中包含按钮） -->
+        <div class="mx-auto mb-2 flex w-full max-w-4xl justify-end px-3 sm:px-4">
+          <ButtonCapture capture-id="nm-sheet" label="截屏" />
+        </div>
         <div class="mx-auto w-full px-3 sm:px-4">
           <!-- 顶部控制区：疾病设定 + 生成叙事按钮（位于卡片之外） -->
           <div class="mb-6 flex flex-col items-center gap-4 sm:mb-8">
             <div class="flex items-center gap-2 text-sm font-medium text-rose-600 sm:text-base">
+              <div class="h-px w-10 bg-gradient-to-l from-rose-400/60 to-transparent" />
+              <div class="h-px w-10 bg-gradient-to-r from-rose-400/60 to-transparent" />
               <UIcon name="i-lucide-stethoscope" class="text-lg sm:text-xl" />
               <span>疾病设定</span>
               <div class="h-px w-10 bg-gradient-to-r from-rose-400/60 to-transparent" />
@@ -31,7 +37,7 @@
                 icon="i-lucide-sparkles"
                 color="rose"
                 variant="solid"
-                :loading="generating"
+                :loading="isGenerating"
                 class="shrink-0 font-semibold shadow-lg shadow-rose-500/20"
                 @click="generateNarrative"
               >
@@ -40,8 +46,9 @@
             </div>
           </div>
 
-          <!-- 叙事医学内容容器 -->
+          <!-- 叙事医学内容容器（截屏目标：叙事单页） -->
           <article
+            id="nm-sheet"
             class="nm-sheet relative mx-auto flex w-full max-w-4xl flex-col rounded-xl shadow-[0_25px_60px_-20px_rgba(244,114,182,0.25)] ring-1 ring-white/70"
             aria-label="叙事医学界面"
           >
@@ -118,48 +125,39 @@
                     </template>
                     <div class="flex flex-col gap-4">
                       <template v-if="caseEntries.length">
-                        <!-- 头部：左侧 姓名/性别/年龄/主诉（逐行） + 右侧患者头像 -->
+                        <!-- 头部：左侧文字（约 2/3） + 右侧患者头像（约 1/3） -->
                         <div class="flex items-start gap-4">
-                          <div class="flex flex-1 flex-col gap-3">
-                            <div
-                              v-for="[key, value] in caseHeaderEntries"
-                              :key="key"
-                              class="flex flex-col gap-1"
-                            >
+                          <div class="flex min-w-0 flex-1 flex-col gap-3">
+                            <div v-for="[key, value] in caseHeaderEntries" :key="key" class="flex flex-col gap-1">
                               <p class="text-sm font-semibold text-rose-600">{{ key }}</p>
-                              <p class="leading-relaxed text-gray-700 whitespace-pre-wrap">{{ value }}</p>
+                              <p class="leading-relaxed whitespace-pre-wrap text-gray-700">{{ value }}</p>
                             </div>
                           </div>
                           <!-- 右侧：患者头像 -->
-                          <div
-                            class="avatar-placeholder group relative flex h-40 w-40 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10 sm:h-60 sm:w-60"
-                          >
-                            <img
-                              :src="avatarSrc"
-                              :alt="`${caseStore.case.content?.姓名 || '患者'}头像`"
-                              width="1024"
-                              height="1024"
-                              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
+                          <div class="flex w-1/3 shrink-0 justify-center">
                             <div
-                              class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/80 ring-offset-2 ring-offset-rose-100/60"
-                            />
+                              class="avatar-placeholder group relative aspect-square w-full max-w-[260px] overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10"
+                            >
+                              <img
+                                :src="avatarSrc"
+                                :alt="`${caseStore.case.content?.姓名 || '患者'}头像`"
+                                width="1024"
+                                height="1024"
+                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              />
+                              <div
+                                class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/80 ring-offset-2 ring-offset-rose-100/60"
+                              />
+                            </div>
                           </div>
                         </div>
                         <!-- 其余字段 -->
-                        <div
-                          v-for="[key, value] in caseOtherEntries"
-                          :key="key"
-                          class="flex flex-col gap-1"
-                        >
+                        <div v-for="[key, value] in caseOtherEntries" :key="key" class="flex flex-col gap-1">
                           <p class="text-sm font-semibold text-rose-600">{{ key }}</p>
-                          <p class="leading-relaxed text-gray-700 whitespace-pre-wrap">{{ value }}</p>
+                          <p class="leading-relaxed whitespace-pre-wrap text-gray-700">{{ value }}</p>
                         </div>
                       </template>
-                      <p
-                        v-else
-                        class="leading-relaxed text-gray-500"
-                      >
+                      <p v-else class="leading-relaxed text-gray-500">
                         尚未生成病例内容，请在上方输入疾病设定后点击「生成叙事」，或从「病例」模块导入已有病例。
                       </p>
                     </div>
@@ -195,12 +193,17 @@
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
-                      <p class="leading-relaxed text-gray-700">
-                        【占位文字】从患者视角展开叙述，着重呈现其就诊历程中的心路历程、家庭支持、社会环境以及对疾病的认知与感受。通过细腻的语言勾勒出疾病之外的生活图景。
-                      </p>
-                      <p class="leading-relaxed text-gray-600">
-                        【占位文字】此处将以连贯的段落形式还原患者的叙事线索，突出情感细节与生命经历，为后续对话与讨论提供叙事素材。
-                      </p>
+                      <template v-if="storyContent">
+                        <Markdown :value="storyContent" class="story-md *:first:mt-0 *:last:mb-0" />
+                      </template>
+                      <template v-else>
+                        <p class="leading-relaxed text-gray-700">
+                          【占位文字】从患者视角展开叙述，着重呈现其就诊历程中的心路历程、家庭支持、社会环境以及对疾病的认知与感受。通过细腻的语言勾勒出疾病之外的生活图景。
+                        </p>
+                        <p class="leading-relaxed text-gray-600">
+                          【占位文字】此处将以连贯的段落形式还原患者的叙事线索，突出情感细节与生命经历，为后续对话与讨论提供叙事素材。
+                        </p>
+                      </template>
                     </div>
                     <!-- 关于故事的四格插图位置 -->
                     <div class="flex flex-col gap-3">
@@ -450,19 +453,40 @@ definePageMeta({
   title: '叙事医学',
 })
 
-const disease = ref('')
-const generating = ref(false)
 const caseStore = useCaseStore()
+const stateStore = useStateStore()
 const imageStore = useImageStore()
-const diseaseName = computed(() => disease.value || caseStore.case.content?.诊断 || '')
+const storyStore = useStoryStore()
+const recordStore = useRecordStore()
+
+// 故事内容：有内容则展示，否则回退到占位文字
+const storyContent = computed(() => storyStore.story.content ?? '')
+
+// 生成状态：与病例模块（Toolbar 的「生成病例」）保持一致
+const isGenerating = computed(() => caseStore.status === 'submitted' || caseStore.status === 'streaming')
+
+// 疾病设定输入框与 Settings.vue 的「自定义内容」（stateStore.case.custom）关联：
+// 以「疾病：」前缀标记，双向同步——输入框内容会进入自定义列表，Settings 中编辑亦会回显
+const DISEASE_TAG = '疾病：'
+const disease = computed({
+  get: () => stateStore.case.custom.find((c) => c.startsWith(DISEASE_TAG))?.slice(DISEASE_TAG.length) ?? '',
+  set: (val) => {
+    const list = stateStore.case.custom.filter((c) => !c.startsWith(DISEASE_TAG))
+    if (val && val.trim()) list.unshift(DISEASE_TAG + val.trim())
+    stateStore.case.custom = list
+  },
+})
+// 刊头大字始终使用病例的诊断名称
+const diseaseName = computed(() => caseStore.case.content?.诊断 || '')
 
 // 病例内容字段列表（过滤空值），用于替换占位文字
 const caseEntries = computed<[string, string][]>(() => {
   const content = caseStore.case.content
   if (!content || typeof content === 'string') return []
-  return Object.entries(content).filter(
-    ([, value]) => value !== undefined && value !== null && value !== '',
-  ) as [string, string][]
+  return Object.entries(content).filter(([, value]) => value !== undefined && value !== null && value !== '') as [
+    string,
+    string,
+  ][]
 })
 
 // 头部字段（姓名、性别、年龄、主诉），各自成行，置于头像左侧
@@ -486,14 +510,41 @@ const avatarSrc = computed(() => {
   return '/images/placeholder_female.png'
 })
 
-function generateNarrative() {
-  // TODO: 调用后端 AI 接口，根据 disease 生成叙事医学内容
-  generating.value = true
-  try {
-    // 预留：实际生成逻辑
-  } finally {
-    generating.value = false
-  }
+// 等待病例（含可能的自动校验/修正）完整生成完毕，再衔接生成故事。
+// 关键：必须等 status 回到 ready，而非 content 一变 truthy 就开始——否则 story 的 send 会
+// 调用 chat.stop() 把仍在流式生成的病历打断。
+function waitForCaseDone(): Promise<void> {
+  return new Promise((resolve) => {
+    let stop: (() => void) | undefined
+    const check = () => {
+      if (
+        caseStore.status === 'ready' &&
+        ['case', 'case-verify', 'case-fix'].includes(caseStore.currentType ?? '')
+      ) {
+        stop?.()
+        resolve()
+        return true
+      }
+      return false
+    }
+    if (check()) return
+    stop = watch(
+      () => caseStore.status,
+      () => check(),
+    )
+  })
+}
+
+async function generateNarrative() {
+  // 生成前清空所有相关内容（病例、故事、图像等），确保从干净状态开始
+  recordStore.reset()
+  // 清空病历设定中的教科书部分，仅以自定义内容（含疾病设定）生成病例
+  stateStore.case.textbook = null
+  // 触发「生成病例」命令
+  await caseStore.generate()
+  // 等待本次病例完整生成完毕（status 回到 ready），再继续生成故事
+  await waitForCaseDone()
+  storyStore.generate()
 }
 </script>
 
@@ -599,6 +650,11 @@ function generateNarrative() {
 .story-illus:hover {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 18px 40px -24px rgba(249, 115, 22, 0.5);
+}
+
+/* 故事正文：每段段首空两字，符合中文排版习惯 */
+.story-md :deep(p) {
+  text-indent: 2em;
 }
 
 .dialogue-bubble {
