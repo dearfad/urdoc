@@ -476,8 +476,35 @@ const disease = computed({
     stateStore.case.custom = list
   },
 })
-// 刊头大字始终使用病例的诊断名称
-const diseaseName = computed(() => caseStore.case.content?.诊断 || '')
+// 刊头大字始终使用病例的诊断名称；仅对显示做清理，保持「诊断」原值不变：
+// 去掉开头非文字符号，并在第一个非文字符号处截断，使疾病名称整洁
+const diseaseName = computed(() => cleanDiseaseName(caseStore.case.content?.诊断))
+
+// 清理疾病名称：
+// 1) 去除所有空格；2) 去除开头的序号/编号（可连续，如 1、 2. 3) ①② （一）（1）三、）；
+// 3) 去掉首部其余非文字符号；4) 遇到第一个非文字符号即截断（含该符号及其以后文字）
+function cleanDiseaseName(raw: unknown): string {
+  let s = String(raw ?? '')
+    .replace(/\s+/g, '') // 去除所有空格（含中文/英文空格、换行等）
+  if (!s) return ''
+
+  // 去除开头的序号/编号（循环以处理连续出现的多个前缀）
+  const reNum =
+    /^([0-9]+[.、)）]|[①-⑳㉑-㉟]|[（(][0-9一二三四五六七八九十]+[)）]|[一二三四五六七八九十百千]+[.、])/
+  let prev = s
+  do {
+    prev = s
+    s = s.replace(reNum, '')
+  } while (s !== prev && s.length > 0)
+
+  // 定位首个文字字符（中文、字母、数字），去掉其前的所有符号
+  const start = s.search(/[一-龥A-Za-z0-9]/)
+  if (start === -1) return ''
+  const body = s.slice(start)
+  // 首个非文字符号处截断，去掉该符号及其之后所有内容
+  const end = body.search(/[^一-龥A-Za-z0-9]/)
+  return end === -1 ? body : body.slice(0, end)
+}
 
 // 病例内容字段列表（过滤空值），用于替换占位文字
 const caseEntries = computed<[string, string][]>(() => {
