@@ -20,7 +20,7 @@ export const useStateStore = defineStore('state', () => {
   })
 
   const story = ref({
-    custom: [],
+    custom: [] as string[],
     reasoning: false,
     isReasoning: false,
   })

@@ -540,6 +540,14 @@ async function generateNarrative() {
   recordStore.reset()
   // 清空病历设定中的教科书部分，仅以自定义内容（含疾病设定）生成病例
   stateStore.case.textbook = null
+  // 将「疾病设定」输入框文字同时作为生成故事的自定义提示词（要点设定）
+  const diseaseText = disease.value.trim()
+  if (diseaseText) {
+    stateStore.story.custom = [
+      `${DISEASE_TAG}${diseaseText}`,
+      ...stateStore.story.custom.filter((c) => !c.startsWith(DISEASE_TAG)),
+    ]
+  }
   // 触发「生成病例」命令
   await caseStore.generate()
   // 等待本次病例完整生成完毕（status 回到 ready），再继续生成故事
