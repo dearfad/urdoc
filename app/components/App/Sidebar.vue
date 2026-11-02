@@ -52,6 +52,18 @@ const items = [
         to: '/project/narrative-medicine',
         class: 'font-bold text-base',
       },
+      {
+        label: '临床实战',
+        icon: 'i-lucide-stethoscope',
+        to: '/project/clinical-simulation',
+        class: 'font-bold text-base',
+      },
+      {
+        label: '教法研究',
+        icon: 'i-lucide-graduation-cap',
+        to: '/project/pedagogical-research',
+        class: 'font-bold text-base',
+      },
     ],
   },
   {

@@ -3,6 +3,18 @@
     id="pages-project-narrative-medicine"
     class="bg-linear-to-br from-amber-50/40 via-rose-50/40 to-cyan-50/40"
   >
+    <template #header>
+      <UDashboardNavbar title="叙事医学">
+        <template #leading>
+          <UTooltip text="侧边栏">
+            <UDashboardSidebarCollapse />
+          </UTooltip>
+        </template>
+        <template #right>
+          <AppHeader />
+        </template>
+      </UDashboardNavbar>
+    </template>
     <template #body>
       <div class="min-h-full w-full overflow-auto py-6 sm:py-8 md:py-10">
         <!-- 截屏按钮：内容页右上角（位于被截取元素之外，避免截图中包含按钮） -->
