@@ -36,11 +36,8 @@ const sceneToModelType: Record<string, string> = {
   image: 'image', audio: 'audio', video: 'video',
 }
 
-const STORY_SCENES = ['story', 'conversation', 'discussion', 'comment']
-const isStorySub = computed(() => STORY_SCENES.includes(props.scene))
-// 故事四类场景拥有各自独立的模型配置（sceneModels），其余场景沿用按 modelType 的 activeModels
-const modelMap = computed(() => (isStorySub.value ? modelStore.sceneModels : modelStore.activeModels))
-const modelKey = computed(() => (isStorySub.value ? props.scene : modelType.value))
+const modelMap = computed(() => modelStore.activeModels)
+const modelKey = computed(() => modelType.value)
 
 const modelType = computed(() => sceneToModelType[props.scene] || props.scene)
 

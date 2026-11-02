@@ -148,6 +148,16 @@
                               <div
                                 class="pointer-events-none absolute inset-0 rounded-full ring-2 ring-white/80 ring-offset-2 ring-offset-rose-100/60"
                               />
+                              <!-- 头像生成中遮罩 -->
+                              <Transition name="fade">
+                                <div
+                                  v-if="isAvatarGenerating"
+                                  class="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-full bg-white/80 backdrop-blur-sm"
+                                >
+                                  <UIcon name="i-lucide-loader-circle" class="animate-spin text-2xl text-rose-500" />
+                                  <span class="text-xs font-medium text-rose-500">头像生成中</span>
+                                </div>
+                              </Transition>
                             </div>
                           </div>
                         </div>
@@ -269,39 +279,53 @@
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
-                      <div
-                        class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-gradient-to-br from-cyan-50/80 to-white p-4 sm:p-5"
-                      >
-                        <div class="mb-2 flex items-center gap-2 text-sm font-medium text-cyan-700">
-                          <UIcon name="i-lucide-user" />
-                          <span>患者</span>
+                      <template v-if="conversationContent">
+                        <Markdown
+                          :value="conversationContent"
+                          class="nm-md *:first:mt-0 *:last:mb-0"
+                        />
+                      </template>
+                      <template v-else-if="generatingSection === 'story-conversation'">
+                        <div class="flex items-center gap-2 text-sm font-medium text-cyan-600">
+                          <UIcon name="i-lucide-loader-circle" class="animate-spin text-base" />
+                          <span>医患对话生成中…</span>
                         </div>
-                        <p class="leading-relaxed text-gray-700">
-                          【占位文字】在交流中表达内心顾虑、对诊断的疑问以及对生活的担忧，语言真实自然，体现患者的独特叙述视角。
-                        </p>
-                      </div>
-                      <div
-                        class="dialogue-bubble relative rounded-2xl rounded-tr-md border border-sky-100/80 bg-gradient-to-br from-sky-50/80 to-white p-4 sm:p-5"
-                      >
-                        <div class="mb-2 flex items-center justify-end gap-2 text-sm font-medium text-sky-700">
-                          <span>医师</span>
-                          <UIcon name="i-lucide-stethoscope" />
+                      </template>
+                      <template v-else>
+                        <div
+                          class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-gradient-to-br from-cyan-50/80 to-white p-4 sm:p-5"
+                        >
+                          <div class="mb-2 flex items-center gap-2 text-sm font-medium text-cyan-700">
+                            <UIcon name="i-lucide-user" />
+                            <span>患者</span>
+                          </div>
+                          <p class="leading-relaxed text-gray-700">
+                            【占位文字】在交流中表达内心顾虑、对诊断的疑问以及对生活的担忧，语言真实自然，体现患者的独特叙述视角。
+                          </p>
                         </div>
-                        <p class="text-right leading-relaxed text-gray-700">
-                          【占位文字】以倾听、共情、解释为主的回应方式，关注患者的情感需求，在医学信息传递的同时给予充分的理解与支持。
-                        </p>
-                      </div>
-                      <div
-                        class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-gradient-to-br from-cyan-50/70 to-white p-4 sm:p-5"
-                      >
-                        <div class="mb-2 flex items-center gap-2 text-sm font-medium text-cyan-700">
-                          <UIcon name="i-lucide-users" />
-                          <span>共同讨论</span>
+                        <div
+                          class="dialogue-bubble relative rounded-2xl rounded-tr-md border border-sky-100/80 bg-gradient-to-br from-sky-50/80 to-white p-4 sm:p-5"
+                        >
+                          <div class="mb-2 flex items-center justify-end gap-2 text-sm font-medium text-sky-700">
+                            <span>医师</span>
+                            <UIcon name="i-lucide-stethoscope" />
+                          </div>
+                          <p class="text-right leading-relaxed text-gray-700">
+                            【占位文字】以倾听、共情、解释为主的回应方式，关注患者的情感需求，在医学信息传递的同时给予充分的理解与支持。
+                          </p>
                         </div>
-                        <p class="leading-relaxed text-gray-700">
-                          【占位文字】双方在对话中逐步建立信任，共同梳理治疗选择、生活调整与预期目标，体现医患共同决策的叙事过程。
-                        </p>
-                      </div>
+                        <div
+                          class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-gradient-to-br from-cyan-50/70 to-white p-4 sm:p-5"
+                        >
+                          <div class="mb-2 flex items-center gap-2 text-sm font-medium text-cyan-700">
+                            <UIcon name="i-lucide-users" />
+                            <span>共同讨论</span>
+                          </div>
+                          <p class="leading-relaxed text-gray-700">
+                            【占位文字】双方在对话中逐步建立信任，共同梳理治疗选择、生活调整与预期目标，体现医患共同决策的叙事过程。
+                          </p>
+                        </div>
+                      </template>
                     </div>
                   </UCard>
                 </section>
@@ -337,36 +361,50 @@
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
-                      <p class="leading-relaxed text-gray-700">
-                        【占位文字】从生物-心理-社会医学模式出发，结合患者叙事探讨疾病的多重意义。既要关注病理生理，也要理解疾病对患者身份、角色、家庭与社会的影响。
-                      </p>
-                      <div class="grid gap-3 sm:grid-cols-2">
-                        <div
-                          class="discussion-item relative overflow-hidden rounded-lg border border-emerald-100/80 bg-gradient-to-br from-emerald-50/70 to-white p-4"
-                        >
-                          <div class="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700">
-                            <UIcon name="i-lucide-heart-handshake" />
-                            <span>共情视角</span>
-                          </div>
-                          <p class="text-sm leading-relaxed text-gray-600">
-                            【占位文字】关注“患病体验”本身，理解患者如何赋予疾病意义，尊重其叙述的合理性与价值。
-                          </p>
+                      <template v-if="discussionContent">
+                        <Markdown
+                          :value="discussionContent"
+                          class="nm-md *:first:mt-0 *:last:mb-0"
+                        />
+                      </template>
+                      <template v-else-if="generatingSection === 'story-discussion'">
+                        <div class="flex items-center gap-2 text-sm font-medium text-emerald-600">
+                          <UIcon name="i-lucide-loader-circle" class="animate-spin text-base" />
+                          <span>多方讨论生成中…</span>
                         </div>
-                        <div
-                          class="discussion-item relative overflow-hidden rounded-lg border border-teal-100/80 bg-gradient-to-br from-teal-50/70 to-white p-4"
-                        >
-                          <div class="mb-2 flex items-center gap-2 text-sm font-medium text-teal-700">
-                            <UIcon name="i-lucide-network" />
-                            <span>整体视角</span>
+                      </template>
+                      <template v-else>
+                        <p class="leading-relaxed text-gray-700">
+                          【占位文字】从生物-心理-社会医学模式出发，结合患者叙事探讨疾病的多重意义。既要关注病理生理，也要理解疾病对患者身份、角色、家庭与社会的影响。
+                        </p>
+                        <div class="grid gap-3 sm:grid-cols-2">
+                          <div
+                            class="discussion-item relative overflow-hidden rounded-lg border border-emerald-100/80 bg-gradient-to-br from-emerald-50/70 to-white p-4"
+                          >
+                            <div class="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700">
+                              <UIcon name="i-lucide-heart-handshake" />
+                              <span>共情视角</span>
+                            </div>
+                            <p class="text-sm leading-relaxed text-gray-600">
+                              【占位文字】关注“患病体验”本身，理解患者如何赋予疾病意义，尊重其叙述的合理性与价值。
+                            </p>
                           </div>
-                          <p class="text-sm leading-relaxed text-gray-600">
-                            【占位文字】结合家庭、文化、经济等社会因素，思考支持体系与可行的照护策略，追求整体性关怀。
-                          </p>
+                          <div
+                            class="discussion-item relative overflow-hidden rounded-lg border border-teal-100/80 bg-gradient-to-br from-teal-50/70 to-white p-4"
+                          >
+                            <div class="mb-2 flex items-center gap-2 text-sm font-medium text-teal-700">
+                              <UIcon name="i-lucide-network" />
+                              <span>整体视角</span>
+                            </div>
+                            <p class="text-sm leading-relaxed text-gray-600">
+                              【占位文字】结合家庭、文化、经济等社会因素，思考支持体系与可行的照护策略，追求整体性关怀。
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                      <p class="leading-relaxed text-gray-600">
-                        【占位文字】在讨论中避免仅以“疾病”概括患者，转而关注“人在患病”这一整体，体现叙事医学的人文关怀与临床思辨的统一。
-                      </p>
+                        <p class="leading-relaxed text-gray-600">
+                          【占位文字】在讨论中避免仅以“疾病”概括患者，转而关注“人在患病”这一整体，体现叙事医学的人文关怀与临床思辨的统一。
+                        </p>
+                      </template>
                     </div>
                   </UCard>
                 </section>
@@ -402,34 +440,45 @@
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
-                      <p class="leading-relaxed text-gray-700">
-                        【占位文字】总结本次叙事医学实践的主要收获，提炼医患沟通中的闪光点，反思倾听方式对建立信任、改善理解的作用。
-                      </p>
-                      <div
-                        class="relative overflow-hidden rounded-lg border border-violet-100/80 bg-gradient-to-br from-violet-50/70 via-white to-fuchsia-50/60 p-4 sm:p-5"
-                      >
-                        <div class="mb-2 flex items-center gap-2 text-sm font-medium text-violet-700">
-                          <UIcon name="i-lucide-sparkles" />
-                          <span>启发与思考</span>
+                      <template v-if="commentContent">
+                        <Markdown :value="commentContent" class="nm-md *:first:mt-0 *:last:mb-0" />
+                      </template>
+                      <template v-else-if="generatingSection === 'story-comment'">
+                        <div class="flex items-center gap-2 text-sm font-medium text-violet-600">
+                          <UIcon name="i-lucide-loader-circle" class="animate-spin text-base" />
+                          <span>专家点评生成中…</span>
                         </div>
-                        <ul class="flex flex-col gap-2 text-sm leading-relaxed text-gray-600">
-                          <li class="flex items-start gap-2">
-                            <UIcon name="i-lucide-dot" class="mt-1 text-lg text-violet-400" />
-                            <span>【占位文字】叙事不仅是记录，更是理解疾病体验的重要临床工具。</span>
-                          </li>
-                          <li class="flex items-start gap-2">
-                            <UIcon name="i-lucide-dot" class="mt-1 text-lg text-violet-400" />
-                            <span>【占位文字】倾听本身就是治疗，在共情中寻找平衡，既要科学理性，也要人文温暖。</span>
-                          </li>
-                          <li class="flex items-start gap-2">
-                            <UIcon name="i-lucide-dot" class="mt-1 text-lg text-violet-400" />
-                            <span>【占位文字】将患者的生活叙事融入临床思考，有助于制定更贴合实际的照护方案。</span>
-                          </li>
-                        </ul>
-                      </div>
-                      <p class="leading-relaxed text-gray-600">
-                        【占位文字】展望未来：持续练习叙事倾听，将人文关怀贯穿临床实践的每一个环节，在技术与温情之间找到属于自己的平衡点。
-                      </p>
+                      </template>
+                      <template v-else>
+                        <p class="leading-relaxed text-gray-700">
+                          【占位文字】总结本次叙事医学实践的主要收获，提炼医患沟通中的闪光点，反思倾听方式对建立信任、改善理解的作用。
+                        </p>
+                        <div
+                          class="relative overflow-hidden rounded-lg border border-violet-100/80 bg-gradient-to-br from-violet-50/70 via-white to-fuchsia-50/60 p-4 sm:p-5"
+                        >
+                          <div class="mb-2 flex items-center gap-2 text-sm font-medium text-violet-700">
+                            <UIcon name="i-lucide-sparkles" />
+                            <span>启发与思考</span>
+                          </div>
+                          <ul class="flex flex-col gap-2 text-sm leading-relaxed text-gray-600">
+                            <li class="flex items-start gap-2">
+                              <UIcon name="i-lucide-dot" class="mt-1 text-lg text-violet-400" />
+                              <span>【占位文字】叙事不仅是记录，更是理解疾病体验的重要临床工具。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                              <UIcon name="i-lucide-dot" class="mt-1 text-lg text-violet-400" />
+                              <span>【占位文字】倾听本身就是治疗，在共情中寻找平衡，既要科学理性，也要人文温暖。</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                              <UIcon name="i-lucide-dot" class="mt-1 text-lg text-violet-400" />
+                              <span>【占位文字】将患者的生活叙事融入临床思考，有助于制定更贴合实际的照护方案。</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <p class="leading-relaxed text-gray-600">
+                          【占位文字】展望未来：持续练习叙事倾听，将人文关怀贯穿临床实践的每一个环节，在技术与温情之间找到属于自己的平衡点。
+                        </p>
+                      </template>
                     </div>
                   </UCard>
                 </section>
@@ -458,12 +507,33 @@ const stateStore = useStateStore()
 const imageStore = useImageStore()
 const storyStore = useStoryStore()
 const recordStore = useRecordStore()
+const chatApi = useChatApi()
+
+// 患者头像是否正在异步生成（与文本链路并行，不阻塞生成叙事）
+const isAvatarGenerating = ref(false)
 
 // 故事内容：有内容则展示，否则回退到占位文字
 const storyContent = computed(() => storyStore.story.content ?? '')
 
-// 生成状态：与病例模块（Toolbar 的「生成病例」）保持一致
-const isGenerating = computed(() => caseStore.status === 'submitted' || caseStore.status === 'streaming')
+// 衍生内容（对话 / 讨论 / 点评）：有内容则展示，否则保留占位文字
+const conversationContent = computed(() => storyStore.conversation.content ?? '')
+const discussionContent = computed(() => storyStore.discussion.content ?? '')
+const commentContent = computed(() => storyStore.comment.content ?? '')
+
+// 生成状态：覆盖「生成叙事」全流程（病例 → 故事 → 对话 → 讨论 → 点评）
+const NARRATIVE_TYPES = [
+  'case', 'case-verify', 'case-fix',
+  'story', 'story-verify', 'story-fix',
+  'story-conversation', 'story-discussion', 'story-comment',
+]
+const isGenerating = computed(
+  () =>
+    (chatApi.status.value === 'submitted' || chatApi.status.value === 'streaming') &&
+    NARRATIVE_TYPES.includes(chatApi.currentType.value ?? ''),
+)
+
+// 当前正在生成的区块（用于在对应卡片内显示「生成中」提示）
+const generatingSection = computed(() => (isGenerating.value ? (chatApi.currentType.value as string) : null))
 
 // 疾病设定输入框与 Settings.vue 的「自定义内容」（stateStore.case.custom）关联：
 // 以「疾病：」前缀标记，双向同步——输入框内容会进入自定义列表，Settings 中编辑亦会回显
@@ -537,17 +607,14 @@ const avatarSrc = computed(() => {
   return '/images/placeholder_female.png'
 })
 
-// 等待病例（含可能的自动校验/修正）完整生成完毕，再衔接生成故事。
-// 关键：必须等 status 回到 ready，而非 content 一变 truthy 就开始——否则 story 的 send 会
-// 调用 chat.stop() 把仍在流式生成的病历打断。
-function waitForCaseDone(): Promise<void> {
+// 等待某一（组）生成类型完整结束（status 回到 ready），再衔接下一步。
+// 关键：必须等 status 回到 ready，而非 content 一变 truthy 就开始——否则下一步的 send 会
+// 调用 chat.stop() 把仍在流式生成的内容打断。
+function waitForReady(types: string[]): Promise<void> {
   return new Promise((resolve) => {
     let stop: (() => void) | undefined
     const check = () => {
-      if (
-        caseStore.status === 'ready' &&
-        ['case', 'case-verify', 'case-fix'].includes(caseStore.currentType ?? '')
-      ) {
+      if (chatApi.status.value === 'ready' && types.includes(chatApi.currentType.value ?? '')) {
         stop?.()
         resolve()
         return true
@@ -556,7 +623,7 @@ function waitForCaseDone(): Promise<void> {
     }
     if (check()) return
     stop = watch(
-      () => caseStore.status,
+      () => chatApi.status.value,
       () => check(),
     )
   })
@@ -565,6 +632,8 @@ function waitForCaseDone(): Promise<void> {
 async function generateNarrative() {
   // 生成前清空所有相关内容（病例、故事、图像等），确保从干净状态开始
   recordStore.reset()
+  imageStore.reset()
+  isAvatarGenerating.value = false
   // 清空病历设定中的教科书部分，仅以自定义内容（含疾病设定）生成病例
   stateStore.case.textbook = null
   // 将「疾病设定」输入框文字同时作为生成故事的自定义提示词（要点设定）
@@ -577,9 +646,26 @@ async function generateNarrative() {
   }
   // 触发「生成病例」命令
   await caseStore.generate()
-  // 等待本次病例完整生成完毕（status 回到 ready），再继续生成故事
-  await waitForCaseDone()
-  storyStore.generate()
+  // 等待本次病例完整生成完毕（含可能的自动校验/修正），再衔接后续步骤
+  await waitForReady(['case', 'case-verify', 'case-fix'])
+  // 异步生成患者头像：基于已生成的病例，与后续文本链路并行，不阻塞生成叙事
+  isAvatarGenerating.value = true
+  imageStore
+    .face()
+    .catch(() => {})
+    .finally(() => {
+      isAvatarGenerating.value = false
+    })
+  // 生成故事（同步清空对话/讨论/点评等衍生内容）
+  await storyStore.generate()
+  await waitForReady(['story', 'story-verify', 'story-fix'])
+  // 依次生成对话、讨论、点评：三者彼此依赖上游内容，须串行等待各自完成
+  await storyStore.generateConversation()
+  await waitForReady(['story-conversation'])
+  await storyStore.generateDiscussion()
+  await waitForReady(['story-discussion'])
+  await storyStore.generateComment()
+  await waitForReady(['story-comment'])
 }
 </script>
 
@@ -690,6 +776,38 @@ async function generateNarrative() {
 /* 故事正文：每段段首空两字，符合中文排版习惯 */
 .story-md :deep(p) {
   text-indent: 2em;
+}
+
+/* 对话 / 讨论 / 点评的 Markdown 正文排版 */
+.nm-md :deep(p) {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+  color: rgb(55 65 81);
+}
+
+.nm-md :deep(p:first-child) {
+  margin-top: 0;
+}
+
+.nm-md :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+.nm-md :deep(strong) {
+  font-weight: 600;
+  color: rgb(17 24 39);
+}
+
+/* 头像生成中遮罩的淡入淡出 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 300ms ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .dialogue-bubble {

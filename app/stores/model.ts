@@ -1,4 +1,4 @@
-const VERSION = '2026-07-20'
+const VERSION = '2026-11-02'
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -7,16 +7,16 @@ export const useModelStore = defineStore(
 
     const activeModels = ref<ActiveModels>({
       chat: {
-        provider: 'InternAi',
-        name: 'intern-s1',
-        apiKey: 'shushengApiKey',
-        baseURL: 'https://chat.intern-ai.org.cn/api/v1',
+        provider: 'Agnes',
+        name: 'agnes-2.5-flash',
+        apiKey: 'agnesApiKey',
+        baseURL: 'https://api.agnes-ai.cn/v1',
       },
       image: {
         provider: 'Agnes',
         name: 'agnes-image-2.1-flash',
         apiKey: 'agnesApiKey',
-        baseURL: 'https://apihub.agnes-ai.com/v1',
+        baseURL: 'https://api.agnes-ai.cn/v1',
       },
       audio: {
         provider: 'XiaoMI',
@@ -26,25 +26,13 @@ export const useModelStore = defineStore(
       },
       video: {
         provider: 'Agnes',
-        name: 'agnes-video-v2.0',
+        name: 'agnes-video-2.5-flash',
         apiKey: 'agnesApiKey',
-        baseURL: 'https://apihub.agnes-ai.com/v1',
+        baseURL: 'https://api.agnes-ai.cn/v1',
       },
     })
 
-    const sceneModels = ref<ActiveModels>({
-      story: { ...activeModels.value.chat },
-      conversation: { ...activeModels.value.chat },
-      discussion: { ...activeModels.value.chat },
-      comment: { ...activeModels.value.chat },
-    })
-
-    const STORY_SCENES = ['story', 'conversation', 'discussion', 'comment']
-
     function resolveModel(scene: string): Model {
-      if (STORY_SCENES.includes(scene)) {
-        return sceneModels.value[scene]
-      }
       return activeModels.value[scene] ?? activeModels.value.chat
     }
 
@@ -62,20 +50,20 @@ export const useModelStore = defineStore(
           baseURL: 'https://api.agnes-ai.cn/v1',
           models: ['agnes-2.5-flash', 'agnes-3.0-flash'],
         },
-        {
-          provider: 'Makers',
-          apiKey: 'makersModelsKey',
-          baseURL: 'https://ai-gateway.edgeone.link/v1',
-          models: [
-            '@makers/hy3',
-            '@makers/hy3-preview',
-            '@makers/deepseek-v4-pro',
-            '@makers/deepseek-v4-flash',
-            '@makers/minimax-m3',
-            '@makers/minimax-m2.7',
-            '@makers/kimi-k2.6',
-          ],
-        },
+        // {
+        //   provider: 'Makers',
+        //   apiKey: 'makersModelsKey',
+        //   baseURL: 'https://ai-gateway.edgeone.link/v1',
+        //   models: [
+        //     '@makers/hy3',
+        //     '@makers/hy3-preview',
+        //     '@makers/deepseek-v4-pro',
+        //     '@makers/deepseek-v4-flash',
+        //     '@makers/minimax-m3',
+        //     '@makers/minimax-m2.7',
+        //     '@makers/kimi-k2.6',
+        //   ],
+        // },
       ],
       image: [
         {
@@ -88,7 +76,7 @@ export const useModelStore = defineStore(
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
           baseURL: 'https://api.agnes-ai.cn/v1',
-          models: ['agnes-image-2.1-flash'],
+          models: ['agnes-image-2.0-flash', 'agnes-image-2.1-flash', 'agnes-image-2.5-flash'],
         },
       ],
       audio: [
@@ -110,7 +98,7 @@ export const useModelStore = defineStore(
           provider: 'Agnes',
           apiKey: 'agnesApiKey',
           baseURL: 'https://api.agnes-ai.cn/v1',
-          models: ['agnes-video-v2.0'],
+          models: ['agnes-video-2.5-flash'],
         },
       ],
     })
@@ -118,7 +106,6 @@ export const useModelStore = defineStore(
     return {
       version,
       activeModels,
-      sceneModels,
       resolveModel,
       models,
     }

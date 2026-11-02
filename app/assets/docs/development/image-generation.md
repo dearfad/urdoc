@@ -176,7 +176,7 @@ GET /api/image/status?id=xxx
 
 | Provider | Provider Key | 默认模型 | API 端点 | 模式 |
 |----------|-------------|---------|---------|------|
-| Agnes    | `Agnes`     | `agnes-image-2.0-flash` | `https://apihub.agnes-ai.com/v1/images/generations` | 同步 |
+| Agnes    | `Agnes`     | `agnes-image-2.1-flash` | `https://api.agnes-ai.cn/v1/images/generations` | 同步 |
 
 ### 预留扩展
 
