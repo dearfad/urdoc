@@ -1,3 +1,5 @@
+import { notifyError, normalizeErrorMessage } from '~/utils/error'
+
 let _status = ref<'idle' | 'streaming' | 'error'>('idle')
 let _videoUrl = ref<string | null>(null)
 let _progress = ref(0)
@@ -55,7 +57,8 @@ export function useVideoApi() {
         _status.value = 'idle'
         return
       }
-      _error.value = err.data?.statusMessage || err.message || '视频生成失败'
+      _error.value = normalizeErrorMessage(err)
+      notifyError(err, '视频生成失败')
       _status.value = 'error'
     }
   }
@@ -97,7 +100,8 @@ export function useVideoApi() {
           _status.value = 'idle'
           return
         }
-        _error.value = err.data?.statusMessage || err.message || '查询视频状态失败'
+        _error.value = normalizeErrorMessage(err)
+        notifyError(err, '视频生成失败')
         _status.value = 'error'
         return
       }

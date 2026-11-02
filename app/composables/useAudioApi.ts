@@ -1,6 +1,7 @@
 import { DefaultChatTransport, type UIMessage } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import type { ComputedRef } from 'vue'
+import { notifyError, normalizeErrorMessage } from '~/utils/error'
 
 let _synthesizeStatus = ref<'idle' | 'loading' | 'error'>('idle')
 let _audioUrl = ref<string | null>(null)
@@ -13,19 +14,10 @@ let chat: Chat<UIMessage> | null = null
 let _chatStatus: ComputedRef<string>
 
 export function useAudioApi() {
-  const stateStore = useStateStore()
-
   if (!chat) {
     chat = new Chat({
       transport: new DefaultChatTransport({ api: '/api/chat' }),
-      onError: (error) => {
-        stateStore.toast.add({
-          title: '生成失败',
-          description: error.message,
-          color: 'error',
-          icon: 'i-lucide-alert-circle',
-        })
-      },
+      onError: (error) => notifyError(error, '生成失败'),
     })
     _chatStatus = computed(() => chat!.status)
   }
@@ -61,7 +53,8 @@ export function useAudioApi() {
       throw new Error('不支持的响应格式')
     } catch (err: any) {
       if (err.name === 'AbortError') return null as any
-      _error.value = err.message || '语音合成失败'
+      _error.value = normalizeErrorMessage(err)
+      notifyError(err, '语音合成失败')
       _synthesizeStatus.value = 'error'
       throw err
     } finally {

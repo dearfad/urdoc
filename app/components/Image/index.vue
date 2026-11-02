@@ -56,16 +56,16 @@
       </UTabs>
 
       <div class="flex-1 border-t border-default">
-        <div v-if="imageStore.status === 'streaming'" class="flex items-center justify-center p-8">
+        <div v-if="imageStore.status === 'streaming' && !currentImages.length" class="flex items-center justify-center p-8">
           <USkeleton class="h-64 w-full max-w-lg rounded-lg" />
         </div>
         <div v-else-if="imageStore.error" class="flex items-center justify-center p-8">
           <p class="text-sm text-error">{{ imageStore.error }}</p>
         </div>
-        <div v-else-if="imageStore.images.length" class="p-4">
+        <div v-else-if="currentImages.length" class="p-4">
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div
-              v-for="(img, i) in imageStore.images"
+              v-for="(img, i) in currentImages"
               :key="i"
               class="group relative overflow-hidden rounded-lg border border-default"
             >
@@ -75,7 +75,15 @@
                 class="w-full object-cover"
               />
             </div>
+            <USkeleton
+              v-for="n in remainingImages"
+              :key="`sk-${n}`"
+              class="h-48 w-full rounded-lg"
+            />
           </div>
+          <p v-if="imageStore.status === 'streaming'" class="mt-3 text-center text-xs text-muted">
+            正在生成更多图片…
+          </p>
         </div>
         <div v-else class="flex items-center justify-center p-8">
           <p class="text-sm text-muted">选择任务并输入描述，然后点击「生成图像」</p>
@@ -111,4 +119,18 @@ const tabs = [
   { label: '生成头像', value: 'face', icon: 'i-lucide-user', slot: 'face' },
   { label: '故事插图', value: 'illustration', icon: 'i-lucide-book-image', slot: 'illustration' },
 ]
+
+// 根据当前标签页展示对应任务已生成的图片（头像与插图分开保存，互不覆盖）
+const currentImages = computed<{ url: string }[]>(() => {
+  if (activeTab.value === 'face') return imageStore.faceImages
+  if (activeTab.value === 'illustration') return imageStore.illustrationImages
+  return imageStore.generateImages
+})
+
+// 生成过程中，尚未生成的占位骨架数量（插图预期 4 张，其余 1 张）
+const remainingImages = computed(() => {
+  if (imageStore.status !== 'streaming') return 0
+  const expected = activeTab.value === 'illustration' ? 4 : 1
+  return Math.max(0, expected - currentImages.value.length)
+})
 </script>

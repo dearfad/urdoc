@@ -1,15 +1,33 @@
 import { DefaultChatTransport } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 
-const VERSION = '2026-06-03'
+const VERSION = '2026-11-02'
+
+// 解析插图提示词：从模型返回的 ['提示词1','提示词2',...] 格式中提取各段提示词
+function parseIllustrationPrompts(text: string): string[] {
+  const matches = text.match(/['"][^'"]*['"]/g)
+  if (!matches) return []
+  return matches
+    .map((m) => m.slice(1, -1).trim())
+    .filter((p) => p.length > 0)
+}
 
 export const useImageStore = defineStore('image', () => {
   const version = ref(VERSION)
   syncStoreVersion(VERSION, 'pinia:image')
 
   const prompt = ref('')
-  const images = ref<{ url: string }[]>([])
-  const originalUrls = ref<string[]>([])
+
+  // 按任务类型分别保存 originalUrls（远程 URL，体积小），避免头像与插图相互覆盖。
+  // images 由 originalUrls 派生为 { url }，不持久化 base64 data URL，
+  // 否则多张 base64 极易超出 localStorage 配额，导致刷新后数据丢失。
+  const generateOriginalUrls = ref<string[]>([])
+  const faceOriginalUrls = ref<string[]>([])
+  const illustrationOriginalUrls = ref<string[]>([])
+
+  const generateImages = computed(() => generateOriginalUrls.value.map((u) => ({ url: u })))
+  const faceImages = computed(() => faceOriginalUrls.value.map((u) => ({ url: u })))
+  const illustrationImages = computed(() => illustrationOriginalUrls.value.map((u) => ({ url: u })))
 
   const imageApi = useImageApi()
 
@@ -37,8 +55,9 @@ export const useImageStore = defineStore('image', () => {
   function reset() {
     imageApi.reset()
     prompt.value = ''
-    images.value = []
-    originalUrls.value = []
+    generateOriginalUrls.value = []
+    faceOriginalUrls.value = []
+    illustrationOriginalUrls.value = []
   }
 
   // 自定义 prompt 生成图片
@@ -57,8 +76,7 @@ export const useImageStore = defineStore('image', () => {
       model: useModelStore().activeModels.image,
     })
     if (result) {
-      images.value = result.images
-      originalUrls.value = result.originalUrls
+      generateOriginalUrls.value = result.originalUrls
     }
   }
 
@@ -91,8 +109,7 @@ export const useImageStore = defineStore('image', () => {
       model: useModelStore().activeModels.image,
     })
     if (result) {
-      images.value = result.images
-      originalUrls.value = result.originalUrls
+      faceOriginalUrls.value = result.originalUrls
     }
   }
 
@@ -120,15 +137,42 @@ export const useImageStore = defineStore('image', () => {
       },
     })
 
-    const result = await imageApi.generate(refinedPrompt, {
-      task: 'illustration',
-      model: useModelStore().activeModels.image,
-    })
-    if (result) {
-      images.value = result.images
-      originalUrls.value = result.originalUrls
+    // 以已生成的患者头像作为参考图，保持插图中人物与头像一致
+    const faceImage = faceOriginalUrls.value[0]
+
+    // 将故事拆分为 4 段提示词，逐段分别生成插图（每张生成后即时写入，便于前端渐进显示）
+    const scenePrompts = parseIllustrationPrompts(refinedPrompt)
+    if (!scenePrompts.length) return
+
+    const originalUrls: string[] = []
+    for (const p of scenePrompts) {
+      const r = await imageApi.generate(p, {
+        task: 'illustration',
+        model: useModelStore().activeModels.image,
+        image: faceImage,
+      })
+      if (r) {
+        originalUrls.push(...r.originalUrls)
+        // 每生成一张立即更新，前端即可即时显示该图
+        illustrationOriginalUrls.value = [...originalUrls]
+      }
     }
   }
 
-  return { version, prompt, images, originalUrls, error, reset, generate, face, illustration, status }
+  return {
+    version,
+    prompt,
+    generateOriginalUrls,
+    faceOriginalUrls,
+    illustrationOriginalUrls,
+    generateImages,
+    faceImages,
+    illustrationImages,
+    error,
+    reset,
+    generate,
+    face,
+    illustration,
+    status,
+  }
 })

@@ -1,3 +1,5 @@
+import { notifyError, normalizeErrorMessage } from '~/utils/error'
+
 let _status = ref<'idle' | 'streaming' | 'error'>('idle')
 let _error = ref<string | null>(null)
 let _abortController: AbortController | null = null
@@ -10,6 +12,7 @@ export function useImageApi() {
       model: Model
       imageSize?: string
       n?: number
+      image?: string
     },
   ): Promise<{ images: { url: string }[]; originalUrls: string[] } | null> {
     stop()
@@ -27,6 +30,7 @@ export function useImageApi() {
           model: options.model,
           n: options.n,
           size: options.imageSize,
+          image: options.image,
         },
       })
 
@@ -43,7 +47,8 @@ export function useImageApi() {
         _status.value = 'idle'
         return null
       }
-      _error.value = err.data?.statusMessage || err.message || '图片生成失败'
+      _error.value = normalizeErrorMessage(err)
+      notifyError(err, '图片生成失败')
       _status.value = 'error'
       return null
     }

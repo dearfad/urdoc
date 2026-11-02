@@ -1,6 +1,7 @@
 import { DefaultChatTransport, type UIMessage } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import type { ComputedRef } from 'vue'
+import { notifyError } from '~/utils/error'
 
 let chat: Chat<UIMessage> | null = null
 let _status: ComputedRef<string>
@@ -9,19 +10,10 @@ let _lastMessageRole: ComputedRef<string | null>
 const _currentType = ref<string | null>(null)
 
 export function useChatApi() {
-  const stateStore = useStateStore()
-
   if (!chat) {
     chat = new Chat({
       transport: new DefaultChatTransport({ api: '/api/chat' }),
-      onError: (error) => {
-        stateStore.toast.add({
-          title: '生成失败',
-          description: error.message,
-          color: 'error',
-          icon: 'i-lucide-alert-circle',
-        })
-      },
+      onError: (error) => notifyError(error, '生成失败'),
     })
 
     _status = computed(() => chat!.status)

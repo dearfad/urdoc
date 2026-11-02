@@ -59,8 +59,8 @@
                     class="size-24 shrink-0 overflow-hidden rounded-xl border-2 border-default bg-muted"
                   >
                     <img
-                      v-if="imageStore.images.length"
-                      :src="imageStore.images[0].url"
+                      v-if="imageStore.faceImages.length"
+                      :src="imageStore.faceImages[0].url"
                       alt="患者头像"
                       class="size-full object-cover"
                     />
@@ -69,7 +69,7 @@
                     </div>
                   </div>
                   <div class="text-sm text-muted">
-                    <template v-if="imageStore.images.length">
+                    <template v-if="imageStore.faceImages.length">
                       头像已就绪，将作为参考图生成视频
                     </template>
                     <template v-else>

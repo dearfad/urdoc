@@ -65,7 +65,7 @@ export const useVideoStore = defineStore('video', () => {
 
     const caseContent = caseStore.case.content
     const storyContent = storyStore.story.content
-    const faceUrl = imageStore.originalUrls?.[0]
+    const faceUrl = imageStore.faceOriginalUrls[0]
 
     if (!caseContent) {
       toast.add({

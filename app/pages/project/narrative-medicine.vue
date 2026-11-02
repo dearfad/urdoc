@@ -1,7 +1,7 @@
 <template>
   <UDashboardPanel
     id="pages-project-narrative-medicine"
-    class="bg-gradient-to-br from-amber-50/40 via-rose-50/40 to-cyan-50/40"
+    class="bg-linear-to-br from-amber-50/40 via-rose-50/40 to-cyan-50/40"
   >
     <template #body>
       <div class="min-h-full w-full overflow-auto py-6 sm:py-8 md:py-10">
@@ -13,12 +13,12 @@
           <!-- 顶部控制区：疾病设定 + 生成叙事按钮（位于卡片之外） -->
           <div class="mb-6 flex flex-col items-center gap-4 sm:mb-8">
             <div class="flex items-center gap-2 text-sm font-medium text-rose-600 sm:text-base">
-              <div class="h-px w-10 bg-gradient-to-l from-rose-400/60 to-transparent" />
-              <div class="h-px w-10 bg-gradient-to-r from-rose-400/60 to-transparent" />
+              <div class="h-px w-10 bg-linear-to-l from-rose-400/60 to-transparent" />
+              <div class="h-px w-10 bg-linear-to-r from-rose-400/60 to-transparent" />
               <UIcon name="i-lucide-stethoscope" class="text-lg sm:text-xl" />
               <span>疾病设定</span>
-              <div class="h-px w-10 bg-gradient-to-r from-rose-400/60 to-transparent" />
-              <div class="h-px w-10 bg-gradient-to-l from-rose-400/60 to-transparent" />
+              <div class="h-px w-10 bg-linear-to-r from-rose-400/60 to-transparent" />
+              <div class="h-px w-10 bg-linear-to-l from-rose-400/60 to-transparent" />
             </div>
             <div class="flex w-full max-w-2xl flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <UInput
@@ -35,9 +35,11 @@
               <UButton
                 size="xl"
                 icon="i-lucide-sparkles"
-                color="rose"
                 variant="solid"
                 :loading="isGenerating"
+                :ui="{
+                  base: 'bg-rose-500 hover:bg-rose-600 active:bg-rose-600 text-white focus-visible:outline-rose-500',
+                }"
                 class="shrink-0 font-semibold shadow-lg shadow-rose-500/20"
                 @click="generateNarrative"
               >
@@ -54,13 +56,13 @@
           >
             <!-- 顶部装饰光晕 -->
             <div
-              class="pointer-events-none absolute -top-24 left-1/2 h-48 w-[80%] -translate-x-1/2 rounded-full bg-gradient-to-r from-fuchsia-200/40 via-amber-200/40 to-cyan-200/40 blur-3xl"
+              class="pointer-events-none absolute -top-24 left-1/2 h-48 w-[80%] -translate-x-1/2 rounded-full bg-linear-to-r from-fuchsia-200/40 via-amber-200/40 to-cyan-200/40 blur-3xl"
             />
             <div
-              class="pointer-events-none absolute top-40 -right-16 h-32 w-32 rounded-full bg-gradient-to-br from-rose-200/30 to-orange-200/30 blur-3xl"
+              class="pointer-events-none absolute top-40 -right-16 h-32 w-32 rounded-full bg-linear-to-br from-rose-200/30 to-orange-200/30 blur-3xl"
             />
             <div
-              class="pointer-events-none absolute bottom-32 -left-20 h-40 w-40 rounded-full bg-gradient-to-tr from-cyan-200/30 to-violet-200/30 blur-3xl"
+              class="pointer-events-none absolute bottom-32 -left-20 h-40 w-40 rounded-full bg-linear-to-tr from-cyan-200/30 to-violet-200/30 blur-3xl"
             />
 
             <!-- 页面内容 -->
@@ -73,23 +75,23 @@
                 <div class="flex flex-col gap-2">
                   <p
                     v-if="diseaseName"
-                    class="bg-gradient-to-r from-fuchsia-600 via-rose-500 to-amber-500 bg-clip-text text-2xl font-extrabold text-transparent drop-shadow-[0_3px_6px_rgba(0,0,0,0.18)] sm:text-3xl md:text-4xl"
+                    class="bg-linear-to-r from-fuchsia-600 via-rose-500 to-amber-500 bg-clip-text text-2xl font-extrabold text-transparent drop-shadow-[0_3px_6px_rgba(0,0,0,0.18)] sm:text-3xl md:text-4xl"
                   >
                     {{ diseaseName }}
                   </p>
                 </div>
                 <!-- 右：杂志刊名（精致 nameplate，专业中性配色） -->
                 <div class="flex flex-col items-center gap-1.5 text-center">
-                  <span class="h-px w-24 bg-gradient-to-r from-transparent via-slate-400/70 to-transparent sm:w-32" />
+                  <span class="h-px w-24 bg-linear-to-r from-transparent via-slate-400/70 to-transparent sm:w-32" />
                   <h1
-                    class="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-800 bg-clip-text font-serif text-lg font-bold tracking-[0.25em] text-transparent sm:text-xl"
+                    class="bg-linear-to-r from-slate-700 via-slate-600 to-slate-800 bg-clip-text font-serif text-lg font-bold tracking-[0.25em] text-transparent sm:text-xl"
                   >
                     叙事医学
                   </h1>
                   <p class="text-[6px] font-medium tracking-[0.45em] text-slate-500/80 uppercase sm:text-[7px]">
                     NARRATIVE MEDICINE
                   </p>
-                  <span class="h-px w-24 bg-gradient-to-r from-transparent via-slate-400/70 to-transparent sm:w-32" />
+                  <span class="h-px w-24 bg-linear-to-r from-transparent via-slate-400/70 to-transparent sm:w-32" />
                 </div>
               </div>
 
@@ -100,16 +102,16 @@
                   <div class="block-card-accent from-rose-400/70 via-fuchsia-400/70 to-pink-400/70" />
                   <UCard
                     :ui="{
-                      base: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
+                      root: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
                       header:
-                        'relative border-b border-rose-100/80 bg-gradient-to-r from-rose-50/80 via-white to-fuchsia-50/60 px-5 py-4 sm:px-6',
+                        'relative border-b border-rose-100/80 bg-linear-to-r from-rose-50/80 via-white to-fuchsia-50/60 px-5 py-4 sm:px-6',
                       body: 'relative px-5 py-5 sm:px-6 sm:py-6',
                     }"
                   >
                     <template #header>
                       <div class="flex items-center gap-3">
                         <div
-                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-fuchsia-500 shadow-lg shadow-rose-500/20"
+                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-rose-500 to-fuchsia-500 shadow-lg shadow-rose-500/20"
                         >
                           <UIcon name="i-lucide-clipboard-list" class="text-lg text-white" />
                           <div
@@ -120,7 +122,13 @@
                           <h2 class="text-lg font-bold text-gray-900 sm:text-xl">病例</h2>
                           <p class="text-xs text-rose-500/80 sm:text-sm">病史、主诉与临床信息</p>
                         </div>
-                        <UBadge color="rose" variant="subtle" size="sm" class="ms-auto hidden sm:flex">CASE</UBadge>
+                        <UBadge
+                          variant="subtle"
+                          size="sm"
+                          class="ms-auto hidden sm:flex"
+                          :ui="{ base: 'bg-rose-500/10 text-rose-700 ring ring-inset ring-rose-500/25' }"
+                          >CASE</UBadge
+                        >
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
@@ -136,7 +144,7 @@
                           <!-- 右侧：患者头像 -->
                           <div class="flex w-1/3 shrink-0 justify-center">
                             <div
-                              class="avatar-placeholder group relative aspect-square w-full max-w-[260px] overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10"
+                              class="avatar-placeholder group relative aspect-square w-full max-w-65 overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10"
                             >
                               <img
                                 :src="avatarSrc"
@@ -179,16 +187,16 @@
                   <div class="block-card-accent from-amber-400/70 via-orange-400/70 to-rose-400/70" />
                   <UCard
                     :ui="{
-                      base: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
+                      root: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
                       header:
-                        'relative border-b border-amber-100/80 bg-gradient-to-r from-amber-50/80 via-white to-orange-50/60 px-5 py-4 sm:px-6',
+                        'relative border-b border-amber-100/80 bg-linear-to-r from-amber-50/80 via-white to-orange-50/60 px-5 py-4 sm:px-6',
                       body: 'relative flex flex-col gap-6 px-5 py-5 sm:px-6 sm:py-6',
                     }"
                   >
                     <template #header>
                       <div class="flex items-center gap-3">
                         <div
-                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20"
+                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/20"
                         >
                           <UIcon name="i-lucide-book-open" class="text-lg text-white" />
                           <div
@@ -199,7 +207,13 @@
                           <h2 class="text-lg font-bold text-gray-900 sm:text-xl">故事</h2>
                           <p class="text-xs text-amber-600/80 sm:text-sm">患者叙事与生活脉络</p>
                         </div>
-                        <UBadge color="amber" variant="subtle" size="sm" class="ms-auto hidden sm:flex">STORY</UBadge>
+                        <UBadge
+                          variant="subtle"
+                          size="sm"
+                          class="ms-auto hidden sm:flex"
+                          :ui="{ base: 'bg-amber-500/10 text-amber-700 ring ring-inset ring-amber-500/25' }"
+                          >STORY</UBadge
+                        >
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
@@ -215,20 +229,26 @@
                         </p>
                       </template>
                     </div>
-                    <!-- 关于故事的四格插图位置 -->
+                    <!-- 关于故事的四格插图 -->
                     <div class="flex flex-col gap-3">
                       <div class="flex items-center gap-2 text-sm font-medium text-orange-600">
                         <UIcon name="i-lucide-layout-grid" class="text-lg" />
-                        <span>关于故事的四格插图预留</span>
+                        <span>插图</span>
+                        <UBadge v-if="isIllustrationGenerating" color="warning" variant="subtle" size="xs" class="ms-1">
+                          生成中
+                        </UBadge>
                       </div>
-                      <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                      <div
+                        v-if="!isIllustrationGenerating && !imageStore.illustrationImages.length"
+                        class="grid grid-cols-2 gap-3 sm:gap-4"
+                      >
                         <div
                           v-for="index in 4"
                           :key="index"
-                          class="story-illus group relative aspect-[4/3] overflow-hidden rounded-lg"
+                          class="story-illus group relative aspect-4/3 overflow-hidden rounded-lg"
                         >
-                          <div class="absolute inset-0 bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100" />
-                          <div class="absolute inset-[1px] rounded-[7px] bg-white/85 backdrop-blur-[1px]" />
+                          <div class="absolute inset-0 bg-linear-to-br from-amber-100 via-orange-100 to-rose-100" />
+                          <div class="absolute inset-px rounded-[7px] bg-white/85 backdrop-blur-[1px]" />
                           <div
                             class="relative z-10 flex h-full w-full flex-col items-center justify-center gap-1 text-center"
                           >
@@ -243,9 +263,58 @@
                           <div class="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-white/80" />
                         </div>
                       </div>
-                      <p class="text-muted text-center text-xs sm:text-sm">
-                        （此处预留关于故事的四格插图位置，暂以带说明的占位框呈现）
-                      </p>
+                      <div v-else class="grid grid-cols-2 gap-3 sm:gap-4">
+                        <template v-for="(img, i) in imageStore.illustrationImages" :key="i">
+                          <div
+                            class="story-illus group border-default relative aspect-4/3 overflow-hidden rounded-lg border"
+                          >
+                            <img :src="img.url" :alt="`故事插图 ${i + 1}`" class="h-full w-full object-cover" />
+                          </div>
+                        </template>
+                        <!-- 正在生成的插图：仅当前这张转圈，其余未开始的不转圈 -->
+                        <template v-if="isIllustrationGenerating">
+                          <div
+                            v-if="imageStore.illustrationImages.length < 4"
+                            class="story-illus group relative aspect-4/3 overflow-hidden rounded-lg"
+                          >
+                            <div class="absolute inset-0 bg-linear-to-br from-amber-100 via-orange-100 to-rose-100" />
+                            <div class="absolute inset-px rounded-[7px] bg-white/85 backdrop-blur-[1px]" />
+                            <div
+                              class="relative z-10 flex h-full w-full flex-col items-center justify-center gap-1 text-center"
+                            >
+                              <UIcon
+                                name="i-lucide-loader-circle"
+                                class="animate-spin text-xl text-orange-400 sm:text-2xl"
+                              />
+                              <span class="px-2 text-[10px] font-medium text-orange-500/80 sm:text-xs"
+                                >插图生成中…</span
+                              >
+                            </div>
+                            <div class="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-white/80" />
+                          </div>
+                          <!-- 尚未开始的插图：普通占位框（不转圈） -->
+                          <div
+                            v-for="n in pendingIllustrations"
+                            :key="`pending-${n}`"
+                            class="story-illus group relative aspect-4/3 overflow-hidden rounded-lg"
+                          >
+                            <div class="absolute inset-0 bg-linear-to-br from-amber-100 via-orange-100 to-rose-100" />
+                            <div class="absolute inset-px rounded-[7px] bg-white/85 backdrop-blur-[1px]" />
+                            <div
+                              class="relative z-10 flex h-full w-full flex-col items-center justify-center gap-1 text-center"
+                            >
+                              <UIcon
+                                name="i-lucide-image-plus"
+                                class="text-xl text-orange-400 transition-transform duration-500 group-hover:scale-110 sm:text-2xl"
+                              />
+                              <span class="px-2 text-[10px] font-medium text-orange-500/80 sm:text-xs"
+                                >插图 {{ imageStore.illustrationImages.length + n }} · 待生成</span
+                              >
+                            </div>
+                            <div class="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-white/80" />
+                          </div>
+                        </template>
+                      </div>
                     </div>
                   </UCard>
                 </section>
@@ -255,16 +324,16 @@
                   <div class="block-card-accent from-cyan-400/70 via-sky-400/70 to-blue-400/70" />
                   <UCard
                     :ui="{
-                      base: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
+                      root: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
                       header:
-                        'relative border-b border-cyan-100/80 bg-gradient-to-r from-cyan-50/80 via-white to-sky-50/60 px-5 py-4 sm:px-6',
+                        'relative border-b border-cyan-100/80 bg-linear-to-r from-cyan-50/80 via-white to-sky-50/60 px-5 py-4 sm:px-6',
                       body: 'relative flex flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6',
                     }"
                   >
                     <template #header>
                       <div class="flex items-center gap-3">
                         <div
-                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-sky-500 shadow-lg shadow-cyan-500/20"
+                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-cyan-500 to-sky-500 shadow-lg shadow-cyan-500/20"
                         >
                           <UIcon name="i-lucide-messages-square" class="text-lg text-white" />
                           <div
@@ -275,15 +344,18 @@
                           <h2 class="text-lg font-bold text-gray-900 sm:text-xl">对话</h2>
                           <p class="text-xs text-cyan-600/80 sm:text-sm">医患交流与共情场景</p>
                         </div>
-                        <UBadge color="cyan" variant="subtle" size="sm" class="ms-auto hidden sm:flex">DIALOGUE</UBadge>
+                        <UBadge
+                          variant="subtle"
+                          size="sm"
+                          class="ms-auto hidden sm:flex"
+                          :ui="{ base: 'bg-cyan-500/10 text-cyan-700 ring ring-inset ring-cyan-500/25' }"
+                          >DIALOGUE</UBadge
+                        >
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
                       <template v-if="conversationContent">
-                        <Markdown
-                          :value="conversationContent"
-                          class="nm-md *:first:mt-0 *:last:mb-0"
-                        />
+                        <Markdown :value="conversationContent" class="nm-md *:first:mt-0 *:last:mb-0" />
                       </template>
                       <template v-else-if="generatingSection === 'story-conversation'">
                         <div class="flex items-center gap-2 text-sm font-medium text-cyan-600">
@@ -293,7 +365,7 @@
                       </template>
                       <template v-else>
                         <div
-                          class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-gradient-to-br from-cyan-50/80 to-white p-4 sm:p-5"
+                          class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-linear-to-br from-cyan-50/80 to-white p-4 sm:p-5"
                         >
                           <div class="mb-2 flex items-center gap-2 text-sm font-medium text-cyan-700">
                             <UIcon name="i-lucide-user" />
@@ -304,7 +376,7 @@
                           </p>
                         </div>
                         <div
-                          class="dialogue-bubble relative rounded-2xl rounded-tr-md border border-sky-100/80 bg-gradient-to-br from-sky-50/80 to-white p-4 sm:p-5"
+                          class="dialogue-bubble relative rounded-2xl rounded-tr-md border border-sky-100/80 bg-linear-to-br from-sky-50/80 to-white p-4 sm:p-5"
                         >
                           <div class="mb-2 flex items-center justify-end gap-2 text-sm font-medium text-sky-700">
                             <span>医师</span>
@@ -315,7 +387,7 @@
                           </p>
                         </div>
                         <div
-                          class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-gradient-to-br from-cyan-50/70 to-white p-4 sm:p-5"
+                          class="dialogue-bubble relative rounded-2xl rounded-tl-md border border-cyan-100/80 bg-linear-to-br from-cyan-50/70 to-white p-4 sm:p-5"
                         >
                           <div class="mb-2 flex items-center gap-2 text-sm font-medium text-cyan-700">
                             <UIcon name="i-lucide-users" />
@@ -335,16 +407,16 @@
                   <div class="block-card-accent from-emerald-400/70 via-teal-400/70 to-cyan-400/70" />
                   <UCard
                     :ui="{
-                      base: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
+                      root: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
                       header:
-                        'relative border-b border-emerald-100/80 bg-gradient-to-r from-emerald-50/80 via-white to-teal-50/60 px-5 py-4 sm:px-6',
+                        'relative border-b border-emerald-100/80 bg-linear-to-r from-emerald-50/80 via-white to-teal-50/60 px-5 py-4 sm:px-6',
                       body: 'relative flex flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6',
                     }"
                   >
                     <template #header>
                       <div class="flex items-center gap-3">
                         <div
-                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/20"
+                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/20"
                         >
                           <UIcon name="i-lucide-lightbulb" class="text-lg text-white" />
                           <div
@@ -355,17 +427,18 @@
                           <h2 class="text-lg font-bold text-gray-900 sm:text-xl">讨论</h2>
                           <p class="text-xs text-emerald-600/80 sm:text-sm">多角度思辨与叙事分析</p>
                         </div>
-                        <UBadge color="emerald" variant="subtle" size="sm" class="ms-auto hidden sm:flex"
+                        <UBadge
+                          variant="subtle"
+                          size="sm"
+                          class="ms-auto hidden sm:flex"
+                          :ui="{ base: 'bg-emerald-500/10 text-emerald-700 ring ring-inset ring-emerald-500/25' }"
                           >DISCUSSION</UBadge
                         >
                       </div>
                     </template>
                     <div class="flex flex-col gap-4">
                       <template v-if="discussionContent">
-                        <Markdown
-                          :value="discussionContent"
-                          class="nm-md *:first:mt-0 *:last:mb-0"
-                        />
+                        <Markdown :value="discussionContent" class="nm-md *:first:mt-0 *:last:mb-0" />
                       </template>
                       <template v-else-if="generatingSection === 'story-discussion'">
                         <div class="flex items-center gap-2 text-sm font-medium text-emerald-600">
@@ -379,7 +452,7 @@
                         </p>
                         <div class="grid gap-3 sm:grid-cols-2">
                           <div
-                            class="discussion-item relative overflow-hidden rounded-lg border border-emerald-100/80 bg-gradient-to-br from-emerald-50/70 to-white p-4"
+                            class="discussion-item relative overflow-hidden rounded-lg border border-emerald-100/80 bg-linear-to-br from-emerald-50/70 to-white p-4"
                           >
                             <div class="mb-2 flex items-center gap-2 text-sm font-medium text-emerald-700">
                               <UIcon name="i-lucide-heart-handshake" />
@@ -390,7 +463,7 @@
                             </p>
                           </div>
                           <div
-                            class="discussion-item relative overflow-hidden rounded-lg border border-teal-100/80 bg-gradient-to-br from-teal-50/70 to-white p-4"
+                            class="discussion-item relative overflow-hidden rounded-lg border border-teal-100/80 bg-linear-to-br from-teal-50/70 to-white p-4"
                           >
                             <div class="mb-2 flex items-center gap-2 text-sm font-medium text-teal-700">
                               <UIcon name="i-lucide-network" />
@@ -414,16 +487,16 @@
                   <div class="block-card-accent from-violet-400/70 via-purple-400/70 to-fuchsia-400/70" />
                   <UCard
                     :ui="{
-                      base: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
+                      root: 'relative overflow-hidden border-0 bg-white/90 backdrop-blur-sm',
                       header:
-                        'relative border-b border-violet-100/80 bg-gradient-to-r from-violet-50/80 via-white to-purple-50/60 px-5 py-4 sm:px-6',
+                        'relative border-b border-violet-100/80 bg-linear-to-r from-violet-50/80 via-white to-purple-50/60 px-5 py-4 sm:px-6',
                       body: 'relative flex flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6',
                     }"
                   >
                     <template #header>
                       <div class="flex items-center gap-3">
                         <div
-                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-purple-500 shadow-lg shadow-violet-500/20"
+                          class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-linear-to-br from-violet-500 to-purple-500 shadow-lg shadow-violet-500/20"
                         >
                           <UIcon name="i-lucide-award" class="text-lg text-white" />
                           <div
@@ -434,7 +507,11 @@
                           <h2 class="text-lg font-bold text-gray-900 sm:text-xl">点评</h2>
                           <p class="text-xs text-violet-600/80 sm:text-sm">收获、启发与反思</p>
                         </div>
-                        <UBadge color="violet" variant="subtle" size="sm" class="ms-auto hidden sm:flex"
+                        <UBadge
+                          variant="subtle"
+                          size="sm"
+                          class="ms-auto hidden sm:flex"
+                          :ui="{ base: 'bg-violet-500/10 text-violet-700 ring ring-inset ring-violet-500/25' }"
                           >COMMENT</UBadge
                         >
                       </div>
@@ -454,7 +531,7 @@
                           【占位文字】总结本次叙事医学实践的主要收获，提炼医患沟通中的闪光点，反思倾听方式对建立信任、改善理解的作用。
                         </p>
                         <div
-                          class="relative overflow-hidden rounded-lg border border-violet-100/80 bg-gradient-to-br from-violet-50/70 via-white to-fuchsia-50/60 p-4 sm:p-5"
+                          class="relative overflow-hidden rounded-lg border border-violet-100/80 bg-linear-to-br from-violet-50/70 via-white to-fuchsia-50/60 p-4 sm:p-5"
                         >
                           <div class="mb-2 flex items-center gap-2 text-sm font-medium text-violet-700">
                             <UIcon name="i-lucide-sparkles" />
@@ -486,7 +563,7 @@
 
               <!-- 页脚装饰 -->
               <footer class="mt-2 flex flex-col items-center gap-2 text-center">
-                <div class="h-px w-full max-w-md bg-gradient-to-r from-transparent via-fuchsia-300/60 to-transparent" />
+                <div class="h-px w-full max-w-md bg-linear-to-r from-transparent via-fuchsia-300/60 to-transparent" />
                 <p class="text-xs tracking-[0.4em] text-rose-400/70 sm:text-sm">叙事医学 · 人文关怀 · 共情实践</p>
               </footer>
             </div>
@@ -509,8 +586,17 @@ const storyStore = useStoryStore()
 const recordStore = useRecordStore()
 const chatApi = useChatApi()
 
-// 患者头像是否正在异步生成（与文本链路并行，不阻塞生成叙事）
+// 患者头像是否正在生成（置于生成序列最后，同步等待完成）
 const isAvatarGenerating = ref(false)
+
+// 故事插图是否正在生成（以头像为参考，紧接头像之后生成）
+const isIllustrationGenerating = ref(false)
+
+// 生成插图过程中，尚未开始生成的占位框数量（不含当前正在生成的一张）
+const pendingIllustrations = computed(() => {
+  if (!isIllustrationGenerating.value) return 0
+  return Math.max(0, 4 - imageStore.illustrationImages.length - 1)
+})
 
 // 故事内容：有内容则展示，否则回退到占位文字
 const storyContent = computed(() => storyStore.story.content ?? '')
@@ -522,9 +608,15 @@ const commentContent = computed(() => storyStore.comment.content ?? '')
 
 // 生成状态：覆盖「生成叙事」全流程（病例 → 故事 → 对话 → 讨论 → 点评）
 const NARRATIVE_TYPES = [
-  'case', 'case-verify', 'case-fix',
-  'story', 'story-verify', 'story-fix',
-  'story-conversation', 'story-discussion', 'story-comment',
+  'case',
+  'case-verify',
+  'case-fix',
+  'story',
+  'story-verify',
+  'story-fix',
+  'story-conversation',
+  'story-discussion',
+  'story-comment',
 ]
 const isGenerating = computed(
   () =>
@@ -554,13 +646,11 @@ const diseaseName = computed(() => cleanDiseaseName(caseStore.case.content?.诊�
 // 1) 去除所有空格；2) 去除开头的序号/编号（可连续，如 1、 2. 3) ①② （一）（1）三、）；
 // 3) 去掉首部其余非文字符号；4) 遇到第一个非文字符号即截断（含该符号及其以后文字）
 function cleanDiseaseName(raw: unknown): string {
-  let s = String(raw ?? '')
-    .replace(/\s+/g, '') // 去除所有空格（含中文/英文空格、换行等）
+  let s = String(raw ?? '').replace(/\s+/g, '') // 去除所有空格（含中文/英文空格、换行等）
   if (!s) return ''
 
   // 去除开头的序号/编号（循环以处理连续出现的多个前缀）
-  const reNum =
-    /^([0-9]+[.、)）]|[①-⑳㉑-㉟]|[（(][0-9一二三四五六七八九十]+[)）]|[一二三四五六七八九十百千]+[.、])/
+  const reNum = /^([0-9]+[.、)）]|[①-⑳㉑-㉟]|[（(][0-9一二三四五六七八九十]+[)）]|[一二三四五六七八九十百千]+[.、])/
   let prev = s
   do {
     prev = s
@@ -600,7 +690,7 @@ const caseOtherEntries = computed<[string, string][]>(() =>
 
 // 患者头像：优先使用已生成的图像，否则按性别回退到占位图
 const avatarSrc = computed(() => {
-  const generated = imageStore.images?.[0]?.url
+  const generated = imageStore.faceImages[0]?.url
   if (generated) return generated
   const gender = caseStore.case.content?.性别
   if (gender && /男/.test(gender)) return '/images/placeholder_male.png'
@@ -648,14 +738,6 @@ async function generateNarrative() {
   await caseStore.generate()
   // 等待本次病例完整生成完毕（含可能的自动校验/修正），再衔接后续步骤
   await waitForReady(['case', 'case-verify', 'case-fix'])
-  // 异步生成患者头像：基于已生成的病例，与后续文本链路并行，不阻塞生成叙事
-  isAvatarGenerating.value = true
-  imageStore
-    .face()
-    .catch(() => {})
-    .finally(() => {
-      isAvatarGenerating.value = false
-    })
   // 生成故事（同步清空对话/讨论/点评等衍生内容）
   await storyStore.generate()
   await waitForReady(['story', 'story-verify', 'story-fix'])
@@ -666,6 +748,24 @@ async function generateNarrative() {
   await waitForReady(['story-discussion'])
   await storyStore.generateComment()
   await waitForReady(['story-comment'])
+  // 序列最后生成患者头像：基于已完成的整套叙事，await 同步等待完成后再结束
+  isAvatarGenerating.value = true
+  try {
+    await imageStore.face()
+  } catch {
+    // 头像生成失败时忽略错误，保留占位图
+  } finally {
+    isAvatarGenerating.value = false
+  }
+  // 基于已生成的患者头像，继续生成故事插图（头像作为参考图，保持人物一致）
+  isIllustrationGenerating.value = true
+  try {
+    await imageStore.illustration()
+  } catch {
+    // 插图生成失败时忽略错误
+  } finally {
+    isIllustrationGenerating.value = false
+  }
 }
 </script>
 
@@ -848,7 +948,6 @@ async function generateNarrative() {
   .nm-sheet {
     box-shadow: none !important;
     border-radius: 0 !important;
-    ring-width: 0 !important;
     animation: none !important;
   }
 
