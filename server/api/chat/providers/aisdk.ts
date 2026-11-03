@@ -15,10 +15,9 @@ export async function handle(body: {
   stream?: boolean
 }) {
   const { messages, model, instructions, providerOptions, stream = true } = body
-  const config = useRuntimeConfig()
   const provider = createOpenAICompatible({
     name: model.provider,
-    apiKey: config[model.apiKey as string] as string,
+    apiKey: resolveApiKey(model),
     baseURL: model.baseURL,
   })
   const normalizedMessages = (messages ?? []).map((m: any) => {

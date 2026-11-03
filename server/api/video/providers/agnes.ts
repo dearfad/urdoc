@@ -17,12 +17,11 @@ export async function handle(body: {
     throw createError({ statusCode: 400, statusMessage: 'task 不能为空（create 或 query）' })
   }
 
-  const config = useRuntimeConfig()
   let apiKey = ''
   let baseURL = ''
 
   if (model) {
-    apiKey = config[model.apiKey as string] as string
+    apiKey = resolveApiKey(model)
     baseURL = (model.baseURL as string)?.replace(/\/$/, '') ?? ''
     if (!apiKey) {
       throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })

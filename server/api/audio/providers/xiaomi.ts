@@ -11,8 +11,7 @@ export async function handle(body: {
     throw createError({ statusCode: 400, statusMessage: 'text（合成文本）不能为空' })
   }
 
-  const config = useRuntimeConfig()
-  const apiKey = config[model.apiKey as string] as string
+  const apiKey = resolveApiKey(model)
   if (!apiKey) {
     throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })
   }

@@ -10,8 +10,7 @@ export async function handle(body: {
 
   const finalTask = task || 'create'
 
-  const config = useRuntimeConfig()
-  const apiKey = config[model.apiKey as string] as string
+  const apiKey = resolveApiKey(model)
   if (!apiKey) {
     throw createError({ statusCode: 400, statusMessage: 'API Key 未配置' })
   }

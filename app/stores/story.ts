@@ -134,7 +134,7 @@ export const useStoryStore = defineStore('story', () => {
 
     const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
 
-    const model = useModelStore().resolveModel('story')
+    const model = useModelStore().activeModels.chat
     send(text, {
       type: 'story',
       task: 'generate',
@@ -151,7 +151,7 @@ export const useStoryStore = defineStore('story', () => {
     if (!content) return
     verifyResult.value = null
     verifyReasoning.value = null
-    const model = useModelStore().resolveModel('story')
+    const model = useModelStore().activeModels.chat
     const instructions = await usePromptStore().getEffectivePrompt('story', 'verify')
     send(content, {
       type: 'story-verify',
@@ -172,7 +172,7 @@ export const useStoryStore = defineStore('story', () => {
     verifyReasoning.value = null
     story.value.reasoning = null
     const text = `原始故事：\n${content}\n\n校验报告：\n${verify}`
-    const model = useModelStore().resolveModel('story')
+    const model = useModelStore().activeModels.chat
     const instructions = await usePromptStore().getEffectivePrompt('story', 'fix')
     send(text, {
       type: 'story-fix',
@@ -190,7 +190,7 @@ export const useStoryStore = defineStore('story', () => {
     const storyContent = story.value.content
     if (!storyContent) return
     conversation.value = { content: null, reasoning: null }
-    const model = useModelStore().resolveModel('conversation')
+    const model = useModelStore().activeModels.chat
     const roleHint = story.value.custom?.length
       ? `角色设定：${story.value.custom.join('，')}`
       : '角色设定：医生与患者'
@@ -215,7 +215,7 @@ export const useStoryStore = defineStore('story', () => {
     const conversationContent = conversation.value.content
     if (!storyContent || !conversationContent) return
     discussion.value = { content: null, reasoning: null }
-    const model = useModelStore().resolveModel('discussion')
+    const model = useModelStore().activeModels.chat
     const text = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`
     const instructions = await usePromptStore().getEffectivePrompt('discussion', 'prompt')
     send(text, {
@@ -238,7 +238,7 @@ export const useStoryStore = defineStore('story', () => {
     const discussionContent = discussion.value.content
     if (!storyContent || !conversationContent || !discussionContent) return
     comment.value = { content: null, reasoning: null }
-    const model = useModelStore().resolveModel('comment')
+    const model = useModelStore().activeModels.chat
     const context = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}\n\n网友讨论：\n${discussionContent}`
     const instructions = await usePromptStore().getEffectivePrompt('comment', 'prompt')
     send(context, {

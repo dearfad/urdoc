@@ -32,11 +32,7 @@ export const useModelStore = defineStore(
       },
     })
 
-    function resolveModel(scene: string): Model {
-      return activeModels.value[scene] ?? activeModels.value.chat
-    }
-
-    const models = ref<Models>({
+    const modelsBase = ref<Models>({
       chat: [
         {
           provider: 'InternAi',
@@ -103,17 +99,44 @@ export const useModelStore = defineStore(
       ],
     })
 
+    // 用户自定义模型配置（按场景持久化保存）
+    const customModels = ref<CustomModels>({
+      chat: { apiKey: '', baseURL: '', modelName: '' },
+      image: { apiKey: '', baseURL: '', modelName: '' },
+      audio: { apiKey: '', baseURL: '', modelName: '' },
+      video: { apiKey: '', baseURL: '', modelName: '' },
+    })
+
+    // 合并默认列表与自定义 Custom 提供商，供模型选择器使用
+    const models = computed<Models>(() => {
+      const result = {} as Models
+      for (const scene of Object.keys(modelsBase.value) as (keyof CustomModels)[]) {
+        const list = [...(modelsBase.value[scene] ?? [])]
+        const custom = customModels.value[scene]
+        if (custom?.modelName?.trim()) {
+          list.push({
+            provider: 'Custom',
+            apiKey: custom.apiKey,
+            baseURL: custom.baseURL,
+            models: [custom.modelName.trim()],
+          })
+        }
+        result[scene] = list
+      }
+      return result
+    })
+
     return {
       version,
       activeModels,
-      resolveModel,
+      customModels,
       models,
     }
   },
   {
     unstorage: {
       pick: [], // string[], state keys picked to storage
-      omit: ['models'], // string[], state keys omitted fot storage
+      omit: ['models'], // string[], state keys omitted fot storage（models 为派生值，无需持久化）
     },
   },
 )

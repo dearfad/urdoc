@@ -9,16 +9,7 @@
       size="lg"
       :disabled="!selectedProvider"
     />
-    <div class="flex items-center justify-between">
-      <UCheckbox v-model="reasoning" label="思考模式" />
-      <UButton
-        icon="i-lucide-globe"
-        size="sm"
-        variant="soft"
-        label="全局"
-        @click="applyToAllScenes"
-      />
-    </div>
+    <UCheckbox v-if="isChatScene" v-model="reasoning" label="思考模式" />
   </div>
 </template>
 
@@ -41,6 +32,8 @@ const modelKey = computed(() => modelType.value)
 
 const modelType = computed(() => sceneToModelType[props.scene] || props.scene)
 
+const isChatScene = computed(() => modelType.value === 'chat')
+
 const reasoning = computed({
   get: () => {
     const s = stateStore as Record<string, any>
@@ -51,15 +44,6 @@ const reasoning = computed({
     if (s[props.scene]) s[props.scene].reasoning = val
   },
 })
-
-function applyToAllScenes() {
-  useStateStore().toast.add({
-    title: '提示',
-    description: '聊天场景已共享同一模型配置，修改后全局生效',
-    color: 'info',
-    icon: 'i-lucide-info',
-  })
-}
 
 const providerOptions = computed(() =>
   (modelStore.models[modelType.value] ?? []).map((g) => ({

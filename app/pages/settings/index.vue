@@ -13,75 +13,91 @@
       </UDashboardToolbar>
     </template>
     <template #body>
-      <div class="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <UCard>
+      <div class="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <UCard :ui="{ header: 'p-0 sm:p-0', body: 'p-5 sm:p-5' }">
           <template #header>
-            <h2 class="text-lg font-semibold">存储管理</h2>
+            <div class="flex items-center gap-3 bg-elevated/60 px-5 py-4">
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <Icon name="i-lucide-database" class="size-5" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-base font-semibold leading-tight">存储管理</h2>
+                <p class="text-xs text-muted">本地缓存与 Cookie 占用情况</p>
+              </div>
+            </div>
           </template>
-          <div class="space-y-4">
-            <div class="space-y-3">
-              <div class="flex items-center justify-between gap-4">
-                <div class="flex items-center gap-2 min-w-0">
-                  <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-elevated">
-                    <Icon name="i-lucide-database" class="size-4" />
-                  </div>
-                  <div class="min-w-0">
-                    <div class="text-sm font-medium">本地存储</div>
-                    <div class="font-mono text-xs text-muted truncate">{{ storageText }} / 5 MB</div>
-                  </div>
+          <div class="divide-y divide-default">
+            <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-elevated">
+                  <Icon name="i-lucide-hard-drive" class="size-4" />
                 </div>
-                <UButton
-                  color="warning"
-                  variant="solid"
-                  size="sm"
-                  label="清除"
-                  @click="openConfirm('local')"
-                />
+                <div class="min-w-0">
+                  <div class="text-sm font-medium">本地存储</div>
+                  <div class="font-mono text-xs text-muted truncate">{{ storageText }} / 5 MB</div>
+                </div>
               </div>
+              <UButton
+                color="warning"
+                variant="soft"
+                size="sm"
+                label="清除"
+                @click="openConfirm('local')"
+              />
+            </div>
+            <div class="py-3 first:pt-0 last:pb-0">
               <UProgress :model-value="storagePercent" size="sm" />
-              <div class="flex items-center justify-between gap-4">
-                <div class="flex items-center gap-2 min-w-0">
-                  <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-elevated">
-                    <Icon name="i-lucide-cookie" class="size-4" />
-                  </div>
-                  <div class="min-w-0">
-                    <div class="text-sm font-medium">Cookie</div>
-                    <div class="font-mono text-xs text-muted truncate">{{ cookieText }}</div>
-                  </div>
+            </div>
+            <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-elevated">
+                  <Icon name="i-lucide-cookie" class="size-4" />
                 </div>
-                <UButton
-                  color="warning"
-                  variant="ghost"
-                  size="sm"
-                  label="清除"
-                  @click="openConfirm('cookie')"
-                />
+                <div class="min-w-0">
+                  <div class="text-sm font-medium">Cookie</div>
+                  <div class="font-mono text-xs text-muted truncate">{{ cookieText }}</div>
+                </div>
               </div>
+              <UButton
+                color="warning"
+                variant="ghost"
+                size="sm"
+                label="清除"
+                @click="openConfirm('cookie')"
+              />
             </div>
           </div>
         </UCard>
 
-        <UCard>
+        <UCard :ui="{ header: 'p-0 sm:p-0', body: 'p-5 sm:p-5' }">
           <template #header>
-            <h2 class="text-lg font-semibold">病历</h2>
+            <div class="flex items-center gap-3 bg-elevated/60 px-5 py-4">
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <Icon name="i-lucide-notebook-pen" class="size-5" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-base font-semibold leading-tight">病历</h2>
+                <p class="text-xs text-muted">病历生成与校验偏好</p>
+              </div>
+            </div>
           </template>
-          <div class="space-y-6">
-            <div class="flex items-center justify-between gap-4">
-              <div>
+          <div class="divide-y divide-default">
+            <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <div class="min-w-0 pr-4">
                 <div class="text-sm font-medium">显示来源标签</div>
                 <div class="text-xs text-muted">在病历卡片底部显示教科书来源和自定义标签</div>
               </div>
               <USwitch v-model="stateStore.showCaseFooter" />
             </div>
-            <div class="flex items-center justify-between gap-4">
-              <div>
+            <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <div class="min-w-0 pr-4">
                 <div class="text-sm font-medium">生成后自动校验</div>
                 <div class="text-xs text-muted">病历生成完成后自动进行校验</div>
               </div>
               <USwitch v-model="stateStore.autoVerify" />
             </div>
-            <div class="flex items-center justify-between gap-4">
-              <div>
+            <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <div class="min-w-0 pr-4">
                 <div class="text-sm font-medium">校验不通过时自动更正</div>
                 <div class="text-xs text-muted">校验未通过时自动进行更正</div>
               </div>
@@ -89,6 +105,111 @@
                 v-model="stateStore.autoFix"
                 :disabled="!stateStore.autoVerify"
               />
+            </div>
+          </div>
+        </UCard>
+
+        <UCard :ui="{ header: 'p-0 sm:p-0', body: 'p-5 sm:p-5' }">
+          <template #header>
+            <div class="flex items-center gap-3 bg-elevated/60 px-5 py-4">
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <Icon name="i-lucide-sliders-horizontal" class="size-5" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-base font-semibold leading-tight">模型设定</h2>
+                <p class="text-xs text-muted">为各场景指定默认模型</p>
+              </div>
+            </div>
+          </template>
+          <div class="divide-y divide-default">
+            <div
+              v-for="t in modelTypes"
+              :key="t.type"
+              class="space-y-2 py-3 first:pt-0 last:pb-0"
+            >
+              <div class="text-sm font-medium">{{ t.label }}</div>
+              <SelectModelType :type="t.type" />
+            </div>
+          </div>
+        </UCard>
+
+        <UCard :ui="{ header: 'p-0 sm:p-0', body: 'p-5 sm:p-5' }">
+          <template #header>
+            <div class="flex items-center gap-3 bg-elevated/60 px-5 py-4">
+              <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <Icon name="i-lucide-plug-zap" class="size-5" />
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-base font-semibold leading-tight">自定义模型</h2>
+                <p class="text-xs text-muted">配置自建或第三方模型</p>
+              </div>
+            </div>
+          </template>
+          <div class="space-y-5">
+            <UFormField label="场景" description="选择要绑定的模型场景">
+              <USelect
+                v-model="customScene"
+                :items="sceneOptions"
+                variant="soft"
+                size="lg"
+                class="w-full"
+              />
+            </UFormField>
+
+            <div class="space-y-2">
+              <div class="text-sm font-medium">快捷模板</div>
+              <div class="flex flex-wrap gap-2">
+                <UButton
+                  v-for="t in modelTemplates"
+                  :key="t.label"
+                  :label="t.label"
+                  variant="soft"
+                  size="sm"
+                  @click="applyTemplate(t)"
+                />
+              </div>
+            </div>
+
+            <UFormField label="API Key" description="自定义提供商的密钥（如不需要可留空）">
+              <UInput
+                v-model="modelStore.customModels[customScene].apiKey"
+                :type="showApiKey ? 'text' : 'password'"
+                :ui="{ trailing: 'pe-1' }"
+                placeholder="sk-..."
+                size="lg"
+                class="w-full"
+              >
+                <template #trailing>
+                  <UButton
+                    color="neutral"
+                    variant="link"
+                    size="sm"
+                    :icon="showApiKey ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                    :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'"
+                    @click="showApiKey = !showApiKey"
+                  />
+                </template>
+              </UInput>
+            </UFormField>
+            <UFormField label="Base URL" description="自定义提供商的接口地址">
+              <UInput
+                v-model="modelStore.customModels[customScene].baseURL"
+                placeholder="https://api.example.com/v1"
+                size="lg"
+                class="w-full"
+              />
+            </UFormField>
+            <UFormField label="模型名称" description="填写后，对应场景的模型选择器将出现 “Custom” 提供商">
+              <UInput
+                v-model="modelStore.customModels[customScene].modelName"
+                placeholder="gpt-4o"
+                size="lg"
+                class="w-full"
+              />
+            </UFormField>
+
+            <div class="flex items-center justify-end gap-2 pt-1">
+              <UButton label="清空" color="neutral" variant="ghost" @click="clearCustom" />
             </div>
           </div>
         </UCard>
@@ -123,6 +244,40 @@ const items = computed<BreadcrumbItem[]>(() => [
 
 const toast = useToast()
 const stateStore = useStateStore()
+const modelStore = useModelStore()
+const customScene = ref<'chat' | 'image' | 'audio' | 'video'>('chat')
+const showApiKey = ref(false)
+
+const modelTypes = [
+  { type: 'chat', label: '对话' },
+  { type: 'image', label: '图像' },
+  { type: 'video', label: '视频' },
+  { type: 'audio', label: '音频' },
+]
+const sceneOptions = [
+  { label: '聊天', value: 'chat' },
+  { label: '图片', value: 'image' },
+  { label: '音频', value: 'audio' },
+  { label: '视频', value: 'video' },
+]
+
+const modelTemplates = [
+  { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
+  { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
+  { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
+]
+
+function applyTemplate(t: { label: string; baseURL: string; modelName: string }) {
+  const scene = customScene.value
+  modelStore.customModels[scene].baseURL = t.baseURL
+  modelStore.customModels[scene].modelName = t.modelName
+}
+
+function clearCustom() {
+  const scene = customScene.value
+  modelStore.customModels[scene] = { apiKey: '', baseURL: '', modelName: '' }
+}
+
 const modalOpen = ref(false)
 const clearType = ref<'local' | 'cookie'>('local')
 

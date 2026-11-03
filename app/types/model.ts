@@ -19,3 +19,17 @@ export interface ProviderGroup {
 export type Models = Record<string, ProviderGroup[]>
 
 export type ActiveModels = Record<string, Model>
+
+// 用户自定义的 Custom 提供商配置（按场景存储，持久化保存）
+export interface CustomModelConfig {
+  apiKey: string
+  baseURL: string
+  modelName: string
+}
+
+export interface CustomModels {
+  chat: CustomModelConfig
+  image: CustomModelConfig
+  audio: CustomModelConfig
+  video: CustomModelConfig
+}
