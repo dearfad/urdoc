@@ -170,6 +170,14 @@
               </div>
             </div>
 
+            <UAlert
+              v-if="customScene !== 'chat'"
+              title="ComfyUI 使用说明"
+              :description="comfyHint"
+              color="warning"
+              variant="soft"
+            />
+
             <UFormField label="API Key" description="自定义提供商的密钥（如不需要可留空）">
               <UInput
                 v-model="modelStore.customModels[customScene].apiKey"
@@ -242,10 +250,17 @@ const items = computed<BreadcrumbItem[]>(() => [
   { label: '设置', icon: 'i-lucide-settings', to: '/settings' },
 ])
 
+type CustomScene = 'chat' | 'image' | 'audio' | 'video'
+interface ModelTemplate {
+  label: string
+  baseURL: string
+  modelName: string
+}
+
 const toast = useToast()
 const stateStore = useStateStore()
 const modelStore = useModelStore()
-const customScene = ref<'chat' | 'image' | 'audio' | 'video'>('chat')
+const customScene = ref<CustomScene>('chat')
 const showApiKey = ref(false)
 
 const modelTypes = [
@@ -255,19 +270,40 @@ const modelTypes = [
   { type: 'audio', label: '音频' },
 ]
 const sceneOptions = [
-  { label: '聊天', value: 'chat' },
-  { label: '图片', value: 'image' },
+  { label: '对话', value: 'chat' },
+  { label: '图像', value: 'image' },
   { label: '音频', value: 'audio' },
   { label: '视频', value: 'video' },
 ]
 
-const modelTemplates = [
-  { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
-  { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
-  { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
-]
+const comfyuiTemplate: ModelTemplate = {
+  label: 'ComfyUI',
+  baseURL: 'http://127.0.0.1:8188',
+  modelName: 'ComfyUI',
+}
 
-function applyTemplate(t: { label: string; baseURL: string; modelName: string }) {
+// 各场景独立的快捷模板，切换场景时自动展示对应列表
+const sceneTemplates: Record<CustomScene, ModelTemplate[]> = {
+  chat: [
+    { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
+    { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
+    { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
+  ],
+  image: [comfyuiTemplate],
+  audio: [comfyuiTemplate],
+  video: [comfyuiTemplate],
+}
+
+const modelTemplates = computed(() => sceneTemplates[customScene.value])
+
+const comfyHint = computed(() => {
+  if (customScene.value === 'image') {
+    return '需与本服务同机启动，云端部署无法访问本机地址；模型名称请保持「ComfyUI」，且本机需已安装文生图 checkpoint（如 SD1.5 / SDXL）。当前仅图像场景已接入生图，故事插图暂不使用参考图。'
+  }
+  return '需与本服务同机启动，云端部署无法访问本机地址；当前仅图像场景已接入生图，音频与视频暂未接入。'
+})
+
+function applyTemplate(t: ModelTemplate) {
   const scene = customScene.value
   modelStore.customModels[scene].baseURL = t.baseURL
   modelStore.customModels[scene].modelName = t.modelName
