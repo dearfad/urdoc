@@ -44,19 +44,145 @@
                   leading: 'pl-4',
                 }"
               />
-              <UButton
-                size="xl"
-                icon="i-lucide-sparkles"
-                variant="solid"
-                :loading="isGenerating"
-                :ui="{
-                  base: 'bg-rose-500 hover:bg-rose-600 active:bg-rose-600 text-white focus-visible:outline-rose-500',
-                }"
-                class="shrink-0 font-semibold shadow-lg shadow-rose-500/20"
-                @click="generateNarrative"
-              >
-                生成叙事
-              </UButton>
+              <div class="flex items-stretch gap-2 sm:gap-2.5">
+                <!-- 主操作：生成叙事 -->
+                <UButton
+                  size="xl"
+                  icon="i-lucide-sparkles"
+                  variant="solid"
+                  :loading="isGenerating"
+                  :ui="{
+                    base: 'bg-rose-500 hover:bg-rose-600 active:bg-rose-600 text-white focus-visible:outline-rose-500',
+                  }"
+                  class="flex-1 justify-center rounded-xl font-semibold shadow-lg shadow-rose-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-rose-500/35 sm:flex-none"
+                  @click="generateNarrative"
+                >
+                  生成叙事
+                </UButton>
+                <!-- 设定：齿轮按钮置于主操作右侧，点击后展开生成 / 显示设定卡片 -->
+                <UPopover
+                  v-model:open="isSettingsOpen"
+                  :content="{ align: 'end', side: 'bottom', sideOffset: 10 }"
+                  :ui="{ content: 'bg-transparent shadow-none ring-0 rounded-none' }"
+                  class="flex shrink-0"
+                >
+                  <UButton
+                    size="xl"
+                    icon="i-lucide-settings"
+                    variant="ghost"
+                    :ui="{ leadingIcon: 'transition-transform duration-500 group-hover:rotate-90' }"
+                    class="group justify-center rounded-xl border border-rose-200/80 bg-white/75 font-medium text-rose-600 shadow-[0_8px_22px_-16px_rgba(244,114,182,0.9)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-rose-300 hover:bg-rose-50/90 focus-visible:outline-rose-400"
+                  >
+                    设定
+                  </UButton>
+                  <template #content>
+                    <UCard
+                      :ui="{
+                        root: 'w-76 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-2xl border border-rose-100/80 bg-white/95 shadow-[0_24px_64px_-24px_rgba(244,114,182,0.55)] ring-1 ring-white/70 backdrop-blur-xl sm:w-84',
+                        header: 'p-0 sm:p-0',
+                        body: 'p-0 sm:p-0',
+                        footer: 'p-0 sm:p-0',
+                      }"
+                    >
+                      <template #header>
+                        <div
+                          class="flex items-center gap-3 bg-linear-to-r from-rose-50/90 via-white to-fuchsia-50/70 px-4 py-3.5"
+                        >
+                          <div
+                            class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-rose-500 to-fuchsia-500 shadow-lg shadow-rose-500/20"
+                          >
+                            <UIcon name="i-lucide-settings" class="text-lg text-white" />
+                          </div>
+                          <div class="min-w-0 flex-1">
+                            <h3 class="text-sm font-bold text-gray-900 sm:text-base">叙事设定</h3>
+                            <p class="text-[11px] text-rose-500/80">选择需要生成与显示的内容</p>
+                          </div>
+                          <UButton
+                            icon="i-lucide-rotate-ccw"
+                            variant="ghost"
+                            size="xs"
+                            color="neutral"
+                            title="恢复默认"
+                            aria-label="恢复默认设定"
+                            @click="narrativeStore.restoreDefaults()"
+                          />
+                        </div>
+                      </template>
+
+                      <!-- 列头：点击可一键切换整列开关 -->
+                      <div
+                        class="grid grid-cols-[1fr_3.5rem_3.5rem] items-center gap-1 border-b border-rose-100/70 bg-rose-50/40 px-4 py-2"
+                      >
+                        <span class="text-[11px] font-semibold tracking-wide text-gray-500">内容</span>
+                        <button
+                          type="button"
+                          class="rounded-md py-1 text-center text-[11px] font-semibold tracking-wide text-rose-600 transition-colors hover:bg-rose-100/70"
+                          title="点击切换全部生成项"
+                          @click="toggleAll('generate')"
+                        >
+                          生成
+                        </button>
+                        <button
+                          type="button"
+                          class="rounded-md py-1 text-center text-[11px] font-semibold tracking-wide text-sky-600 transition-colors hover:bg-sky-100/70"
+                          title="点击切换全部显示项"
+                          @click="toggleAll('show')"
+                        >
+                          显示
+                        </button>
+                      </div>
+
+                      <!-- 各区块的生成 / 显示开关 -->
+                      <div class="max-h-[min(56vh,22rem)] divide-y divide-rose-50 overflow-y-auto px-2 py-1">
+                        <div
+                          v-for="item in settingSections"
+                          :key="item.key"
+                          class="grid grid-cols-[1fr_3.5rem_3.5rem] items-center gap-1 rounded-lg px-2 py-2 transition-colors hover:bg-rose-50/60"
+                        >
+                          <div class="flex min-w-0 items-center gap-2">
+                            <UIcon :name="item.icon" class="shrink-0 text-base" :class="item.tone" />
+                            <div class="min-w-0">
+                              <p class="truncate text-sm font-medium text-gray-800">{{ item.label }}</p>
+                              <p class="truncate text-[10px]" :class="isBlocked(item) ? 'text-amber-500' : 'text-gray-400'">
+                                {{ settingHint(item) }}
+                              </p>
+                            </div>
+                          </div>
+                          <div class="flex justify-center">
+                            <USwitch
+                              :model-value="generatePlan[item.key]"
+                              :disabled="isDisabled(item, 'generate')"
+                              color="error"
+                              size="lg"
+                              :aria-label="`生成${item.label}`"
+                              @update:modelValue="(v) => setFlag('generate', item.key, v)"
+                            />
+                          </div>
+                          <div class="flex justify-center">
+                            <USwitch
+                              :model-value="showPlan[item.key]"
+                              :disabled="isDisabled(item, 'show')"
+                              color="error"
+                              size="lg"
+                              :aria-label="`显示${item.label}`"
+                              @update:modelValue="(v) => setFlag('show', item.key, v)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <template #footer>
+                        <div
+                          class="flex items-start gap-2 border-t border-rose-100/70 bg-rose-50/40 px-4 py-3 text-[11px] leading-relaxed text-gray-500"
+                        >
+                          <UIcon name="i-lucide-info" class="mt-0.5 shrink-0 text-sm text-rose-400" />
+                          <span>默认仅生成并显示病例与故事；关闭上游会一并跳过其下游内容，未生成部分保留占位内容。显示设定同时作用于截屏。</span>
+                        </div>
+                      </template>
+                    </UCard>
+                  </template>
+                </UPopover>
+              </div>
             </div>
           </div>
 
@@ -110,7 +236,7 @@
               <!-- 内容区块：病例、故事、对话、讨论、点评 -->
               <div class="flex flex-col gap-5">
                 <!-- 1. 病例（头像内置于卡片右侧） -->
-                <section class="block-card group relative overflow-hidden rounded-xl">
+                <section v-if="showPlan.case" class="block-card group relative overflow-hidden rounded-xl">
                   <div class="block-card-accent from-rose-400/70 via-fuchsia-400/70 to-pink-400/70" />
                   <UCard
                     :ui="{
@@ -154,7 +280,7 @@
                             </div>
                           </div>
                           <!-- 右侧：患者头像 -->
-                          <div class="flex w-1/3 shrink-0 justify-center">
+                          <div v-if="showPlan.avatar" class="flex w-1/3 shrink-0 justify-center">
                             <div
                               class="avatar-placeholder group relative aspect-square w-full max-w-65 overflow-hidden rounded-full bg-white shadow-lg shadow-rose-500/10"
                             >
@@ -195,7 +321,7 @@
                 </section>
 
                 <!-- 2. 故事 -->
-                <section class="block-card group relative overflow-hidden rounded-xl">
+                <section v-if="showPlan.story" class="block-card group relative overflow-hidden rounded-xl">
                   <div class="block-card-accent from-amber-400/70 via-orange-400/70 to-rose-400/70" />
                   <UCard
                     :ui="{
@@ -242,7 +368,7 @@
                       </template>
                     </div>
                     <!-- 关于故事的四格插图 -->
-                    <div class="flex flex-col gap-3">
+                    <div v-if="showPlan.illustration" class="flex flex-col gap-3">
                       <div class="flex items-center gap-2 text-sm font-medium text-orange-600">
                         <UIcon name="i-lucide-layout-grid" class="text-lg" />
                         <span>插图</span>
@@ -332,7 +458,7 @@
                 </section>
 
                 <!-- 3. 对话 -->
-                <section class="block-card group relative overflow-hidden rounded-xl">
+                <section v-if="showPlan.conversation" class="block-card group relative overflow-hidden rounded-xl">
                   <div class="block-card-accent from-cyan-400/70 via-sky-400/70 to-blue-400/70" />
                   <UCard
                     :ui="{
@@ -415,7 +541,7 @@
                 </section>
 
                 <!-- 4. 讨论 -->
-                <section class="block-card group relative overflow-hidden rounded-xl">
+                <section v-if="showPlan.discussion" class="block-card group relative overflow-hidden rounded-xl">
                   <div class="block-card-accent from-emerald-400/70 via-teal-400/70 to-cyan-400/70" />
                   <UCard
                     :ui="{
@@ -495,7 +621,7 @@
                 </section>
 
                 <!-- 5. 点评 -->
-                <section class="block-card group relative overflow-hidden rounded-xl">
+                <section v-if="showPlan.comment" class="block-card group relative overflow-hidden rounded-xl">
                   <div class="block-card-accent from-violet-400/70 via-purple-400/70 to-fuchsia-400/70" />
                   <UCard
                     :ui="{
@@ -596,7 +722,146 @@ const stateStore = useStateStore()
 const imageStore = useImageStore()
 const storyStore = useStoryStore()
 const recordStore = useRecordStore()
+const narrativeStore = useNarrativeStore()
 const chatApi = useChatApi()
+
+// 设定卡片开关状态
+const isSettingsOpen = ref(false)
+
+type SettingSection = {
+  key: NarrativeSectionKey
+  label: string
+  hint: string
+  icon: string
+  tone: string
+  // 上游未生成 / 容器未显示时，该项自动跳过
+  generateDependsOn?: NarrativeSectionKey
+  showDependsOn?: NarrativeSectionKey
+}
+
+// 设定项：图标与配色沿用叙事单页各区块的视觉语言
+const settingSections: SettingSection[] = [
+  {
+    key: 'case',
+    label: '病例',
+    hint: '病史与临床信息',
+    icon: 'i-lucide-clipboard-list',
+    tone: 'text-rose-500',
+  },
+  {
+    key: 'story',
+    label: '故事',
+    hint: '患者叙事脉络',
+    icon: 'i-lucide-book-open',
+    tone: 'text-amber-500',
+    generateDependsOn: 'case',
+  },
+  {
+    key: 'conversation',
+    label: '对话',
+    hint: '医患交流场景',
+    icon: 'i-lucide-messages-square',
+    tone: 'text-cyan-500',
+    generateDependsOn: 'story',
+  },
+  {
+    key: 'discussion',
+    label: '讨论',
+    hint: '多角度思辨',
+    icon: 'i-lucide-lightbulb',
+    tone: 'text-emerald-500',
+    generateDependsOn: 'conversation',
+  },
+  {
+    key: 'comment',
+    label: '点评',
+    hint: '收获与反思',
+    icon: 'i-lucide-award',
+    tone: 'text-violet-500',
+    generateDependsOn: 'discussion',
+  },
+  {
+    key: 'avatar',
+    label: '患者头像',
+    hint: '显示于病例卡片',
+    icon: 'i-lucide-user',
+    tone: 'text-pink-500',
+    generateDependsOn: 'case',
+    showDependsOn: 'case',
+  },
+  {
+    key: 'illustration',
+    label: '故事插图',
+    hint: '故事四格插图',
+    icon: 'i-lucide-layout-grid',
+    tone: 'text-orange-500',
+    generateDependsOn: 'story',
+    showDependsOn: 'story',
+  },
+]
+
+// 生成计划：下游内容依赖上游，关闭上游时自动跳过其下游步骤
+const generatePlan = computed<NarrativeFlags>(() => {
+  const g = narrativeStore.generate
+  const caseOn = !!g.case
+  const storyOn = caseOn && !!g.story
+  const conversationOn = storyOn && !!g.conversation
+  const discussionOn = conversationOn && !!g.discussion
+  const commentOn = discussionOn && !!g.comment
+  return {
+    case: caseOn,
+    story: storyOn,
+    conversation: conversationOn,
+    discussion: discussionOn,
+    comment: commentOn,
+    avatar: caseOn && !!g.avatar,
+    illustration: storyOn && !!g.illustration,
+  }
+})
+
+// 显示计划：头像依附病例卡片，插图依附故事卡片
+const showPlan = computed<NarrativeFlags>(() => {
+  const s = narrativeStore.show
+  return {
+    case: !!s.case,
+    story: !!s.story,
+    conversation: !!s.conversation,
+    discussion: !!s.discussion,
+    comment: !!s.comment,
+    avatar: !!s.case && !!s.avatar,
+    illustration: !!s.story && !!s.illustration,
+  }
+})
+
+// 上游未生成 / 容器未显示时，对应开关禁用并呈现为关闭状态
+function isDisabled(section: SettingSection, kind: NarrativeSettingKind): boolean {
+  const dependsOn = kind === 'generate' ? section.generateDependsOn : section.showDependsOn
+  if (!dependsOn) return false
+  const plan = kind === 'generate' ? generatePlan.value : showPlan.value
+  return !plan[dependsOn]
+}
+
+// 上游未生成或所属卡片未显示时，给出明确提示，避免误以为开关失效
+function isBlocked(section: SettingSection): boolean {
+  return isDisabled(section, 'generate') || isDisabled(section, 'show')
+}
+
+function settingHint(section: SettingSection): string {
+  if (isDisabled(section, 'generate')) return '需先开启上游内容生成'
+  if (isDisabled(section, 'show')) return '需先显示所属卡片'
+  return section.hint
+}
+
+function setFlag(kind: NarrativeSettingKind, key: NarrativeSectionKey, value: boolean) {
+  narrativeStore[kind][key] = value
+}
+
+// 列头点击：在「全开」与「全关」之间切换
+function toggleAll(kind: NarrativeSettingKind) {
+  const flags = narrativeStore[kind]
+  const allOn = (Object.keys(flags) as NarrativeSectionKey[]).every((key) => flags[key])
+  narrativeStore.setAll(kind, !allOn)
+}
 
 // 患者头像是否正在生成（置于生成序列最后，同步等待完成）
 const isAvatarGenerating = ref(false)
@@ -732,10 +997,25 @@ function waitForReady(types: string[]): Promise<void> {
 }
 
 async function generateNarrative() {
+  // 以开始生成时的设定为准，避免生成过程中修改设定导致流程错乱
+  const plan = generatePlan.value
+  // 病例是全部内容的起点：未开启时其余内容均无法生成，提示并展开设定卡片
+  if (!plan.case) {
+    stateStore.toast.add({
+      title: '无法生成叙事',
+      description: '病例是叙事内容的基础，请在「设定」中开启病例生成',
+      color: 'warning',
+      icon: 'i-lucide-settings',
+    })
+    isSettingsOpen.value = true
+    return
+  }
+
   // 生成前清空所有相关内容（病例、故事、图像等），确保从干净状态开始
   recordStore.reset()
   imageStore.reset()
   isAvatarGenerating.value = false
+  isIllustrationGenerating.value = false
   // 清空病历设定中的教科书部分，仅以自定义内容（含疾病设定）生成病例
   stateStore.case.textbook = null
   // 将「疾病设定」输入框文字同时作为生成故事的自定义提示词（要点设定）
@@ -746,37 +1026,53 @@ async function generateNarrative() {
       ...stateStore.story.custom.filter((c) => !c.startsWith(DISEASE_TAG)),
     ]
   }
-  // 触发「生成病例」命令
+
+  // 病例：全流程起点，必须等待完整生成完毕（含可能的自动校验/修正）
   await caseStore.generate()
-  // 等待本次病例完整生成完毕（含可能的自动校验/修正），再衔接后续步骤
   await waitForReady(['case', 'case-verify', 'case-fix'])
-  // 生成故事（同步清空对话/讨论/点评等衍生内容）
-  await storyStore.generate()
-  await waitForReady(['story', 'story-verify', 'story-fix'])
-  // 依次生成对话、讨论、点评：三者彼此依赖上游内容，须串行等待各自完成
-  await storyStore.generateConversation()
-  await waitForReady(['story-conversation'])
-  await storyStore.generateDiscussion()
-  await waitForReady(['story-discussion'])
-  await storyStore.generateComment()
-  await waitForReady(['story-comment'])
-  // 序列最后生成患者头像：基于已完成的整套叙事，await 同步等待完成后再结束
-  isAvatarGenerating.value = true
-  try {
-    await imageStore.face()
-  } catch {
-    // 头像生成失败时忽略错误，保留占位图
-  } finally {
-    isAvatarGenerating.value = false
+
+  // 故事：生成时会同步清空对话/讨论/点评等衍生内容
+  if (plan.story) {
+    await storyStore.generate()
+    await waitForReady(['story', 'story-verify', 'story-fix'])
   }
-  // 基于已生成的患者头像，继续生成故事插图（头像作为参考图，保持人物一致）
-  isIllustrationGenerating.value = true
-  try {
-    await imageStore.illustration()
-  } catch {
-    // 插图生成失败时忽略错误
-  } finally {
-    isIllustrationGenerating.value = false
+
+  // 对话、讨论、点评：三者彼此依赖上游内容，须串行等待各自完成
+  if (plan.conversation) {
+    await storyStore.generateConversation()
+    await waitForReady(['story-conversation'])
+  }
+  if (plan.discussion) {
+    await storyStore.generateDiscussion()
+    await waitForReady(['story-discussion'])
+  }
+  if (plan.comment) {
+    await storyStore.generateComment()
+    await waitForReady(['story-comment'])
+  }
+
+  // 患者头像：基于已完成的病例生成，同步等待完成后再结束
+  if (plan.avatar) {
+    isAvatarGenerating.value = true
+    try {
+      await imageStore.face()
+    } catch {
+      // 头像生成失败时忽略错误，保留占位图
+    } finally {
+      isAvatarGenerating.value = false
+    }
+  }
+
+  // 故事插图：以已生成的患者头像作为参考图，保持人物一致
+  if (plan.illustration) {
+    isIllustrationGenerating.value = true
+    try {
+      await imageStore.illustration()
+    } catch {
+      // 插图生成失败时忽略错误
+    } finally {
+      isIllustrationGenerating.value = false
+    }
   }
 }
 </script>

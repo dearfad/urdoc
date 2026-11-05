@@ -1,4 +1,4 @@
-const VERSION = '2026-11-02'
+const VERSION = '2026-11-05'
 export const useModelStore = defineStore(
   'model',
   () => {
@@ -37,8 +37,19 @@ export const useModelStore = defineStore(
         {
           provider: 'InternAi',
           apiKey: 'shushengApiKey',
-          baseURL: 'https://chat.intern-ai.org.cn/api/v1',
-          models: ['intern-latest', 'intern-s1-pro', 'intern-s1'],
+          baseURL: 'https://discovery-api.intern-ai.org.cn/v1',
+          models: [
+            'Agents-A1',
+            'Atria-Dawn',
+            'Sage-A1.5',
+            'intern-s2',
+            'deepseek-v4.1-flash-1017',
+            'deepseek-v4-pro-0813',
+            'glm-5.3',
+            'kimi-k2.6',
+            'minimax-m3',
+            'qwen3.8-27b',
+          ],
         },
         {
           provider: 'Agnes',
@@ -105,7 +116,7 @@ export const useModelStore = defineStore(
       editTemplate: 'qwen-image-2.1-turbo-edit',
       i2vTemplate: 'fastvideo-fasth3-i2v',
       chatTemplate: 'qwen3-text-gen',
-      }
+    }
     const customModels = ref<CustomModels>({
       chat: { apiKey: '', baseURL: '', modelName: '', ...defaultTemplates },
       image: { apiKey: '', baseURL: '', modelName: '', ...defaultTemplates },
