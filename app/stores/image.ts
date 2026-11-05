@@ -101,6 +101,7 @@ export const useImageStore = defineStore('image', () => {
         instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
+        template: getChatTemplate(),
       },
     })
 
@@ -134,6 +135,7 @@ export const useImageStore = defineStore('image', () => {
         instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
+        template: getChatTemplate(),
       },
     })
 

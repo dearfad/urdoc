@@ -10,6 +10,8 @@ let _abortController: AbortController | null = null
 let _model: Model | null = null
 
 export function useVideoApi() {
+  const modelStore = useModelStore()
+
   async function create(
     prompt: string,
     options: {
@@ -31,6 +33,14 @@ export function useVideoApi() {
 
     _abortController = new AbortController()
 
+    // 与图像场景一致：模型名称为 ComfyUI 时携带本地图生视频模板 ID，其余模型传空值
+    const isComfyUI =
+      options.model?.provider === 'Custom' &&
+      String(options.model?.name ?? '').trim().toLowerCase() === 'comfyui'
+    const template = isComfyUI
+      ? (modelStore.customModels.video.i2vTemplate ?? 'fastvideo-fasth3-i2v')
+      : ''
+
     try {
       const result: any = await $fetch('/api/video', {
         method: 'POST',
@@ -46,6 +56,7 @@ export function useVideoApi() {
           height: options.height,
           negative_prompt: options.negative_prompt,
           seed: options.seed,
+          template,
         },
       })
 

@@ -100,11 +100,17 @@ export const useModelStore = defineStore(
     })
 
     // 用户自定义模型配置（按场景持久化保存）
+    const defaultTemplates = {
+      t2iTemplate: 'z-image-turbo',
+      editTemplate: 'qwen-image-2.1-turbo-edit',
+      i2vTemplate: 'fastvideo-fasth3-i2v',
+      chatTemplate: 'qwen3-text-gen',
+      }
     const customModels = ref<CustomModels>({
-      chat: { apiKey: '', baseURL: '', modelName: '' },
-      image: { apiKey: '', baseURL: '', modelName: '' },
-      audio: { apiKey: '', baseURL: '', modelName: '' },
-      video: { apiKey: '', baseURL: '', modelName: '' },
+      chat: { apiKey: '', baseURL: '', modelName: '', ...defaultTemplates },
+      image: { apiKey: '', baseURL: '', modelName: '', ...defaultTemplates },
+      audio: { apiKey: '', baseURL: '', modelName: '', ...defaultTemplates },
+      video: { apiKey: '', baseURL: '', modelName: '', ...defaultTemplates },
     })
 
     // 合并默认列表与自定义 Custom 提供商，供模型选择器使用

@@ -5,6 +5,8 @@ let _error = ref<string | null>(null)
 let _abortController: AbortController | null = null
 
 export function useImageApi() {
+  const modelStore = useModelStore()
+
   async function generate(
     prompt: string,
     options: {
@@ -21,6 +23,16 @@ export function useImageApi() {
 
     _abortController = new AbortController()
 
+    const isComfyUI =
+      options.model?.provider === 'Custom' &&
+      String(options.model?.name ?? '').trim().toLowerCase() === 'comfyui'
+    // 故事插图走图像编辑模板，其余任务走文生图模板；非本地 ComfyUI 模型传空值
+    const template = isComfyUI
+      ? options.task === 'illustration'
+        ? (modelStore.customModels.image.editTemplate ?? 'qwen-image-2.1-turbo-edit')
+        : (modelStore.customModels.image.t2iTemplate ?? 'z-image-turbo')
+      : ''
+
     try {
       const result: any = await $fetch('/api/image', {
         method: 'POST',
@@ -31,6 +43,8 @@ export function useImageApi() {
           n: options.n,
           size: options.imageSize,
           image: options.image,
+          task: options.task,
+          template,
         },
       })
 

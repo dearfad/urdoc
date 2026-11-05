@@ -95,7 +95,7 @@ export function useAudioApi() {
   function sendGenerate(text: string, options: { type: string; task: string; [key: string]: any }) {
     if (chat!.status === 'error') chat!.clearError()
     chat!.stop()
-    chat!.sendMessage({ text }, { body: { ...options } })
+    chat!.sendMessage({ text }, { body: { ...options, template: getChatTemplate(options.model) } })
   }
 
   function stopGenerate() { chat?.stop() }

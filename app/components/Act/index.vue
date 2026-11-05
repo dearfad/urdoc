@@ -211,6 +211,7 @@ async function sendMessage() {
         reasoning,
         instructions: await buildSystemPrompt(),
         providerOptions: useProviderStore().getProviderOptions(model?.provider, reasoning),
+        template: getChatTemplate(model),
       },
     },
   )
@@ -286,6 +287,7 @@ async function endConsultation() {
         task: 'end',
         instructions: await promptStore.getEffectivePrompt('act', 'end'),
         providerOptions: useProviderStore().getProviderOptions(model?.provider, reasoning),
+        template: getChatTemplate(model),
       },
     },
   )
@@ -325,6 +327,7 @@ async function regenerateQuiz() {
         task: 'end',
         instructions: await promptStore.getEffectivePrompt('act', 'end'),
         providerOptions: useProviderStore().getProviderOptions(model?.provider, reasoning),
+        template: getChatTemplate(model),
       },
     },
   )

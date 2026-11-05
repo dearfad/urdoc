@@ -25,6 +25,14 @@ export interface CustomModelConfig {
   apiKey: string
   baseURL: string
   modelName: string
+  // 本地 ComfyUI 文生图模板 ID（自定义生成 / 患者头像），可选字段兼容旧持久化数据
+  t2iTemplate?: string
+  // 本地 ComfyUI 图像编辑模板 ID（故事插图），可选字段兼容旧持久化数据
+  editTemplate?: string
+  // 本地 ComfyUI 图生视频模板 ID（影像渲染），可选字段兼容旧持久化数据
+  i2vTemplate?: string
+  // 本地 ComfyUI 文本生成模板 ID（对话及各类文本生成），可选字段兼容旧持久化数据
+  chatTemplate?: string
 }
 
 export interface CustomModels {

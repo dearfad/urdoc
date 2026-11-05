@@ -102,6 +102,7 @@ export const useTestStore = defineStore('test', () => {
           task: 'generate',
           instructions: await usePromptStore().getEffectivePrompt('test', 'generate'),
           providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
+          template: getChatTemplate(model),
         },
       },
     )

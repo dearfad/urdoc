@@ -143,6 +143,7 @@ export const useRateStore = defineStore('rate', () => {
           task: 'generate',
           instructions: await usePromptStore().getEffectivePrompt('rate', 'generate') || '',
           providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
+          template: getChatTemplate(model),
         },
       },
     )

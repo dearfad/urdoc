@@ -1,0 +1,56 @@
+{
+  "5": {
+    "inputs": {
+      "source": [
+        "7",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "预览任意",
+      "cnr_id": "comfy-core",
+      "ver": "0.14.1"
+    }
+  },
+  "7": {
+    "inputs": {
+      "prompt": "{{URDOC_PROMPT}}",
+      "max_length": 2048,
+      "sampling_mode": "on",
+      "sampling_mode.temperature": 0.7,
+      "sampling_mode.top_k": 64,
+      "sampling_mode.top_p": 0.95,
+      "sampling_mode.min_p": 0.05,
+      "sampling_mode.repetition_penalty": 1.05,
+      "sampling_mode.seed": 0,
+      "sampling_mode.presence_penalty": 0,
+      "thinking": false,
+      "use_default_template": true,
+      "mtp": "auto",
+      "clip": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "TextGenerate",
+    "_meta": {
+      "title": "TextGenerate",
+      "cnr_id": "comfy-core",
+      "ver": "0.14.1"
+    }
+  },
+  "8": {
+    "inputs": {
+      "clip_name": "qwen_3_4b.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP",
+      "cnr_id": "comfy-core",
+      "ver": "0.14.1"
+    }
+  }
+}

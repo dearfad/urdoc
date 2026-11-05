@@ -112,6 +112,7 @@ export const useVideoStore = defineStore('video', () => {
         instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
+        template: getChatTemplate(),
       },
     })
 

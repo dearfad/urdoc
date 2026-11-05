@@ -25,7 +25,7 @@ export function useChatApi() {
     _currentType.value = options.type
     if (chat!.status === 'error') chat!.clearError()
     chat!.stop()
-    chat!.sendMessage({ text }, { body: { ...options } })
+    chat!.sendMessage({ text }, { body: { ...options, template: getChatTemplate(options.model) } })
   }
 
   function stop() { chat?.stop() }

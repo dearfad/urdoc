@@ -158,6 +158,7 @@
 
             <div class="space-y-2">
               <div class="text-sm font-medium">快捷模板</div>
+              <p class="text-xs text-muted">选择「空白」可自行填写 API Key、Base URL 与模型名称，不使用任何预设</p>
               <div class="flex flex-wrap gap-2">
                 <UButton
                   v-for="t in modelTemplates"
@@ -171,8 +172,8 @@
             </div>
 
             <UAlert
-              v-if="customScene !== 'chat'"
-              title="ComfyUI 使用说明"
+              v-if="showComfyHint"
+              title="本地 ComfyUI 使用说明"
               :description="comfyHint"
               color="warning"
               variant="soft"
@@ -215,6 +216,55 @@
                 class="w-full"
               />
             </UFormField>
+
+            <div v-if="showComfyTemplates" class="space-y-4 rounded-lg border border-default p-4">
+              <div class="text-sm font-medium">本地 ComfyUI 模板（专用）</div>
+
+              <template v-if="customScene === 'chat'">
+                <UFormField
+                  label="本地文本生成模板"
+                  description="用于对话及病例、故事、试题、评价等所有文本生成，使用本机已安装的模型"
+                >
+                  <USelect v-model="chatTemplate" :items="chatOptions" variant="soft" size="lg" class="w-full" />
+                </UFormField>
+              </template>
+
+              <template v-else-if="customScene === 'video'">
+                <UFormField
+                  label="本地图生视频模板"
+                  description="用于「影像渲染」，以已生成的患者头像作为首帧生成视频"
+                >
+                  <USelect v-model="i2vTemplate" :items="i2vOptions" variant="soft" size="lg" class="w-full" />
+                </UFormField>
+              </template>
+
+              <template v-else>
+                <UFormField
+                  label="本地文生图模板"
+                  description="用于「自定义生成」与「生成患者头像」，使用本机已安装的模型出图"
+                >
+                  <USelect v-model="t2iTemplate" :items="t2iOptions" variant="soft" size="lg" class="w-full" />
+                </UFormField>
+
+                <UFormField
+                  label="本地图像编辑模板"
+                  description="用于「故事插图」，以已生成的患者头像作为输入图进行编辑"
+                >
+                  <USelect v-model="editTemplate" :items="editOptions" variant="soft" size="lg" class="w-full" />
+                </UFormField>
+              </template>
+
+              <p class="text-xs text-muted">
+                以上模板仅对本地 ComfyUI 生效；模型名称为其他值时，将走自定义远端{{
+                  customScene === 'chat'
+                    ? 'OpenAI 兼容对话'
+                    : customScene === 'video'
+                      ? '视频'
+                      : 'OpenAI 兼容图像'
+                }}
+                API。
+              </p>
+            </div>
 
             <div class="flex items-center justify-end gap-2 pt-1">
               <UButton label="清空" color="neutral" variant="ghost" @click="clearCustom" />
@@ -277,41 +327,133 @@ const sceneOptions = [
 ]
 
 const comfyuiTemplate: ModelTemplate = {
-  label: 'ComfyUI',
+  label: '本地 ComfyUI',
   baseURL: 'http://127.0.0.1:8188',
   modelName: 'ComfyUI',
 }
 
-// 各场景独立的快捷模板，切换场景时自动展示对应列表
+// 空白模板：不带任何预设，仅保留 API Key、Base URL、模型名称三个必填项由用户自行填写
+const blankTemplate: ModelTemplate = {
+  label: '空白',
+  baseURL: '',
+  modelName: '',
+}
+
+// 各场景独立的快捷模板，切换场景时自动展示对应列表；每个场景都提供空白模板
 const sceneTemplates: Record<CustomScene, ModelTemplate[]> = {
   chat: [
+    blankTemplate,
+    comfyuiTemplate,
     { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
     { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
     { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
   ],
-  image: [comfyuiTemplate],
-  audio: [comfyuiTemplate],
-  video: [comfyuiTemplate],
+  image: [blankTemplate, comfyuiTemplate],
+  audio: [blankTemplate, comfyuiTemplate],
+  video: [blankTemplate, comfyuiTemplate],
 }
 
 const modelTemplates = computed(() => sceneTemplates[customScene.value])
 
+// 内置模板选项：文生图二选一，图像编辑、图生视频与文本生成各固定一套
+const t2iOptions = [
+  { label: 'Qwen Image 2.1 Turbo', value: 'qwen-image-2.1-turbo' },
+  { label: 'Z-Image Turbo', value: 'z-image-turbo' },
+]
+const editOptions = [{ label: 'Qwen Image 2.1 Turbo Edit', value: 'qwen-image-2.1-turbo-edit' }]
+const i2vOptions = [
+  { label: 'FastVideo FastH3（MiniMax H3 图生视频）', value: 'fastvideo-fasth3-i2v' },
+]
+const chatOptions = [{ label: 'Qwen3 4B 本地文本生成', value: 'qwen3-text-gen' }]
+
+// 单独代理模板字段，兼容旧持久化数据中缺少新字段的情况
+const t2iTemplate = computed({
+  get: () => modelStore.customModels.image.t2iTemplate ?? 'z-image-turbo',
+  set: (val: string) => {
+    modelStore.customModels.image.t2iTemplate = val
+  },
+})
+
+const editTemplate = computed({
+  get: () => modelStore.customModels.image.editTemplate ?? 'qwen-image-2.1-turbo-edit',
+  set: (val: string) => {
+    modelStore.customModels.image.editTemplate = val
+  },
+})
+
+const i2vTemplate = computed({
+  get: () => modelStore.customModels.video.i2vTemplate ?? 'fastvideo-fasth3-i2v',
+  set: (val: string) => {
+    modelStore.customModels.video.i2vTemplate = val
+  },
+})
+
+const chatTemplate = computed({
+  get: () => modelStore.customModels.chat.chatTemplate ?? 'qwen3-text-gen',
+  set: (val: string) => {
+    modelStore.customModels.chat.chatTemplate = val
+  },
+})
+
+// 与图像调用侧保持一致：模型名称为 ComfyUI（忽略大小写与首尾空格）时才视为本地 ComfyUI
+const isLocalComfyUI = computed(
+  () => String(modelStore.customModels[customScene.value]?.modelName ?? '').trim().toLowerCase() === 'comfyui',
+)
+
+// 对话、图像与视频场景选中「本地 ComfyUI」快捷模板后展示各自的专用模板卡片
+const showComfyTemplates = computed(
+  () =>
+    (customScene.value === 'chat' || customScene.value === 'image' || customScene.value === 'video') &&
+    isLocalComfyUI.value,
+)
+
+// 使用说明在选中「本地 ComfyUI」后展示；音频场景也保留提示，说明其尚未接入
+const showComfyHint = computed(() => isLocalComfyUI.value)
+
 const comfyHint = computed(() => {
-  if (customScene.value === 'image') {
-    return '需与本服务同机启动，云端部署无法访问本机地址；模型名称请保持「ComfyUI」，且本机需已安装文生图 checkpoint（如 SD1.5 / SDXL）。当前仅图像场景已接入生图，故事插图暂不使用参考图。'
+  if (customScene.value === 'chat') {
+    return (
+      '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；' +
+      '当前已启用下方本地文本生成模板，使用本机 Qwen3 4B 完成对话与病例、故事、试题、评价等文本生成；' +
+      '系统指令与对话历史会合并为一段提示词送入工作流，流式响应在生成完成后一次性返回；' +
+      '若把模型名称改为其他值，则按自定义远端 OpenAI 兼容对话 API 调用。'
+    )
   }
-  return '需与本服务同机启动，云端部署无法访问本机地址；当前仅图像场景已接入生图，音频与视频暂未接入。'
+  if (customScene.value === 'image') {
+    return (
+      '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；' +
+      '当前已启用下方本地模板设置；若把模型名称改为其他值，则按自定义远端 OpenAI 兼容图像 API 调用。' +
+      '故事插图使用已生成的患者头像作为输入图。'
+    )
+  }
+  if (customScene.value === 'video') {
+    return (
+      '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；' +
+      '当前已启用下方本地图生视频模板，以已生成的患者头像作为首帧，需本机安装 MiniMax H3 / FastVideo FastH3 相关模型；' +
+      '视频尺寸由首帧图决定、帧率固定 24 FPS；若把模型名称改为其他值，则按自定义远端视频 API 调用。'
+    )
+  }
+  return '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；当前仅对话、图像与视频场景已接入，音频暂未接入。'
 })
 
 function applyTemplate(t: ModelTemplate) {
   const scene = customScene.value
+  // 空白模板仅清空接口地址与模型名称，保留已填的 API Key 及三个必填输入项
   modelStore.customModels[scene].baseURL = t.baseURL
   modelStore.customModels[scene].modelName = t.modelName
 }
 
 function clearCustom() {
   const scene = customScene.value
-  modelStore.customModels[scene] = { apiKey: '', baseURL: '', modelName: '' }
+  modelStore.customModels[scene] = {
+    apiKey: '',
+    baseURL: '',
+    modelName: '',
+    t2iTemplate: 'z-image-turbo',
+    editTemplate: 'qwen-image-2.1-turbo-edit',
+    i2vTemplate: 'fastvideo-fasth3-i2v',
+    chatTemplate: 'qwen3-text-gen',
+  }
 }
 
 const modalOpen = ref(false)
