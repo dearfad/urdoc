@@ -1,5 +1,3 @@
-import { usePromptStore } from '~/stores/prompt'
-
 const VERSION = '2026-06-05'
 
 export type DurationOption = 81 | 121 | 161 | 241 | 441
@@ -58,71 +56,38 @@ export const useVideoStore = defineStore('video', () => {
   }
 
   async function generate() {
-    const caseStore = useCaseStore()
     const storyStore = useStoryStore()
     const imageStore = useImageStore()
-    const toast = useStateStore().toast
-
-    const caseContent = caseStore.case.content
-    const storyContent = storyStore.story.content
     const faceUrl = imageStore.faceOriginalUrls[0]
 
-    if (!caseContent) {
-      toast.add({
-        title: '缺少病例数据',
-        description: '请先在「生成病例」中创建病例',
-        color: 'warning',
-        icon: 'i-lucide-alert-triangle',
-      })
-      return
-    }
-
-    if (!storyContent) {
-      toast.add({
-        title: '缺少故事数据',
-        description: '请先在「编写故事」中生成故事',
-        color: 'warning',
-        icon: 'i-lucide-alert-triangle',
-      })
-      return
-    }
-
-    if (!faceUrl) {
-      toast.add({
-        title: '缺少患者头像',
-        description: '请先在「图像生成」中生成患者头像',
-        color: 'warning',
-        icon: 'i-lucide-alert-triangle',
-      })
-      return
-    }
+    const context = await buildGenerationContext({
+      type: 'video',
+      task: 'generate',
+      target: 'video',
+    })
 
     savedVideoUrl.value = null
 
-    const instructions = await usePromptStore().getEffectivePrompt('video', 'generate')
     const { result: refinedPrompt } = await $fetch('/api/chat', {
       method: 'POST',
       body: {
-        messages: [
-          {
-            role: 'user',
-            content: `病例：${JSON.stringify(caseContent, null, 2)}\n\n故事：${storyContent}`,
-          },
-        ],
-        instructions,
+        messages: [{ role: 'user', content: context.text }],
+        instructions: context.instructions,
         model: useModelStore().activeModels.chat,
         stream: false,
         template: getChatTemplate(),
       },
     })
 
+    // 故事缺失时按短片时长处理；头像缺失时省略参考图，不再阻断生成
+    const storyText = typeof storyStore.story.content === 'string' ? storyStore.story.content : ''
     const num_frames = selectedFrames.value === 'auto'
-      ? getDurationByContent(storyContent)
+      ? getDurationByContent(storyText)
       : selectedFrames.value
 
     videoApi.create(refinedPrompt, {
       model: useModelStore().activeModels.video,
-      image: faceUrl,
+      image: faceUrl || undefined,
       num_frames,
       frame_rate: 24,
       width: 1152,

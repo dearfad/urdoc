@@ -1,6 +1,7 @@
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 
+// 能力评估的内容汇总已统一交由 app/utils/context.ts 处理
 const VERSION = '2026-05-06'
 
 const rateDefault = {
@@ -49,70 +50,22 @@ export const useRateStore = defineStore('rate', () => {
 
   function prepare() {
     const stateStore = useStateStore()
-    const caseStore = useCaseStore()
-    const storyStore = useStoryStore()
-    const testStore = useTestStore()
-    const actStore = useActStore()
 
     reset()
 
     rate.value.custom = [...stateStore.rate.custom]
 
-    const parts: string[] = []
-
-    parts.push('以下是用户（医生）完成一例完整诊疗流程的全部记录，包括病例分析、病史采集、理论考核和问诊实践。请基于这些记录对其临床能力进行综合评价，而不是逐题纠正答案。')
-
-    parts.push(`## 病例内容\n${JSON.stringify(caseStore.case.content)}`)
-
-    if (storyStore.story.content) {
-      parts.push(`## 病史采集结果\n${storyStore.story.content}`)
-    }
-
-    if (testStore.test.content) {
-      const testContent = typeof testStore.test.content === 'string'
-        ? testStore.test.content
-        : JSON.stringify(testStore.test.content)
-      const testRecord = [`题目：${testContent}`]
-      if (testStore.test.userAnswers) {
-        testRecord.push(`用户答案：${JSON.stringify(testStore.test.userAnswers)}`)
-      }
-      if (testStore.test.score !== null) {
-        testRecord.push(`得分：${testStore.test.score}`)
-      }
-      parts.push(`## 理论考核记录\n${testRecord.join('\n')}`)
-    }
-
-    if (actStore.act.content && actStore.act.content.length > 0) {
-      const conversationText = actStore.act.content
-        .filter((m) => m.content)
-        .map((m) => {
-          const role = m.role === 'user' ? '医生' : '患者'
-          return `${role}：${m.content}`
-        })
-        .join('\n')
-      parts.push(`## 问诊对话记录\n${conversationText}`)
-    }
-
-    if (actStore.act.quiz) {
-      const quizRecord = [`题目：${JSON.stringify(actStore.act.quiz)}`]
-      if (actStore.act.userAnswers) {
-        quizRecord.push(`用户答案：${JSON.stringify(actStore.act.userAnswers)}`)
-      }
-      if (actStore.act.quizScore !== null) {
-        quizRecord.push(`得分：${actStore.act.quizScore}`)
-      }
-      parts.push(`## 问诊考核记录\n${quizRecord.join('\n')}`)
-    }
-
+    // 各项目记录由统一注入器按当前顺序收集，此处只保留评价引导语与用户设定的评价重点
+    const parts: string[] = [
+      '以下是用户（医生）在当前医学案例学习中已生成的全部记录。请基于这些记录对其临床能力进行综合评价，而不是逐题纠正答案。',
+    ]
     if (rate.value.custom.length > 0) {
       parts.push(`## 评价重点\n${rate.value.custom.join(', ')}`)
     }
 
-    const text = parts.join('\n\n')
-
     return {
       type: 'rate',
-      text,
+      text: parts.join('\n\n'),
       body: {
         model: useModelStore().activeModels.chat,
         reasoning: stateStore.rate.reasoning,
@@ -131,17 +84,23 @@ export const useRateStore = defineStore('rate', () => {
 
   async function generate() {
     const data = prepare()
+    const context = await buildGenerationContext({
+      type: 'rate',
+      task: 'generate',
+      target: 'rate',
+      hints: [data.text],
+    })
     if (chat.status === 'error') chat.clearError()
     chat.stop()
     const model = data.body.model
     chat.sendMessage(
-      { text: data.text },
+      { text: context.text },
       {
         body: {
           ...data.body,
           type: data.type,
           task: 'generate',
-          instructions: await usePromptStore().getEffectivePrompt('rate', 'generate') || '',
+          instructions: context.instructions,
           providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
           template: getChatTemplate(model),
         },

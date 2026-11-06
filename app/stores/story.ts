@@ -125,22 +125,26 @@ export const useStoryStore = defineStore('story', () => {
 
   async function generate() {
     const stateStore = useStateStore()
-    const caseStore = useCaseStore()
 
     reset()
 
     story.value.custom = [...stateStore.story.custom]
     const customText = story.value.custom.join(', ')
 
-    const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
+    const context = await buildGenerationContext({
+      type: 'story',
+      task: 'generate',
+      target: 'story',
+      hints: [customText ? `要点设定：${customText}` : ''],
+    })
 
     const model = useModelStore().activeModels.chat
-    send(text, {
+    send(context.text, {
       type: 'story',
       task: 'generate',
       model,
       reasoning: stateStore.story.reasoning,
-      instructions: await usePromptStore().getEffectivePrompt('story', 'generate'),
+      instructions: context.instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.story.reasoning),
     })
   }
@@ -186,69 +190,64 @@ export const useStoryStore = defineStore('story', () => {
 
   async function generateConversation() {
     const stateStore = useStateStore()
-    const caseStore = useCaseStore()
-    const storyContent = story.value.content
-    if (!storyContent) return
     conversation.value = { content: null, reasoning: null }
-    const model = useModelStore().activeModels.chat
     const roleHint = story.value.custom?.length
       ? `角色设定：${story.value.custom.join('，')}`
       : '角色设定：医生与患者'
-    const text = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n${roleHint}`
-    const instructions = await usePromptStore().getEffectivePrompt('conversation', 'prompt')
-    send(text, {
+    const context = await buildGenerationContext({
+      type: 'conversation',
+      task: 'prompt',
+      target: null,
+      excludeTitles: ['医患对话'],
+      hints: [roleHint],
+    })
+    const model = useModelStore().activeModels.chat
+    send(context.text, {
       type: 'story-conversation',
       task: 'conversation',
       model,
       reasoning: stateStore.conversation.reasoning,
-      instructions: instructions
-        ? `${instructions}\n\n${roleHint}\n\n病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}`
-        : `基于以下病例和患者小故事，生成一段两位角色（${roleHint.replace('角色设定：', '')}）的专业对话：\n\n病例：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}`,
+      instructions: context.instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.conversation.reasoning),
     })
   }
 
   async function generateDiscussion() {
     const stateStore = useStateStore()
-    const caseStore = useCaseStore()
-    const storyContent = story.value.content
-    const conversationContent = conversation.value.content
-    if (!storyContent || !conversationContent) return
     discussion.value = { content: null, reasoning: null }
+    const context = await buildGenerationContext({
+      type: 'discussion',
+      task: 'prompt',
+      target: null,
+      excludeTitles: ['话题讨论'],
+    })
     const model = useModelStore().activeModels.chat
-    const text = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`
-    const instructions = await usePromptStore().getEffectivePrompt('discussion', 'prompt')
-    send(text, {
+    send(context.text, {
       type: 'story-discussion',
       task: 'discussion',
       model,
       reasoning: stateStore.discussion.reasoning,
-      instructions: instructions
-        ? `${instructions}\n\n病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`
-        : `基于以下病例、小故事和人物对话，生成一组网络评论区风格的精选讨论：\n\n病例：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}`,
+      instructions: context.instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.discussion.reasoning),
     })
   }
 
   async function generateComment() {
     const stateStore = useStateStore()
-    const caseStore = useCaseStore()
-    const storyContent = story.value.content
-    const conversationContent = conversation.value.content
-    const discussionContent = discussion.value.content
-    if (!storyContent || !conversationContent || !discussionContent) return
     comment.value = { content: null, reasoning: null }
+    const context = await buildGenerationContext({
+      type: 'comment',
+      task: 'prompt',
+      target: null,
+      excludeTitles: ['专家点评'],
+    })
     const model = useModelStore().activeModels.chat
-    const context = `病例内容：${JSON.stringify(caseStore.case.content)}\n\n小故事：\n${storyContent}\n\n人物对话：\n${conversationContent}\n\n网友讨论：\n${discussionContent}`
-    const instructions = await usePromptStore().getEffectivePrompt('comment', 'prompt')
-    send(context, {
+    send(context.text, {
       type: 'story-comment',
       task: 'comment',
       model,
       reasoning: stateStore.comment.reasoning,
-      instructions: instructions
-        ? `${instructions}\n\n${context}`
-        : `基于以下病例、故事、对话和讨论，生成五段式专家点评：\n\n${context}`,
+      instructions: context.instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.comment.reasoning),
     })
   }

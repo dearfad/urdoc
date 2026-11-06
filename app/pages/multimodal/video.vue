@@ -17,6 +17,7 @@
       </UDashboardToolbar>
     </template>
     <template #body>
+      <RecordFlow />
       <div class="flex flex-col gap-2 md:flex-row">
         <div class="w-full md:flex-2">
           <UCard

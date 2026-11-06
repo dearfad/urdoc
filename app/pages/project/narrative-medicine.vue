@@ -176,7 +176,7 @@
                           class="flex items-start gap-2 border-t border-rose-100/70 bg-rose-50/40 px-4 py-3 text-[11px] leading-relaxed text-gray-500"
                         >
                           <UIcon name="i-lucide-info" class="mt-0.5 shrink-0 text-sm text-rose-400" />
-                          <span>默认仅生成并显示病例与故事；关闭上游会一并跳过其下游内容，未生成部分保留占位内容。显示设定同时作用于截屏。</span>
+                          <span>默认仅生成并显示病例与故事；生成顺序由各页面顶部的「生成流程」设定决定，未生成部分保留占位内容。显示设定同时作用于截屏。</span>
                         </div>
                       </template>
                     </UCard>
@@ -734,7 +734,7 @@ type SettingSection = {
   hint: string
   icon: string
   tone: string
-  // 上游未生成 / 容器未显示时，该项自动跳过
+  // 生成顺序由 record 决定，不再按上游自动跳过；仅显示项仍依附所属卡片
   generateDependsOn?: NarrativeSectionKey
   showDependsOn?: NarrativeSectionKey
 }
@@ -800,22 +800,17 @@ const settingSections: SettingSection[] = [
   },
 ]
 
-// 生成计划：下游内容依赖上游，关闭上游时自动跳过其下游步骤
+// 生成计划：各项目独立开关，实际执行顺序由 record 的设定顺序决定
 const generatePlan = computed<NarrativeFlags>(() => {
   const g = narrativeStore.generate
-  const caseOn = !!g.case
-  const storyOn = caseOn && !!g.story
-  const conversationOn = storyOn && !!g.conversation
-  const discussionOn = conversationOn && !!g.discussion
-  const commentOn = discussionOn && !!g.comment
   return {
-    case: caseOn,
-    story: storyOn,
-    conversation: conversationOn,
-    discussion: discussionOn,
-    comment: commentOn,
-    avatar: caseOn && !!g.avatar,
-    illustration: storyOn && !!g.illustration,
+    case: !!g.case,
+    story: !!g.story,
+    conversation: !!g.conversation,
+    discussion: !!g.discussion,
+    comment: !!g.comment,
+    avatar: !!g.avatar,
+    illustration: !!g.illustration,
   }
 })
 
@@ -833,21 +828,20 @@ const showPlan = computed<NarrativeFlags>(() => {
   }
 })
 
-// 上游未生成 / 容器未显示时，对应开关禁用并呈现为关闭状态
+// 生成开关不再受上游限制；显示开关仍依附所属卡片
 function isDisabled(section: SettingSection, kind: NarrativeSettingKind): boolean {
-  const dependsOn = kind === 'generate' ? section.generateDependsOn : section.showDependsOn
+  if (kind === 'generate') return false
+  const dependsOn = section.showDependsOn
   if (!dependsOn) return false
-  const plan = kind === 'generate' ? generatePlan.value : showPlan.value
-  return !plan[dependsOn]
+  return !showPlan.value[dependsOn]
 }
 
-// 上游未生成或所属卡片未显示时，给出明确提示，避免误以为开关失效
+// 所属卡片未显示时给出明确提示，避免误以为开关失效
 function isBlocked(section: SettingSection): boolean {
-  return isDisabled(section, 'generate') || isDisabled(section, 'show')
+  return isDisabled(section, 'show')
 }
 
 function settingHint(section: SettingSection): string {
-  if (isDisabled(section, 'generate')) return '需先开启上游内容生成'
   if (isDisabled(section, 'show')) return '需先显示所属卡片'
   return section.hint
 }
@@ -996,14 +990,59 @@ function waitForReady(types: string[]): Promise<void> {
   })
 }
 
+// 单个叙事子任务：聊天类任务须等 status 回到 ready，图像类任务失败时静默降级
+async function runNarrativeTask(task: NarrativeTaskKey) {
+  switch (task) {
+    case 'case':
+      await caseStore.generate()
+      await waitForReady(['case', 'case-verify', 'case-fix'])
+      break
+    case 'story':
+      await storyStore.generate()
+      await waitForReady(['story', 'story-verify', 'story-fix'])
+      break
+    case 'conversation':
+      await storyStore.generateConversation()
+      await waitForReady(['story-conversation'])
+      break
+    case 'discussion':
+      await storyStore.generateDiscussion()
+      await waitForReady(['story-discussion'])
+      break
+    case 'comment':
+      await storyStore.generateComment()
+      await waitForReady(['story-comment'])
+      break
+    case 'avatar':
+      isAvatarGenerating.value = true
+      try {
+        await imageStore.face()
+      } catch {
+        // 头像生成失败时忽略错误，保留占位图
+      } finally {
+        isAvatarGenerating.value = false
+      }
+      break
+    case 'illustration':
+      isIllustrationGenerating.value = true
+      try {
+        await imageStore.illustration()
+      } catch {
+        // 插图生成失败时忽略错误
+      } finally {
+        isIllustrationGenerating.value = false
+      }
+      break
+  }
+}
+
 async function generateNarrative() {
-  // 以开始生成时的设定为准，避免生成过程中修改设定导致流程错乱
-  const plan = generatePlan.value
-  // 病例是全部内容的起点：未开启时其余内容均无法生成，提示并展开设定卡片
-  if (!plan.case) {
+  // 以开始生成时的设定与顺序为准，避免生成过程中修改导致流程错乱
+  const plan = recordStore.getNarrativePlan(generatePlan.value)
+  if (!plan.length) {
     stateStore.toast.add({
       title: '无法生成叙事',
-      description: '病例是叙事内容的基础，请在「设定」中开启病例生成',
+      description: '请在「设定」中至少开启一项内容生成',
       color: 'warning',
       icon: 'i-lucide-settings',
     })
@@ -1011,7 +1050,7 @@ async function generateNarrative() {
     return
   }
 
-  // 生成前清空所有相关内容（病例、故事、图像等），确保从干净状态开始
+  // 全量重置：叙事单页始终从干净状态开始，已设定的生成顺序保持不变
   recordStore.reset()
   imageStore.reset()
   isAvatarGenerating.value = false
@@ -1027,51 +1066,10 @@ async function generateNarrative() {
     ]
   }
 
-  // 病例：全流程起点，必须等待完整生成完毕（含可能的自动校验/修正）
-  await caseStore.generate()
-  await waitForReady(['case', 'case-verify', 'case-fix'])
-
-  // 故事：生成时会同步清空对话/讨论/点评等衍生内容
-  if (plan.story) {
-    await storyStore.generate()
-    await waitForReady(['story', 'story-verify', 'story-fix'])
-  }
-
-  // 对话、讨论、点评：三者彼此依赖上游内容，须串行等待各自完成
-  if (plan.conversation) {
-    await storyStore.generateConversation()
-    await waitForReady(['story-conversation'])
-  }
-  if (plan.discussion) {
-    await storyStore.generateDiscussion()
-    await waitForReady(['story-discussion'])
-  }
-  if (plan.comment) {
-    await storyStore.generateComment()
-    await waitForReady(['story-comment'])
-  }
-
-  // 患者头像：基于已完成的病例生成，同步等待完成后再结束
-  if (plan.avatar) {
-    isAvatarGenerating.value = true
-    try {
-      await imageStore.face()
-    } catch {
-      // 头像生成失败时忽略错误，保留占位图
-    } finally {
-      isAvatarGenerating.value = false
-    }
-  }
-
-  // 故事插图：以已生成的患者头像作为参考图，保持人物一致
-  if (plan.illustration) {
-    isIllustrationGenerating.value = true
-    try {
-      await imageStore.illustration()
-    } catch {
-      // 插图生成失败时忽略错误
-    } finally {
-      isIllustrationGenerating.value = false
+  // 按 record 的设定顺序逐主项串行执行，主项内的子步骤就近跟随
+  for (const { tasks } of plan) {
+    for (const task of tasks) {
+      await runNarrativeTask(task)
     }
   }
 }

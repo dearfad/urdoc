@@ -1,5 +1,3 @@
-import { usePromptStore } from '~/stores/prompt'
-
 const VERSION = '2026-06-11'
 
 export type AudioCacheEntry = {
@@ -27,14 +25,20 @@ export const useAudioStore = defineStore('audio', () => {
 
   async function generate() {
     const model = useModelStore().activeModels.audio
+    const context = await buildGenerationContext({
+      type: 'audio',
+      task: 'generate',
+      target: 'audio',
+      hints: ['生成语音'],
+    })
     audioApi.sendGenerate(
-      '生成语音',
+      context.text,
       {
         type: 'audio',
         task: 'generate',
         model,
         reasoning: false,
-        instructions: await usePromptStore().getEffectivePrompt('audio', 'generate'),
+        instructions: context.instructions,
         providerOptions: useProviderStore().getProviderOptions(model.provider, false),
       },
     )

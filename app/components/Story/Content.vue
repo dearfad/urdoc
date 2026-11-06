@@ -183,20 +183,10 @@ const isGenerating = computed(() => {
   )
 })
 
-const isLocked = computed(() => {
-  if (!props.dependsOn) return false
-  if (props.dependsOn === 'story') return !storyStore.story.content
-  if (props.dependsOn === 'conversation') return !storyStore.conversation.content
-  if (props.dependsOn === 'discussion') return !storyStore.discussion.content
-  return false
-})
+// 自由生成顺序下不再锁定衍生内容：缺少上游时由提示词依据现有资料生成
+const isLocked = computed(() => false)
 
-const lockHint = computed(() => {
-  if (props.dependsOn === 'story') return '请先生成故事'
-  if (props.dependsOn === 'conversation') return '请先生成对话'
-  if (props.dependsOn === 'discussion') return '请先生成讨论'
-  return '请先完成上游内容'
-})
+const lockHint = computed(() => '请先完成上游内容')
 
 const viewMode = ref('content')
 

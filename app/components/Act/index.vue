@@ -46,13 +46,8 @@
 
       <template #default>
         <ClientOnly>
-          <div
-            v-if="!caseStore.case.content"
-            class="text-muted flex min-h-[400px] items-center justify-center"
-          >
-            请先生成病例
-          </div>
-          <template v-else>
+          <!-- 自由生成顺序下不再要求先生成病例，任何已有内容都可作为问诊背景 -->
+          <template v-if="true">
             <template v-if="phase === 'chatting' || phase === 'generating-quiz'">
               <UChatPalette
                 :ui="{
@@ -79,7 +74,7 @@
                     <UChatPrompt
                       v-model="userInput"
                       placeholder="请输入您的问题..."
-                      :disabled="!caseStore.case.content || chat.status === 'streaming' || consultationEnded"
+                      :disabled="chat.status === 'streaming' || consultationEnded"
                       class="flex-1"
                       @submit="sendMessage"
                     />
@@ -129,15 +124,11 @@ defineEmits(['toggleSettings'])
 const isMenuOpen = ref(false)
 import { DefaultChatTransport, isReasoningUIPart, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
-import { getPrompt } from '~/utils/prompts'
 import { safeParseJson } from '~/utils/json'
 
-const caseStore = useCaseStore()
-const storyStore = useStoryStore()
 const actStore = useActStore()
 const stateStore = useStateStore()
 const modelStore = useModelStore()
-const promptStore = usePromptStore()
 
 const userInput = ref('')
 const consultationEnded = ref(false)
@@ -185,18 +176,17 @@ const dialogueText = computed(() => {
 })
 
 async function buildSystemPrompt() {
-  let prompt = await getPrompt('act', 'prompt')
-  if (caseStore.case.content) {
-    prompt += `\n\n## 病例内容\n${JSON.stringify(caseStore.case.content)}`
-  }
-  if (storyStore.story.content) {
-    prompt += `\n\n## 背景故事\n${storyStore.story.content}`
-  }
-  return prompt
+  const context = await buildGenerationContext({
+    type: 'act',
+    task: 'prompt',
+    target: null,
+    excludeTitles: ['互动实践记录'],
+  })
+  return context.instructions
 }
 
 async function sendMessage() {
-  if (!userInput.value.trim() || !caseStore.case.content || chat.value.status === 'streaming' || phase.value !== 'chatting') return
+  if (!userInput.value.trim() || chat.value.status === 'streaming' || phase.value !== 'chatting') return
   const text = userInput.value
   userInput.value = ''
   actStore.act.content.push({ role: 'user', content: text })
@@ -262,30 +252,24 @@ async function endConsultation() {
 
   phase.value = 'generating-quiz'
 
-  const conversationText = actStore.act.content
-    .filter((m) => m.content)
-    .map((m) => {
-      const role = m.role === 'user' ? '医生' : '患者'
-      return `${role}：${m.content}`
-    })
-    .join('\n')
-
-  let context = `病例内容：${JSON.stringify(caseStore.case.content)}`
-  if (storyStore.story.content) {
-    context += `\n\n背景故事：${storyStore.story.content}`
-  }
-  context += `\n\n问诊对话：\n${conversationText}`
+  const context = await buildGenerationContext({
+    type: 'act',
+    task: 'end',
+    target: null,
+    excludeTitles: ['互动实践记录'],
+    extra: [{ title: '本次问诊对话', content: dialogueText.value }],
+  })
 
   const model = modelStore.activeModels.chat
   const reasoning = stateStore.act?.reasoning ?? false
   quizChat.value.sendMessage(
-    { text: context },
+    { text: context.text },
     {
       body: {
         model,
         type: 'act',
         task: 'end',
-        instructions: await promptStore.getEffectivePrompt('act', 'end'),
+        instructions: context.instructions,
         providerOptions: useProviderStore().getProviderOptions(model?.provider, reasoning),
         template: getChatTemplate(model),
       },
@@ -302,30 +286,24 @@ async function regenerateQuiz() {
   actStore.act.quizScore = null
   phase.value = 'generating-quiz'
 
-  const conversationText = actStore.act.content
-    .filter((m) => m.content)
-    .map((m) => {
-      const role = m.role === 'user' ? '医生' : '患者'
-      return `${role}：${m.content}`
-    })
-    .join('\n')
-
-  let context = `病例内容：${JSON.stringify(caseStore.case.content)}`
-  if (storyStore.story.content) {
-    context += `\n\n背景故事：${storyStore.story.content}`
-  }
-  context += `\n\n问诊对话：\n${conversationText}`
+  const context = await buildGenerationContext({
+    type: 'act',
+    task: 'end',
+    target: null,
+    excludeTitles: ['互动实践记录'],
+    extra: [{ title: '本次问诊对话', content: dialogueText.value }],
+  })
 
   const model = modelStore.activeModels.chat
   const reasoning = stateStore.act?.reasoning ?? false
   quizChat.value.sendMessage(
-    { text: context },
+    { text: context.text },
     {
       body: {
         model,
         type: 'act',
         task: 'end',
-        instructions: await promptStore.getEffectivePrompt('act', 'end'),
+        instructions: context.instructions,
         providerOptions: useProviderStore().getProviderOptions(model?.provider, reasoning),
         template: getChatTemplate(model),
       },

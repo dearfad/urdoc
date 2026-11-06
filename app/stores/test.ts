@@ -60,14 +60,14 @@ export const useTestStore = defineStore('test', () => {
 
   function prepare() {
     const stateStore = useStateStore()
-    const caseStore = useCaseStore()
 
     reset()
 
     test.value.custom = [...stateStore.test.custom]
     const customText = test.value.custom.join(', ')
 
-    const text = `病例内容：${JSON.stringify(caseStore.case.content)}, 要点设定：${customText}`
+    // 内容上下文由统一注入器按当前顺序收集，此处只保留本场景的要点设定
+    const text = customText ? `要点设定：${customText}` : ''
 
     return {
       type: 'test',
@@ -90,17 +90,23 @@ export const useTestStore = defineStore('test', () => {
 
   async function generate() {
     const data = prepare()
+    const context = await buildGenerationContext({
+      type: 'test',
+      task: 'generate',
+      target: 'test',
+      hints: [data.text],
+    })
     if (chat.status === 'error') chat.clearError()
     chat.stop()
     const model = data.body.model
     chat.sendMessage(
-      { text: data.text },
+      { text: context.text },
       {
         body: {
           ...data.body,
           type: data.type,
           task: 'generate',
-          instructions: await usePromptStore().getEffectivePrompt('test', 'generate'),
+          instructions: context.instructions,
           providerOptions: useProviderStore().getProviderOptions(model.provider, data.body.reasoning),
           template: getChatTemplate(model),
         },

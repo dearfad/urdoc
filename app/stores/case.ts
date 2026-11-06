@@ -106,26 +106,35 @@ export const useCaseStore = defineStore('case', () => {
 
   async function generate() {
     const stateStore = useStateStore()
-    const recordStore = useRecordStore()
 
+    // 只重置病例自身：其余内容由 record 的「需重新生成」提示接管，避免破坏自由生成顺序
     reset()
-    recordStore.reset()
 
     case_.value.textbook = stateStore.case.textbook ? JSON.parse(JSON.stringify(stateStore.case.textbook)) : null
     case_.value.custom = [...stateStore.case.custom]
     const customText = case_.value.custom.join(', ')
 
-    const text = stateStore.case.textbook?.content
-      ? `要点设定：${Object.values(stateStore.case.textbook.content).join(', ')}, ${customText}`
-      : customText
+    const hints = [
+      stateStore.case.textbook?.content
+        ? `要点设定：${Object.values(stateStore.case.textbook.content).join(', ')}`
+        : '',
+      customText ? `要点设定：${customText}` : '',
+    ].filter(Boolean)
+
+    const context = await buildGenerationContext({
+      type: 'case',
+      task: 'generate',
+      target: 'case',
+      hints,
+    })
 
     const model = useModelStore().activeModels.chat
-    send(text, {
+    send(context.text, {
       type: 'case',
       task: 'generate',
       model,
       reasoning: stateStore.case.reasoning,
-      instructions: await usePromptStore().getEffectivePrompt('case', 'generate'),
+      instructions: context.instructions,
       providerOptions: useProviderStore().getProviderOptions(model.provider, stateStore.case.reasoning),
     })
   }
