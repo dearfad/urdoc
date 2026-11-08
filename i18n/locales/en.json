@@ -1,0 +1,39 @@
+{
+  "locale": {
+    "label": "Language",
+    "switch": "Switch language",
+    "zh": "简体中文",
+    "en": "English"
+  },
+  "header": {
+    "theme": "Theme",
+    "docs": "Docs"
+  },
+  "home": {
+    "title": "Virtual Case Study & Research Platform",
+    "subtitle": "AI-Powered Clinical Learning with CSTAR",
+    "description": "Generate cases, write stories, design questions, simulate consultations, and assess competence — the CSTAR framework in practice.",
+    "start": "Get Started",
+    "docs": "Docs"
+  },
+  "sidebar": {
+    "overview": "Overview",
+    "projects": "Projects",
+    "narrativeMedicine": "Narrative Medicine",
+    "clinicalSimulation": "Clinical Simulation",
+    "pedagogicalResearch": "Pedagogical Research",
+    "cstar": "CSTAR",
+    "generateCase": "Case",
+    "writeStory": "Story",
+    "testTheory": "Test",
+    "interactivePractice": "Act",
+    "evaluateAbility": "Rate",
+    "multimodal": "Multimodal",
+    "imageCreation": "Image",
+    "videoRendering": "Video",
+    "audioSynthesis": "Audio",
+    "docs": "Docs",
+    "login": "Sign in",
+    "settings": "Settings"
+  }
+}

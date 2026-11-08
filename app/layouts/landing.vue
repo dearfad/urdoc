@@ -1,5 +1,5 @@
 <template>
-  <UApp :locale="zh_cn">
+  <UApp :locale="uiLocale">
     <UMain>
       <slot />
     </UMain>
@@ -7,5 +7,5 @@
 </template>
 
 <script setup lang="ts">
-import { zh_cn } from '@nuxt/ui/locale'
+const { uiLocale } = useUiLocale()
 </script>

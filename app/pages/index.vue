@@ -34,6 +34,13 @@
     <span class="pointer-events-none absolute left-[45%] top-[12%] size-[1.5px] animate-float rounded-full bg-teal-400/20" style="animation-delay: 0.8s" />
     <span class="pointer-events-none absolute right-[40%] bottom-[15%] size-[2.5px] animate-float rounded-full bg-emerald-400/25" style="animation-delay: 2s" />
 
+    <!-- 语言切换 -->
+    <div class="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
+      <AppLocaleSwitch
+        button-class="flex gap-2 rounded-full border border-zinc-800/60 bg-zinc-900/70 px-4 text-xs font-medium tracking-[0.15em] text-zinc-300 backdrop-blur-md transition-colors duration-200 hover:bg-zinc-800/70 hover:text-white"
+      />
+    </div>
+
     <!-- 内容层 -->
     <div class="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24 text-center">
       <!-- 顶部标识 -->
@@ -55,10 +62,10 @@
         style="animation-delay: 0.2s; animation-fill-mode: both;"
       >
         <span class="block text-5xl font-bold leading-[1.1] tracking-tight text-zinc-100 sm:text-6xl lg:text-7xl xl:text-8xl [text-wrap:balance]">
-          虚拟病例研究平台
+          {{ t('home.title') }}
         </span>
         <span class="mt-5 block text-sm font-light tracking-[0.3em] text-zinc-500/80 sm:text-base">
-          Virtual Case Study &amp; Research Platform
+          {{ t('home.subtitle') }}
         </span>
       </h1>
 
@@ -67,7 +74,7 @@
         class="mt-8 max-w-2xl animate-reveal text-base font-light leading-relaxed text-zinc-400/90 sm:text-lg [text-wrap:balance]"
         style="animation-delay: 0.35s; animation-fill-mode: both;"
       >
-        通过大语言模型生成病例、编写故事、设计问题、模拟问诊、评估能力，CSTAR模式的应用与创新实践
+        {{ t('home.description') }}
       </p>
 
       <!-- 流光分隔线 -->
@@ -96,15 +103,18 @@ definePageMeta({
   layout: 'landing',
 })
 
-const links = ref<ButtonProps[]>([
+const { t } = useI18n()
+const localePath = useLocalePath()
+
+const links = computed<ButtonProps[]>(() => [
   {
-    label: '开始',
-    to: '/dashboard',
+    label: t('home.start'),
+    to: localePath('/dashboard'),
     icon: 'i-lucide-square-play',
   },
   {
-    label: '文档',
-    to: '/docs',
+    label: t('home.docs'),
+    to: localePath('/docs'),
     color: 'neutral',
     variant: 'subtle',
     trailingIcon: 'i-lucide-arrow-right',

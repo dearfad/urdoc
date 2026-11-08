@@ -1,11 +1,11 @@
 <template>
   <div>
-    <UTooltip text="主题">
+    <UTooltip :text="t('header.theme')">
       <UColorModeButton />
     </UTooltip>
-    <UTooltip text="文档">
+    <UTooltip :text="t('header.docs')">
       <UButton
-        to="/docs"
+        :to="localePath('/docs')"
         icon="i-lucide-file-text"
         aria-label="Documentation"
         color="neutral"
@@ -22,5 +22,11 @@
         variant="ghost"
       />
     </UTooltip>
+    <AppLocaleSwitch size="md" />
   </div>
 </template>
+
+<script setup lang="ts">
+const { t } = useI18n()
+const localePath = useLocalePath()
+</script>

@@ -1,0 +1,39 @@
+{
+  "locale": {
+    "label": "语言",
+    "switch": "切换语言",
+    "zh": "简体中文",
+    "en": "English"
+  },
+  "header": {
+    "theme": "主题",
+    "docs": "文档"
+  },
+  "home": {
+    "title": "虚拟病例研究平台",
+    "subtitle": "Virtual Case Study & Research Platform",
+    "description": "通过大语言模型生成病例、编写故事、设计问题、模拟问诊、评估能力，CSTAR模式的应用与创新实践",
+    "start": "开始",
+    "docs": "文档"
+  },
+  "sidebar": {
+    "overview": "概览",
+    "projects": "项目",
+    "narrativeMedicine": "叙事医学",
+    "clinicalSimulation": "临床实战",
+    "pedagogicalResearch": "教法研究",
+    "cstar": "CSTAR",
+    "generateCase": "生成病例",
+    "writeStory": "编写故事",
+    "testTheory": "考核理论",
+    "interactivePractice": "互动实践",
+    "evaluateAbility": "评估能力",
+    "multimodal": "多模态",
+    "imageCreation": "图像创作",
+    "videoRendering": "影像渲染",
+    "audioSynthesis": "音频合成",
+    "docs": "文档",
+    "login": "登录",
+    "settings": "设置"
+  }
+}

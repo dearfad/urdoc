@@ -1,5 +1,5 @@
 <template>
-  <UApp :locale="zh_cn">
+  <UApp :locale="uiLocale">
     <UDashboardGroup>
       <AppSidebar />
       <div class="min-w-0 flex-1 flex">
@@ -10,5 +10,5 @@
 </template>
 
 <script setup lang="ts">
-import { zh_cn } from '@nuxt/ui/locale'
+const { uiLocale } = useUiLocale()
 </script>

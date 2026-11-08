@@ -2,7 +2,7 @@
   <UDashboardSidebar id="default" collapsible resizable>
     <template #header="{ collapsed }">
       <AppLogo class="h-8 w-auto shrink-0" />
-      <NuxtLink to="/">
+      <NuxtLink :to="localePath('/')">
         <span v-if="!collapsed" class="text-xl font-bold">URDOC</span>
       </NuxtLink>
     </template>
@@ -13,17 +13,17 @@
 
     <template #footer="{ collapsed }">
       <UButton
-        :label="collapsed ? '' : '登录'"
+        :label="collapsed ? '' : t('sidebar.login')"
         icon="i-lucide-user"
-        to="/user"
+        :to="localePath('/user')"
         color="neutral"
         variant="ghost"
         class="w-full text-base font-bold"
       />
       <UButton
-        :label="collapsed ? '' : '设置'"
+        :label="collapsed ? '' : t('sidebar.settings')"
         icon="i-lucide-settings"
-        to="/settings"
+        :to="localePath('/settings')"
         color="neutral"
         variant="ghost"
         class="w-full text-base font-bold"
@@ -35,104 +35,108 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { generateDocSidebarItems } from '~/utils/docs'
-const items = [
+
+const { t } = useI18n()
+const localePath = useLocalePath()
+
+const items = computed<NavigationMenuItem[]>(() => [
   {
-    label: '概览',
+    label: t('sidebar.overview'),
     icon: 'i-lucide-layout-dashboard',
-    to: '/dashboard',
+    to: localePath('/dashboard'),
   },
   {
-    label: '项目',
+    label: t('sidebar.projects'),
     icon: 'i-lucide-book',
     defaultOpen: true,
     children: [
       {
-        label: '叙事医学',
+        label: t('sidebar.narrativeMedicine'),
         icon: 'i-lucide-book-plus',
-        to: '/project/narrative-medicine',
+        to: localePath('/project/narrative-medicine'),
         class: 'font-bold text-base',
       },
       {
-        label: '临床实战',
+        label: t('sidebar.clinicalSimulation'),
         icon: 'i-lucide-stethoscope',
-        to: '/project/clinical-simulation',
+        to: localePath('/project/clinical-simulation'),
         class: 'font-bold text-base',
       },
       {
-        label: '教法研究',
+        label: t('sidebar.pedagogicalResearch'),
         icon: 'i-lucide-graduation-cap',
-        to: '/project/pedagogical-research',
+        to: localePath('/project/pedagogical-research'),
         class: 'font-bold text-base',
       },
     ],
   },
   {
-    label: 'CSTAR',
+    label: t('sidebar.cstar'),
     icon: 'i-lucide-circle-star',
     defaultOpen: true,
     children: [
       {
-        label: '生成病例',
+        label: t('sidebar.generateCase'),
         icon: 'i-mdi-alpha-c-circle',
-        to: '/cstar/case',
+        to: localePath('/cstar/case'),
         class: 'font-bold text-base',
       },
       {
-        label: '编写故事',
+        label: t('sidebar.writeStory'),
         icon: 'i-mdi-alpha-s-circle',
-        to: '/cstar/story',
+        to: localePath('/cstar/story'),
         class: 'font-bold text-base',
       },
       {
-        label: '考核理论',
+        label: t('sidebar.testTheory'),
         icon: 'i-mdi-alpha-t-circle',
-        to: '/cstar/test',
+        to: localePath('/cstar/test'),
         class: 'font-bold text-base',
       },
       {
-        label: '互动实践',
+        label: t('sidebar.interactivePractice'),
         icon: 'i-mdi-alpha-a-circle',
-        to: '/cstar/act',
+        to: localePath('/cstar/act'),
         class: 'font-bold text-base',
       },
       {
-        label: '评估能力',
+        label: t('sidebar.evaluateAbility'),
         icon: 'i-mdi-alpha-r-circle',
-        to: '/cstar/rate',
+        to: localePath('/cstar/rate'),
         class: 'font-bold text-base',
       },
     ],
   },
   {
-    label: '多模态',
+    label: t('sidebar.multimodal'),
     icon: 'i-lucide-file-stack',
     defaultOpen: true,
     children: [
       {
-        label: '图像创作',
+        label: t('sidebar.imageCreation'),
         icon: 'i-lucide-image',
-        to: '/multimodal/image',
+        to: localePath('/multimodal/image'),
         class: 'font-bold text-base',
       },
       {
-        label: '影像渲染',
+        label: t('sidebar.videoRendering'),
         icon: 'i-lucide-video',
-        to: '/multimodal/video',
+        to: localePath('/multimodal/video'),
         class: 'font-bold text-base',
       },
       {
-        label: '音频合成',
+        label: t('sidebar.audioSynthesis'),
         icon: 'i-lucide-audio-lines',
-        to: '/multimodal/audio',
+        to: localePath('/multimodal/audio'),
         class: 'font-bold text-base',
       },
     ],
   },
   {
-    label: '文档',
+    label: t('sidebar.docs'),
     icon: 'i-lucide-book-open-text',
     defaultOpen: false,
     children: generateDocSidebarItems(),
   },
-] satisfies NavigationMenuItem[]
+])
 </script>
