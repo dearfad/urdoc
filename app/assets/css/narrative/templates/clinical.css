@@ -1,0 +1,106 @@
+/* 第二套模板「病历档案 / 临床简报」：石板蓝灰低饱和配色、无衬线编号刊头、
+   紧凑栅格、左侧竖线 accent，关闭光晕与动效以利打印。
+   本文件仅提供令牌，不修改任何 Vue 组件，用于验证新增模板的扩展成本。 */
+:is(.nm-page, .nm-sheet)[data-nm-template='clinical'] {
+  --nm-page-bg: #f1f5f9;
+  --nm-paper-from: #ffffff;
+  --nm-paper-to: #ffffff;
+  --nm-sheet-shadow: 0 8px 24px -12px rgb(15 23 42 / 18%);
+  --nm-sheet-ring: rgb(148 163 184 / 35%);
+  --nm-sheet-radius: 6px;
+
+  --nm-title-bg: none;
+  --nm-title-color: #0f172a;
+  --nm-title-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nm-title-weight: 700;
+  --nm-title-tracking: -0.02em;
+  --nm-title-shadow: none;
+  --nm-nameplate-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nm-nameplate-bg: none;
+  --nm-nameplate-color: #334155;
+  --nm-nameplate-weight: 600;
+  --nm-nameplate-tracking: 0.08em;
+  --nm-nameplate-sub-tracking: 0.25em;
+  --nm-nameplate-number: 'NM / 001 ·';
+  --nm-nameplate-number-gap: 0.5em;
+  --nm-nameplate-line: #cbd5e1;
+  --nm-muted: #64748b;
+
+  --nm-decor-opacity: 0;
+  --nm-text: #334155;
+  --nm-title-strong: #0f172a;
+  --nm-md-text: #334155;
+  --nm-gap: 0.875rem;
+  --nm-card-bg: #ffffff;
+  --nm-card-blur: 0px;
+  --nm-card-radius: 6px;
+  --nm-card-shadow: none;
+  --nm-card-head-bg: #f8fafc;
+  --nm-card-head-border: #e2e8f0;
+  --nm-icon-radius: 4px;
+  --nm-icon-shadow: none;
+
+  --nm-accent-width: 3px;
+  --nm-accent-height: 100%;
+  --nm-accent-angle: 180deg;
+  --nm-accent-opacity: 1;
+
+  --nm-avatar-ring: #cbd5e1;
+  --nm-avatar-shadow: none;
+  --nm-mask-bg: rgb(248 250 252 / 90%);
+  --nm-illus-bg: linear-gradient(to bottom right, #e2e8f0, #f1f5f9, #e2e8f0);
+  --nm-bubble-shadow: none;
+  --nm-bubble-hover-shadow: none;
+  --nm-item-shadow: none;
+  --nm-item-hover-shadow: none;
+  --nm-highlight-bg: #f8fafc;
+  --nm-footer-line: #e2e8f0;
+  --nm-footer-text: #94a3b8;
+
+  --nm-page-anim: none;
+  --nm-block-anim: none;
+  --nm-avatar-anim: none;
+  --nm-illus-hover-transform: none;
+  --nm-illus-hover-shadow: none;
+  --nm-bubble-hover-transform: none;
+  --nm-item-hover-transform: none;
+
+  --nm-control: #0f766e;
+  --nm-control-strong: #0f766e;
+  --nm-control-hover: #115e59;
+  --nm-control-line: rgb(15 118 110 / 45%);
+  --nm-control-ring: rgb(15 118 110 / 45%);
+  --nm-control-soft: rgb(15 118 110 / 8%);
+  --nm-control-shadow: none;
+  --nm-control-shadow-hover: none;
+  --nm-control-btn-bg: rgb(255 255 255 / 90%);
+  --nm-control-btn-border: #cbd5e1;
+  --nm-control-btn-hover: #f1f5f9;
+  --nm-control-btn-border-hover: #94a3b8;
+  --nm-control-btn-shadow: none;
+
+  --nm-case-from: #475569;
+  --nm-case-via: #64748b;
+  --nm-case-to: #475569;
+  --nm-case-tone: #334155;
+
+  --nm-story-from: #0f766e;
+  --nm-story-via: #14b8a6;
+  --nm-story-to: #0d9488;
+  --nm-story-tone: #0f766e;
+
+  --nm-conversation-from: #0369a1;
+  --nm-conversation-via: #0ea5e9;
+  --nm-conversation-to: #0284c7;
+  --nm-conversation-tone: #0369a1;
+
+  --nm-discussion-from: #1d4ed8;
+  --nm-discussion-via: #3b82f6;
+  --nm-discussion-to: #2563eb;
+  --nm-discussion-tone: #1d4ed8;
+
+  --nm-comment-from: #4338ca;
+  --nm-comment-via: #6366f1;
+  --nm-comment-to: #4f46e5;
+  --nm-comment-tone: #4338ca;
+}

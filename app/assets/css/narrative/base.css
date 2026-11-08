@@ -1,0 +1,489 @@
+/* 叙事单页结构样式：只消费 --nm-* 视觉令牌，具体取值由 templates/*.css 注入。
+   本文件为全局 CSS，不能使用 Vue SFC 的 :deep() / :global() 语法。 */
+
+.nm-page {
+  background: var(--nm-page-bg, #fff7fa);
+}
+
+.nm-sheet {
+  position: relative;
+  background: radial-gradient(circle at top, var(--nm-paper-from, #ffffff), var(--nm-paper-to, #fff7fa));
+  border-radius: var(--nm-sheet-radius, 0.75rem);
+  box-shadow:
+    var(--nm-sheet-shadow, 0 25px 60px -20px rgb(244 114 182 / 25%)),
+    0 0 0 1px var(--nm-sheet-ring, rgb(255 255 255 / 70%));
+  color: var(--nm-text, #374151);
+  font-family: var(--nm-body-font, inherit);
+  animation: var(--nm-page-anim, nm-page-fade-in 900ms ease-out both);
+}
+
+@keyframes nm-page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* 纸张装饰光晕：透明度由模板控制，可整体关闭 */
+.nm-decor {
+  opacity: var(--nm-decor-opacity, 1);
+}
+.nm-decor-1 {
+  background: var(--nm-decor-1, linear-gradient(to right, #f0abfc66, #fde68a66, #a5f3fc66));
+}
+.nm-decor-2 {
+  background: var(--nm-decor-2, linear-gradient(to bottom right, #fecdd34d, #fed7aa4d));
+}
+.nm-decor-3 {
+  background: var(--nm-decor-3, linear-gradient(to top right, #a5f3fc4d, #ddd6fe4d));
+}
+
+/* 刊头：疾病名与刊名都支持「渐变文字」与「实色文字」两种模板表现 */
+.nm-title {
+  font-family: var(--nm-title-font, inherit);
+  font-weight: var(--nm-title-weight, 800);
+  letter-spacing: var(--nm-title-tracking, normal);
+  background-image: var(--nm-title-bg, none);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--nm-title-color, transparent);
+  filter: var(--nm-title-shadow, drop-shadow(0 3px 6px rgb(0 0 0 / 18%)));
+}
+
+.nm-nameplate-line {
+  background: var(--nm-nameplate-line, linear-gradient(to right, transparent, #94a3b8b3, transparent));
+}
+.nm-nameplate {
+  font-family: var(--nm-nameplate-font, ui-serif, Georgia, serif);
+  font-weight: var(--nm-nameplate-weight, 700);
+  letter-spacing: var(--nm-nameplate-tracking, 0.25em);
+  background-image: var(--nm-nameplate-bg, none);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--nm-nameplate-color, #111827);
+}
+/* 模板可选择在刊名前加编号，纯视觉装饰，不改变 DOM 结构 */
+.nm-nameplate::before {
+  content: var(--nm-nameplate-number, '');
+  margin-right: var(--nm-nameplate-number-gap, 0);
+  font-family: ui-monospace, monospace;
+  font-size: 0.6em;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+.nm-nameplate-sub {
+  color: var(--nm-muted, #64748b);
+  letter-spacing: var(--nm-nameplate-sub-tracking, 0.45em);
+}
+
+/* 区块容器与卡片：间距、圆角、阴影均由模板令牌派生 */
+.nm-blocks {
+  gap: var(--nm-gap, 1.25rem);
+}
+
+/* 布局模板的分组容器：是否启用网格由具体模板 CSS 决定 */
+.nm-layout {
+  gap: var(--nm-gap, 1.25rem);
+}
+.nm-layout-area {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--nm-gap, 1.25rem);
+}
+.nm-layout-area > .nm-block {
+  width: 100%;
+  flex: 1 1 auto;
+}
+/* 分组布局中让卡片撑满所在网格区域，避免左右两列高度不齐 */
+.nm-layout-area .nm-card-root {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+.nm-layout-area .nm-card-body {
+  flex: 1 1 auto;
+}
+
+/* 刊头附加信息行：默认隐藏，需要它的模板自行显示 */
+.nm-sheet-kicker {
+  display: none;
+}
+
+.nm-block {
+  position: relative;
+  border-radius: var(--nm-card-radius, 0.75rem);
+  animation: var(--nm-block-anim, nm-card-rise 700ms ease-out both);
+  animation-delay: var(--nm-delay, 0ms);
+}
+
+/* 模板可选择显示区块编号水印，纯视觉装饰 */
+.nm-block::before {
+  content: var(--nm-block-number, '');
+  position: absolute;
+  right: var(--nm-block-number-right, 1rem);
+  top: var(--nm-block-number-top, 0.25rem);
+  z-index: 2;
+  font: 900 var(--nm-block-number-size, 3.5rem) / 1 var(--nm-block-number-font, ui-sans-serif, system-ui, sans-serif);
+  letter-spacing: -0.05em;
+  color: var(--nm-block-number-color, #111827);
+  opacity: var(--nm-block-number-opacity, 0.06);
+  pointer-events: none;
+}
+
+.nm-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--nm-card-radius, 0.75rem);
+  box-shadow: var(--nm-card-shadow, 0 30px 60px -40px rgb(236 72 153 / 40%));
+  pointer-events: none;
+}
+
+/* 各区块把模板提供的 5 组主色映射到统一的 accent 变量 */
+.nm-block {
+  --nm-accent-from: var(--nm-case-from, #fb7185);
+  --nm-accent-via: var(--nm-case-via, #e879f9);
+  --nm-accent-to: var(--nm-case-to, #f472b6);
+  --nm-accent-tone: var(--nm-case-tone, #e11d48);
+}
+.nm-block[data-nm-section='story'] {
+  --nm-accent-from: var(--nm-story-from, #fbbf24);
+  --nm-accent-via: var(--nm-story-via, #fb923c);
+  --nm-accent-to: var(--nm-story-to, #fb7185);
+  --nm-accent-tone: var(--nm-story-tone, #d97706);
+}
+.nm-block[data-nm-section='conversation'] {
+  --nm-accent-from: var(--nm-conversation-from, #22d3ee);
+  --nm-accent-via: var(--nm-conversation-via, #38bdf8);
+  --nm-accent-to: var(--nm-conversation-to, #60a5fa);
+  --nm-accent-tone: var(--nm-conversation-tone, #0891b2);
+}
+.nm-block[data-nm-section='discussion'] {
+  --nm-accent-from: var(--nm-discussion-from, #34d399);
+  --nm-accent-via: var(--nm-discussion-via, #2dd4bf);
+  --nm-accent-to: var(--nm-discussion-to, #22d3ee);
+  --nm-accent-tone: var(--nm-discussion-tone, #059669);
+}
+.nm-block[data-nm-section='comment'] {
+  --nm-accent-from: var(--nm-comment-from, #a78bfa);
+  --nm-accent-via: var(--nm-comment-via, #c084fc);
+  --nm-accent-to: var(--nm-comment-to, #e879f9);
+  --nm-accent-tone: var(--nm-comment-tone, #7c3aed);
+}
+
+/* accent 默认是一条顶部渐变，模板可改为左侧细竖线 */
+.nm-block-accent {
+  position: absolute;
+  z-index: 1;
+  inset: 0 auto auto 0;
+  width: var(--nm-accent-width, 100%);
+  height: var(--nm-accent-height, 3px);
+  background: linear-gradient(
+    var(--nm-accent-angle, 90deg),
+    var(--nm-accent-from),
+    var(--nm-accent-via),
+    var(--nm-accent-to)
+  );
+  opacity: var(--nm-accent-opacity, 0.9);
+}
+
+.nm-card-root {
+  background: var(--nm-card-bg, rgb(255 255 255 / 90%));
+  backdrop-filter: blur(var(--nm-card-blur, 8px));
+  border: var(--nm-card-border-width, 0) solid var(--nm-card-border-color, transparent);
+  border-radius: var(--nm-card-radius, 0.75rem);
+}
+.nm-card-head {
+  border-color: var(--nm-card-head-border, color-mix(in srgb, var(--nm-accent-from) 20%, white));
+  background: var(
+    --nm-card-head-bg,
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--nm-accent-from) 12%, white),
+      #ffffff,
+      color-mix(in srgb, var(--nm-accent-via) 10%, white)
+    )
+  );
+}
+
+.nm-icon {
+  border-radius: var(--nm-icon-radius, 0.5rem);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--nm-accent-from) 88%, #000000),
+    color-mix(in srgb, var(--nm-accent-via) 88%, #000000)
+  );
+  box-shadow: var(--nm-icon-shadow, 0 10px 15px -3px color-mix(in srgb, var(--nm-accent-from) 20%, transparent));
+}
+
+.nm-block-title {
+  color: var(--nm-title-strong, #111827);
+  font-family: var(--nm-heading-font, inherit);
+}
+.nm-block-sub {
+  color: var(--nm-accent-tone);
+  opacity: 0.8;
+}
+.nm-badge {
+  background: color-mix(in srgb, var(--nm-accent-from) 12%, transparent);
+  color: color-mix(in srgb, var(--nm-accent-tone) 85%, #111827);
+  border-radius: var(--nm-badge-radius, 9999px);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nm-accent-from) 25%, transparent);
+}
+
+.nm-field-label {
+  color: var(--nm-accent-tone);
+}
+.nm-field-value {
+  color: var(--nm-text, #374151);
+}
+.nm-placeholder {
+  color: var(--nm-text, #374151);
+}
+.nm-placeholder-muted {
+  color: var(--nm-muted, #6b7280);
+}
+
+/* 患者头像 */
+.nm-avatar {
+  position: relative;
+  box-shadow: var(--nm-avatar-shadow, 0 10px 15px -3px rgb(0 0 0 / 10%));
+  animation: var(--nm-avatar-anim, nm-float-gentle 6s ease-in-out infinite);
+}
+
+/* 顶部控制区：随模板主色变化，始终位于截屏根节点之外 */
+.nm-control-label {
+  color: var(--nm-control, #e11d48);
+}
+.nm-control-line-left {
+  background: linear-gradient(to left, var(--nm-control-line, rgb(251 113 133 / 60%)), transparent);
+}
+.nm-control-line-right {
+  background: linear-gradient(to right, var(--nm-control-line, rgb(251 113 133 / 60%)), transparent);
+}
+.nm-control-input {
+  transition: box-shadow 300ms ease;
+}
+.nm-control-input:focus {
+  box-shadow:
+    0 0 0 4px var(--nm-control-soft, rgb(236 72 153 / 8%)),
+    0 0 0 2px var(--nm-control-ring, rgb(251 113 133 / 60%));
+}
+.nm-generate-btn {
+  background: var(--nm-control-strong, #f43f5e);
+  box-shadow: var(--nm-control-shadow, 0 10px 15px -3px rgb(244 63 94 / 25%));
+}
+.nm-generate-btn:hover,
+.nm-generate-btn:active {
+  background: var(--nm-control-hover, #e11d48);
+  box-shadow: var(--nm-control-shadow-hover, 0 18px 30px -12px rgb(244 63 94 / 35%));
+}
+.nm-control-btn {
+  color: var(--nm-control, #e11d48);
+  background: var(--nm-control-btn-bg, rgb(255 255 255 / 75%));
+  border-color: var(--nm-control-btn-border, rgb(254 205 211 / 80%));
+  font-weight: 500;
+  box-shadow: var(--nm-control-btn-shadow, 0 8px 22px -16px rgb(244 114 182 / 90%));
+  backdrop-filter: blur(4px);
+  transition: all 300ms ease;
+}
+.nm-control-btn:hover {
+  background: var(--nm-control-btn-hover, rgb(255 241 242 / 90%));
+  border-color: var(--nm-control-btn-border-hover, rgb(253 164 175 / 90%));
+}
+.nm-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in srgb, var(--nm-accent-from) 18%, transparent) 0%, transparent 70%);
+  filter: blur(12px);
+  opacity: 0.8;
+}
+.nm-avatar-ring {
+  box-shadow:
+    0 0 0 2px #ffffff,
+    0 0 0 4px var(--nm-avatar-ring, rgb(254 205 211 / 60%));
+}
+.nm-avatar-mask {
+  background: var(--nm-mask-bg, rgb(255 255 255 / 80%));
+  color: var(--nm-accent-tone);
+}
+
+@keyframes nm-float-gentle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes nm-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 故事插图 */
+.nm-illus {
+  position: relative;
+  transition:
+    transform 400ms ease,
+    box-shadow 400ms ease;
+}
+.nm-illus:hover {
+  transform: var(--nm-illus-hover-transform, translateY(-4px) scale(1.01));
+  box-shadow: var(--nm-illus-hover-shadow, 0 18px 40px -24px rgb(249 115 22 / 50%));
+}
+.nm-illus-empty {
+  background: var(--nm-illus-bg, linear-gradient(to bottom right, #fef3c7, #ffedd5, #ffe4e6));
+}
+.nm-illus-icon {
+  color: var(--nm-accent-tone);
+}
+.nm-illus-label {
+  color: color-mix(in srgb, var(--nm-accent-tone) 80%, transparent);
+}
+
+/* 对话气泡 / 讨论项 / 重点框 */
+.nm-bubble {
+  border: 1px solid color-mix(in srgb, var(--nm-accent-from) 22%, white);
+  background: linear-gradient(
+    to bottom right,
+    color-mix(in srgb, var(--nm-accent-from) 12%, white),
+    #ffffff
+  );
+  box-shadow: var(--nm-bubble-shadow, 0 20px 40px -30px rgb(14 165 233 / 40%));
+  transition:
+    transform 400ms ease,
+    box-shadow 400ms ease;
+}
+.nm-bubble:hover {
+  transform: var(--nm-bubble-hover-transform, translateY(-2px));
+  box-shadow: var(--nm-bubble-hover-shadow, 0 24px 44px -28px rgb(14 165 233 / 45%));
+}
+.nm-bubble-label {
+  color: color-mix(in srgb, var(--nm-accent-tone) 85%, #111827);
+}
+
+.nm-discussion-item {
+  border: 1px solid color-mix(in srgb, var(--nm-accent-from) 22%, white);
+  background: linear-gradient(
+    to bottom right,
+    color-mix(in srgb, var(--nm-accent-from) 10%, white),
+    #ffffff
+  );
+  box-shadow: var(--nm-item-shadow, none);
+  transition:
+    transform 400ms ease,
+    box-shadow 400ms ease;
+}
+.nm-discussion-item:hover {
+  transform: var(--nm-item-hover-transform, translateY(-3px));
+  box-shadow: var(--nm-item-hover-shadow, 0 18px 38px -26px rgb(16 185 129 / 45%));
+}
+.nm-discussion-label {
+  color: color-mix(in srgb, var(--nm-accent-tone) 85%, #111827);
+}
+
+.nm-highlight {
+  border: 1px solid color-mix(in srgb, var(--nm-accent-from) 22%, white);
+  background: var(
+    --nm-highlight-bg,
+    linear-gradient(
+      to bottom right,
+      color-mix(in srgb, var(--nm-accent-from) 10%, white),
+      #ffffff,
+      color-mix(in srgb, var(--nm-accent-via) 8%, white)
+    )
+  );
+}
+
+/* Markdown 正文排版 */
+.story-md p {
+  text-indent: 2em;
+}
+.nm-md p {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+  color: var(--nm-md-text, #374151);
+}
+.nm-md p:first-child {
+  margin-top: 0;
+}
+.nm-md p:last-child {
+  margin-bottom: 0;
+}
+.nm-md strong {
+  font-weight: 600;
+  color: var(--nm-title-strong, #111827);
+}
+
+/* 页脚 */
+.nm-footer-line {
+  background: var(--nm-footer-line, linear-gradient(to right, transparent, #f0abfc99, transparent));
+}
+.nm-footer-text {
+  color: var(--nm-footer-text, rgb(251 113 133 / 70%));
+}
+
+/* 头像生成中遮罩的淡入淡出 */
+.nm-fade-enter-active,
+.nm-fade-leave-active {
+  transition: opacity 300ms ease;
+}
+.nm-fade-enter-from,
+.nm-fade-leave-to {
+  opacity: 0;
+}
+
+/* 打印规则收敛到叙事页面与其单页根节点，避免影响全站其它页面 */
+@media print {
+  .nm-page {
+    background: #ffffff !important;
+  }
+
+  .nm-sheet {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    animation: none !important;
+  }
+
+  .nm-sheet .nm-decor,
+  .nm-sheet .pointer-events-none {
+    display: none !important;
+  }
+
+  .nm-sheet .nm-block,
+  .nm-sheet .nm-avatar,
+  .nm-sheet .nm-illus,
+  .nm-sheet .nm-bubble,
+  .nm-sheet .nm-discussion-item {
+    animation: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .nm-sheet .nm-block,
+  .nm-sheet .nm-illus,
+  .nm-sheet .nm-bubble,
+  .nm-sheet .nm-discussion-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,292 @@
+/* 第三套模板「编辑网格 / Editorial Grid」：
+   左侧病例跨两行、右侧故事与对话同行堆叠、底部讨论与点评并排的 bento 网格；
+   米白纸面 + 墨黑粗线 + 硬阴影 + 编号水印 + 竖排刊名的现代编辑式排版。
+   布局分组来自注册表声明，本文件只负责区域定位与视觉令牌。 */
+:is(.nm-page, .nm-sheet)[data-nm-template='editorial'] {
+  --nm-page-bg: #e9e7e0;
+  --nm-paper-from: #fbfaf7;
+  --nm-paper-to: #f4f1ea;
+  --nm-sheet-shadow: 0 30px 70px -30px rgb(17 24 39 / 35%);
+  --nm-sheet-ring: #111827;
+  --nm-sheet-radius: 0;
+
+  --nm-title-bg: none;
+  --nm-title-color: #111827;
+  --nm-title-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nm-title-weight: 900;
+  --nm-title-tracking: -0.045em;
+  --nm-title-shadow: none;
+  --nm-nameplate-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --nm-nameplate-bg: none;
+  --nm-nameplate-color: #111827;
+  --nm-nameplate-weight: 800;
+  --nm-nameplate-tracking: 0.3em;
+  --nm-nameplate-sub-tracking: 0.2em;
+  --nm-nameplate-line: #111827;
+  --nm-muted: #6b7280;
+
+  --nm-decor-opacity: 0;
+  --nm-text: #1f2937;
+  --nm-title-strong: #111827;
+  --nm-md-text: #1f2937;
+  --nm-gap: 1rem;
+  --nm-card-bg: #ffffff;
+  --nm-card-blur: 0px;
+  --nm-card-radius: 2px;
+  --nm-card-border-width: 2px;
+  --nm-card-border-color: #111827;
+  --nm-card-head-bg: #f4f1ea;
+  --nm-card-head-border: #111827;
+  --nm-card-shadow: none;
+  --nm-icon-radius: 0px;
+  --nm-icon-shadow: 2px 2px 0 #111827;
+  --nm-badge-radius: 0px;
+
+  --nm-accent-width: 100%;
+  --nm-accent-height: 6px;
+  --nm-accent-angle: 90deg;
+  --nm-accent-opacity: 1;
+
+  --nm-block-number-color: #111827;
+  --nm-block-number-size: 4.5rem;
+  --nm-block-number-opacity: 0.07;
+  --nm-block-number-right: 1.25rem;
+  --nm-block-number-top: 0.4rem;
+  --nm-block-number-font: ui-sans-serif, system-ui, sans-serif;
+
+  --nm-avatar-ring: #111827;
+  --nm-avatar-shadow: 3px 3px 0 #111827;
+  --nm-mask-bg: rgb(255 255 255 / 88%);
+  --nm-illus-bg: linear-gradient(to bottom right, #e7e5e4, #fafaf9, #e7e5e4);
+  --nm-bubble-shadow: 2px 2px 0 #111827;
+  --nm-bubble-hover-shadow: 4px 4px 0 #111827;
+  --nm-item-shadow: 2px 2px 0 #111827;
+  --nm-item-hover-shadow: 4px 4px 0 #111827;
+  --nm-highlight-bg: #f4f1ea;
+  --nm-footer-line: #111827;
+  --nm-footer-text: #111827;
+
+  --nm-page-anim: none;
+  --nm-block-anim: nm-card-rise 500ms ease-out both;
+  --nm-avatar-anim: none;
+  --nm-illus-hover-transform: translateY(-2px);
+  --nm-illus-hover-shadow: 3px 3px 0 #111827;
+  --nm-bubble-hover-transform: translateY(-2px);
+  --nm-item-hover-transform: translateY(-2px);
+
+  --nm-control: #4338ca;
+  --nm-control-strong: #4338ca;
+  --nm-control-hover: #3730a3;
+  --nm-control-line: #111827;
+  --nm-control-ring: #4338ca;
+  --nm-control-soft: rgb(67 56 202 / 10%);
+  --nm-control-shadow: 3px 3px 0 #111827;
+  --nm-control-shadow-hover: 5px 5px 0 #111827;
+  --nm-control-btn-bg: #ffffff;
+  --nm-control-btn-border: #111827;
+  --nm-control-btn-hover: #f4f1ea;
+  --nm-control-btn-border-hover: #111827;
+  --nm-control-btn-shadow: 3px 3px 0 #111827;
+
+  --nm-case-from: #4338ca;
+  --nm-case-via: #6366f1;
+  --nm-case-to: #4338ca;
+  --nm-case-tone: #4338ca;
+
+  --nm-story-from: #ea580c;
+  --nm-story-via: #f97316;
+  --nm-story-to: #ea580c;
+  --nm-story-tone: #c2410c;
+
+  --nm-conversation-from: #0891b2;
+  --nm-conversation-via: #06b6d4;
+  --nm-conversation-to: #0891b2;
+  --nm-conversation-tone: #0e7490;
+
+  --nm-discussion-from: #65a30d;
+  --nm-discussion-via: #84cc16;
+  --nm-discussion-to: #65a30d;
+  --nm-discussion-tone: #4d7c0f;
+
+  --nm-comment-from: #c026d3;
+  --nm-comment-via: #d946ef;
+  --nm-comment-to: #c026d3;
+  --nm-comment-tone: #a21caf;
+}
+
+/* 刊头：不对称大标题 + 橙色短色块 + 竖排刊名，粗分隔线收口 */
+.nm-sheet[data-nm-template='editorial'] .nm-sheet-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 3px solid #111827;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-sheet-title {
+  gap: 0.5rem;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-sheet-title::before {
+  content: '';
+  width: 2.5rem;
+  height: 0.35rem;
+  margin-bottom: 0.25rem;
+  background: #ea580c;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-sheet-kicker {
+  display: block;
+  font: 700 0.68rem / 1.2 ui-monospace, monospace;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ea580c;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-title {
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  line-height: 1.05;
+  -webkit-text-fill-color: #111827;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-nameplate-box {
+  align-items: flex-end;
+  gap: 0.35rem;
+  padding-left: 1rem;
+  border-left: 2px solid #111827;
+  text-align: right;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-nameplate {
+  writing-mode: vertical-rl;
+  font-size: 1.05rem;
+  max-height: 7rem;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-nameplate-sub {
+  writing-mode: vertical-rl;
+  font-size: 0.5rem;
+  max-height: 7rem;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-nameplate-line {
+  display: none;
+}
+
+/* bento 网格：病例跨左上两行，故事 / 对话依次填充右侧，讨论与点评落在底部 */
+.nm-sheet[data-nm-template='editorial'] .nm-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  grid-auto-flow: row dense;
+  align-items: stretch;
+  gap: var(--nm-gap);
+}
+.nm-sheet[data-nm-template='editorial'] .nm-layout-area[data-nm-area='case'] {
+  grid-column: 1;
+  grid-row: span 2;
+}
+
+/* 卡片：2px 墨黑描边 + 无模糊硬阴影 + 编号水印 */
+.nm-sheet[data-nm-template='editorial'] .nm-block {
+  overflow: visible;
+  box-shadow: 5px 5px 0 #111827;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block::after {
+  display: none;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block[data-nm-section='case'] {
+  --nm-block-number: '01';
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block[data-nm-section='story'] {
+  --nm-block-number: '02';
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block[data-nm-section='conversation'] {
+  --nm-block-number: '03';
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block[data-nm-section='discussion'] {
+  --nm-block-number: '04';
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block[data-nm-section='comment'] {
+  --nm-block-number: '05';
+}
+.nm-sheet[data-nm-template='editorial'] .nm-card-head {
+  border-bottom-width: 2px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block-title {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-block-sub {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-badge {
+  font-family: ui-monospace, monospace;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: var(--nm-accent-from);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 2px #111827;
+}
+
+/* 页脚：粗线 + 等宽标签，与刊头呼应 */
+.nm-sheet[data-nm-template='editorial'] .nm-sheet-footer {
+  align-items: flex-start;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #111827;
+  text-align: left;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-footer-line {
+  display: none;
+}
+.nm-sheet[data-nm-template='editorial'] .nm-footer-text {
+  font-family: ui-monospace, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  opacity: 0.7;
+}
+
+/* 手机端退回单列，刊名改回横排，保证可读性 */
+@media (max-width: 639px) {
+  .nm-sheet[data-nm-template='editorial'] .nm-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-flow: row;
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-layout-area {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-sheet-head {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-nameplate-box {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    padding-left: 0;
+    padding-top: 0.75rem;
+    border-left: 0;
+    border-top: 2px solid #111827;
+    text-align: left;
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-nameplate,
+  .nm-sheet[data-nm-template='editorial'] .nm-nameplate-sub {
+    writing-mode: horizontal-tb;
+    max-height: none;
+  }
+}
+
+/* 打印时按 DOM 顺序线性输出，去掉硬阴影与网格定位 */
+@media print {
+  .nm-sheet[data-nm-template='editorial'] .nm-layout {
+    display: block;
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-layout-area {
+    margin-bottom: var(--nm-gap, 1rem);
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-sheet-head {
+    border-bottom-width: 1px;
+  }
+  .nm-sheet[data-nm-template='editorial'] .nm-sheet-footer {
+    border-top-width: 1px;
+  }
+}

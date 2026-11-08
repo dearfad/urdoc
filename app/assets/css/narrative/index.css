@@ -1,0 +1,5 @@
+/* 叙事单页样式聚合入口：新增显示模板时在此追加一行 @import 即可 */
+@import './base.css';
+@import './templates/magazine.css';
+@import './templates/clinical.css';
+@import './templates/editorial.css';

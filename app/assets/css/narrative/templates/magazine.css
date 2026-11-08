@@ -1,0 +1,93 @@
+/* 默认模板「叙事杂志」：复刻重构前的暖粉渐变、衬线刊名与五色卡片。
+   变量同时挂在 .nm-page（页面背景）与 .nm-sheet（截屏根节点）上：
+   ButtonCapture 只克隆 #nm-sheet 子树，根节点自带变量才能保证截图不丢样式。 */
+:is(.nm-page, .nm-sheet)[data-nm-template='magazine'] {
+  --nm-page-bg: linear-gradient(to bottom right, #fffbeb66, #fff1f266, #ecfeff66);
+  --nm-paper-from: rgb(255 255 255 / 98%);
+  --nm-paper-to: rgb(255 247 250 / 96%);
+  --nm-sheet-shadow: 0 25px 60px -20px rgb(244 114 182 / 25%);
+  --nm-sheet-ring: rgb(255 255 255 / 70%);
+  --nm-sheet-radius: 0.75rem;
+
+  --nm-title-bg: linear-gradient(to right, #c026d3, #f43f5e, #f59e0b);
+  --nm-title-weight: 800;
+  --nm-title-tracking: normal;
+  --nm-title-shadow: drop-shadow(0 3px 6px rgb(0 0 0 / 18%));
+  --nm-nameplate-font: ui-serif, Georgia, serif;
+  --nm-nameplate-bg: linear-gradient(to right, #334155, #475569, #1e293b);
+  --nm-nameplate-color: transparent;
+  --nm-nameplate-tracking: 0.25em;
+  --nm-nameplate-sub-tracking: 0.45em;
+  --nm-muted: rgb(100 116 139 / 80%);
+
+  --nm-decor-opacity: 1;
+  --nm-decor-1: linear-gradient(to right, #f0abfc66, #fde68a66, #a5f3fc66);
+  --nm-decor-2: linear-gradient(to bottom right, #fecdd34d, #fed7aa4d);
+  --nm-decor-3: linear-gradient(to top right, #a5f3fc4d, #ddd6fe4d);
+
+  --nm-text: #374151;
+  --nm-title-strong: #111827;
+  --nm-md-text: #374151;
+  --nm-gap: 1.25rem;
+  --nm-card-bg: rgb(255 255 255 / 90%);
+  --nm-card-blur: 8px;
+  --nm-card-radius: 0.75rem;
+  --nm-card-shadow: 0 30px 60px -40px rgb(236 72 153 / 40%);
+  --nm-icon-shadow: 0 10px 15px -3px rgb(244 63 94 / 20%);
+
+  --nm-accent-width: 100%;
+  --nm-accent-height: 3px;
+  --nm-accent-angle: 90deg;
+  --nm-accent-opacity: 0.9;
+
+  --nm-avatar-ring: rgb(254 205 211 / 60%);
+  --nm-mask-bg: rgb(255 255 255 / 80%);
+  --nm-illus-bg: linear-gradient(to bottom right, #fef3c7, #ffedd5, #ffe4e6);
+  --nm-bubble-shadow: 0 20px 40px -30px rgb(14 165 233 / 40%);
+  --nm-bubble-hover-shadow: 0 24px 44px -28px rgb(14 165 233 / 45%);
+  --nm-item-shadow: none;
+  --nm-item-hover-shadow: 0 18px 38px -26px rgb(16 185 129 / 45%);
+  --nm-footer-line: linear-gradient(to right, transparent, #f0abfc99, transparent);
+  --nm-footer-text: rgb(251 113 133 / 70%);
+
+  --nm-case-from: #fb7185;
+  --nm-case-via: #e879f9;
+  --nm-case-to: #f472b6;
+  --nm-case-tone: #e11d48;
+
+  --nm-story-from: #fbbf24;
+  --nm-story-via: #fb923c;
+  --nm-story-to: #fb7185;
+  --nm-story-tone: #d97706;
+
+  --nm-conversation-from: #22d3ee;
+  --nm-conversation-via: #38bdf8;
+  --nm-conversation-to: #60a5fa;
+  --nm-conversation-tone: #0891b2;
+
+  --nm-discussion-from: #34d399;
+  --nm-discussion-via: #2dd4bf;
+  --nm-discussion-to: #22d3ee;
+  --nm-discussion-tone: #059669;
+
+  --nm-control: #e11d48;
+  --nm-control-strong: #f43f5e;
+  --nm-control-hover: #e11d48;
+  --nm-control-line: rgb(251 113 133 / 60%);
+  --nm-control-ring: rgb(251 113 133 / 60%);
+  --nm-control-soft: rgb(236 72 153 / 8%);
+  --nm-control-shadow: 0 10px 15px -3px rgb(244 63 94 / 25%);
+  --nm-control-shadow-hover: 0 18px 30px -12px rgb(244 63 94 / 35%);
+  --nm-control-btn-bg: rgb(255 255 255 / 75%);
+  --nm-control-btn-border: rgb(254 205 211 / 80%);
+  --nm-control-btn-hover: rgb(255 241 242 / 90%);
+  --nm-control-btn-border-hover: rgb(253 164 175 / 90%);
+  --nm-control-btn-shadow: 0 8px 22px -16px rgb(244 114 182 / 90%);
+  --nm-avatar-shadow: 0 10px 15px -3px rgb(244 63 94 / 10%);
+  --nm-icon-radius: 0.5rem;
+
+  --nm-comment-from: #a78bfa;
+  --nm-comment-via: #c084fc;
+  --nm-comment-to: #e879f9;
+  --nm-comment-tone: #7c3aed;
+}
