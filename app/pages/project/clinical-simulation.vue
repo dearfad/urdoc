@@ -4,9 +4,9 @@
     class="bg-linear-to-br from-amber-50/40 via-rose-50/40 to-cyan-50/40"
   >
     <template #header>
-      <UDashboardNavbar title="临床实战">
+      <UDashboardNavbar :title="t('sidebar.clinicalSimulation')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -22,6 +22,8 @@
 definePageMeta({
   title: '临床实战',
 })
+
+const { t } = useI18n()
 </script>
 
 <style></style>

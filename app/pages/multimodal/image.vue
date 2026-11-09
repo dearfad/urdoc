@@ -9,9 +9,9 @@
 -->
   <UDashboardPanel id="pages-multimodal-image">
     <template #header>
-      <UDashboardNavbar title="图像创作">
+      <UDashboardNavbar :title="t('sidebar.imageCreation')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -40,7 +40,7 @@
             {{ tab.label }}
           </UButton>
           <div class="ms-auto flex shrink-0 items-center">
-            <UTooltip :text="settingsVisible ? '隐藏设置' : '显示设置'">
+            <UTooltip :text="settingsVisible ? t('common.hideSettings') : t('common.showSettings')">
               <UButton
                 :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
                 variant="ghost"
@@ -68,15 +68,19 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 definePageMeta({
   title: '图像创作',
 })
+
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const settingsVisible = ref(true)
 const isDesktop = ref(true)
 const activeTab = ref<'face' | 'illustration' | 'generate'>('face')
 
-const tabs = [
-  { label: '头像', value: 'face', icon: 'i-lucide-user' },
-  { label: '插图', value: 'illustration', icon: 'i-lucide-book-image' },
-  { label: '自定义', value: 'generate', icon: 'i-lucide-pencil' },
-] as const
+const tabs = computed(() => [
+  { label: t('imageTabs.face'), value: 'face', icon: 'i-lucide-user' },
+  { label: t('imageTabs.illustration'), value: 'illustration', icon: 'i-lucide-book-image' },
+  { label: t('imageTabs.custom'), value: 'generate', icon: 'i-lucide-pencil' },
+] as const)
 
 onMounted(() => {
   const mq = window.matchMedia('(min-width: 768px)')
@@ -92,8 +96,8 @@ function toggleSettings() {
 }
 
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '多模态', icon: 'i-lucide-file-stack' },
-  { label: '图像创作', icon: 'i-lucide-image', to: '/multimodal/image' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.multimodal'), icon: 'i-lucide-file-stack' },
+  { label: t('sidebar.imageCreation'), icon: 'i-lucide-image', to: localePath('/multimodal/image') },
 ])
 </script>

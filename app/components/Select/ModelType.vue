@@ -3,7 +3,7 @@
     <USelect
       :model-value="selectedProvider"
       :items="providerOptions"
-      placeholder="选择提供商..."
+      :placeholder="t('select.providerPlaceholder')"
       variant="soft"
       size="lg"
       @update:model-value="onProvider"
@@ -11,7 +11,7 @@
     <USelect
       :model-value="selectedModelName"
       :items="modelNameOptions"
-      placeholder="选择模型..."
+      :placeholder="t('select.modelPlaceholder')"
       variant="soft"
       size="lg"
       :disabled="!selectedProvider"
@@ -22,6 +22,8 @@
 
 <script lang="ts" setup>
 const props = defineProps<{ type: string }>()
+
+const { t } = useI18n()
 
 const modelStore = useModelStore()
 

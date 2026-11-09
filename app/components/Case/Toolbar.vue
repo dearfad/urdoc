@@ -30,17 +30,17 @@
             :disabled="!hasContent"
             @click="$emit('verify')"
           >
-            校验
+            {{ t('common.verify') }}
           </UButton>
-          <ButtonCapture :capture-id="captureId" label="截屏" />
-          <ButtonClipboard :text="markdown" label="复制" />
-          <ButtonAudio :text="markdown" label="朗读" />
-          <ButtonEdit v-model="editing" :disabled="!hasContent" label="编辑" />
+          <ButtonCapture :capture-id="captureId" :label="t('common.capture')" />
+          <ButtonClipboard :text="markdown" :label="t('common.copy')" />
+          <ButtonAudio :text="markdown" :label="t('common.readAloud')" />
+          <ButtonEdit v-model="editing" :disabled="!hasContent" :label="t('common.edit')" />
         </div>
       </template>
     </UPopover>
     <div class="hidden items-center gap-2 md:flex">
-      <UTooltip text="生成">
+      <UTooltip :text="t('common.generate')">
         <UButton
           icon="i-lucide-file-plus-2"
           variant="ghost"
@@ -48,14 +48,14 @@
           @click="$emit('generate')"
         />
       </UTooltip>
-      <UTooltip text="设定">
+      <UTooltip :text="t('common.settings')">
         <UButton
           icon="i-lucide-settings"
           variant="ghost"
           @click="$emit('toggleSettings')"
         />
       </UTooltip>
-      <UTooltip text="校验">
+      <UTooltip :text="t('common.verify')">
         <UButton
           icon="i-lucide-check-circle"
           variant="ghost"
@@ -63,16 +63,16 @@
           @click="$emit('verify')"
         />
       </UTooltip>
-      <UTooltip text="截屏">
+      <UTooltip :text="t('common.capture')">
         <ButtonCapture :capture-id="captureId" />
       </UTooltip>
-      <UTooltip text="复制">
+      <UTooltip :text="t('common.copy')">
         <ButtonClipboard :text="markdown" />
       </UTooltip>
-      <UTooltip text="朗读">
+      <UTooltip :text="t('common.readAloud')">
         <ButtonAudio :text="markdown" />
       </UTooltip>
-      <UTooltip text="编辑">
+      <UTooltip :text="t('common.edit')">
         <ButtonEdit v-model="editing" :disabled="!hasContent" />
       </UTooltip>
     </div>
@@ -89,6 +89,8 @@ const props = defineProps({
 const editing = defineModel('editing', { type: Boolean, default: false })
 
 defineEmits(['generate', 'toggleSettings', 'verify'])
+
+const { t } = useI18n()
 
 const isMenuOpen = ref(false)
 </script>

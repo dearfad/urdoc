@@ -1,8 +1,12 @@
 <template>
   <StoryContent
     type="conversation"
-    title="对话"
+    :title="t('tabs.conversation')"
     icon="i-lucide-messages-square"
     depends-on="story"
   />
 </template>
+
+<script setup lang="ts">
+const { t } = useI18n()
+</script>

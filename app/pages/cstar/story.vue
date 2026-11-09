@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-cstar-story">
     <template #header>
-      <UDashboardNavbar title="编写故事">
+      <UDashboardNavbar :title="t('sidebar.writeStory')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -35,7 +35,7 @@
             {{ tab.label }}
           </UButton>
           <div class="ms-auto flex shrink-0 items-center">
-            <UTooltip :text="settingsVisible ? '隐藏设置' : '显示设置'">
+            <UTooltip :text="settingsVisible ? t('common.hideSettings') : t('common.showSettings')">
               <UButton
                 :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
                 variant="ghost"
@@ -79,16 +79,19 @@ definePageMeta({
   title: '编写故事',
 })
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const settingsVisible = ref(true)
 const isDesktop = ref(true)
 const activeTab = ref<'story' | 'conversation' | 'discussion' | 'comment'>('story')
 
-const tabs = [
-  { label: '故事', value: 'story', icon: 'i-mdi-alpha-s-circle' },
-  { label: '对话', value: 'conversation', icon: 'i-lucide-messages-square' },
-  { label: '讨论', value: 'discussion', icon: 'i-lucide-message-circle' },
-  { label: '点评', value: 'comment', icon: 'i-lucide-star' },
-] as const
+const tabs = computed(() => [
+  { label: t('tabs.story'), value: 'story', icon: 'i-mdi-alpha-s-circle' },
+  { label: t('tabs.conversation'), value: 'conversation', icon: 'i-lucide-messages-square' },
+  { label: t('tabs.discussion'), value: 'discussion', icon: 'i-lucide-message-circle' },
+  { label: t('tabs.comment'), value: 'comment', icon: 'i-lucide-star' },
+] as const)
 
 onMounted(() => {
   const mq = window.matchMedia('(min-width: 768px)')
@@ -102,8 +105,8 @@ function toggleSettings() {
 }
 
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: 'CSTAR', icon: 'i-lucide-circle-star' },
-  { label: '编写故事', icon: 'i-mdi-alpha-s-circle', to: '/cstar/story' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.cstar'), icon: 'i-lucide-circle-star' },
+  { label: t('sidebar.writeStory'), icon: 'i-mdi-alpha-s-circle', to: localePath('/cstar/story') },
 ])
 </script>

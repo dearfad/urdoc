@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-multimodal-video">
     <template #header>
-      <UDashboardNavbar title="影像渲染">
+      <UDashboardNavbar :title="t('sidebar.videoRendering')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -30,31 +30,29 @@
             }"
           >
             <template #header>
-              <UButton icon="i-lucide-video" variant="ghost" to="/multimodal/video" />
-              <span class="font-bold">影像渲染</span>
+              <UButton icon="i-lucide-video" variant="ghost" :to="localePath('/multimodal/video')" />
+              <span class="font-bold">{{ t('sidebar.videoRendering') }}</span>
               <div class="ms-auto flex gap-2">
-                <UTooltip :text="settingsVisible ? '关闭设定' : '设定'">
+                <UTooltip :text="settingsVisible ? t('common.closeSettings') : t('common.settings')">
                   <UButton
                     :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
                     variant="ghost"
                     @click="toggleSettings"
                   />
                 </UTooltip>
-                <ButtonGenerate type="video" task="generate" label="生成视频" />
+                <ButtonGenerate type="video" task="generate" :label="t('video.generate')" />
               </div>
             </template>
 
             <template #default>
               <div class="flex flex-col gap-2 border-b border-default p-4">
                 <p class="text-sm text-muted">
-                  基于当前 <NuxtLink to="/cstar/case" class="text-primary underline">病例</NuxtLink>、
-                  <NuxtLink to="/cstar/story" class="text-primary underline">故事</NuxtLink>
-                  和患者头像，使用图生视频生成一段医学教育视频。
+                  {{ t('video.introPrefix') }}<NuxtLink :to="localePath('/cstar/case')" class="text-primary underline">{{ t('video.caseLink') }}</NuxtLink>{{ t('video.introMiddle') }}<NuxtLink :to="localePath('/cstar/story')" class="text-primary underline">{{ t('video.storyLink') }}</NuxtLink>{{ t('video.introSuffix') }}
                 </p>
               </div>
 
               <div class="border-b border-default p-4">
-                <p class="mb-2 text-sm font-semibold">患者头像</p>
+                <p class="mb-2 text-sm font-semibold">{{ t('video.patientAvatar') }}</p>
                 <div class="flex items-center gap-4">
                   <div
                     class="size-24 shrink-0 overflow-hidden rounded-xl border-2 border-default bg-muted"
@@ -62,7 +60,7 @@
                     <img
                       v-if="imageStore.faceImages.length"
                       :src="imageStore.faceImages[0].url"
-                      alt="患者头像"
+                      :alt="t('video.patientAvatar')"
                       class="size-full object-cover"
                     />
                     <div v-else class="flex size-full items-center justify-center text-muted">
@@ -71,36 +69,36 @@
                   </div>
                   <div class="text-sm text-muted">
                     <template v-if="imageStore.faceImages.length">
-                      头像已就绪，将作为参考图生成视频
+                      {{ t('video.avatarReady') }}
                     </template>
                     <template v-else>
-                      暂无头像，请先在
-                      <NuxtLink to="/multimodal/image" class="text-primary underline">图像创作</NuxtLink>
-                      中生成患者头像
+                      {{ t('video.noAvatarPrefix') }}
+                      <NuxtLink :to="localePath('/multimodal/image')" class="text-primary underline">{{ t('video.noAvatarLink') }}</NuxtLink>
+                      {{ t('video.noAvatarSuffix') }}
                     </template>
                   </div>
                 </div>
               </div>
 
               <div class="border-b border-default p-4">
-                <p class="mb-2 text-sm font-semibold">病例摘要</p>
+                <p class="mb-2 text-sm font-semibold">{{ t('video.caseSummary') }}</p>
                 <p v-if="caseContentStr" class="max-h-32 overflow-y-auto text-xs text-muted">
                   {{ caseContentStr }}
                 </p>
                 <p v-else class="text-xs text-muted">
-                  暂无病例，请先
-                  <NuxtLink to="/cstar/case" class="text-primary underline">生成病例</NuxtLink>
+                  {{ t('video.noCasePrefix') }}
+                  <NuxtLink :to="localePath('/cstar/case')" class="text-primary underline">{{ t('video.noCaseLink') }}</NuxtLink>
                 </p>
               </div>
 
               <div class="border-b border-default p-4">
-                <p class="mb-2 text-sm font-semibold">故事内容</p>
+                <p class="mb-2 text-sm font-semibold">{{ t('video.storyContent') }}</p>
                 <p v-if="storyContentStr" class="max-h-32 overflow-y-auto text-xs text-muted">
                   {{ storyContentStr }}
                 </p>
                 <p v-else class="text-xs text-muted">
-                  暂无故事，请先
-                  <NuxtLink to="/cstar/story" class="text-primary underline">编写故事</NuxtLink>
+                  {{ t('video.noStoryPrefix') }}
+                  <NuxtLink :to="localePath('/cstar/story')" class="text-primary underline">{{ t('video.noStoryLink') }}</NuxtLink>
                 </p>
               </div>
 
@@ -108,7 +106,7 @@
                 <div v-if="videoStore.status === 'streaming'" class="flex flex-col items-center justify-center gap-3 p-8">
                   <USkeleton class="aspect-video w-full max-w-lg rounded-lg" />
                   <UProgress :value="videoStore.progress" class="w-full max-w-lg" />
-                  <p class="text-sm text-muted">视频生成中... {{ videoStore.progress }}%</p>
+                  <p class="text-sm text-muted">{{ t('video.generating') }} {{ videoStore.progress }}%</p>
                 </div>
                 <div v-else-if="videoStore.error" class="flex items-center justify-center p-8">
                   <p class="text-sm text-error">{{ videoStore.error }}</p>
@@ -122,7 +120,7 @@
                   />
                 </div>
                 <div v-else class="flex items-center justify-center p-8">
-                  <p class="text-sm text-muted">准备好病例、故事和患者头像后，点击「生成视频」</p>
+                  <p class="text-sm text-muted">{{ t('video.readyHint') }}</p>
                 </div>
               </div>
             </template>
@@ -140,20 +138,20 @@
           >
             <template #header>
               <UIcon name="i-lucide-settings-2" class="mr-2 size-4" />
-              <span class="font-bold">视频参数</span>
+              <span class="font-bold">{{ t('video.paramsTitle') }}</span>
             </template>
             <div class="space-y-3">
               <div>
-                <p class="mb-1 text-xs text-muted">模型</p>
+                <p class="mb-1 text-xs text-muted">{{ t('common.model') }}</p>
                 <SelectModel scene="video" />
               </div>
               <hr class="border-t border-default" />
               <div class="flex items-center justify-between">
-                <span class="text-sm">分辨率</span>
+                <span class="text-sm">{{ t('video.resolution') }}</span>
                 <span class="text-sm text-muted">1152×768</span>
               </div>
               <div class="flex items-center justify-between gap-2">
-                <span class="text-sm shrink-0">时长</span>
+                <span class="text-sm shrink-0">{{ t('video.duration') }}</span>
                 <USelect
                   v-model="durationValue"
                   :items="durationOptions"
@@ -163,11 +161,11 @@
                 />
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm">帧数</span>
+                <span class="text-sm">{{ t('video.frames') }}</span>
                 <span class="text-sm text-muted">{{ displayFrames }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm">帧率</span>
+                <span class="text-sm">{{ t('video.frameRate') }}</span>
                 <span class="text-sm text-muted">24 FPS</span>
               </div>
             </div>
@@ -185,6 +183,10 @@ import { DURATION_OPTIONS, getDurationByContent } from '~/stores/video'
 definePageMeta({
   title: '影像渲染',
 })
+
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const settingsVisible = ref(true)
 
 onMounted(() => {
@@ -196,9 +198,9 @@ function toggleSettings() {
 }
 
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '多模态', icon: 'i-lucide-file-stack' },
-  { label: '影像渲染', icon: 'i-lucide-video', to: '/multimodal/video' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.multimodal'), icon: 'i-lucide-file-stack' },
+  { label: t('sidebar.videoRendering'), icon: 'i-lucide-video', to: localePath('/multimodal/video') },
 ])
 
 const videoStore = useVideoStore()
@@ -224,7 +226,7 @@ const storyContentStr = computed(() => {
 const autoLabel = computed(() => {
   const frames = getDurationByContent(storyStore.story.content || '')
   const opt = DURATION_OPTIONS.find((o) => o.frames === frames)
-  return `自动（${opt?.label || '5 秒'}）`
+  return t('video.auto', { label: opt?.label || t('video.defaultDuration') })
 })
 
 const durationOptions = computed(() => {

@@ -1,15 +1,15 @@
 <template>
   <div class="flex flex-col gap-2">
-    <USelect v-model="selectedProvider" :items="providerOptions" placeholder="选择提供商..." variant="soft" size="lg" />
+    <USelect v-model="selectedProvider" :items="providerOptions" :placeholder="t('select.providerPlaceholder')" variant="soft" size="lg" />
     <USelect
       v-model="selectedModelName"
       :items="modelNameOptions"
-      placeholder="选择模型..."
+      :placeholder="t('select.modelPlaceholder')"
       variant="soft"
       size="lg"
       :disabled="!selectedProvider"
     />
-    <UCheckbox v-if="isChatScene" v-model="reasoning" label="思考模式" />
+    <UCheckbox v-if="isChatScene" v-model="reasoning" :label="t('select.thinking')" />
   </div>
 </template>
 
@@ -17,6 +17,8 @@
 const props = defineProps({
   scene: { type: String, required: true },
 })
+
+const { t } = useI18n()
 
 const modelStore = useModelStore()
 const stateStore = useStateStore()

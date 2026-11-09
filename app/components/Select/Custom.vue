@@ -5,7 +5,7 @@
       icon="i-lucide-tag"
       size="xl"
       variant="soft"
-      placeholder="输入按回车键确认或添加..."
+      :placeholder="t('select.tagsPlaceholder')"
     />
     <div class="grid grid-cols-[1fr_auto] gap-2">
       <USelect v-model="selectedItems" :items="customItems" multiple class="min-w-0" variant="soft">
@@ -17,7 +17,7 @@
           />
         </template>
       </USelect>
-      <UButton @click="addSelectedItems" variant="subtle">添加</UButton>
+      <UButton @click="addSelectedItems" variant="subtle">{{ t('common.add') }}</UButton>
     </div>
   </div>
 </template>
@@ -26,6 +26,8 @@
 const props = defineProps({
   scene: { type: String, required: true },
 })
+
+const { t } = useI18n()
 
 const stateStore = useStateStore()
 const selectedItems = ref<string[]>([])

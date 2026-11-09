@@ -15,6 +15,7 @@ const props = defineProps({
   label: { type: String, default: undefined },
 })
 
+const { t } = useI18n()
 const toast = useToast()
 const copied = ref(false)
 
@@ -23,7 +24,7 @@ async function copy() {
     await navigator.clipboard.writeText(props.text ?? '')
     copied.value = true
     toast.add({
-      title: '已复制到剪贴板',
+      title: t('common.copied'),
       color: 'success',
       icon: 'i-lucide-check-circle',
       duration: 2000,
@@ -31,7 +32,7 @@ async function copy() {
     setTimeout(() => { copied.value = false }, 2000)
   } catch {
     toast.add({
-      title: '复制失败',
+      title: t('common.copyFailed'),
       color: 'error',
       icon: 'i-lucide-alert-circle',
     })

@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-cstar-case">
     <template #header>
-      <UDashboardNavbar title="生成病例">
+      <UDashboardNavbar :title="t('sidebar.generateCase')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -37,6 +37,10 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 definePageMeta({
   title: '生成病例',
 })
+
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const settingsVisible = ref(true)
 const isDesktop = ref(true)
 
@@ -52,9 +56,9 @@ function toggleSettings() {
 }
 
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: 'CSTAR', icon: 'i-lucide-circle-star' },
-  { label: '生成病例', icon: 'i-mdi-alpha-c-circle', to: '/cstar/case' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.cstar'), icon: 'i-lucide-circle-star' },
+  { label: t('sidebar.generateCase'), icon: 'i-mdi-alpha-c-circle', to: localePath('/cstar/case') },
 ])
 
 </script>

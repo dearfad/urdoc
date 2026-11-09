@@ -50,7 +50,7 @@
 - **JSON 解析**：使用 `partial-json` 处理流式 JSON（见 `app/utils/json.ts`）
 - **类型校验**：`zod` 用于运行时类型验证
 - **自动导入类型**：`~/types` 被配置为类型扫描目录（`imports.dirs`）
-- **Vite optimizeDeps**：包含 `ai`、`@ai-sdk/vue`、`partial-json`、`@zumer/snapdom`
+- **Vite optimizeDeps**：包含 `ai`、`@ai-sdk/vue`、`partial-json`、`@zumer/snapdom`、`@zumer/snapdom-plugins/pdf`
 
 ## 环境变量
 

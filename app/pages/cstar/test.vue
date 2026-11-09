@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-cstar-test">
     <template #header>
-      <UDashboardNavbar title="考核理论">
+      <UDashboardNavbar :title="t('sidebar.testTheory')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -37,6 +37,10 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 definePageMeta({
   title: '考核理论',
 })
+
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const settingsVisible = ref(true)
 const isDesktop = ref(true)
 
@@ -52,8 +56,8 @@ function toggleSettings() {
 }
 
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: 'CSTAR', icon: 'i-lucide-circle-star' },
-  { label: '考核理论', icon: 'i-mdi-alpha-t-circle', to: '/cstar/test' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.cstar'), icon: 'i-lucide-circle-star' },
+  { label: t('sidebar.testTheory'), icon: 'i-mdi-alpha-t-circle', to: localePath('/cstar/test') },
 ])
 </script>

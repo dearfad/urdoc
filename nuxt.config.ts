@@ -34,7 +34,14 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['ai', '@ai-sdk/vue', 'partial-json', '@zumer/snapdom', 'vue-draggable-plus'],
+      include: [
+        'ai',
+        '@ai-sdk/vue',
+        'partial-json',
+        '@zumer/snapdom',
+        '@zumer/snapdom-plugins/pdf',
+        'vue-draggable-plus',
+      ],
     },
   },
 

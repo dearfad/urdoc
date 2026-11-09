@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-multimodal-audio">
     <template #header>
-      <UDashboardNavbar title="音频合成">
+      <UDashboardNavbar :title="t('sidebar.audioSynthesis')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -29,10 +29,10 @@
             }"
           >
             <template #header>
-              <UButton icon="i-lucide-file-volume" variant="ghost" to="/multimodal/audio" />
-              <span class="font-bold">音频合成</span>
+              <UButton icon="i-lucide-file-volume" variant="ghost" :to="localePath('/multimodal/audio')" />
+              <span class="font-bold">{{ t('sidebar.audioSynthesis') }}</span>
               <div class="ms-auto flex gap-2">
-                <UTooltip :text="settingsVisible ? '关闭设定' : '设定'">
+                <UTooltip :text="settingsVisible ? t('common.closeSettings') : t('common.settings')">
                   <UButton
                     :icon="settingsVisible ? 'i-lucide-panel-right-close' : 'i-lucide-panel-right-open'"
                     variant="ghost"
@@ -48,7 +48,7 @@
                 <USelect
                   v-model="sourceType"
                   :items="sourceOptions"
-                  placeholder="选择文本来源..."
+                  :placeholder="t('audio.sourcePlaceholder')"
                   variant="soft"
                   size="lg"
                 />
@@ -59,13 +59,13 @@
                   v-model="textInput"
                   size="lg"
                   :rows="10"
-                  placeholder="输入需要合成语音的文本，或选择上方来源自动填充"
+                  :placeholder="t('audio.textPlaceholder')"
                   class="w-full"
                 />
               </div>
 
               <div class="flex-1 border-t border-default flex items-center justify-center p-8">
-                <p class="text-sm text-muted">点击右上角按钮合成并播放语音</p>
+                <p class="text-sm text-muted">{{ t('audio.hint') }}</p>
               </div>
             </template>
 
@@ -82,16 +82,16 @@
           >
             <template #header>
               <UIcon name="i-lucide-settings-2" class="mr-2 size-4" />
-              <span class="font-bold">音频设置</span>
+              <span class="font-bold">{{ t('audio.settingsTitle') }}</span>
             </template>
             <div class="space-y-3">
               <div>
-                <p class="mb-1 text-xs text-muted">模型</p>
+                <p class="mb-1 text-xs text-muted">{{ t('common.model') }}</p>
                 <SelectModel scene="audio" />
               </div>
               <hr class="border-t border-default" />
               <div class="flex items-center justify-between">
-                <span class="text-sm">当前模型</span>
+                <span class="text-sm">{{ t('audio.currentModel') }}</span>
                 <span class="text-sm text-muted">{{ modelName }}</span>
               </div>
             </div>
@@ -109,6 +109,9 @@ definePageMeta({
   title: '音频合成',
 })
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const settingsVisible = ref(true)
 
 onMounted(() => {
@@ -120,9 +123,9 @@ function toggleSettings() {
 }
 
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '多模态', icon: 'i-lucide-file-stack' },
-  { label: '音频合成', icon: 'i-lucide-mic', to: '/multimodal/audio' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.multimodal'), icon: 'i-lucide-file-stack' },
+  { label: t('sidebar.audioSynthesis'), icon: 'i-lucide-mic', to: localePath('/multimodal/audio') },
 ])
 const caseStore = useCaseStore()
 const storyStore = useStoryStore()
@@ -132,13 +135,13 @@ const rateStore = useRateStore()
 const sourceType = ref('custom')
 const textInput = ref('你好！我是智能语音助手 XiaoAI，英文名是 SmartVoice。当前系统版本 v2.5.0，发布于 2025 年 12 月。今天天气：晴，温度 22~28°C，湿度 45%。请注意防暑降温！如需帮助，请拨打 400-888-0000 或访问 www.example.com。感谢您的使用！')
 
-const sourceOptions = [
-  { label: '✏️ 自定义文本', value: 'custom' },
-  { label: '📋 病例内容', value: 'case' },
-  { label: '📖 故事内容', value: 'story' },
-  { label: '📝 试题内容', value: 'test' },
-  { label: '⭐ 评价内容', value: 'rate' },
-]
+const sourceOptions = computed(() => [
+  { label: `✏️ ${t('audio.sourceCustom')}`, value: 'custom' },
+  { label: `📋 ${t('audio.sourceCase')}`, value: 'case' },
+  { label: `📖 ${t('audio.sourceStory')}`, value: 'story' },
+  { label: `📝 ${t('audio.sourceTest')}`, value: 'test' },
+  { label: `⭐ ${t('audio.sourceRate')}`, value: 'rate' },
+])
 
 function formatTestContent(content: string | null): string {
   if (!content) return ''
@@ -175,7 +178,7 @@ watch(sourceType, (val) => {
 const modelName = computed(
   () => {
     const m = useModelStore().activeModels.audio
-    return m?.name ? `${m.provider} / ${m.name}` : '未选择'
+    return m?.name ? `${m.provider} / ${m.name}` : t('common.notSelected')
   },
 )
 

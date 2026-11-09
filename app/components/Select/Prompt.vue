@@ -3,7 +3,7 @@
     <USelect
       v-model="selectedTask"
       :items="taskOptions"
-      placeholder="选择任务..."
+      :placeholder="t('select.taskPlaceholder')"
       variant="soft"
       size="lg"
       :disabled="taskOptions.length === 0"
@@ -11,7 +11,7 @@
     <template v-if="loading">
       <div class="text-muted flex items-center justify-center p-8 text-sm">
         <UIcon name="i-lucide-loader" class="mr-2 animate-spin" />
-        加载提示词...
+        {{ t('select.loadingPrompt') }}
       </div>
     </template>
     <div v-else-if="promptContent !== null" class="flex min-h-0 flex-1 flex-col">
@@ -34,7 +34,7 @@
         <template v-if="isCustom">
           <div class="flex items-center gap-1.5">
             <div class="h-1.5 w-1.5 rounded-full bg-warning" />
-            <span class="text-xs font-medium text-warning">已自定义</span>
+            <span class="text-xs font-medium text-warning">{{ t('select.customized') }}</span>
           </div>
           <UButton icon="i-lucide-rotate-ccw" variant="ghost" size="xs" color="warning" @click="handleReset" />
         </template>
@@ -68,7 +68,7 @@
       />
     </div>
     <div v-else class="text-muted flex items-center justify-center p-8 text-sm">
-      无系统提示词
+      {{ t('select.noPrompt') }}
     </div>
   </div>
 </template>
@@ -80,18 +80,20 @@ const props = defineProps({
   scene: { type: String, required: true },
 })
 
+const { t } = useI18n()
+
 const promptStore = usePromptStore()
 
-const taskLabels: Record<string, string> = {
-  generate: '生成',
-  verify: '校验',
-  fix: '修正',
-  prompt: '提示词',
-}
+const taskLabels = computed<Record<string, string>>(() => ({
+  generate: t('common.generate'),
+  verify: t('common.verify'),
+  fix: t('common.fix'),
+  prompt: t('common.prompt'),
+}))
 
 const availablePrompts = getAvailablePrompts()
 const tasks = computed(() => availablePrompts[props.scene] ?? [])
-const taskOptions = computed(() => tasks.value.map((t) => ({ label: taskLabels[t] ?? t, value: t })))
+const taskOptions = computed(() => tasks.value.map((task) => ({ label: taskLabels.value[task] ?? task, value: task })))
 
 const selectedTask = ref(tasks.value[0] ?? '')
 const promptContent = ref<string | null>(null)

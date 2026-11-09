@@ -1,7 +1,6 @@
 <template>
   <UDropdownMenu :items="items">
     <UButton
-      :label="currentLabel"
       :aria-label="t('locale.switch')"
       :class="['cursor-pointer', buttonClass]"
       :size="size ?? 'lg'"
@@ -25,8 +24,6 @@ const DEFAULT_LOCALE = 'zh'
 const { locale, locales, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const route = useRoute()
-
-const currentLabel = computed(() => t(`locale.${locale.value}`))
 
 const items = computed<DropdownMenuItem[][]>(() => [
   [

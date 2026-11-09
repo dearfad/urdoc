@@ -31,6 +31,8 @@
 - **[zod](https://zod.dev/)** — 运行时类型验证（^4.4.3）
 - **[partial-json](https://github.com/prometheansacrifice/partial-json)** — 流式 JSON 增量解析
 - **[@zumer/snapdom](https://github.com/zumerlab/snapdom)** — DOM 差异更新
+- **[@zumer/snapdom-plugins](https://www.npmjs.com/package/@zumer/snapdom-plugins)** — PDF 导出插件（单页自适应 / A4 分页；整页图像保留版面与图片，叠加矢量文字与可选中文字层）
+- **Noto Sans SC** — `public/fonts/` 下的 400 / 700 简体中文 WOFF1 字体，供 PDF 矢量文字嵌入（SIL OFL 1.1，许可见同目录 `OFL.txt`），仅在导出 PDF 时加载
 - **TypeScript** — 全栈类型安全
 - **pnpm** — 高效包管理器
 - **[腾讯云 EdgeOne](https://edgeone.tencent.com/)** — Serverless 边缘计算部署（Node 24.5.0）
@@ -148,7 +150,10 @@ urdoc/
 │       ├── video/                  # 视频生成接口
 │       │   ├── index.ts            # 路由分发
 │       │   └── providers/agnes.ts  # Agnes 视频生成（创建 + 轮询）
-│       └── github/commit.js        # GitHub 提交日期查询
+│       ├── github/
+│       │   ├── commit.js           # GitHub 提交日期查询（保持旧契约）
+│       │   └── overview.get.ts     # 双分支动态聚合
+│       └── status.get.ts           # 服务端配置状态（不外联第三方）
 
 ├── edgeone.json                    # EdgeOne Serverless 部署配置
 ├── nuxt.config.ts                  # Nuxt 配置（runtimeConfig、modules、vite optimizeDeps）
@@ -172,7 +177,9 @@ urdoc/
 | `POST /api/image` | agnes, bigmodel | 图像生成 |
 | `POST /api/audio` | xiaomi, gitee | 语音合成（TTS） |
 | `POST /api/video` | agnes | 视频生成（创建 + 轮询进度） |
-| `POST /api/github/commit` | - | 查询指定分支最新提交日期 |
+| `POST /api/github/commit` | - | 查询 main / develop 分支最新提交日期 |
+| `GET /api/github/overview` | - | 聚合双分支提交详情、近期时间线、分支差异与贡献者（90 秒缓存） |
+| `GET /api/status` | - | 返回服务端各 API Key 是否已配置的布尔状态 |
 
 ## 快速开始
 

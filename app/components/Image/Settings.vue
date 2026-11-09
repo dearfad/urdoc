@@ -9,7 +9,7 @@
   >
     <template #header v-if="isTitleShow">
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">图像设定</span>
+      <span class="font-bold">{{ t('imageSettings.title') }}</span>
     </template>
     <template #default>
       <div class="m-4 flex flex-col">
@@ -20,6 +20,8 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
+
 defineProps({
   isTitleShow: { type: Boolean, required: false, default: true },
 })

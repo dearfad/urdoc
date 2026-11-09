@@ -44,35 +44,39 @@ const props = defineProps({
   scene: { type: String, required: false, default: 'story' },
 })
 
+const { t } = useI18n()
+
 const collapsed = ref(false)
 
-const sceneLabels = {
-  story: '故事',
-  conversation: '对话',
-  discussion: '讨论',
-  comment: '点评',
-}
+const sceneLabels = computed(() => ({
+  story: t('tabs.story'),
+  conversation: t('tabs.conversation'),
+  discussion: t('tabs.discussion'),
+  comment: t('tabs.comment'),
+}))
 
-const title = computed(() => `${sceneLabels[props.scene] ?? '故事'}设定`)
+const title = computed(() =>
+  t('storySettings.title', { scene: sceneLabels.value[props.scene] ?? t('tabs.story') }),
+)
 
-const tabItems = [
+const tabItems = computed(() => [
   {
-    label: '自定义',
+    label: t('common.custom'),
     value: 'custom',
     icon: 'i-lucide-pencil',
     slot: 'custom',
   },
   {
-    label: '提示词',
+    label: t('common.prompt'),
     value: 'prompt',
     icon: 'i-lucide-file-text',
     slot: 'prompt',
   },
   {
-    label: '模型',
+    label: t('common.model'),
     value: 'model',
     icon: 'i-lucide-cpu',
     slot: 'model',
   },
-]
+])
 </script>

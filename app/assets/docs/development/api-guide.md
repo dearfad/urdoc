@@ -1,18 +1,20 @@
 # API 接口指南
 
-后端 API 遵循 **统一入口 + 内部分发** 的插件式架构，共 4 个核心接口 + 1 个独立接口。
+后端 API 遵循 **统一入口 + 内部分发** 的插件式架构，共 4 个生成类核心接口 + 3 个只读状态接口。
 
 ## 接口一览
 
 | 路径 | 用途 | 分发方式 |
 |---|---|---|
-| `/api/chat` | AI 对话（流式/非流式） | `model.provider` |
-| `/api/image` | 图片生成 | `model.provider` |
-| `/api/audio` | 语音合成（TTS） | `model.provider` |
-| `/api/video` | 视频生成 | `model.provider` |
-| `/api/github/commit` | 查询 GitHub 提交日期 | 固定 |
+| `/api/chat` | AI 对话（流式/非流式） | `model.provider`（POST） |
+| `/api/image` | 图片生成 | `model.provider`（POST） |
+| `/api/audio` | 语音合成（TTS） | `model.provider`（POST） |
+| `/api/video` | 视频生成 | `model.provider`（POST） |
+| `/api/github/commit` | 查询 GitHub 提交日期 | 固定（POST） |
+| `/api/github/overview` | 分支动态、提交时间线与差异 | 固定（GET） |
+| `/api/status` | 服务端配置状态 | 固定（GET） |
 
-所有接口统一接收 `POST` 请求，`Content-Type: application/json`。
+生成类接口统一接收 `POST` 请求，`Content-Type: application/json`；只读状态接口使用 `GET`，不接收外部入参。
 
 ## 目录结构
 
@@ -36,8 +38,10 @@ server/api/
 │   ├── index.ts
 │   └── providers/
 │       └── agnes.ts       ← Agnes（异步任务）
-└── github/
-    └── commit.js          ← 独立接口，不变
+├── github/
+│   ├── commit.js          ← 轻量部署日期接口（保持旧契约）
+│   └── overview.get.ts    ← 双分支动态聚合接口
+└── status.get.ts          ← 服务端配置状态（不外联第三方）
 ```
 
 ## 路由分发机制
@@ -148,7 +152,33 @@ Body: { branch }
 返回: "2026-06-15"
 ```
 
-获取指定分支的最新提交日期，用于展示部署状态。
+`branch` 仅允许 `main` 与 `develop`（白名单校验），返回 `YYYY-MM-DD` 字符串，契约保持不变。
+
+### `/api/github/overview` — 分支更新动态
+
+```
+GET /api/github/overview
+GET /api/github/overview?refresh=1   // 手动刷新，绕过常规缓存
+返回: GithubOverview（契约见 app/types/github.ts）
+```
+
+服务端并行请求 GitHub REST（两个 `commits/{branch}` 详情、两个 `commits?sha=...` 列表、`compare/main...develop`），任意一路失败只把对应区块写入 `warnings`，其余数据照常返回。响应包含：
+
+- `branches`：main / develop 最新提交时间、标题、作者、短 SHA、变更统计与站点地址
+- `compare`：`aheadBy`（develop 领先）/ `behindBy`（develop 落后）
+- `timeline`：两分支合并去重后按时间倒序的最近 4 条提交
+- `contributors` / `warnings` / `fetchedAt`
+
+使用 `defineCachedEventHandler` 缓存 90 秒并开启 stale-while-revalidate；`githubApiToken` 仅在服务端使用，未配置时按公开仓库匿名读取。
+
+### `/api/status` — 服务端配置状态
+
+```
+GET /api/status
+返回: { configured: { agnesApiKey: true, ... }, checkedAt: "..." }
+```
+
+仅读取 `useRuntimeConfig()` 判断各项密钥是否已配置，不返回密钥内容、不探测第三方服务，用于概览页展示当前模型的配置就绪提示。
 
 ## Provider 开发规范
 

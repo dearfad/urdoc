@@ -3,7 +3,7 @@
     <template #header>
       <UDashboardNavbar :title="title">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -18,9 +18,9 @@
     <template #body>
       <div v-if="error" class="flex flex-col items-center justify-center py-20">
         <UIcon name="i-lucide-file-question" class="text-muted size-16" />
-        <h2 class="text-highlighted mt-4 text-xl font-semibold">文档未找到</h2>
-        <p class="text-muted mt-2">请检查路径是否正确，或返回文档首页。</p>
-        <UButton to="/docs" class="mt-6" label="返回文档首页" color="neutral" variant="subtle" />
+        <h2 class="text-highlighted mt-4 text-xl font-semibold">{{ t('docsPage.notFound') }}</h2>
+        <p class="text-muted mt-2">{{ t('docsPage.notFoundHint') }}</p>
+        <UButton :to="localePath('/docs')" class="mt-6" :label="t('common.backToDocs')" color="neutral" variant="subtle" />
       </div>
       <div v-else-if="loading" class="flex items-center justify-center py-20">
         <UIcon name="i-lucide-loader-circle" class="size-8 animate-spin" />
@@ -36,6 +36,9 @@
 import type { BreadcrumbItem } from '@nuxt/ui'
 import { getDocTitle, getDocContent } from '~/utils/docs'
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const route = useRoute()
 const slug = computed(() =>
   (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug) || 'index',
@@ -44,8 +47,8 @@ const slug = computed(() =>
 const title = computed(() => getDocTitle(slug.value))
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '文档', icon: 'i-lucide-book-open-text', to: '/docs' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('sidebar.docs'), icon: 'i-lucide-book-open-text', to: localePath('/docs') },
   { label: title.value, to: route.path },
 ])
 

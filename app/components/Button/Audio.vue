@@ -17,6 +17,7 @@ const props = defineProps({
   label: { type: String, default: undefined },
 })
 
+const { t } = useI18n()
 const audioStore = useAudioStore()
 const toast = useToast()
 
@@ -49,7 +50,7 @@ async function handleClick() {
 
 async function synthesize() {
   if (!props.text) {
-    toast.add({ title: '没有可朗读的内容', color: 'warning', icon: 'i-lucide-alert-triangle', duration: 3000 })
+    toast.add({ title: t('common.noAudioContent'), color: 'warning', icon: 'i-lucide-alert-triangle', duration: 3000 })
     return
   }
   status.value = 'loading'
@@ -58,7 +59,7 @@ async function synthesize() {
     playAudio(url)
   } catch (e) {
     status.value = 'idle'
-    toast.add({ title: '语音合成失败', description: e.message, color: 'error', icon: 'i-lucide-alert-circle' })
+    toast.add({ title: t('common.audioFailed'), description: e.message, color: 'error', icon: 'i-lucide-alert-circle' })
   }
 }
 

@@ -9,7 +9,7 @@
   >
     <template #header v-if="isTitleShow">
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">考核设定</span>
+      <span class="font-bold">{{ t('testSettings.title') }}</span>
     </template>
     <template #default>
       <UTabs :items="tabItems" variant="link" class="w-full flex flex-col min-h-0" :ui="{ trigger: 'grow', content: 'flex-1 min-h-0 overflow-auto' }" defaultValue="custom">
@@ -32,26 +32,28 @@
 </template>
 
 <script setup>
-const tabItems = [
+const { t } = useI18n()
+
+const tabItems = computed(() => [
   {
-    label: '自定义',
+    label: t('common.custom'),
     value: 'custom',
     icon: 'i-lucide-pencil',
     slot: 'custom',
   },
   {
-    label: '提示词',
+    label: t('common.prompt'),
     value: 'prompt',
     icon: 'i-lucide-file-text',
     slot: 'prompt',
   },
   {
-    label: '模型',
+    label: t('common.model'),
     value: 'model',
     icon: 'i-lucide-cpu',
     slot: 'model',
   },
-]
+])
 
 const { isTitleShow } = defineProps({
   isTitleShow: { type: Boolean, required: false, default: true },

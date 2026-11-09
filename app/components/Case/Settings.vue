@@ -9,7 +9,7 @@
   >
     <template #header>
       <UIcon name="i-lucide-cog" class="mr-2" />
-      <span class="font-bold">病历设定</span>
+      <span class="font-bold">{{ t('caseSettings.title') }}</span>
       <UButton
         :icon="collapsed ? 'i-lucide-chevron-down' : 'i-lucide-chevron-up'"
         variant="ghost"
@@ -60,7 +60,7 @@
             />
           </div>
           <div class="m-4 flex justify-end">
-            <UCheckbox v-model="random" label="随机" />
+            <UCheckbox v-model="random" :label="t('common.random')" />
           </div>
         </template>
         <template #custom>
@@ -82,6 +82,8 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
+
 const collapsed = ref(false)
 const stateStore = useStateStore()
 const bookStore = useBookStore()
@@ -96,25 +98,25 @@ onMounted(() => {
 
 const tabItems = computed(() => [
   {
-    label: '教科书',
+    label: t('common.textbook'),
     value: 'textbook',
     slot: 'textbook',
     ...(isMobile.value ? {} : { icon: 'i-lucide-book' }),
   },
   {
-    label: '自定义',
+    label: t('common.custom'),
     value: 'custom',
     slot: 'custom',
     ...(isMobile.value ? {} : { icon: 'i-lucide-pencil' }),
   },
   {
-    label: '提示词',
+    label: t('common.prompt'),
     value: 'prompt',
     slot: 'prompt',
     ...(isMobile.value ? {} : { icon: 'i-lucide-file-text' }),
   },
   {
-    label: '模型',
+    label: t('common.model'),
     value: 'model',
     slot: 'model',
     ...(isMobile.value ? {} : { icon: 'i-lucide-cpu' }),
@@ -254,7 +256,7 @@ function handleTopicChange() {
 
 const entries = ref([
   {
-    placeholder: '教科书',
+    placeholder: t('caseSettings.textbook'),
     'v-model': book,
     items: () => books.value,
     icon: 'i-lucide-book',
@@ -271,7 +273,7 @@ const entries = ref([
     },
   },
   {
-    placeholder: '篇目',
+    placeholder: t('caseSettings.part'),
     'v-model': part,
     items: () => parts.value,
     icon: 'i-lucide-bookmark',
@@ -288,7 +290,7 @@ const entries = ref([
     },
   },
   {
-    placeholder: '章节',
+    placeholder: t('caseSettings.chapter'),
     'v-model': chapter,
     items: () => chapters.value,
     icon: 'i-lucide-table-of-contents',
@@ -305,7 +307,7 @@ const entries = ref([
     },
   },
   {
-    placeholder: '节次',
+    placeholder: t('caseSettings.section'),
     'v-model': section,
     items: () => sections.value,
     icon: 'i-lucide-book-marked',
@@ -322,7 +324,7 @@ const entries = ref([
     },
   },
   {
-    placeholder: '子节',
+    placeholder: t('caseSettings.subsection'),
     'v-model': subsection,
     items: () => subsections.value,
     icon: 'i-lucide-book-open',
@@ -339,7 +341,7 @@ const entries = ref([
     },
   },
   {
-    placeholder: '主题',
+    placeholder: t('caseSettings.topic'),
     'v-model': topic,
     items: () => topics.value,
     icon: 'i-lucide-notepad-text',

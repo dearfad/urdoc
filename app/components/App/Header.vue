@@ -7,7 +7,7 @@
       <UButton
         :to="localePath('/docs')"
         icon="i-lucide-file-text"
-        aria-label="Documentation"
+        :aria-label="t('header.docs')"
         color="neutral"
         variant="ghost"
       />

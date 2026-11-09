@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-user">
     <template #header>
-      <UDashboardNavbar title="用户">
+      <UDashboardNavbar :title="t('user.title')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -24,10 +24,10 @@
             </div>
             <div>
               <h1 class="text-highlighted text-2xl font-bold">
-                {{ session ? session.user?.name || '管理员' : '欢迎登录' }}
+                {{ session ? session.user?.name || t('user.admin') : t('user.welcome') }}
               </h1>
               <p class="text-muted mt-1">
-                {{ session ? '已登录账户' : '请登录您的账户以继续' }}
+                {{ session ? t('user.loggedIn') : t('user.loginHint') }}
               </p>
             </div>
           </div>
@@ -41,7 +41,7 @@
               <template #header>
                 <div class="bg-elevated flex items-center gap-3 py-2">
                   <Icon name="i-lucide-shield" class="text-primary size-5" />
-                  <span class="text-highlighted font-semibold">账号管理</span>
+                  <span class="text-highlighted font-semibold">{{ t('user.accountManagement') }}</span>
                 </div>
               </template>
               <div class="space-y-6">
@@ -54,22 +54,22 @@
                     </div>
                     <div class="min-w-0 flex-1">
                       <div class="text-highlighted text-lg font-semibold">
-                        {{ session.user?.name || '管理员' }}
+                        {{ session.user?.name || t('user.admin') }}
                       </div>
-                      <div class="text-muted text-sm">当前登录用户</div>
+                      <div class="text-muted text-sm">{{ t('user.currentUser') }}</div>
                     </div>
                     <div
                       class="bg-success/10 text-success flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
                     >
                       <Icon name="i-lucide-check-circle" class="size-3.5" />
-                      <span>在线</span>
+                      <span>{{ t('user.online') }}</span>
                     </div>
                   </div>
 
                   <!-- 操作按钮 -->
                   <div class="flex flex-col gap-3 sm:flex-row">
                     <UButton
-                      label="退出登录"
+                      :label="t('user.logout')"
                       color="error"
                       variant="outline"
                       size="lg"
@@ -83,21 +83,21 @@
                 <!-- 未登录状态 - 登录表单 -->
                 <div v-else>
                   <UForm :state="{ name, password }" class="space-y-5" @submit.prevent="handleLogin">
-                    <UFormField name="name" label="用户名">
+                    <UFormField name="name" :label="t('user.username')">
                       <UInput
                         v-model="name"
-                        placeholder="请输入用户名"
+                        :placeholder="t('user.usernamePlaceholder')"
                         size="lg"
                         icon="i-lucide-user"
                         :disabled="loading"
                       />
                     </UFormField>
 
-                    <UFormField name="password" label="密码">
+                    <UFormField name="password" :label="t('user.password')">
                       <UInput
                         v-model="password"
                         type="password"
-                        placeholder="请输入密码"
+                        :placeholder="t('user.passwordPlaceholder')"
                         size="lg"
                         icon="i-lucide-lock"
                         :disabled="loading"
@@ -112,7 +112,7 @@
                       icon="i-lucide-alert-circle"
                     />
 
-                    <UButton type="submit" label="登录" :loading="loading" block size="lg" icon="i-lucide-log-in" />
+                    <UButton type="submit" :label="t('user.login')" :loading="loading" block size="lg" icon="i-lucide-log-in" />
                   </UForm>
                 </div>
               </div>
@@ -123,18 +123,18 @@
               <template #header>
                 <div class="bg-elevated flex items-center gap-3 py-2">
                   <Icon name="i-lucide-key-round" class="text-warning size-5" />
-                  <span class="text-highlighted font-semibold">哈希工具</span>
+                  <span class="text-highlighted font-semibold">{{ t('user.hashTool') }}</span>
                 </div>
               </template>
               <div class="space-y-5">
-                <p class="text-muted text-sm leading-relaxed">将明文密码转换为安全的哈希值，用于密码存储和验证。</p>
+                <p class="text-muted text-sm leading-relaxed">{{ t('user.hashDescription') }}</p>
 
-                <UFormField label="明文密码" description="输入要转换的密码">
-                  <UInput v-model="hashInput" placeholder="请输入明文密码" size="lg" icon="i-lucide-key" />
+                <UFormField :label="t('user.plainPassword')" :description="t('user.plainPasswordHint')">
+                  <UInput v-model="hashInput" :placeholder="t('user.plainPasswordPlaceholder')" size="lg" icon="i-lucide-key" />
                 </UFormField>
 
                 <UButton
-                  label="生成哈希"
+                  :label="t('user.generateHash')"
                   :loading="hashLoading"
                   size="lg"
                   block
@@ -144,7 +144,7 @@
                 />
 
                 <div v-if="hashResult" class="space-y-3">
-                  <UFormField label="哈希结果">
+                  <UFormField :label="t('user.hashResult')">
                     <UInput :model-value="hashResult" readonly size="lg">
                       <template #leading>
                         <Icon name="i-lucide-hash" class="text-muted size-4" />
@@ -163,7 +163,7 @@
 
                   <UAlert
                     v-if="hashCopied"
-                    description="已复制到剪贴板"
+                    :description="t('common.copied')"
                     color="success"
                     variant="subtle"
                     icon="i-lucide-check-circle"
@@ -182,16 +182,16 @@
     <template #header>
       <div class="flex items-center gap-3">
         <Icon name="i-lucide-alert-triangle" class="text-warning size-5" />
-        <span class="text-highlighted font-semibold">确认退出</span>
+        <span class="text-highlighted font-semibold">{{ t('user.confirmLogout') }}</span>
       </div>
     </template>
     <template #body>
-      <p class="text-muted">确定要退出当前账户吗？退出后需要重新登录。</p>
+      <p class="text-muted">{{ t('user.logoutConfirmText') }}</p>
     </template>
     <template #footer>
       <div class="flex justify-end gap-3">
-        <UButton label="取消" variant="ghost" color="neutral" @click="showLogoutConfirm = false" />
-        <UButton label="退出登录" color="error" icon="i-lucide-log-out" @click="handleLogout" />
+        <UButton :label="t('common.cancel')" variant="ghost" color="neutral" @click="showLogoutConfirm = false" />
+        <UButton :label="t('user.logout')" color="error" icon="i-lucide-log-out" @click="handleLogout" />
       </div>
     </template>
   </UModal>
@@ -204,9 +204,12 @@ definePageMeta({
   title: '用户',
 })
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '用户', icon: 'i-lucide-user', to: '/user' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('user.title'), icon: 'i-lucide-user', to: localePath('/user') },
 ])
 
 const { fetch: fetchSession, clear, session } = useUserSession()
@@ -229,13 +232,13 @@ async function handleLogout() {
   try {
     await clear()
     toast.add({
-      title: '已退出登录',
+      title: t('user.logoutSuccess'),
       color: 'success',
       icon: 'i-lucide-check-circle',
     })
   } catch {
     toast.add({
-      title: '退出失败',
+      title: t('user.logoutFailed'),
       color: 'error',
       icon: 'i-lucide-alert-circle',
     })
@@ -253,14 +256,14 @@ async function handleLogin() {
     })
     await fetchSession()
     toast.add({
-      title: '登录成功',
+      title: t('user.loginSuccess'),
       color: 'success',
       icon: 'i-lucide-check-circle',
     })
   } catch (e: any) {
-    error.value = e.data?.message || '登录失败'
+    error.value = e.data?.message || t('user.loginFailed')
     toast.add({
-      title: '登录失败',
+      title: t('user.loginFailed'),
       description: error.value,
       color: 'error',
       icon: 'i-lucide-alert-circle',
@@ -282,14 +285,14 @@ async function generateHash() {
     })
     hashResult.value = res.hash
     toast.add({
-      title: '哈希生成成功',
+      title: t('user.hashSuccess'),
       color: 'success',
       icon: 'i-lucide-check-circle',
     })
   } catch (e: any) {
-    hashResult.value = '生成失败: ' + (e.data?.message || e.message)
+    hashResult.value = t('user.hashFailedPrefix') + (e.data?.message || e.message)
     toast.add({
-      title: '生成失败',
+      title: t('user.hashFailed'),
       description: e.data?.message || e.message,
       color: 'error',
       icon: 'i-lucide-alert-circle',
@@ -304,7 +307,7 @@ async function copyHash() {
   await navigator.clipboard.writeText(hashResult.value)
   hashCopied.value = true
   toast.add({
-    title: '已复制到剪贴板',
+    title: t('common.copied'),
     color: 'success',
     icon: 'i-lucide-check',
   })

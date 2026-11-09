@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-docs-index">
     <template #header>
-      <UDashboardNavbar title="文档">
+      <UDashboardNavbar :title="t('sidebar.docs')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -16,8 +16,8 @@
       <div class="divide-border-muted divide-y">
         <div class="px-6 py-10 lg:px-8">
           <div class="mx-auto max-w-3xl text-center">
-            <h1 class="text-highlighted text-4xl font-bold tracking-tight">文档</h1>
-            <p class="text-muted mt-2 text-lg">URDOC 平台使用指南与开发参考</p>
+            <h1 class="text-highlighted text-4xl font-bold tracking-tight">{{ t('common.docs') }}</h1>
+            <p class="text-muted mt-2 text-lg">{{ t('docsPage.subtitle') }}</p>
           </div>
         </div>
 
@@ -46,7 +46,7 @@
                   <NuxtLink
                     v-for="child in section.children"
                     :key="child.slug"
-                    :to="`/docs/${child.slug}`"
+                    :to="localePath(`/docs/${child.slug}`)"
                     class="group flex items-center gap-3 rounded-lg border border-default p-4 transition-all hover:border-primary hover:shadow-sm"
                   >
                     <UIcon :name="child.icon" class="text-primary size-5 shrink-0" />
@@ -76,12 +76,15 @@ interface GroupSection extends DocGroup {
   key: string
 }
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const sections = computed<(LinkSection | GroupSection)[]>(() =>
   docNav.map((item) => {
     if ('children' in item) {
       return { ...item, type: 'group' as const, key: item.label }
     }
-    return { ...item, type: 'link' as const, key: item.slug, to: `/docs/${item.slug}` }
+    return { ...item, type: 'link' as const, key: item.slug, to: localePath(`/docs/${item.slug}`) }
   }),
 )
 </script>

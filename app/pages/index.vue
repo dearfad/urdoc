@@ -37,7 +37,7 @@
     <!-- 语言切换 -->
     <div class="absolute right-4 top-4 z-20 sm:right-6 sm:top-6">
       <AppLocaleSwitch
-        button-class="flex gap-2 rounded-full border border-zinc-800/60 bg-zinc-900/70 px-4 text-xs font-medium tracking-[0.15em] text-zinc-300 backdrop-blur-md transition-colors duration-200 hover:bg-zinc-800/70 hover:text-white"
+        button-class="rounded-full border border-zinc-800/60 bg-zinc-900/70 text-zinc-300 backdrop-blur-md transition-colors duration-200 hover:bg-zinc-800/70 hover:text-white"
       />
     </div>
 

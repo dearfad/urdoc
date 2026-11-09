@@ -1,9 +1,9 @@
 <template>
   <UDashboardPanel id="pages-settings">
     <template #header>
-      <UDashboardNavbar title="设置">
+      <UDashboardNavbar :title="t('settingsPage.title')">
         <template #leading>
-          <UTooltip text="侧边栏">
+          <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
           </UTooltip>
         </template>
@@ -21,8 +21,8 @@
                 <Icon name="i-lucide-database" class="size-5" />
               </div>
               <div class="min-w-0">
-                <h2 class="text-base font-semibold leading-tight">存储管理</h2>
-                <p class="text-xs text-muted">本地缓存与 Cookie 占用情况</p>
+                <h2 class="text-base font-semibold leading-tight">{{ t('settingsPage.storageTitle') }}</h2>
+                <p class="text-xs text-muted">{{ t('settingsPage.storageSubtitle') }}</p>
               </div>
             </div>
           </template>
@@ -33,7 +33,7 @@
                   <Icon name="i-lucide-hard-drive" class="size-4" />
                 </div>
                 <div class="min-w-0">
-                  <div class="text-sm font-medium">本地存储</div>
+                  <div class="text-sm font-medium">{{ t('settingsPage.localStorage') }}</div>
                   <div class="font-mono text-xs text-muted truncate">{{ storageText }} / 5 MB</div>
                 </div>
               </div>
@@ -41,7 +41,7 @@
                 color="warning"
                 variant="soft"
                 size="sm"
-                label="清除"
+                :label="t('common.clear')"
                 @click="openConfirm('local')"
               />
             </div>
@@ -62,7 +62,7 @@
                 color="warning"
                 variant="ghost"
                 size="sm"
-                label="清除"
+                :label="t('common.clear')"
                 @click="openConfirm('cookie')"
               />
             </div>
@@ -76,30 +76,30 @@
                 <Icon name="i-lucide-notebook-pen" class="size-5" />
               </div>
               <div class="min-w-0">
-                <h2 class="text-base font-semibold leading-tight">病历</h2>
-                <p class="text-xs text-muted">病历生成与校验偏好</p>
+                <h2 class="text-base font-semibold leading-tight">{{ t('settingsPage.caseTitle') }}</h2>
+                <p class="text-xs text-muted">{{ t('settingsPage.caseSubtitle') }}</p>
               </div>
             </div>
           </template>
           <div class="divide-y divide-default">
             <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
               <div class="min-w-0 pr-4">
-                <div class="text-sm font-medium">显示来源标签</div>
-                <div class="text-xs text-muted">在病历卡片底部显示教科书来源和自定义标签</div>
+                <div class="text-sm font-medium">{{ t('settingsPage.showSourceTags') }}</div>
+                <div class="text-xs text-muted">{{ t('settingsPage.showSourceTagsHint') }}</div>
               </div>
               <USwitch v-model="stateStore.showCaseFooter" />
             </div>
             <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
               <div class="min-w-0 pr-4">
-                <div class="text-sm font-medium">生成后自动校验</div>
-                <div class="text-xs text-muted">病历生成完成后自动进行校验</div>
+                <div class="text-sm font-medium">{{ t('settingsPage.autoVerify') }}</div>
+                <div class="text-xs text-muted">{{ t('settingsPage.autoVerifyHint') }}</div>
               </div>
               <USwitch v-model="stateStore.autoVerify" />
             </div>
             <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
               <div class="min-w-0 pr-4">
-                <div class="text-sm font-medium">校验不通过时自动更正</div>
-                <div class="text-xs text-muted">校验未通过时自动进行更正</div>
+                <div class="text-sm font-medium">{{ t('settingsPage.autoFix') }}</div>
+                <div class="text-xs text-muted">{{ t('settingsPage.autoFixHint') }}</div>
               </div>
               <USwitch
                 v-model="stateStore.autoFix"
@@ -116,19 +116,19 @@
                 <Icon name="i-lucide-sliders-horizontal" class="size-5" />
               </div>
               <div class="min-w-0">
-                <h2 class="text-base font-semibold leading-tight">模型设定</h2>
-                <p class="text-xs text-muted">为各场景指定默认模型</p>
+                <h2 class="text-base font-semibold leading-tight">{{ t('settingsPage.modelTitle') }}</h2>
+                <p class="text-xs text-muted">{{ t('settingsPage.modelSubtitle') }}</p>
               </div>
             </div>
           </template>
           <div class="divide-y divide-default">
             <div
-              v-for="t in modelTypes"
-              :key="t.type"
+              v-for="modelType in modelTypes"
+              :key="modelType.type"
               class="space-y-2 py-3 first:pt-0 last:pb-0"
             >
-              <div class="text-sm font-medium">{{ t.label }}</div>
-              <SelectModelType :type="t.type" />
+              <div class="text-sm font-medium">{{ modelType.label }}</div>
+              <SelectModelType :type="modelType.type" />
             </div>
           </div>
         </UCard>
@@ -140,13 +140,13 @@
                 <Icon name="i-lucide-plug-zap" class="size-5" />
               </div>
               <div class="min-w-0">
-                <h2 class="text-base font-semibold leading-tight">自定义模型</h2>
-                <p class="text-xs text-muted">配置自建或第三方模型</p>
+                <h2 class="text-base font-semibold leading-tight">{{ t('settingsPage.customTitle') }}</h2>
+                <p class="text-xs text-muted">{{ t('settingsPage.customSubtitle') }}</p>
               </div>
             </div>
           </template>
           <div class="space-y-5">
-            <UFormField label="场景" description="选择要绑定的模型场景">
+            <UFormField :label="t('settingsPage.scene')" :description="t('settingsPage.sceneHint')">
               <USelect
                 v-model="customScene"
                 :items="sceneOptions"
@@ -157,29 +157,29 @@
             </UFormField>
 
             <div class="space-y-2">
-              <div class="text-sm font-medium">快捷模板</div>
-              <p class="text-xs text-muted">选择「空白」可自行填写 API Key、Base URL 与模型名称，不使用任何预设</p>
+              <div class="text-sm font-medium">{{ t('settingsPage.quickTemplates') }}</div>
+              <p class="text-xs text-muted">{{ t('settingsPage.quickTemplatesHint') }}</p>
               <div class="flex flex-wrap gap-2">
                 <UButton
-                  v-for="t in modelTemplates"
-                  :key="t.label"
-                  :label="t.label"
+                  v-for="template in modelTemplates"
+                  :key="template.label"
+                  :label="template.label"
                   variant="soft"
                   size="sm"
-                  @click="applyTemplate(t)"
+                  @click="applyTemplate(template)"
                 />
               </div>
             </div>
 
             <UAlert
               v-if="showComfyHint"
-              title="本地 ComfyUI 使用说明"
+              :title="t('settingsPage.comfyHintTitle')"
               :description="comfyHint"
               color="warning"
               variant="soft"
             />
 
-            <UFormField label="API Key" description="自定义提供商的密钥（如不需要可留空）">
+            <UFormField :label="t('settingsPage.apiKey')" :description="t('settingsPage.apiKeyHint')">
               <UInput
                 v-model="modelStore.customModels[customScene].apiKey"
                 :type="showApiKey ? 'text' : 'password'"
@@ -194,13 +194,13 @@
                     variant="link"
                     size="sm"
                     :icon="showApiKey ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                    :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'"
+                    :aria-label="showApiKey ? t('settingsPage.hideKey') : t('settingsPage.showKey')"
                     @click="showApiKey = !showApiKey"
                   />
                 </template>
               </UInput>
             </UFormField>
-            <UFormField label="Base URL" description="自定义提供商的接口地址">
+            <UFormField :label="t('settingsPage.baseUrl')" :description="t('settingsPage.baseUrlHint')">
               <UInput
                 v-model="modelStore.customModels[customScene].baseURL"
                 placeholder="https://api.example.com/v1"
@@ -208,7 +208,7 @@
                 class="w-full"
               />
             </UFormField>
-            <UFormField label="模型名称" description="填写后，对应场景的模型选择器将出现 “Custom” 提供商">
+            <UFormField :label="t('settingsPage.modelName')" :description="t('settingsPage.modelNameHint')">
               <UInput
                 v-model="modelStore.customModels[customScene].modelName"
                 placeholder="gpt-4o"
@@ -218,12 +218,12 @@
             </UFormField>
 
             <div v-if="showComfyTemplates" class="space-y-4 rounded-lg border border-default p-4">
-              <div class="text-sm font-medium">本地 ComfyUI 模板（专用）</div>
+              <div class="text-sm font-medium">{{ t('settingsPage.comfyTemplatesTitle') }}</div>
 
               <template v-if="customScene === 'chat'">
                 <UFormField
-                  label="本地文本生成模板"
-                  description="用于对话及病例、故事、试题、评价等所有文本生成，使用本机已安装的模型"
+                  :label="t('settingsPage.chatTemplateTitle')"
+                  :description="t('settingsPage.chatTemplateHint')"
                 >
                   <USelect v-model="chatTemplate" :items="chatOptions" variant="soft" size="lg" class="w-full" />
                 </UFormField>
@@ -231,8 +231,8 @@
 
               <template v-else-if="customScene === 'video'">
                 <UFormField
-                  label="本地图生视频模板"
-                  description="用于「影像渲染」，以已生成的患者头像作为首帧生成视频"
+                  :label="t('settingsPage.i2vTemplateTitle')"
+                  :description="t('settingsPage.i2vTemplateHint')"
                 >
                   <USelect v-model="i2vTemplate" :items="i2vOptions" variant="soft" size="lg" class="w-full" />
                 </UFormField>
@@ -240,34 +240,27 @@
 
               <template v-else>
                 <UFormField
-                  label="本地文生图模板"
-                  description="用于「自定义生成」与「生成患者头像」，使用本机已安装的模型出图"
+                  :label="t('settingsPage.t2iTemplateTitle')"
+                  :description="t('settingsPage.t2iTemplateHint')"
                 >
                   <USelect v-model="t2iTemplate" :items="t2iOptions" variant="soft" size="lg" class="w-full" />
                 </UFormField>
 
                 <UFormField
-                  label="本地图像编辑模板"
-                  description="用于「故事插图」，以已生成的患者头像作为输入图进行编辑"
+                  :label="t('settingsPage.editTemplateTitle')"
+                  :description="t('settingsPage.editTemplateHint')"
                 >
                   <USelect v-model="editTemplate" :items="editOptions" variant="soft" size="lg" class="w-full" />
                 </UFormField>
               </template>
 
               <p class="text-xs text-muted">
-                以上模板仅对本地 ComfyUI 生效；模型名称为其他值时，将走自定义远端{{
-                  customScene === 'chat'
-                    ? 'OpenAI 兼容对话'
-                    : customScene === 'video'
-                      ? '视频'
-                      : 'OpenAI 兼容图像'
-                }}
-                API。
+                {{ t('settingsPage.comfyTemplateNote', { type: customScene === 'chat' ? t('video.remoteChat') : customScene === 'video' ? t('video.remoteVideo') : t('video.remoteImage') }) }}
               </p>
             </div>
 
             <div class="flex items-center justify-end gap-2 pt-1">
-              <UButton label="清空" color="neutral" variant="ghost" @click="clearCustom" />
+              <UButton :label="t('common.clearAll')" color="neutral" variant="ghost" @click="clearCustom" />
             </div>
           </div>
         </UCard>
@@ -277,13 +270,13 @@
 
   <UModal
     v-model:open="modalOpen"
-    title="确认清除"
+    :title="t('settingsPage.confirmClearTitle')"
     :description="modalMessage"
     :ui="{ footer: 'justify-end' }"
   >
     <template #footer="{ close }">
-      <UButton label="取消" color="neutral" variant="ghost" @click="close" />
-      <UButton label="确认清除" color="error" variant="solid" @click="handleClear" />
+      <UButton :label="t('common.cancel')" color="neutral" variant="ghost" @click="close" />
+      <UButton :label="t('settingsPage.confirmClearTitle')" color="error" variant="solid" @click="handleClear" />
     </template>
   </UModal>
 </template>
@@ -295,9 +288,12 @@ definePageMeta({
   title: '设置',
 })
 
+const { t } = useI18n()
+const localePath = useLocalePath()
+
 const items = computed<BreadcrumbItem[]>(() => [
-  { label: '概览', icon: 'i-lucide-house', to: '/dashboard' },
-  { label: '设置', icon: 'i-lucide-settings', to: '/settings' },
+  { label: t('sidebar.overview'), icon: 'i-lucide-house', to: localePath('/dashboard') },
+  { label: t('settingsPage.title'), icon: 'i-lucide-settings', to: localePath('/settings') },
 ])
 
 type CustomScene = 'chat' | 'image' | 'audio' | 'video'
@@ -313,47 +309,49 @@ const modelStore = useModelStore()
 const customScene = ref<CustomScene>('chat')
 const showApiKey = ref(false)
 
-const modelTypes = [
-  { type: 'chat', label: '对话' },
-  { type: 'image', label: '图像' },
-  { type: 'video', label: '视频' },
-  { type: 'audio', label: '音频' },
-]
-const sceneOptions = [
-  { label: '对话', value: 'chat' },
-  { label: '图像', value: 'image' },
-  { label: '音频', value: 'audio' },
-  { label: '视频', value: 'video' },
-]
-
-const comfyuiTemplate: ModelTemplate = {
-  label: '本地 ComfyUI',
-  baseURL: 'http://127.0.0.1:8188',
-  modelName: 'ComfyUI',
-}
-
-// 空白模板：不带任何预设，仅保留 API Key、Base URL、模型名称三个必填项由用户自行填写
-const blankTemplate: ModelTemplate = {
-  label: '空白',
-  baseURL: '',
-  modelName: '',
-}
+const modelTypes = computed(() => [
+  { type: 'chat', label: t('settingsPage.sceneChat') },
+  { type: 'image', label: t('settingsPage.sceneImage') },
+  { type: 'video', label: t('settingsPage.sceneVideo') },
+  { type: 'audio', label: t('settingsPage.sceneAudio') },
+])
+const sceneOptions = computed(() => [
+  { label: t('settingsPage.sceneChat'), value: 'chat' },
+  { label: t('settingsPage.sceneImage'), value: 'image' },
+  { label: t('settingsPage.sceneAudio'), value: 'audio' },
+  { label: t('settingsPage.sceneVideo'), value: 'video' },
+])
 
 // 各场景独立的快捷模板，切换场景时自动展示对应列表；每个场景都提供空白模板
-const sceneTemplates: Record<CustomScene, ModelTemplate[]> = {
-  chat: [
-    blankTemplate,
-    comfyuiTemplate,
-    { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
-    { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
-    { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
-  ],
-  image: [blankTemplate, comfyuiTemplate],
-  audio: [blankTemplate, comfyuiTemplate],
-  video: [blankTemplate, comfyuiTemplate],
-}
+const sceneTemplates = computed<Record<CustomScene, ModelTemplate[]>>(() => {
+  const comfyuiTemplate: ModelTemplate = {
+    label: t('settingsPage.localComfyUI'),
+    baseURL: 'http://127.0.0.1:8188',
+    modelName: 'ComfyUI',
+  }
 
-const modelTemplates = computed(() => sceneTemplates[customScene.value])
+  // 空白模板：不带任何预设，仅保留 API Key、Base URL、模型名称三个必填项由用户自行填写
+  const blankTemplate: ModelTemplate = {
+    label: t('settingsPage.blank'),
+    baseURL: '',
+    modelName: '',
+  }
+
+  return {
+    chat: [
+      blankTemplate,
+      comfyuiTemplate,
+      { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
+      { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
+      { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
+    ],
+    image: [blankTemplate, comfyuiTemplate],
+    audio: [blankTemplate, comfyuiTemplate],
+    video: [blankTemplate, comfyuiTemplate],
+  }
+})
+
+const modelTemplates = computed(() => sceneTemplates.value[customScene.value])
 
 // 内置模板选项：文生图二选一，图像编辑、图生视频与文本生成各固定一套
 const t2iOptions = [
@@ -411,36 +409,17 @@ const showComfyTemplates = computed(
 const showComfyHint = computed(() => isLocalComfyUI.value)
 
 const comfyHint = computed(() => {
-  if (customScene.value === 'chat') {
-    return (
-      '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；' +
-      '当前已启用下方本地文本生成模板，使用本机 Qwen3 4B 完成对话与病例、故事、试题、评价等文本生成；' +
-      '系统指令与对话历史会合并为一段提示词送入工作流，流式响应在生成完成后一次性返回；' +
-      '若把模型名称改为其他值，则按自定义远端 OpenAI 兼容对话 API 调用。'
-    )
-  }
-  if (customScene.value === 'image') {
-    return (
-      '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；' +
-      '当前已启用下方本地模板设置；若把模型名称改为其他值，则按自定义远端 OpenAI 兼容图像 API 调用。' +
-      '故事插图使用已生成的患者头像作为输入图。'
-    )
-  }
-  if (customScene.value === 'video') {
-    return (
-      '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；' +
-      '当前已启用下方本地图生视频模板，以已生成的患者头像作为首帧，需本机安装 MiniMax H3 / FastVideo FastH3 相关模型；' +
-      '视频尺寸由首帧图决定、帧率固定 24 FPS；若把模型名称改为其他值，则按自定义远端视频 API 调用。'
-    )
-  }
-  return '本地 ComfyUI 需与本服务同机启动，云端部署无法访问本机地址；当前仅对话、图像与视频场景已接入，音频暂未接入。'
+  if (customScene.value === 'chat') return t('settingsPage.comfyHintChat')
+  if (customScene.value === 'image') return t('settingsPage.comfyHintImage')
+  if (customScene.value === 'video') return t('settingsPage.comfyHintVideo')
+  return t('settingsPage.comfyHintAudio')
 })
 
-function applyTemplate(t: ModelTemplate) {
+function applyTemplate(template: ModelTemplate) {
   const scene = customScene.value
   // 空白模板仅清空接口地址与模型名称，保留已填的 API Key 及三个必填输入项
-  modelStore.customModels[scene].baseURL = t.baseURL
-  modelStore.customModels[scene].modelName = t.modelName
+  modelStore.customModels[scene].baseURL = template.baseURL
+  modelStore.customModels[scene].modelName = template.modelName
 }
 
 function clearCustom() {
@@ -461,9 +440,9 @@ const clearType = ref<'local' | 'cookie'>('local')
 
 const modalMessage = computed(() => {
   if (clearType.value === 'local') {
-    return '确定要清除所有本地存储数据吗？此操作不可撤销，将重置所有本地设置和缓存。'
+    return t('settingsPage.clearLocalMessage')
   }
-  return '确定要清除所有 Cookie 吗？清除后可能需要重新登录部分服务。'
+  return t('settingsPage.clearCookieMessage')
 })
 
 function openConfirm(type: 'local' | 'cookie') {
@@ -529,13 +508,13 @@ function handleClear() {
   if (clearType.value === 'local') {
     localStorage.clear()
     calcStorageUsage()
-    toast.add({ title: '已清除 localStorage', color: 'success' })
+    toast.add({ title: t('settingsPage.toastLocalCleared'), color: 'success' })
   } else {
     clearAllCookies()
     calcCookieUsage()
     toast.add({
-      title: '已清除 Cookie',
-      description: '部分 HttpOnly Cookie 无法通过 JS 清除',
+      title: t('settingsPage.toastCookieCleared'),
+      description: t('settingsPage.toastCookieNote'),
       color: 'success',
     })
   }
