@@ -56,6 +56,16 @@ export const docNav: (DocNavItem | DocGroup)[] = [
       { label: '数据库开发路线', icon: 'i-lucide-database', slug: 'development/database-plan', description: 'Turso 数据库集成开发大纲' },
     ],
   } as DocGroup,
+  {
+    label: '研究平台蓝图',
+    icon: 'i-lucide-git-branch',
+    children: [
+      { label: '整体改造蓝图', icon: 'i-lucide-map', slug: 'research/cstar-research-platform-blueprint' },
+      { label: '研究数据底座', icon: 'i-lucide-database', slug: 'research/research-data-foundation' },
+      { label: '差距矩阵与路线图', icon: 'i-lucide-list-checks', slug: 'research/gap-matrix-and-roadmap' },
+      { label: '改造任务清单', icon: 'i-lucide-clipboard-list', slug: 'research/task' },
+    ],
+  } as DocGroup,
 ]
 
 export function getDocTitle(slug: string): string {
