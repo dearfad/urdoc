@@ -3,7 +3,7 @@
   "buildCommand": "pnpm edgeone",
   "installCommand": "pnpm install",
   "outputDirectory": ".output",
-  "nodeVersion": "24.11.0",
+  "nodeVersion": "24.18.0",
   "cloudFunctions": {
     "nodejs": {
       "cloudFunctions.maxDuration": 120

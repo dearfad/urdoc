@@ -21,10 +21,22 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
     ],
     vueI18n: './i18n.config.ts',
-    detectBrowserLanguage: false,
+    // 首次访问按浏览器语言自动切换；alwaysRedirect 让 cookie 记住用户后续的手动选择
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: true,
+      fallbackLocale: 'en',
+    },
   },
   ignore: ['/app-bak/**/*'],
   nitro: { ignore: ['/app-bak/**/*'] },
+
+  routeRules: {
+    // 首页语言取决于 Accept-Language 与语言 cookie，声明 Vary 防止 CDN 把首个用户的语言缓存给其他人
+    '/': { headers: { Vary: 'Accept-Language, Cookie' } },
+  },
 
   imports: {
     dirs: [

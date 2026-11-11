@@ -20,6 +20,8 @@ defineProps<{
 }>()
 
 const DEFAULT_LOCALE = 'zh'
+/** 与 nuxt.config.ts 中 detectBrowserLanguage.cookieKey 保持一致 */
+const LOCALE_COOKIE_KEY = 'i18n_redirected'
 
 const { locale, locales, t } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
@@ -38,6 +40,8 @@ const items = computed<DropdownMenuItem[][]>(() => [
 
 /** 整页导航，让服务端按新 URL 重新解析语言，避免客户端残留的 locale 状态把路径改回去 */
 function switchTo(code: string) {
+  // alwaysRedirect 以 cookie 值为准，整页跳转前同步落盘，避免下次访问被旧值改写
+  document.cookie = `${LOCALE_COOKIE_KEY}=${code}; Path=/; Max-Age=31536000; SameSite=Lax`
   if (code === locale.value) return
 
   const candidate = switchLocalePath(code)
