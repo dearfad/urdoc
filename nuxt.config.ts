@@ -1,14 +1,17 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-05-10',
   devtools: { enabled: false },
+  // 显式给出字符串，避免 Nuxt 4.6.4 把 devServer.host 解析成 {} 写入 dev-server.json 缓存后启动崩溃
+  devServer: { host: 'localhost' },
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui',
     '@pinia/nuxt',
     'pinia-plugin-unstorage/nuxt',
-    '@comark/nuxt',
+    '@comark/vue',
     'nuxt-auth-utils',
     '@nuxtjs/i18n',
+    '@nuxt/content',
   ],
   css: ['~/assets/css/main.css'],
   ui: { fonts: false },
@@ -43,17 +46,13 @@ export default defineNuxtConfig({
       '~/types', // 让 Nuxt 扫描 app/types 目录
     ],
   },
-
+  content: {
+    // 构建期用 Node 内置 SQLite，避开 pnpm allowBuilds 与跨平台原生二进制
+    experimental: { sqliteConnector: 'native' },
+  },
   vite: {
     optimizeDeps: {
-      include: [
-        'ai',
-        '@ai-sdk/vue',
-        'partial-json',
-        '@zumer/snapdom',
-        '@zumer/snapdom-pdf',
-        'vue-draggable-plus',
-      ],
+      include: ['ai', '@ai-sdk/vue', 'partial-json', '@zumer/snapdom', '@zumer/snapdom-pdf', 'vue-draggable-plus'],
     },
   },
 
