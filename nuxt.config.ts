@@ -51,7 +51,7 @@ export default defineNuxtConfig({
         '@ai-sdk/vue',
         'partial-json',
         '@zumer/snapdom',
-        '@zumer/snapdom-plugins/pdf',
+        '@zumer/snapdom-pdf',
         'vue-draggable-plus',
       ],
     },

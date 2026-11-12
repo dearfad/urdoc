@@ -57,15 +57,11 @@ export const docNav: (DocNavItem | DocGroup)[] = [
     ],
   } as DocGroup,
   {
-    label: '研究平台蓝图',
-    icon: 'i-lucide-git-branch',
-    children: [
-      { label: '整体改造蓝图', icon: 'i-lucide-map', slug: 'research/cstar-research-platform-blueprint' },
-      { label: '研究数据底座', icon: 'i-lucide-database', slug: 'research/research-data-foundation' },
-      { label: '差距矩阵与路线图', icon: 'i-lucide-list-checks', slug: 'research/gap-matrix-and-roadmap' },
-      { label: '改造任务清单', icon: 'i-lucide-clipboard-list', slug: 'research/task' },
-    ],
-  } as DocGroup,
+    label: '研究平台改造计划',
+    icon: 'i-lucide-clipboard-list',
+    slug: 'research/project-roadmap',
+    description: '研究平台改造任务的目标、意义与实现方法',
+  },
 ]
 
 export function getDocTitle(slug: string): string {

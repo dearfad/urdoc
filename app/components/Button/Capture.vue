@@ -25,7 +25,7 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 import { computed, ref, useAttrs } from 'vue'
 import { snapdom } from '@zumer/snapdom'
 import type { SnapdomPlugin } from '@zumer/snapdom'
-import type { PdfReport } from '@zumer/snapdom-plugins/pdf'
+import type { PdfReport } from '@zumer/snapdom-pdf'
 
 defineOptions({ inheritAttrs: false })
 
@@ -228,16 +228,16 @@ const expandOverflowPlugin: SnapdomPlugin = {
   },
 }
 
-type PdfPluginModule = typeof import('@zumer/snapdom-plugins/pdf')
+type PdfPluginModule = typeof import('@zumer/snapdom-pdf')
 let pdfPluginModulePromise: Promise<PdfPluginModule> | undefined
 
 // 仅在用户选择 PDF 时加载插件，避免首屏打包体积增大
 function getPdfPlugin(): Promise<PdfPluginModule> {
-  pdfPluginModulePromise ??= import('@zumer/snapdom-plugins/pdf')
+  pdfPluginModulePromise ??= import('@zumer/snapdom-pdf')
   return pdfPluginModulePromise
 }
 
-// PDF 矢量文字使用本地开源字体 Noto Sans SC（OFL-1.1，许可见 public/fonts/OFL.txt）。
+// PDF 文字层使用本地开源字体 Noto Sans SC（OFL-1.1，许可见 public/fonts/OFL.txt）。
 // 官方 PDF 插件只能嵌入 WOFF1 / TrueType 字体二进制，WOFF2 会被拒绝，因此提供常规与粗体
 // 两份简体中文 WOFF1 子集；它们只在导出 PDF 时由浏览器加载，不影响首屏与其它格式的截屏。
 const PDF_FONT_FAMILY = 'UrDoc PDF Sans'
@@ -247,9 +247,9 @@ const PDF_FONTS = [
   { url: '/fonts/noto-sans-sc-chinese-simplified-700-normal.woff', weight: '700' },
 ] as const
 
-// PDF 采用官方推荐的「整页图像 + 文字层」模型：页面图像保证布局、图片与视觉 100% 还原，
-// 文字层负责选中/搜索，vectorText 再把可绘制的文字叠加成矢量字形。
-// 主文档注册本地中文字体，让捕获树与 PDF 矢量字形使用同一套度量；snapdom 的 localFonts
+// PDF 采用官方推荐的「整页图像 + 不可见文字层」模型：页面图像保证布局、图片与视觉 100% 还原，
+// 文字层只负责选中/搜索，不参与绘制，因此不会出现矢量字形与位图文字错位的重影。
+// 主文档注册本地中文字体，让捕获树与文字层共用同一套字体；snapdom 的 localFonts
 // 把字体转成 data: URI 写进最终 SVG，PDF 插件据此嵌入并只子集化页面实际用到的字形。
 async function preparePdfFonts(el: HTMLElement) {
   const style = document.createElement('style')
@@ -294,7 +294,7 @@ async function preparePdfFonts(el: HTMLElement) {
     // 等一帧让字体替换后的排版稳定，再交给 snapdom 测量
     await new Promise((r) => requestAnimationFrame(r))
   } catch {
-    // 字体不可用时仍继续导出，页面图像本身完整，只是文字不再叠加矢量字形
+    // 字体不可用时仍继续导出，页面图像本身完整，只是文字层无法嵌入中文字体
   }
 
   return () => {
@@ -308,9 +308,7 @@ function logPdfReport(report: PdfReport) {
   if (report.warnings.length) {
     console.warn('[snapdom-pdf] 导出警告:', report.warnings.map((warning) => warning.message).join(' | '))
   }
-  console.info(
-    `[snapdom-pdf] 页面图像已保留，矢量文字 ${report.vectorText} 段，嵌入字体 ${report.fontsEmbedded.length} 个`,
-  )
+  console.info(`[snapdom-pdf] 页面图像已保留，共 ${report.pages} 页，嵌入字体 ${report.fontsEmbedded.length} 个`)
 }
 
 async function capturePdf(el: HTMLElement, option: CaptureFormatOption) {
@@ -340,8 +338,9 @@ async function capturePdf(el: HTMLElement, option: CaptureFormatOption) {
       image: true,
       // 无损编码，避免 JPEG 压缩让文字发虚
       codec: 'flate',
-      // 在页面图像之上叠加矢量文字；未覆盖的文字仍由页面图像显示，不会消失
-      vectorText: true,
+      // 不能再叠加矢量文字：插件会用嵌入字体把同一批文字重画一遍，字形与字距无法和
+      // 浏览器渲染的位图逐像素重合，叠加后会产生重影。文字层保持不可见，只用于选中/搜索。
+      vectorText: false,
       embedFonts: true,
       text: true,
       links: true,

@@ -1,6 +1,6 @@
 <template>
   <UDashboardPanel
-    id="pages-project-narrative-medicine"
+    id="pages-project-pedagogical-research"
     class="bg-linear-to-br from-amber-50/40 via-rose-50/40 to-cyan-50/40"
   >
     <template #header>
