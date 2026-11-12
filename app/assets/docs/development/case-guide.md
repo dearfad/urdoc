@@ -151,7 +151,7 @@ if (props.contentExclude?.length) {
 | `ButtonCapture` | 截图功能（由 `CaseToolbar` 内部调用） |
 | `ButtonClipboard` | 复制到剪贴板（由 `CaseToolbar` 内部调用，传 `markdown`） |
 | `ButtonAudio` | 朗读功能（由 `CaseToolbar` 内部调用，传 `markdown`） |
-| `Markdown` | Markdown 渲染组件（`@comark/vue`） |
+| `Markdown` | Markdown 渲染组件（`@comark/nuxt`） |
 
 ## 状态 Badge
 

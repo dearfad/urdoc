@@ -11,8 +11,7 @@
 
 ## 命令
 
-- `pnpm dev` — 启动开发服务器，仅监听 localhost（安全默认）
-- `pnpm dev:lan` — 手机/局域网真机调试时临时使用，带 `--host` 参数；会暴露 dev server，勿在公共网络使用
+- `pnpm dev` — 启动开发服务器，带 `--host` 参数（局域网访问）
 - `pnpm build` — 生产构建
 - `pnpm edgeone` — EdgeOne 构建（已内置 `NODE_OPTIONS=--max-old-space-size=4096`）
 - `pnpm generate` — 静态生成，用于 EdgeOne 部署
@@ -45,7 +44,7 @@
 - **Tailwind CSS v4**：使用 `@import 'tailwindcss'` + `@import '@nuxt/ui'` 语法，文件扩展名 `.css` 关联为 tailwindcss 语言模式
 - **Pinia**：所有 store 需调用 `syncStoreVersion(VERSION, 'pinia:<name>')` 实现 localStorage 版本控制（见 `app/utils/store.ts`）
 - **状态持久化**：`pinia-plugin-unstorage` 模块已注册
-- **内容管理**：`@comark/vue` 的 Nuxt 模块处理 Markdown 内容，通过 `Markdown` 组件渲染（用于 CSTAR 输出与文档页）
+- **内容管理**：`@comark/nuxt` 模块处理 Markdown 内容，通过 `Markdown` 组件渲染（用于 CSTAR 输出与文档页）
 - **AI SDK**：使用 `ai` + `@ai-sdk/openai-compatible` 进行流式对话；provider 选项支持 InternAi、BigModel、OpenRouter、Agnes 的 reasoning/thinking 配置（见 `app/stores/provider.ts`）
 - **提示词模板**：位于 `app/assets/prompts/`，通过 `import.meta.glob('~/assets/prompts/**/*.md')` 动态加载（见 `app/utils/prompts.ts`）
 - **JSON 解析**：使用 `partial-json` 处理流式 JSON（见 `app/utils/json.ts`）

@@ -4,8 +4,7 @@
   "scripts": {
     "edgeone": "NODE_OPTIONS=--max-old-space-size=4096 nuxt build",
     "build": "nuxt build",
-    "dev": "nuxt dev",
-    "dev:lan": "nuxt dev --host",
+    "dev": "nuxt dev --host",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -15,9 +14,8 @@
     "@ai-sdk/provider": "^4.0.37",
     "@ai-sdk/provider-utils": "^5.0.79",
     "@ai-sdk/vue": "^4.0.169",
-    "@comark/vue": "^0.9.1",
+    "@comark/nuxt": "^0.9.1",
     "@libsql/client": "^0.18.0",
-    "@nuxt/content": "^3.16.2",
     "@nuxt/ui": "^4.12.0",
     "@nuxtjs/i18n": "^10.6.0",
     "@pinia/nuxt": "1.0.3",
