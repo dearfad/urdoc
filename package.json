@@ -13,8 +13,8 @@
     "@ai-sdk/openai-compatible": "^3.0.90",
     "@ai-sdk/provider": "^4.0.37",
     "@ai-sdk/provider-utils": "^5.0.79",
-    "@ai-sdk/vue": "^4.0.169",
-    "@comark/nuxt": "^0.9.1",
+    "@ai-sdk/vue": "^4.0.170",
+    "@comark/vue": "^0.9.1",
     "@libsql/client": "^0.18.0",
     "@nuxt/ui": "^4.12.0",
     "@nuxtjs/i18n": "^10.6.0",
@@ -22,7 +22,7 @@
     "@zumer/snapdom": "^3.7.4",
     "@zumer/snapdom-pdf": "^1.0.1",
     "@zumer/snapdom-plugins": "^5.1.0",
-    "ai": "^7.0.169",
+    "ai": "^7.0.170",
     "drizzle-orm": "^0.45.4",
     "nuxt": "^4.6.4",
     "nuxt-auth-utils": "^0.6.2",
@@ -33,11 +33,11 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.153",
+    "@iconify-json/lucide": "^1.2.154",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/simple-icons": "^1.2.102",
     "@nuxt/eslint": "^1.17.0",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.5"
   }

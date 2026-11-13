@@ -20,7 +20,7 @@
 
 **任务目标**：把 `project-roadmap.md` 作为研究平台改造计划的唯一入口注册到文档侧边栏，并清理已删除研究文档的导航链接。
 
-**意义**：导航 slug 必须与 `app/assets/docs/` 下的实际文件名一致，否则站内链接打不开；本任务清单是当前唯一保留的研究文档，需要让实施与评审直接访问，避免只靠文件路径查找造成口径分散。
+**意义**：导航 slug 必须与 `content/docs/` 下的实际文件名一致，否则站内链接打不开；本任务清单是当前唯一保留的研究文档，需要让实施与评审直接访问，避免只靠文件路径查找造成口径分散。
 
 **实现方法**：在 `app/utils/docs.ts` 的 `docNav` 中把原研究文档分组替换为一条顶层导航项，`slug` 为 `research/project-roadmap`、`label` 为「研究平台改造计划」、`icon` 为 `i-lucide-clipboard-list`；移除三份已删除研究文档的导航项与失效的旧任务清单链接；`getDocTitle()`、`flattenDocNav()`、`generateDocSidebarItems()` 与 `import.meta.glob` 加载规则无需改动。
 
@@ -46,7 +46,7 @@
 
 **意义**：现状只有登录接口直连 Turso，研究数据全在浏览器 localStorage，不能作为研究证据；部署形态与最终存储选型尚未决策，要求驱动抽象先行，且 EdgeOne Makers 无托管数据库、KV 最终一致 60 秒，随机化、评分、锁库等强一致状态不得放入 KV。
 
-**实现方法**：复用 `app/assets/docs/development/database-plan.md:417-437` 的规划思路，新增 `server/db/index.ts` 暴露统一 `execute()` 与驱动工厂、`server/db/drivers/turso.ts` 从 `runtimeConfig.turso.{databaseUrl,authToken}` 读取凭据（仅服务端可读）、`server/utils/db.ts` 封装自动导入的 Repository；按研究域字段方向新增 `server/db/migrations/002_research_*.sql` 系列迁移，覆盖研究定义、身份伦理、窗口题库量规、作答评分复核、量表与 vOSCE、内容素材、教师轨、审计与导出各组表，并按 `subject_id_hash + window_id`、`batch + occurred_at`、`bank_tag` 建复合索引。一律参数化查询、不写死凭据；为 Blob / KV 切换预留驱动接口。
+**实现方法**：复用 `content/docs/development/database-plan.md:417-437` 的规划思路，新增 `server/db/index.ts` 暴露统一 `execute()` 与驱动工厂、`server/db/drivers/turso.ts` 从 `runtimeConfig.turso.{databaseUrl,authToken}` 读取凭据（仅服务端可读）、`server/utils/db.ts` 封装自动导入的 Repository；按研究域字段方向新增 `server/db/migrations/002_research_*.sql` 系列迁移，覆盖研究定义、身份伦理、窗口题库量规、作答评分复核、量表与 vOSCE、内容素材、教师轨、审计与导出各组表，并按 `subject_id_hash + window_id`、`batch + occurred_at`、`bank_tag` 建复合索引。一律参数化查询、不写死凭据；为 Blob / KV 切换预留驱动接口。
 
 ## T-07 · 账号角色、RBAC 与盲态中间件
 

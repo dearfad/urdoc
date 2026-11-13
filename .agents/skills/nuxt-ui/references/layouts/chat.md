@@ -12,17 +12,13 @@ Build AI chat interfaces with message streams, reasoning, tool calling, and Verc
 
 ### Install dependencies
 
-**Nuxt:**
-
-```bash
-pnpm add ai @ai-sdk/gateway @ai-sdk/vue @comark/nuxt
-```
-
-**Vue (Vite):**
+**Nuxt and Vue (Vite):**
 
 ```bash
 pnpm add ai @ai-sdk/gateway @ai-sdk/vue @comark/vue
 ```
+
+> `@comark/nuxt` is deprecated. The Nuxt module now ships in `@comark/vue`, and `@comark/nuxt/*` imports become `@comark/vue/*`.
 
 ### Register Comark module
 
@@ -32,14 +28,14 @@ pnpm add ai @ai-sdk/gateway @ai-sdk/vue @comark/vue
 export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
-    '@comark/nuxt'
+    '@comark/vue'
   ]
 })
 ```
 
 **Vue (Vite):** No module registration needed, import directly from `@comark/vue`.
 
-> `@comark/nuxt` (or `@comark/vue` for Vue projects) provides the `Comark` component used to render AI responses as streaming Markdown, it incrementally renders tokens as they arrive and automatically enables Nuxt UI's prose components.
+> In Nuxt, `<Markdown>` and `<MarkdownDocument>` are auto-imported and Nuxt UI's prose components are enabled automatically. Use `<Markdown>` to render streamed AI responses: pass the text with `value`, enable incremental rendering with `streaming`, and optionally add `caret`. It is an async component and must be inside `<Suspense>` — Nuxt pages already provide one, while plain Vue/Vite apps need to add it.
 
 ### Dark mode for syntax highlighting
 
@@ -97,7 +93,7 @@ export default defineEventHandler(async (event) => {
 UDashboardPanel
 ├── #header → UDashboardNavbar
 ├── #body → UContainer → UChatMessages
-│                         ├── #content → UChatReasoning, UChatTool, Comark
+│                         ├── #content → UChatReasoning, UChatTool, Markdown
 │                         └── #indicator (loading)
 └── #footer → UContainer → UChatPrompt
                             └── UChatPromptSubmit
@@ -110,7 +106,7 @@ UDashboardPanel
 import { isReasoningUIPart, isTextUIPart, isToolUIPart, getToolName } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import { isPartStreaming, isToolStreaming } from '@nuxt/ui/utils/ai'
-import highlight from '@comark/nuxt/plugins/highlight'
+import highlight from '@comark/vue/plugins/highlight'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -145,8 +141,8 @@ function onSubmit() {
                 :text="part.text"
                 :streaming="isPartStreaming(part)"
               >
-                <Comark
-                  :markdown="part.text"
+                <Markdown
+                  :value="part.text"
                   :streaming="isPartStreaming(part)"
                   :plugins="[highlight()]"
                   class="*:first:mt-0 *:last:mb-0"
@@ -160,9 +156,9 @@ function onSubmit() {
               />
 
               <template v-else-if="isTextUIPart(part)">
-                <Comark
+                <Markdown
                   v-if="message.role === 'assistant'"
-                  :markdown="part.text"
+                  :value="part.text"
                   :streaming="isPartStreaming(part)"
                   :plugins="[highlight()]"
                   class="*:first:mt-0 *:last:mb-0"
@@ -197,6 +193,7 @@ function onSubmit() {
 - `UChatPrompt` — enhanced textarea. Accepts all Textarea props + `error` prop.
 - `UChatPromptSubmit` — submit button with automatic status handling (send/stop/reload).
 - `UChatPalette` — layout wrapper for chat inside overlays.
+- `Markdown` — Comark renderer for streamed Markdown. Props: `value`, `streaming`, `plugins`, `caret`. Auto-imported by the Nuxt module; async, so keep it inside `<Suspense>`.
 
 ## Chat in a modal
 

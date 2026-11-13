@@ -14,7 +14,8 @@ export interface DocGroup {
 }
 
 /**
- * 文档导航树，与 app/assets/docs/ 目录结构对应
+ * 文档导航树，与项目根目录 content/docs/ 目录结构对应
+ * content/ 按 Nuxt Content 的约定目录提前就位，方便以后迁移；当前仍由下方的 import.meta.glob 加载
  */
 export const docNav: (DocNavItem | DocGroup)[] = [
   { label: '文档概览', icon: 'i-lucide-book-open', slug: 'index', description: 'URDOC 平台文档总览' },
@@ -87,7 +88,9 @@ export function flattenDocNav(): DocNavItem[] {
   return result
 }
 
-const docCache = import.meta.glob('~/assets/docs/**/*.md', {
+// `~` 指向 app/，文档已迁至项目根目录 content/，故用相对路径回溯到根目录
+// 以后接入 Nuxt Content 时，此处可整体替换为 queryCollection()
+const docCache = import.meta.glob('../../content/docs/**/*.md', {
   query: '?raw',
   import: 'default',
 }) as Record<string, () => Promise<string>>
@@ -96,7 +99,7 @@ export function getDocContent(slug: string): Promise<string> {
   const key = slug === 'index' ? 'index' : slug
   for (const path in docCache) {
     const normalized = path.replace(/\\/g, '/')
-    const match = normalized.match(/assets\/docs\/(.+)\.md$/)
+    const match = normalized.match(/content\/docs\/(.+)\.md$/)
     if (match && match[1] === key) {
       return docCache[path]!()
     }

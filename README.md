@@ -45,7 +45,7 @@ urdoc/
 ├── .agents/                        # AI agent 技能定义（ai-sdk / nuxt / nuxt-ui / frontend-design）
 ├── .vscode/                        # VSCode 配置（保存时自动格式化）
 ├── AGENTS.md                       # AI agent 行为规范
-
+├── content/docs/                   # 应用内文档 Markdown 源文件（Nuxt Content 约定目录）
 ├── app/                            # 应用源代码（Nuxt 4 约定目录）
 │   ├── app.config.ts               # 应用配置（Nuxt UI 主题色：primary blue / secondary green）
 │   ├── app.vue                     # 根组件（NuxtLoadingIndicator + NuxtLayout）
@@ -54,7 +54,6 @@ urdoc/
 │   │   ├── books/                  # 教科书数据
 │   │   ├── css/main.css            # 全局样式（Tailwind CSS v4 + Nuxt UI）
 │   │   ├── custom/                 # 自定义 prompt 发散内容（act/case/rate/story/test）
-│   │   ├── docs/                   # 应用内文档 Markdown 源文件
 │   │   └── prompts/                # AI 提示词模板（13 个子目录）
 │   │       ├── act/                # 问诊模拟提示词
 │   │       ├── case/               # 病例生成提示词
@@ -256,7 +255,9 @@ pnpm edgeone
 
 应用内文档：启动开发服务后访问 `/docs` 路由
 
-文档源文件位于 `app/assets/docs/` 目录，涵盖 CSTAR 流程指南、多模态使用说明、开发文档等。
+文档源文件位于项目根目录 `content/docs/`，涵盖 CSTAR 流程指南、多模态使用说明、开发文档等。该目录按 Nuxt Content 的约定提前就位，为以后迁移做准备；项目目前**并未安装 `@nuxt/content`**，仍由 `app/utils/docs.ts` 通过 `import.meta.glob` 加载原始 Markdown，交给 `@comark/vue` 的 `<Markdown>` 组件渲染，导航树由 `docNav` 手工维护。
+
+> 迁移提示：启用 Nuxt Content 时新增 `content.config.ts` 并定义 `source: 'docs/**'`，用 `queryCollection()` 替换 `getDocContent()` 与手写 `docNav`。需注意 `content/docs/index.md` 默认生成 `/docs`、子目录的 `index.md` 默认生成 `/docs/cstar`（而非现有的 `/docs/cstar/index`），与 `app/pages/docs/` 下的页面存在路由重叠，届时需同步调整站内链接。
 
 ## 贡献
 

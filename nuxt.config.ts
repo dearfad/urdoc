@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@pinia/nuxt',
     'pinia-plugin-unstorage/nuxt',
-    '@comark/nuxt',
+    '@comark/vue',
     'nuxt-auth-utils',
     '@nuxtjs/i18n',
   ],
