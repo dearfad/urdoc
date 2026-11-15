@@ -37,7 +37,7 @@
         <div class="px-6 py-8 lg:px-8">
           <div class="grid gap-6 lg:grid-cols-3">
             <!-- 账号卡片 - 主要内容 -->
-            <UCard class="lg:col-span-2">
+            <UCard :class="session?.user?.role === 'admin' ? 'lg:col-span-2' : 'lg:col-span-3'">
               <template #header>
                 <div class="bg-elevated flex items-center gap-3 py-2">
                   <Icon name="i-lucide-shield" class="text-primary size-5" />
@@ -56,7 +56,20 @@
                       <div class="text-highlighted text-lg font-semibold">
                         {{ session.user?.name || t('user.admin') }}
                       </div>
-                      <div class="text-muted text-sm">{{ t('user.currentUser') }}</div>
+                      <div class="text-muted mt-1 flex flex-wrap items-center gap-2 text-sm">
+                        <UBadge
+                          :color="session.user?.role === 'teacher' || session.user?.role === 'admin' ? 'primary' : 'secondary'"
+                          variant="subtle"
+                        >
+                          {{ session.user?.role === 'student' ? t('user.student') : session.user?.role === 'teacher' ? t('user.teacher') : t('user.admin') }}
+                        </UBadge>
+                        <span v-if="session.user?.role === 'student'">
+                          {{ t('user.studentNo') }}：{{ session.user?.studentNo }}
+                        </span>
+                        <span v-else>
+                          {{ t('user.account') }}：{{ session.user?.account }}
+                        </span>
+                      </div>
                     </div>
                     <div
                       class="bg-success/10 text-success flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
@@ -80,46 +93,133 @@
                   </div>
                 </div>
 
-                <!-- 未登录状态 - 登录表单 -->
+                <!-- 未登录状态 - 身份切换登录 -->
                 <div v-else>
-                  <UForm :state="{ name, password }" class="space-y-5" @submit.prevent="handleLogin">
-                    <UFormField name="name" :label="t('user.username')">
-                      <UInput
-                        v-model="name"
-                        :placeholder="t('user.usernamePlaceholder')"
-                        size="lg"
-                        icon="i-lucide-user"
-                        :disabled="loading"
-                      />
-                    </UFormField>
+                  <UTabs :items="loginTabs" :content="true" class="w-full">
+                    <template #content="{ item }">
+                      <!-- 学生登录：姓名 + 学号，免密 -->
+                      <UForm
+                        v-if="item.value === 'student'"
+                        :state="student"
+                        class="mt-5 space-y-5"
+                        @submit.prevent="handleLogin('student')"
+                      >
+                        <UFormField name="name" :label="t('user.name')">
+                          <UInput
+                            v-model="student.name"
+                            :placeholder="t('user.namePlaceholder')"
+                            size="lg"
+                            icon="i-lucide-user"
+                            :disabled="loading"
+                          />
+                        </UFormField>
 
-                    <UFormField name="password" :label="t('user.password')">
-                      <UInput
-                        v-model="password"
-                        type="password"
-                        :placeholder="t('user.passwordPlaceholder')"
-                        size="lg"
-                        icon="i-lucide-lock"
-                        :disabled="loading"
-                      />
-                    </UFormField>
+                        <UFormField name="studentNo" :label="t('user.studentNo')">
+                          <UInput
+                            v-model="student.studentNo"
+                            :placeholder="t('user.studentNoPlaceholder')"
+                            size="lg"
+                            icon="i-lucide-hash"
+                            :disabled="loading"
+                          />
+                        </UFormField>
 
-                    <UAlert
-                      v-if="error"
-                      :description="error"
-                      color="error"
-                      variant="subtle"
-                      icon="i-lucide-alert-circle"
-                    />
+                        <UAlert
+                          v-if="error"
+                          :description="error"
+                          color="error"
+                          variant="subtle"
+                          icon="i-lucide-alert-circle"
+                        />
 
-                    <UButton type="submit" :label="t('user.login')" :loading="loading" block size="lg" icon="i-lucide-log-in" />
-                  </UForm>
+                        <UButton type="submit" :label="t('user.login')" :loading="loading" block size="lg" icon="i-lucide-log-in" />
+                      </UForm>
+
+                      <!-- 教师登录：账号 + 密码 -->
+                      <UForm
+                        v-else-if="item.value === 'teacher'"
+                        :state="teacher"
+                        class="mt-5 space-y-5"
+                        @submit.prevent="handleLogin('teacher')"
+                      >
+                        <UFormField name="account" :label="t('user.account')">
+                          <UInput
+                            v-model="teacher.account"
+                            :placeholder="t('user.accountPlaceholder')"
+                            size="lg"
+                            icon="i-lucide-user-round"
+                            :disabled="loading"
+                          />
+                        </UFormField>
+
+                        <UFormField name="password" :label="t('user.password')">
+                          <UInput
+                            v-model="teacher.password"
+                            type="password"
+                            :placeholder="t('user.passwordPlaceholder')"
+                            size="lg"
+                            icon="i-lucide-lock"
+                            :disabled="loading"
+                          />
+                        </UFormField>
+
+                        <UAlert
+                          v-if="error"
+                          :description="error"
+                          color="error"
+                          variant="subtle"
+                          icon="i-lucide-alert-circle"
+                        />
+
+                        <UButton type="submit" :label="t('user.login')" :loading="loading" block size="lg" icon="i-lucide-log-in" />
+                      </UForm>
+
+                      <!-- 管理员登录：账号 + 密码 -->
+                      <UForm
+                        v-else
+                        :state="admin"
+                        class="mt-5 space-y-5"
+                        @submit.prevent="handleLogin('admin')"
+                      >
+                        <UFormField name="account" :label="t('user.account')">
+                          <UInput
+                            v-model="admin.account"
+                            :placeholder="t('user.accountPlaceholder')"
+                            size="lg"
+                            icon="i-lucide-user-round"
+                            :disabled="loading"
+                          />
+                        </UFormField>
+
+                        <UFormField name="password" :label="t('user.password')">
+                          <UInput
+                            v-model="admin.password"
+                            type="password"
+                            :placeholder="t('user.passwordPlaceholder')"
+                            size="lg"
+                            icon="i-lucide-lock"
+                            :disabled="loading"
+                          />
+                        </UFormField>
+
+                        <UAlert
+                          v-if="error"
+                          :description="error"
+                          color="error"
+                          variant="subtle"
+                          icon="i-lucide-alert-circle"
+                        />
+
+                        <UButton type="submit" :label="t('user.login')" :loading="loading" block size="lg" icon="i-lucide-log-in" />
+                      </UForm>
+                    </template>
+                  </UTabs>
                 </div>
               </div>
             </UCard>
 
-            <!-- 密码哈希工具 -->
-            <UCard>
+            <!-- 密码哈希工具（仅管理员可见） -->
+            <UCard v-if="session?.user?.role === 'admin'">
               <template #header>
                 <div class="bg-elevated flex items-center gap-3 py-2">
                   <Icon name="i-lucide-key-round" class="text-warning size-5" />
@@ -215,8 +315,15 @@ const items = computed<BreadcrumbItem[]>(() => [
 const { fetch: fetchSession, clear, session } = useUserSession()
 const toast = useToast()
 
-const name = ref('')
-const password = ref('')
+const loginTabs = computed(() => [
+  { label: t('user.studentLogin'), value: 'student', icon: 'i-lucide-graduation-cap' },
+  { label: t('user.teacherLogin'), value: 'teacher', icon: 'i-lucide-briefcase' },
+  { label: t('user.adminLogin'), value: 'admin', icon: 'i-lucide-shield' },
+])
+
+const student = reactive({ name: '', studentNo: '' })
+const teacher = reactive({ account: '', password: '' })
+const admin = reactive({ account: '', password: '' })
 const error = ref('')
 const loading = ref(false)
 const showLogoutConfirm = ref(false)
@@ -245,16 +352,29 @@ async function handleLogout() {
   }
 }
 
-async function handleLogin() {
+async function handleLogin(role: 'student' | 'teacher' | 'admin') {
   loading.value = true
   error.value = ''
+
+  const body =
+    role === 'student'
+      ? { role, name: student.name, studentNo: student.studentNo }
+      : role === 'teacher'
+        ? { role, account: teacher.account, password: teacher.password }
+        : { role, account: admin.account, password: admin.password }
 
   try {
     await $fetch('/api/auth/login', {
       method: 'POST',
-      body: { name: name.value, password: password.value },
+      body,
     })
     await fetchSession()
+    student.name = ''
+    student.studentNo = ''
+    teacher.account = ''
+    teacher.password = ''
+    admin.account = ''
+    admin.password = ''
     toast.add({
       title: t('user.loginSuccess'),
       color: 'success',

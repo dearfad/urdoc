@@ -180,7 +180,9 @@ DELETE /api/cases/:id      # 删除病例
 ### 4.1 表结构概览
 
 共 12 张表：
-- `users` — 用户表（认证用）
+- `students` — 学生认证表（姓名 + 学号，免密）
+- `teachers` — 教师认证表（账号 + 密码哈希）
+- `admins` — 管理员认证表（账号 + 密码哈希）
 - `records` — 主表，存储记录基本信息
 - `record_cases` — 病例子表
 - `record_stories` — 故事子表
@@ -195,11 +197,28 @@ DELETE /api/cases/:id      # 删除病例
 
 ### 4.2 核心表结构
 
-**users 表（用户认证）**
+**students 表（学生认证，免密）**
 - id: INTEGER PRIMARY KEY AUTOINCREMENT
-- name: TEXT UNIQUE NOT NULL (用户名)
-- password_hash: TEXT NOT NULL (密码哈希，scrypt)
-- created_at: INTEGER (创建时间)
+- name: TEXT NOT NULL (姓名)
+- student_no: TEXT NOT NULL (学号，唯一约束，可由学号区分重名学生)
+- created_at: INTEGER (创建时间，默认当前时间戳)
+- 索引：student_no 唯一索引、name+student_no 联合索引（登录点查）
+
+**teachers 表（教师认证，账号 + 密码）**
+- id: INTEGER PRIMARY KEY AUTOINCREMENT
+- account: TEXT UNIQUE NOT NULL (登录账号)
+- password_hash: TEXT NOT NULL (密码哈希，scrypt，由 `/api/admin/hash` 生成)
+- name: TEXT (姓名，可空)
+- created_at: INTEGER (创建时间，默认当前时间戳)
+- 索引：account 唯一索引（登录点查）
+
+**admins 表（管理员认证，账号 + 密码）**
+- id: INTEGER PRIMARY KEY AUTOINCREMENT
+- account: TEXT UNIQUE NOT NULL (登录账号)
+- password_hash: TEXT NOT NULL (密码哈希，scrypt，由 `/api/admin/hash` 生成)
+- name: TEXT (姓名，可空)
+- created_at: INTEGER (创建时间，默认当前时间戳)
+- 索引：account 唯一索引（登录点查）
 
 **records 表（主表）**
 - id: INTEGER PRIMARY KEY
@@ -353,7 +372,7 @@ record_cases (1) ──── (N) record_acts
 ### 4.9 API 路由
 
 **认证 API**
-- 创建 `server/api/auth/login.post.ts` — 用户登录
+- 创建 `server/api/auth/login.post.ts` — 三角色登录：请求体携带 `role`（student/teacher/admin），学生凭 `name` + `student_no` 在 `students` 表精确匹配免密登录，教师/管理员凭 `account` + `password` 分别查 `teachers` / `admins` 表并经 scrypt 哈希校验登录；校验失败统一返回 401，会话写入 `role` 与对应学号/账号
 - 创建 `server/api/auth/logout.post.ts` — 用户登出
 - 使用 `setUserSession()` / `clearUserSession()` 管理会话
 - 使用 `hashPassword()` / `verifyPassword()` 处理密码
