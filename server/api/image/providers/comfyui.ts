@@ -5,7 +5,7 @@ import { resolveTemplate } from './templates'
 // 本机 ComfyUI 生图 provider，复用 /api/image 现有的 provider 契约。
 // 官方 HTTP API 参考：https://docs.comfy.org/zh/development/comfyui-server/api-examples.md
 // 仅支持与 Nuxt 服务端同机运行的 ComfyUI Desktop，默认 http://127.0.0.1:8188，无需 API Key。
-// 工作流来自服务端内置预制模板：文生图两套、图像编辑一套。
+// 工作流来自服务端内置预制模板：文生图五套、图像编辑两套。
 // 其中的 ComfyUI HTTP 工具也供视频侧图生视频 provider 复用。
 
 export const DEFAULT_COMFY_BASE = 'http://127.0.0.1:8188'
@@ -91,6 +91,15 @@ const SKIP_KEYS = ['negative', 'negative_prompt', 'negative_text', 'system_promp
 
 // 从采样器/引导器的正向条件出发，沿连线找到真正存放提示词文本的节点
 function resolvePromptSlot(workflow: Record<string, any>): { node: any; key: string } | null {
+  // 带提示词扩写链路的工作流优先写入显式的用户提示词节点，避免覆盖任务模板或走错开关分支
+  // 不同导出的节点标题写法不一（如 Text (user_prompt)、Text String (User Prompt)），统一归一化后匹配
+  for (const node of Object.values(workflow) as any[]) {
+    const title = String(node?._meta?.title ?? '').toLowerCase().replace(/[\s_]+/g, '')
+    if (title.includes('userprompt') && typeof node?.inputs?.value === 'string') {
+      return { node, key: 'value' }
+    }
+  }
+
   const startIds: string[] = []
   for (const node of Object.values(workflow) as any[]) {
     for (const key of ['positive', 'conditioning']) {

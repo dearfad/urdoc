@@ -147,10 +147,11 @@
           </template>
           <div class="space-y-5">
             <UFormField :label="t('settingsPage.scene')" :description="t('settingsPage.sceneHint')">
-              <USelect
+              <UTabs
                 v-model="customScene"
                 :items="sceneOptions"
-                variant="soft"
+                :content="false"
+                variant="pill"
                 size="lg"
                 class="w-full"
               />
@@ -353,12 +354,18 @@ const sceneTemplates = computed<Record<CustomScene, ModelTemplate[]>>(() => {
 
 const modelTemplates = computed(() => sceneTemplates.value[customScene.value])
 
-// 内置模板选项：文生图二选一，图像编辑、图生视频与文本生成各固定一套
+// 内置模板选项：文生图五选一、图像编辑二选一，图生视频与文本生成各固定一套
 const t2iOptions = [
   { label: 'Qwen Image 2.1 Turbo', value: 'qwen-image-2.1-turbo' },
   { label: 'Z-Image Turbo', value: 'z-image-turbo' },
+  { label: 'MiniMax H3 Image', value: 'minimax-h3-image' },
+  { label: 'MOSS Image', value: 'moss-image' },
+  { label: 'Krea 2', value: 'krea2-turbo' },
 ]
-const editOptions = [{ label: 'Qwen Image 2.1 Turbo Edit', value: 'qwen-image-2.1-turbo-edit' }]
+const editOptions = [
+  { label: 'Qwen Image 2.1 Turbo Edit', value: 'qwen-image-2.1-turbo-edit' },
+  { label: 'MiniMax H3 Image Edit', value: 'minimax-h3-image-edit' },
+]
 const i2vOptions = [
   { label: 'FastVideo FastH3（MiniMax H3 图生视频）', value: 'fastvideo-fasth3-i2v' },
 ]

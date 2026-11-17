@@ -1,5 +1,6 @@
 import { DefaultChatTransport, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
+import { useI18n } from 'vue-i18n'
 
 const VERSION = '2026-11-02'
 
@@ -8,6 +9,53 @@ function parseIllustrationPrompts(text: string): string[] {
   const matches = text.match(/['"][^'"]*['"]/g)
   if (!matches) return []
   return matches.map((m) => m.slice(1, -1).trim()).filter((p) => p.length > 0)
+}
+
+// 界面语言到提示词输出语言的映射：zh→中文、en→English，其他语言交由模型按模板规则推断
+const PROMPT_LANGUAGE_BY_LOCALE: Record<string, string> = {
+  zh: '中文',
+  en: 'English',
+}
+
+// 界面语言到患者人种的映射，人种描述需与提示词输出语言一致
+const ETHNICITY_BY_LOCALE: Record<string, string> = {
+  zh: '中国人',
+  en: 'American',
+}
+
+function resolvePromptLanguage(locale: string): string {
+  return PROMPT_LANGUAGE_BY_LOCALE[locale] ?? locale
+}
+
+function resolveEthnicity(locale: string): string {
+  return ETHNICITY_BY_LOCALE[locale] ?? '该语言对应地区的典型人种'
+}
+
+// store 的 action 脱离组件 setup，优先用 useI18n，取不到时再尝试 nuxtApp，最终回退中文
+function resolveLocale(): string {
+  try {
+    return useI18n().locale.value
+  } catch {
+    try {
+      return (useNuxtApp() as any).$i18n?.locale?.value ?? 'zh'
+    } catch {
+      return 'zh'
+    }
+  }
+}
+
+// 仅头像任务需要按界面语言注入输出语言与人种约束；追加在公共上下文指令之后，不影响其他任务
+function buildFaceInstructions(baseInstructions: string): string {
+  const locale = resolveLocale()
+  const promptLanguage = resolvePromptLanguage(locale)
+  const ethnicity = resolveEthnicity(locale)
+  const runtime = [
+    '## 语言与人种约束（本次生成必须遵守）',
+    `当前界面语言：${locale}`,
+    `提示词输出语言：${promptLanguage}。请用该语言输出提示词，覆盖基础提示词中任何关于短语语言的规定；人种与各维度描述均使用该语言，不要中英混杂。`,
+    `患者人种：${ethnicity}。请依据基础提示词的语言与人种规则，将该人种自然融入「主体身份」维度描述。`,
+  ].join('\n')
+  return `${baseInstructions}\n\n${runtime}`
 }
 
 type ImageTask = 'face' | 'illustration' | 'generate'
@@ -124,7 +172,7 @@ export const useImageStore = defineStore('image', () => {
           type: task,
           task: 'generate',
           model,
-          instructions: context.instructions,
+          instructions: task === 'face' ? buildFaceInstructions(context.instructions) : context.instructions,
           providerOptions: useProviderStore().getProviderOptions(model.provider, false),
           template: getChatTemplate(model),
         },
@@ -192,6 +240,35 @@ export const useImageStore = defineStore('image', () => {
     }
   }
 
+  // 使用已有提示词重新生成患者头像，跳过提示词生成阶段
+  async function regenerateFace() {
+    const existingPrompt = (facePromptText.value || facePrompts.value[0] || '').trim()
+    if (!existingPrompt) {
+      useStateStore().toast.add({
+        title: '暂无提示词',
+        description: '请先生成患者头像',
+        color: 'warning',
+        icon: 'i-lucide-alert-triangle',
+      })
+      return
+    }
+    facePromptText.value = existingPrompt
+    phase.value = 'image'
+    activeTask.value = 'face'
+    try {
+      const result = await imageApi.generate(existingPrompt, {
+        task: 'face',
+        model: useModelStore().activeModels.image,
+      })
+      if (result) {
+        faceOriginalUrls.value = result.originalUrls
+        facePrompts.value = result.originalUrls.map(() => existingPrompt)
+      }
+    } finally {
+      finish()
+    }
+  }
+
   // 基于当前已有内容生成故事插图
   async function illustration() {
     phase.value = 'prompt'
@@ -252,6 +329,7 @@ export const useImageStore = defineStore('image', () => {
     reset,
     generate,
     face,
+    regenerateFace,
     illustration,
   }
 })

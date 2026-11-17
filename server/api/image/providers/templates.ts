@@ -1,6 +1,10 @@
 import qwenT2i from './workflows/qwen-image-2.1-turbo-t2i.json'
 import zImageTurbo from './workflows/z-image-turbo.json'
 import qwenEdit from './workflows/qwen-image-2.1-turbo-edit.json'
+import minimaxH3T2i from './workflows/minimax_h3_image_t2i.json'
+import minimaxH3Edit from './workflows/minimax_h3_image_edit.json'
+import mossImageT2i from './workflows/moss_image_t2i.json'
+import krea2T2i from './workflows/krea2_turbo_t2i.json'
 
 // 本地 ComfyUI 内置预制模板（均为「导出工作流 (API)」格式，原样保留）。
 // 不在 server/api 下使用 index.ts 命名，避免被扫描成额外路由。
@@ -31,6 +35,26 @@ const WORKFLOW_TEMPLATES: Record<string, WorkflowTemplate> = {
     label: 'Qwen Image 2.1 Turbo Edit',
     task: 'edit',
     workflow: qwenEdit as Record<string, any>,
+  },
+  'minimax-h3-image': {
+    label: 'MiniMax H3 Image',
+    task: 't2i',
+    workflow: minimaxH3T2i as Record<string, any>,
+  },
+  'minimax-h3-image-edit': {
+    label: 'MiniMax H3 Image Edit',
+    task: 'edit',
+    workflow: minimaxH3Edit as Record<string, any>,
+  },
+  'moss-image': {
+    label: 'MOSS Image',
+    task: 't2i',
+    workflow: mossImageT2i as Record<string, any>,
+  },
+  'krea2-turbo': {
+    label: 'Krea 2',
+    task: 't2i',
+    workflow: krea2T2i as Record<string, any>,
   },
 }
 

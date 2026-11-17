@@ -25,6 +25,9 @@ export function useChatApi() {
     _currentType.value = options.type
     if (chat!.status === 'error') chat!.clearError()
     chat!.stop()
+    // case/story 及其校验、修正、子任务共用此单例，每次生成都从干净的单轮对话开始：
+    // 若保留历史，模型的完整输出会不断累积进载荷，既污染上下文又成倍消耗 token
+    chat!.messages = []
     chat!.sendMessage({ text }, { body: { ...options, template: getChatTemplate(options.model) } })
   }
 

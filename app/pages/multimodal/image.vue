@@ -55,7 +55,7 @@
           <div v-show="isDesktop || !settingsVisible" class="flex min-h-0 flex-1 flex-col md:min-w-0">
             <Image :tab="activeTab" class="h-full w-full" />
           </div>
-          <ImageSettings v-show="settingsVisible" class="h-full w-full md:w-96 md:max-w-96 md:shrink-0 md:basis-96" />
+          <ImageSettings v-show="settingsVisible" :tab="activeTab" class="h-full w-full md:w-96 md:max-w-96 md:shrink-0 md:basis-96" />
         </div>
       </div>
     </template>

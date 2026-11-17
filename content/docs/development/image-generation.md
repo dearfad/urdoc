@@ -100,37 +100,31 @@ GET /api/image/status?id=xxx
 
 ### 2. 生成头像（face）
 
-基于病例数据生成患者医学肖像。需要先创建病例（`caseStore.case.content`）。
+基于当前已有的病例、故事等资料生成患者医学肖像。资料可能不完整，也可以只凭已有内容生成。
 
 **调用链路：**
 1. 用户在「生成头像」Tab 点击按钮 → `imageStore.face()`
-2. Store 从 `useCaseStore().case.content` 读取病例数据
-3. `imageApi.generate(JSON.stringify(caseContent), { task: 'face', model })`
-4. `POST /api/image` →
-   - 服务端加载 `server/prompts/face/generate.ts` 提示词模板
-   - 调用文本模型（`generateText`）提取病例特征并生成图片描述 prompt
-   - 调用图片生成 API
-5. 返回图片 URL
+2. `streamPrompt('face')` 通过 `buildGenerationContext({ type: 'face', task: 'generate', target: 'image' })` 读取基础提示词与此刻已有的全部资料；`target: 'image'` 会排除图像步骤自身，避免旧头像结果干扰
+3. 在 `streamPrompt` 中按当前界面语言（i18n locale）注入人种约束：`zh`→中国人、`en`→美国人，其他语言→该语言对应地区人种；随后调用 `/api/chat` 由文本模型流式生成头像提示词
+4. 生成的提示词实时展示在「生成提示词」区，流结束后作为最终提示词
+5. `imageApi.generate(facePrompt, { task: 'face', model })` → `POST /api/image` → 调用文生图模型生成头像
+6. 返回图片 URL，并记录本次使用的提示词
 
-**prompt 模板：** `server/prompts/face/generate.ts`
+**prompt 模板：** `app/assets/prompts/face/generate.md`
 
-模板要求 AI 从病例中提取性别、年龄、疾病特征等关键信息，生成包含"中国人，在医院拍摄"的逗号分隔提示词。
+模板覆盖主体身份、面部特征、皮肤质感、发型发色、表情神态、疾病体征、着装、姿态、构图镜头、背景环境、光线氛围、摄影风格、画质等维度，输出为逗号分隔的纯文本提示词；人种不写死，而是按当前界面语言映射并自然融入主体身份描述，医院场景作为背景维度保留。
 
 ### 3. 故事插图（illustration）
 
-基于故事内容生成 4 张故事插图。需要先创建故事（`storyStore.story.content`）。
+基于当前已有资料生成 4 张故事插图。
 
 **调用链路：**
 1. 用户在「故事插图」Tab 点击按钮 → `imageStore.illustration()`
-2. Store 从 `useStoryStore().story.content` 读取故事文本
-3. `imageApi.generate(storyContent, { task: 'illustration', model })`
-4. `POST /api/image` →
-   - 服务端加载 `server/prompts/illustration/generate.ts` 提示词模板
-   - 调用文本模型将故事分解为 4 个关键场景描述
-   - 分别调用图片生成 API
-5. 返回 4 张图片 URL
+2. `streamPrompt('illustration')` 同样通过 `buildGenerationContext` 读取基础提示词与已有资料，调用 `/api/chat` 由文本模型将故事分解为 4 段提示词
+3. 以已生成的患者头像（若有）为参考图，逐段调用 `imageApi.generate(p, { task: 'illustration', image: faceImage })`，每段生成一张并即时写入
+4. 返回 4 张图片 URL
 
-**prompt 模板：** `server/prompts/illustration/generate.ts`
+**prompt 模板：** `app/assets/prompts/illustration/generate.md`
 
 模板要求 AI 将故事分解为 4 个关键片段，每个片段生成独立的人物+动作+场景描述。
 
@@ -229,9 +223,10 @@ NUXT_AGNES_API_KEY=your_agnes_api_key
 | `server/api/image/index.ts` | 图片生成 API 主端点 |
 | `server/api/image/status.get.ts` | 异步任务轮询端点 |
 | `server/api/image/store.ts` | 任务状态内存存储（Map） |
-| `server/prompts/index.ts` | Prompt 映射（含 image 类型） |
-| `server/prompts/face/generate.ts` | 头像生成 prompt 模板 |
-| `server/prompts/illustration/generate.ts` | 插图生成 prompt 模板 |
+| `app/assets/prompts/face/generate.md` | 头像生成 prompt 模板（含语言与人种映射规则） |
+| `app/assets/prompts/illustration/generate.md` | 插图生成 prompt 模板 |
+| `app/utils/prompts.ts` | 内置 prompt 模板加载器（import.meta.glob） |
+| `app/utils/context.ts` | 已有资料上下文拼装（buildGenerationContext） |
 | `app/composables/useImageApi.ts` | 客户端图片 API composable |
 | `app/stores/image.ts` | 图片生成状态管理 |
 | `app/components/Image/index.vue` | 图片创作 UI 组件 |
