@@ -89,6 +89,7 @@
     "generateCustom": "生成图像",
     "emptyCustom": "尚未生成图片",
     "imagePrompt": "图像提示词",
+    "imageLabel": "图片",
     "imagePromptPlaceholder": "描述你想要生成的图片，例如：一只戴帽子的猫在月光下弹钢琴",
     "copyPrompt": "复制提示词",
     "emptyPromptRecord": "暂无提示词记录，重新生成后即可查看",
@@ -102,7 +103,17 @@
     "conceivingPrompt": "正在构思提示词…",
     "receivingOutput": "正在接收模型输出…",
     "regenerating": "正在重新生成{label}…",
-    "generatingWithLabel": "正在生成{label}…"
+    "generatingWithLabel": "正在生成{label}…",
+    "sceneTitle": "关键情节描述",
+    "detailPromptTitle": "提示词",
+    "sceneStage": "正在生成 4 段关键情节描述…",
+    "detailStage": "正在逐段生成详细文生图提示词…",
+    "sceneEmpty": "尚未生成关键情节描述",
+    "detailEmpty": "尚未生成文生图提示词",
+    "sceneReceiving": "正在接收关键情节描述…",
+    "detailReceiving": "正在接收文生图提示词…",
+    "needAvatarTitle": "请先生成患者头像",
+    "needAvatarDescription": "插图需以患者头像为参考保持人物一致，请先在「患者头像」中生成头像后重试。"
   },
   "dashboard": {
     "introBefore": "基于大语言模型驱动的 AI 能力，面向医学教育领域，围绕",

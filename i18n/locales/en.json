@@ -89,6 +89,7 @@
     "generateCustom": "Generate image",
     "emptyCustom": "No image generated yet",
     "imagePrompt": "Image prompt",
+    "imageLabel": "Image",
     "imagePromptPlaceholder": "Describe the image you want to generate, e.g. a cat in a hat playing the piano under the moonlight",
     "copyPrompt": "Copy prompt",
     "emptyPromptRecord": "No prompt record yet. Regenerate to view it.",
@@ -102,7 +103,17 @@
     "conceivingPrompt": "Crafting the prompt…",
     "receivingOutput": "Receiving model output…",
     "regenerating": "Regenerating {label}…",
-    "generatingWithLabel": "Generating {label}…"
+    "generatingWithLabel": "Generating {label}…",
+    "sceneTitle": "Key plot descriptions",
+    "detailPromptTitle": "Prompt",
+    "sceneStage": "Generating 4 key plot descriptions…",
+    "detailStage": "Generating detailed image prompts one by one…",
+    "sceneEmpty": "No plot descriptions yet",
+    "detailEmpty": "No image prompts yet",
+    "sceneReceiving": "Receiving plot descriptions…",
+    "detailReceiving": "Receiving image prompts…",
+    "needAvatarTitle": "Generate a patient avatar first",
+    "needAvatarDescription": "Illustrations use the patient avatar as a reference for consistency. Generate one in the Patient avatar tab and try again."
   },
   "dashboard": {
     "introBefore": "Powered by large language models and built for medical education, URDOC is organized around the",

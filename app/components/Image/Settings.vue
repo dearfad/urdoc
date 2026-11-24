@@ -19,7 +19,7 @@
           <div class="text-sm font-medium">{{ t('settingsPage.comfyTemplatesTitle') }}</div>
 
           <UFormField
-            v-if="isFaceTab"
+            v-if="isT2iTab"
             :label="t('settingsPage.t2iTemplateTitle')"
             :description="t('settingsPage.t2iTemplateHint')"
           >
@@ -62,8 +62,8 @@ const editOptions = [
   { label: 'MiniMax H3 Image Edit', value: 'minimax-h3-image-edit' },
 ]
 
-// 头像 Tab 使用文生图模板，插图 Tab 使用图像编辑模板
-const isFaceTab = computed(() => props.tab === 'face')
+// 头像与自定义 Tab 使用文生图模板，插图 Tab 使用图像编辑模板
+const isT2iTab = computed(() => props.tab === 'face' || props.tab === 'generate')
 const isIllustrationTab = computed(() => props.tab === 'illustration')
 
 // 与生成调用侧一致：当前图像模型为本地 ComfyUI 时才展示模板选择
@@ -71,7 +71,7 @@ const isComfyUI = computed(() => {
   const model = modelStore.activeModels.image
   return model?.provider === 'Custom' && String(model?.name ?? '').trim().toLowerCase() === 'comfyui'
 })
-const showComfyTemplate = computed(() => isComfyUI.value && (isFaceTab.value || isIllustrationTab.value))
+const showComfyTemplate = computed(() => isComfyUI.value && (isT2iTab.value || isIllustrationTab.value))
 
 // 直接读写生成调用侧使用的同一份模板配置
 const t2iTemplate = computed({

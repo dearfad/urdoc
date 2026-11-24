@@ -1,11 +1,8 @@
 {
   "9": {
     "inputs": {
-      "filename_prefix": "image_minimax_h3_image_edit",
-      "images": [
-        "42",
-        0
-      ]
+      "filename_prefix": "minimax_h3_image_edit",
+      "images": ["42", 0]
     },
     "class_type": "SaveImage",
     "_meta": {
@@ -44,30 +41,12 @@
   },
   "32": {
     "inputs": {
-      "prompt": [
-        "37",
-        0
-      ],
-      "width": [
-        "50",
-        0
-      ],
-      "height": [
-        "50",
-        1
-      ],
-      "clip": [
-        "30",
-        0
-      ],
-      "vae": [
-        "31",
-        0
-      ],
-      "images.image_1": [
-        "48",
-        0
-      ]
+      "prompt": ["37", 0],
+      "width": ["50", 0],
+      "height": ["50", 1],
+      "clip": ["30", 0],
+      "vae": ["31", 0],
+      "images.image_1": ["48", 0]
     },
     "class_type": "MiniMaxH3ImageConditioning",
     "_meta": {
@@ -76,10 +55,7 @@
   },
   "33": {
     "inputs": {
-      "conditioning": [
-        "32",
-        0
-      ]
+      "conditioning": ["32", 0]
     },
     "class_type": "ConditioningZeroOut",
     "_meta": {
@@ -88,10 +64,7 @@
   },
   "34": {
     "inputs": {
-      "prompt": [
-        "40",
-        0
-      ],
+      "prompt": ["40", 0],
       "max_length": 8196,
       "sampling_mode": "on",
       "sampling_mode.temperature": 1,
@@ -104,18 +77,9 @@
       "thinking": true,
       "use_default_template": true,
       "mtp": "auto",
-      "clip": [
-        "35",
-        0
-      ],
-      "images.image1": [
-        "48",
-        0
-      ],
-      "system_prompt": [
-        "36",
-        0
-      ]
+      "clip": ["35", 0],
+      "images.image1": ["48", 0],
+      "system_prompt": ["36", 0]
     },
     "class_type": "TextGenerateV2",
     "_meta": {
@@ -144,10 +108,7 @@
   },
   "37": {
     "inputs": {
-      "source": [
-        "41",
-        0
-      ]
+      "source": ["41", 0]
     },
     "class_type": "PreviewAny",
     "_meta": {
@@ -162,22 +123,10 @@
       "sampler_name": "euler",
       "scheduler": "simple",
       "denoise": 1,
-      "model": [
-        "29",
-        0
-      ],
-      "positive": [
-        "32",
-        0
-      ],
-      "negative": [
-        "33",
-        0
-      ],
-      "latent_image": [
-        "32",
-        1
-      ]
+      "model": ["29", 0],
+      "positive": ["32", 0],
+      "negative": ["33", 0],
+      "latent_image": ["32", 1]
     },
     "class_type": "KSampler",
     "_meta": {
@@ -195,15 +144,9 @@
   },
   "40": {
     "inputs": {
-      "string": [
-        "39",
-        0
-      ],
+      "string": ["39", 0],
       "find": "{input text}",
-      "replace": [
-        "43",
-        0
-      ]
+      "replace": ["43", 0]
     },
     "class_type": "StringReplace",
     "_meta": {
@@ -212,18 +155,9 @@
   },
   "41": {
     "inputs": {
-      "switch": [
-        "61",
-        0
-      ],
-      "on_false": [
-        "43",
-        0
-      ],
-      "on_true": [
-        "44",
-        0
-      ]
+      "switch": ["61", 0],
+      "on_false": ["43", 0],
+      "on_true": ["44", 0]
     },
     "class_type": "ComfySwitchNode",
     "_meta": {
@@ -232,14 +166,8 @@
   },
   "42": {
     "inputs": {
-      "samples": [
-        "38",
-        0
-      ],
-      "vae": [
-        "31",
-        0
-      ]
+      "samples": ["38", 0],
+      "vae": ["31", 0]
     },
     "class_type": "VAEDecode",
     "_meta": {
@@ -257,10 +185,7 @@
   },
   "44": {
     "inputs": {
-      "json_string": [
-        "34",
-        0
-      ],
+      "json_string": ["34", 0],
       "key": "expanded_caption"
     },
     "class_type": "JsonExtractString",
@@ -282,10 +207,7 @@
       "resize_type": "scale to multiple",
       "resize_type.multiple": 32,
       "scale_method": "area",
-      "input": [
-        "56",
-        0
-      ]
+      "input": ["56", 0]
     },
     "class_type": "ResizeImageMaskNode",
     "_meta": {
@@ -294,10 +216,7 @@
   },
   "50": {
     "inputs": {
-      "image": [
-        "48",
-        0
-      ]
+      "image": ["48", 0]
     },
     "class_type": "GetImageSize",
     "_meta": {
@@ -309,10 +228,7 @@
       "resize_type": "scale total pixels",
       "resize_type.megapixels": 4,
       "scale_method": "area",
-      "input": [
-        "45",
-        0
-      ]
+      "input": ["45", 0]
     },
     "class_type": "ResizeImageMaskNode",
     "_meta": {
@@ -331,19 +247,10 @@
   "62": {
     "inputs": {
       "compare_view": {
-        "__value__": [
-          "",
-          ""
-        ]
+        "__value__": ["", ""]
       },
-      "image_a": [
-        "48",
-        0
-      ],
-      "image_b": [
-        "9",
-        0
-      ]
+      "image_a": ["48", 0],
+      "image_b": ["9", 0]
     },
     "class_type": "ImageCompare",
     "_meta": {

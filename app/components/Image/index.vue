@@ -4,14 +4,26 @@
     :ui="{
       root: 'border border-default flex min-h-0 flex-col overflow-hidden',
       header: 'bg-elevated flex items-center py-2',
-      body: tab === 'face' ? 'flex-1 flex min-h-0 overflow-hidden gap-3 p-3 sm:flex-row sm:gap-4 sm:p-4' : 'py-0 sm:py-2 flex-1 flex flex-col min-h-0 overflow-hidden',
+      body: bodyClass,
       footer: 'p-0 sm:p-0',
     }"
   >
     <template #header>
       <UButton :icon="tabMeta.icon" variant="ghost" to="/multimodal/image" />
       <span class="font-bold">{{ tabMeta.label }}</span>
+      <UBadge v-if="props.tab === 'illustration' && isBusy" color="info" variant="subtle" size="xs">
+        <UIcon name="i-lucide-loader-circle" class="mr-1 size-3 animate-spin" />
+        {{ stageText }}
+      </UBadge>
       <div class="ms-auto flex items-center gap-2">
+        <div v-if="props.tab === 'illustration' && (hasScenes || hasDetailPrompts)" class="flex items-center gap-1">
+          <UTooltip v-if="hasScenes" :text="t('image.copyPrompt')">
+            <ButtonClipboard :text="scenesText" />
+          </UTooltip>
+          <UTooltip v-if="hasDetailPrompts" :text="t('image.copyPrompt')">
+            <ButtonClipboard :text="detailPromptsText" />
+          </UTooltip>
+        </div>
         <UButton
           icon="i-lucide-sparkles"
           :label="tabMeta.action"
@@ -39,204 +51,274 @@
     </template>
 
     <template #default>
-      <!-- 提示词区：头像标签在右占 1/3 并作卡片装饰，其余标签位于上方 -->
-      <div
-        :class="
-          tab === 'face'
-            ? 'relative order-2 flex min-h-0 w-full flex-col overflow-hidden rounded-xl border border-default bg-elevated/40 p-4 shadow-sm sm:w-1/3'
-            : 'border-default shrink-0 border-b p-3 sm:p-4'
-        "
-      >
-        <template v-if="tab === 'generate'">
-          <div class="text-muted mb-2 flex items-center gap-1.5 text-xs font-semibold">
-            <UIcon name="i-lucide-file-text" class="size-3.5" />
-            {{ t('image.imagePrompt') }}
-          </div>
-          <UTextarea
-            v-model="imageStore.prompt"
-            size="lg"
-            :rows="3"
-            :placeholder="t('image.imagePromptPlaceholder')"
-            class="w-full"
-          />
-        </template>
-        <template v-else>
-          <div class="mb-2 flex items-center gap-2">
-            <span
-              :class="
-                tab === 'face'
-                  ? 'text-highlighted flex items-center gap-2 text-lg font-semibold'
-                  : 'text-muted flex items-center gap-1.5 text-xs font-semibold'
-              "
+      <template v-if="tab === 'illustration'">
+        <!-- 插图：每组一张卡片，编号、图片、情节与提示词统一收纳 -->
+        <div class="flex flex-col gap-3">
+          <div
+            v-for="row in illustrationRows"
+            :key="row.index"
+            class="border-default bg-elevated/40 hover:border-primary/30 overflow-hidden rounded-xl border shadow-sm transition-colors"
+          >
+            <div
+              class="border-default from-primary/5 flex items-center gap-2 border-b bg-linear-to-r to-transparent px-3 py-2 sm:px-4"
             >
               <span
-                v-if="tab === 'face'"
-                class="from-primary/20 to-primary/5 flex size-6 items-center justify-center rounded-md bg-linear-to-br"
+                class="bg-primary/10 text-primary ring-primary/20 flex size-6 items-center justify-center rounded-md text-xs font-bold ring-1"
               >
-                <UIcon name="i-lucide-file-text" class="text-primary size-3.5" />
+                {{ row.index }}
               </span>
-              <UIcon v-else name="i-lucide-file-text" class="size-3.5" />
-              {{ t('common.prompt') }}
-            </span>
-            <UBadge v-if="isPromptStage" color="info" variant="subtle" size="xs">
-              <UIcon name="i-lucide-loader-circle" class="mr-1 size-3 animate-spin" />
-              {{ t('image.generating') }}
-            </UBadge>
-            <UBadge v-else-if="hasPrompt" color="success" variant="subtle" size="xs">{{ t('image.ready') }}</UBadge>
-            <div v-if="hasPrompt" class="ms-auto flex items-center">
-              <UTooltip :text="t('image.copyPrompt')">
-                <ButtonClipboard :text="promptText" />
-              </UTooltip>
+              <span class="text-highlighted text-sm font-semibold">{{ t('imageTabs.illustration') }}</span>
             </div>
-          </div>
-          <div
-            ref="promptBox"
-            :class="
-              tab === 'face'
-                ? 'bg-default/60 border-default min-h-16 flex-1 overflow-y-auto rounded-lg border p-4 shadow-inner'
-                : 'bg-elevated/50 border-default max-h-40 min-h-16 overflow-y-auto rounded-lg border p-3'
-            "
-          >
-            <p
-              v-if="hasPrompt"
-              v-text="promptText"
-              class="text-highlighted leading-relaxed wrap-break-word whitespace-pre-wrap"
-              :class="[tab === 'face' ? 'text-base' : 'text-xs', { 'prompt-streaming': isPromptStage }]"
-            />
-            <div
-              v-else
-              :class="
-                tab === 'face'
-                  ? 'text-muted flex h-10 items-center justify-center gap-2 text-base'
-                  : 'text-muted flex h-10 items-center justify-center gap-2 text-xs'
-              "
-            >
-              <UIcon v-if="isPromptStage" name="i-lucide-loader-circle" class="size-4 animate-spin" />
-              <span>{{ isPromptStage ? t('image.receivingOutput') : t('image.emptyPrompt') }}</span>
-            </div>
-          </div>
-        </template>
-      </div>
-
-      <!-- 图片结果区：头像标签在左占 2/3 并撑满高度，其余标签位于下方并可滚动 -->
-      <div
-        :class="
-          tab === 'face'
-            ? 'relative order-1 flex min-h-0 w-full items-center justify-center sm:w-2/3'
-            : 'relative min-h-0 flex-1 overflow-y-auto p-3 sm:p-4'
-        "
-      >
-        <div
-          v-if="isBusy && currentImages.length"
-          class="bg-default/70 absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 backdrop-blur-sm"
-        >
-          <UIcon name="i-lucide-loader-circle" class="text-primary size-8 animate-spin" />
-          <span class="text-muted text-xs font-medium">
-            {{ isPromptStage ? t('image.conceivingPrompt') : t('image.regenerating', { label: tabMeta.label }) }}
-          </span>
-        </div>
-        <div
-          v-if="isBusy && !currentImages.length"
-          :class="
-            tab === 'face'
-              ? 'flex h-full w-full flex-col items-center justify-center gap-4'
-              : 'flex h-full min-h-56 flex-col items-center justify-center gap-4'
-          "
-        >
-          <div
-            :class="
-              tab === 'face'
-                ? 'relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-default bg-elevated/40 p-4 shadow-sm'
-                : 'border-default bg-elevated/60 relative flex aspect-square w-44 items-center justify-center overflow-hidden rounded-xl border sm:w-52'
-            "
-          >
-            <USkeleton class="absolute inset-0 rounded-xl" />
-            <div class="relative flex flex-col items-center gap-2 px-3 text-center">
-              <UIcon name="i-lucide-loader-circle" class="text-primary size-8 animate-spin" />
-              <span class="text-muted text-xs font-medium">
-                {{ isPromptStage ? t('image.conceivingPrompt') : t('image.generatingWithLabel', { label: tabMeta.label }) }}
-              </span>
-            </div>
-          </div>
-          <p v-if="tab !== 'face'" class="text-muted text-xs">
-            {{ isPromptStage ? t('image.afterPromptTip') : t('image.imageGeneratingTip') }}
-          </p>
-        </div>
-        <div
-          v-else-if="imageStore.error"
-          :class="tab === 'face' ? 'flex h-full w-full items-center justify-center rounded-xl border border-default bg-elevated/40 p-4 text-center shadow-sm' : 'flex items-center justify-center p-8'"
-        >
-          <p class="text-error text-sm">{{ imageStore.error }}</p>
-        </div>
-        <div v-else-if="currentImages.length" :class="tab === 'face' ? 'h-full w-full' : ''">
-          <div :class="tab === 'face' ? 'grid h-full grid-cols-1' : 'grid grid-cols-1 gap-3 sm:grid-cols-2'">
-            <div
-              v-for="(img, i) in currentImages"
-              :key="i"
-              :class="
-                tab === 'face'
-                  ? 'flex h-full w-full flex-col overflow-hidden rounded-xl border border-default bg-elevated/40 p-4 shadow-sm'
-                  : 'border-default flex flex-col overflow-hidden rounded-lg border'
-              "
-            >
-              <img
-                :src="img.url"
-                :alt="`${tabMeta.label} ${i + 1}`"
-                :class="tab === 'face' ? 'min-h-0 w-full flex-1 object-contain' : 'w-full object-cover'"
-              />
-              <!-- 头像的最终提示词已在上方展示；多图任务逐张保留各自提示词 -->
-              <div v-if="tab !== 'face'" class="border-default bg-elevated/50 border-t p-3">
-                <div class="mb-1.5 flex items-center justify-between gap-2">
-                  <span class="text-muted flex items-center gap-1 text-xs font-semibold">
-                    <UIcon name="i-lucide-file-text" class="size-3.5" />
-                    {{ t('common.prompt') }}
-                  </span>
-                  <UTooltip v-if="img.prompt" :text="t('image.copyPrompt')">
-                    <ButtonClipboard :text="img.prompt" />
-                  </UTooltip>
+            <div class="grid gap-3 p-3 sm:p-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+              <!-- 情节 -->
+              <div class="order-2 flex min-h-48 min-w-0 flex-col">
+                <div class="border-default mb-3 flex items-center gap-2 border-b pb-2">
+                  <UIcon name="i-lucide-list-ordered" class="text-primary size-3.5" />
+                  <span class="text-muted text-xs font-semibold">{{ t('image.sceneTitle') }}</span>
+                  <div v-if="row.scene" class="ms-auto">
+                    <UTooltip :text="t('image.copyPrompt')">
+                      <ButtonClipboard :text="row.scene" />
+                    </UTooltip>
+                  </div>
                 </div>
-                <p
-                  v-if="img.prompt"
-                  v-text="img.prompt"
-                  class="text-muted max-h-28 overflow-y-auto text-xs leading-relaxed wrap-break-word whitespace-pre-wrap"
-                />
-                <p v-else class="text-muted text-xs">{{ t('image.emptyPromptRecord') }}</p>
+                <div
+                  :ref="isSceneStage && row.index === 1 ? bindSceneBox : undefined"
+                  class="bg-default/60 border-default min-h-24 min-w-0 flex-1 overflow-y-auto rounded-lg border p-3 text-sm leading-relaxed shadow-inner"
+                >
+                  <p
+                    v-if="isSceneStage && row.index === 1 && imageStore.illustrationSceneText"
+                    v-text="imageStore.illustrationSceneText"
+                    class="text-highlighted prompt-streaming text-sm leading-relaxed wrap-break-word whitespace-pre-wrap"
+                  />
+                  <p
+                    v-else-if="row.scene"
+                    v-text="row.scene"
+                    class="text-highlighted text-sm leading-relaxed wrap-break-word whitespace-pre-wrap"
+                  />
+                  <div v-else class="text-muted flex h-10 items-center justify-center gap-2 text-xs">
+                    <UIcon
+                      v-if="isSceneStage && row.index === 1"
+                      name="i-lucide-loader-circle"
+                      class="size-4 animate-spin"
+                    />
+                    <span>{{
+                      isSceneStage && row.index === 1 ? t('image.sceneReceiving') : t('image.sceneEmpty')
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 图片提示词 -->
+              <div
+                class="border-default bg-default/40 order-3 flex min-w-0 flex-col overflow-hidden rounded-lg border md:col-span-2"
+              >
+                <div class="border-default bg-elevated/50 flex items-center gap-2 border-b px-3 py-2">
+                  <UIcon name="i-lucide-wand-sparkles" class="text-primary size-3.5" />
+                  <span class="text-muted text-xs font-semibold">{{ t('image.detailPromptTitle') }}</span>
+                  <div v-if="row.detail" class="ms-auto flex items-center">
+                    <UTooltip :text="t('image.copyPrompt')">
+                      <ButtonClipboard :text="row.detail" />
+                    </UTooltip>
+                  </div>
+                </div>
+                <div
+                  :ref="isDetailStage && row.index === streamingDetailRow ? bindDetailBox : undefined"
+                  class="min-h-16 p-3 text-sm leading-relaxed"
+                >
+                  <p
+                    v-if="isDetailStage && row.index === streamingDetailRow && imageStore.illustrationDetailText"
+                    v-text="imageStore.illustrationDetailText"
+                    class="text-highlighted prompt-streaming text-sm leading-relaxed wrap-break-word whitespace-pre-wrap"
+                  />
+                  <p
+                    v-else-if="row.detail"
+                    v-text="row.detail"
+                    class="text-highlighted text-sm leading-relaxed wrap-break-word whitespace-pre-wrap"
+                  />
+                  <div v-else class="text-muted flex h-10 items-center justify-center gap-2 text-xs">
+                    <UIcon
+                      v-if="isDetailStage && row.index === streamingDetailRow"
+                      name="i-lucide-loader-circle"
+                      class="size-4 animate-spin"
+                    />
+                    <span>
+                      {{
+                        isDetailStage && row.index === streamingDetailRow
+                          ? t('image.detailReceiving')
+                          : t('image.detailEmpty')
+                      }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 图片 -->
+              <div
+                class="border-default bg-default/50 order-1 flex min-h-48 min-w-0 flex-col overflow-hidden rounded-lg border"
+              >
+                <div class="border-default bg-elevated/60 flex items-center gap-2 border-b px-3 py-2">
+                  <UIcon name="i-lucide-image" class="text-primary size-3.5" />
+                  <span class="text-muted text-xs font-semibold">{{ t('image.imageLabel') }}</span>
+                </div>
+                <div class="relative flex min-h-40 flex-1 items-center justify-center p-3">
+                  <img
+                    v-if="row.image"
+                    :src="row.image.url"
+                    :alt="`${tabMeta.label} ${row.index}`"
+                    class="max-h-56 w-full object-contain"
+                  />
+                  <template v-else-if="isImageStage && row.index === currentImages.length + 1">
+                    <USkeleton class="absolute inset-0 rounded-lg" />
+                    <div class="relative flex flex-col items-center gap-2 text-center">
+                      <UIcon name="i-lucide-loader-circle" class="text-primary size-6 animate-spin" />
+                      <span class="text-muted text-xs">{{ t('image.imageGenerating') }}</span>
+                    </div>
+                  </template>
+                  <div v-else class="text-muted flex flex-col items-center gap-2 text-center text-xs">
+                    <UIcon :name="tabMeta.icon" class="size-6" />
+                    <span>{{ t('image.emptyIllustration') }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <!-- 提示词区：移动端位于图片下方，桌面端占右侧 1/3 -->
+        <div
+          class="border-default bg-elevated/40 relative order-2 flex w-full shrink-0 flex-col overflow-hidden rounded-xl border p-4 shadow-sm sm:w-1/3 sm:shrink"
+        >
+          <template v-if="tab === 'generate'">
+            <div class="mb-2 flex items-center gap-2">
+              <span class="text-highlighted flex items-center gap-2 text-lg font-semibold">
+                <span
+                  class="from-primary/20 to-primary/5 flex size-6 items-center justify-center rounded-md bg-linear-to-br"
+                >
+                  <UIcon name="i-lucide-file-text" class="text-primary size-3.5" />
+                </span>
+                {{ t('image.imagePrompt') }}
+              </span>
+            </div>
+            <UTextarea
+              v-model="imageStore.prompt"
+              size="lg"
+              fixed
+              :rows="4"
+              :placeholder="t('image.imagePromptPlaceholder')"
+              class="min-h-16 w-full sm:flex-1"
+              :ui="{
+                base: 'border border-default bg-default/60 rounded-lg p-4 shadow-inner text-highlighted text-base leading-6.5 wrap-break-word whitespace-pre-wrap placeholder:text-muted resize-none sm:h-full sm:overflow-y-auto',
+              }"
+            />
+          </template>
+          <template v-else>
+            <div class="mb-2 flex items-center gap-2">
+              <span class="text-highlighted flex items-center gap-2 text-lg font-semibold">
+                <span
+                  class="from-primary/20 to-primary/5 flex size-6 items-center justify-center rounded-md bg-linear-to-br"
+                >
+                  <UIcon name="i-lucide-file-text" class="text-primary size-3.5" />
+                </span>
+                {{ t('common.prompt') }}
+              </span>
+              <UBadge v-if="isPromptStage" color="info" variant="subtle" size="xs">
+                <UIcon name="i-lucide-loader-circle" class="mr-1 size-3 animate-spin" />
+                {{ t('image.generating') }}
+              </UBadge>
+              <UBadge v-else-if="hasPrompt" color="success" variant="subtle" size="xs">{{ t('image.ready') }}</UBadge>
+              <div v-if="hasPrompt" class="ms-auto flex items-center">
+                <UTooltip :text="t('image.copyPrompt')">
+                  <ButtonClipboard :text="promptText" />
+                </UTooltip>
               </div>
             </div>
             <div
-              v-for="n in remainingImages"
-              :key="`sk-${n}`"
-              :class="
-                tab === 'face'
-                  ? 'relative flex h-full items-center justify-center rounded-xl border border-default bg-elevated/40 p-4 shadow-sm'
-                  : 'border-default relative flex min-h-48 items-center justify-center overflow-hidden rounded-lg border'
-              "
+              ref="promptBox"
+              class="bg-default/60 border-default min-h-16 rounded-lg border p-4 shadow-inner sm:flex-1 sm:overflow-y-auto"
             >
-              <USkeleton class="absolute inset-0" />
-              <div class="text-muted relative flex flex-col items-center gap-2 text-xs">
-                <UIcon name="i-lucide-loader-circle" class="size-6 animate-spin" />
-                <span>{{ t('image.imageGenerating') }}</span>
+              <p
+                v-if="hasPrompt"
+                v-text="promptText"
+                class="text-highlighted text-base leading-relaxed wrap-break-word whitespace-pre-wrap"
+                :class="{ 'prompt-streaming': isPromptStage }"
+              />
+              <div v-else class="text-muted flex h-10 items-center justify-center gap-2 text-base">
+                <UIcon v-if="isPromptStage" name="i-lucide-loader-circle" class="size-4 animate-spin" />
+                <span>{{ isPromptStage ? t('image.receivingOutput') : t('image.emptyPrompt') }}</span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- 图片结果区：移动端位于提示词上方，桌面端占左侧 2/3 -->
+        <div
+          class="relative order-1 flex h-72 w-full shrink-0 items-center justify-center sm:h-auto sm:w-2/3 sm:shrink"
+        >
+          <div
+            v-if="isBusy && currentImages.length"
+            class="bg-default/70 absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 backdrop-blur-sm"
+          >
+            <UIcon name="i-lucide-loader-circle" class="text-primary size-8 animate-spin" />
+            <span class="text-muted text-xs font-medium">
+              {{ isPromptStage ? stageText : t('image.regenerating', { label: tabMeta.label }) }}
+            </span>
+          </div>
+          <div
+            v-if="isBusy && !currentImages.length"
+            class="flex h-full w-full flex-col items-center justify-center gap-4"
+          >
+            <div
+              class="border-default bg-elevated/40 relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl border p-4 shadow-sm"
+            >
+              <USkeleton class="absolute inset-0 rounded-xl" />
+              <div class="relative flex flex-col items-center gap-2 px-3 text-center">
+                <UIcon name="i-lucide-loader-circle" class="text-primary size-8 animate-spin" />
+                <span class="text-muted text-xs font-medium">
+                  {{ isPromptStage ? stageText : t('image.generatingWithLabel', { label: tabMeta.label }) }}
+                </span>
               </div>
             </div>
           </div>
-          <p v-if="isImageStage && tab !== 'face'" class="text-muted mt-3 text-center text-xs">
-            {{ t('image.generatingMore') }}
-          </p>
-        </div>
-        <div
-          v-else
-          :class="
-            tab === 'face'
-              ? 'flex h-full w-full flex-col items-center justify-center gap-3 rounded-xl border border-default bg-elevated/40 p-4 text-center shadow-sm'
-              : 'flex h-full min-h-40 flex-col items-center justify-center gap-3 px-4 text-center'
-          "
-        >
-          <div class="bg-muted rounded-full p-4">
-            <UIcon :name="tabMeta.icon" class="text-muted size-8" />
+          <div
+            v-else-if="imageStore.error"
+            class="border-default bg-elevated/40 flex h-full w-full items-center justify-center rounded-xl border p-4 text-center shadow-sm"
+          >
+            <p class="text-error text-sm">{{ imageStore.error }}</p>
           </div>
-          <p class="text-muted text-sm">{{ tabMeta.empty }}</p>
+          <div v-else-if="currentImages.length" class="flex h-full w-full flex-col">
+            <div class="grid h-full grid-cols-1">
+              <div
+                v-for="(img, i) in currentImages"
+                :key="i"
+                class="border-default bg-elevated/40 flex h-full w-full flex-col overflow-hidden rounded-xl border p-4 shadow-sm"
+              >
+                <img :src="img.url" :alt="`${tabMeta.label} ${i + 1}`" class="min-h-0 w-full flex-1 object-contain" />
+              </div>
+              <div
+                v-for="n in remainingImages"
+                :key="`sk-${n}`"
+                class="border-default bg-elevated/40 relative flex min-h-40 items-center justify-center overflow-hidden rounded-xl border p-4 shadow-sm"
+              >
+                <USkeleton class="absolute inset-0" />
+                <div class="text-muted relative flex flex-col items-center gap-2 text-xs">
+                  <UIcon name="i-lucide-loader-circle" class="size-6 animate-spin" />
+                  <span>{{ t('image.imageGenerating') }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            v-else
+            class="border-default bg-elevated/40 flex h-full w-full flex-col items-center justify-center gap-3 rounded-xl border p-4 text-center shadow-sm"
+          >
+            <div class="bg-muted rounded-full p-4">
+              <UIcon :name="tabMeta.icon" class="text-muted size-8" />
+            </div>
+            <p class="text-muted text-sm">{{ tabMeta.empty }}</p>
+          </div>
         </div>
-      </div>
+      </template>
     </template>
 
     <template #footer />
@@ -276,27 +358,70 @@ const tabConfig = computed<Record<ImageTab, { label: string; action: string; ico
 
 const tabMeta = computed(() => tabConfig.value[props.tab as ImageTab] ?? tabConfig.value.face)
 
+// 插图采用整块行式布局，其余标签沿用「提示词 + 图片」双栏布局
+const bodyClass = computed(() =>
+  props.tab === 'illustration'
+    ? 'flex-1 flex min-h-0 flex-col overflow-y-auto p-3 sm:p-4'
+    : 'flex-1 flex min-h-0 flex-col gap-3 overflow-y-auto p-3 sm:flex-row sm:overflow-hidden sm:gap-4 sm:p-4',
+)
+
 const isBusy = computed(() => imageStore.isGenerating && imageStore.currentTask === props.tab)
-const isPromptStage = computed(() => isBusy.value && imageStore.currentPhase === 'prompt')
+const isSceneStage = computed(() => isBusy.value && imageStore.currentPhase === 'scene')
+const isDetailStage = computed(() => isBusy.value && imageStore.currentPhase === 'prompt')
+const isPromptStage = computed(() => isSceneStage.value || isDetailStage.value)
 const isImageStage = computed(() => isBusy.value && imageStore.currentPhase === 'image')
+
+const stageText = computed(() => {
+  if (isSceneStage.value) return t('image.sceneStage')
+  if (isDetailStage.value) return t('image.detailStage')
+  if (isImageStage.value) return t('image.generatingWithLabel', { label: tabMeta.value.label })
+  return ''
+})
+
+// 插图两步中间产物：关键情节描述与详细文生图提示词
+const hasScenes = computed(() => imageStore.illustrationScenes.length > 0)
+const scenesText = computed(() => imageStore.illustrationScenes.map((scene, i) => `${i + 1}. ${scene}`).join('\n\n'))
+const hasDetailPrompts = computed(() => imageStore.illustrationDetailPrompts.length > 0)
+const detailPromptsText = computed(() =>
+  imageStore.illustrationDetailPrompts.map((prompt, i) => `${i + 1}. ${prompt}`).join('\n\n'),
+)
+
+// 插图固定 4 组：同一行内依次展示情节、图片提示词与生成的图片
+const ILLUSTRATION_COUNT = 4
+const illustrationRows = computed(() =>
+  Array.from({ length: ILLUSTRATION_COUNT }, (_, i) => ({
+    index: i + 1,
+    scene: imageStore.illustrationScenes[i] ?? '',
+    detail: imageStore.illustrationDetailPrompts[i] ?? '',
+    image: imageStore.illustrationImages[i] ?? null,
+  })),
+)
+const streamingDetailRow = computed(() => imageStore.illustrationDetailPrompts.length + 1)
 
 // 区分当前正在进行的操作，避免两个按钮同时显示加载状态
 const lastAction = ref<'generate' | 'regenerate'>('generate')
 const hasFacePrompt = computed(() => !!(imageStore.facePromptText.trim() || imageStore.facePrompts[0]?.trim()))
 
-const promptText = computed(() => {
-  if (props.tab === 'face') return imageStore.facePromptText
-  if (props.tab === 'illustration') return imageStore.illustrationPromptText
-  return ''
-})
+const promptText = computed(() => (props.tab === 'face' ? imageStore.facePromptText : ''))
 const hasPrompt = computed(() => !!promptText.value.trim())
 const promptBox = ref<HTMLElement | null>(null)
+const sceneBox = ref<HTMLElement | null>(null)
+const detailBox = ref<HTMLElement | null>(null)
 
-// 流式输出时始终展示最新到达的文本
-watch(promptText, () => {
-  if (!isPromptStage.value || !promptBox.value) return
+// 行式布局中仅当前流式行绑定滚动容器
+function bindSceneBox(el: unknown) {
+  if (el instanceof HTMLElement) sceneBox.value = el
+}
+function bindDetailBox(el: unknown) {
+  if (el instanceof HTMLElement) detailBox.value = el
+}
+
+// 流式输出时始终展示最新到达的文本，并按当前阶段滚动对应面板
+watch([promptText, () => imageStore.illustrationSceneText, () => imageStore.illustrationDetailText], () => {
+  if (!isPromptStage.value) return
   nextTick(() => {
-    if (promptBox.value) promptBox.value.scrollTop = promptBox.value.scrollHeight
+    const box = isSceneStage.value ? sceneBox.value : isDetailStage.value ? detailBox.value : promptBox.value
+    if (box) box.scrollTop = box.scrollHeight
   })
 })
 
@@ -307,11 +432,10 @@ const currentImages = computed<{ url: string; prompt: string }[]>(() => {
   return imageStore.generateImages
 })
 
-// 生成过程中，尚未生成的占位骨架数量（插图预期 4 张，其余 1 张）
+// 生成过程中，尚未生成的占位骨架数量（头像与自定义均为 1 张）
 const remainingImages = computed(() => {
   if (!isImageStage.value) return 0
-  const expected = props.tab === 'illustration' ? 4 : 1
-  return Math.max(0, expected - currentImages.value.length)
+  return Math.max(0, 1 - currentImages.value.length)
 })
 
 function runGenerate() {

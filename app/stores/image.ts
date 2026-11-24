@@ -1,14 +1,36 @@
 import { DefaultChatTransport, isTextUIPart } from 'ai'
 import { Chat } from '@ai-sdk/vue'
 import { useI18n } from 'vue-i18n'
+import type { ContextSectionInput } from '~/utils/context'
+import { safeParseJson } from '~/utils/json'
 
-const VERSION = '2026-11-02'
+const VERSION = '2026-11-24'
+const SCENE_COUNT = 4
 
-// 解析插图提示词：从模型返回的 ['提示词1','提示词2',...] 格式中提取各段提示词
-function parseIllustrationPrompts(text: string): string[] {
-  const matches = text.match(/['"][^'"]*['"]/g)
-  if (!matches) return []
-  return matches.map((m) => m.slice(1, -1).trim()).filter((p) => p.length > 0)
+// 解析第一步输出：优先 JSON 字符串数组，其次引号列表，最后按句子切分；不足 4 段时循环补足
+function parseIllustrationScenes(text: string): string[] {
+  const cleaned = text.trim()
+  if (!cleaned) return []
+
+  let scenes: string[] = []
+  const parsed = safeParseJson(cleaned)
+  if (Array.isArray(parsed)) {
+    scenes = parsed.filter((v): v is string => typeof v === 'string' && !!v.trim()).map((v) => v.trim())
+  }
+  if (!scenes.length) {
+    scenes = (cleaned.match(/['"][^'"]*['"]/g) ?? []).map((m) => m.slice(1, -1).trim()).filter((v) => !!v)
+  }
+  if (!scenes.length) {
+    scenes = cleaned
+      .split(/[。！？\n]+/)
+      .map((s) => s.trim())
+      .filter((s) => s.length >= 8)
+  }
+  if (!scenes.length) return []
+
+  const base = [...scenes]
+  while (scenes.length < SCENE_COUNT) scenes.push(base[scenes.length % base.length])
+  return scenes.slice(0, SCENE_COUNT)
 }
 
 // 界面语言到提示词输出语言的映射：zh→中文、en→English，其他语言交由模型按模板规则推断
@@ -44,6 +66,16 @@ function resolveLocale(): string {
   }
 }
 
+// store action 中安全读取 i18n 文案，取不到时回退中文
+function translateImage(key: string, fallback: string): string {
+  try {
+    const value = useI18n().t(key)
+    return value === key ? fallback : String(value)
+  } catch {
+    return fallback
+  }
+}
+
 // 仅头像任务需要按界面语言注入输出语言与人种约束；追加在公共上下文指令之后，不影响其他任务
 function buildFaceInstructions(baseInstructions: string): string {
   const locale = resolveLocale()
@@ -59,7 +91,14 @@ function buildFaceInstructions(baseInstructions: string): string {
 }
 
 type ImageTask = 'face' | 'illustration' | 'generate'
-type Phase = 'idle' | 'prompt' | 'image'
+// scene：第一步生成关键情节描述；prompt：第二步逐段生成详细文生图提示词；image：第三步生图
+type Phase = 'idle' | 'scene' | 'prompt' | 'image'
+
+interface StreamPromptOptions {
+  type: 'face' | 'illustration'
+  task: string
+  extra?: ContextSectionInput[]
+}
 
 export const useImageStore = defineStore('image', () => {
   const version = ref(VERSION)
@@ -79,9 +118,12 @@ export const useImageStore = defineStore('image', () => {
   const facePrompts = ref<string[]>([])
   const illustrationPrompts = ref<string[]>([])
 
-  // 大模型流式输出的提示词原文，流结束后即为最终提示词
+  // 三步流水线的中间产物：关键情节描述（原文 + 4 段）、详细文生图提示词（当前流式 + 4 条）
   const facePromptText = ref('')
-  const illustrationPromptText = ref('')
+  const illustrationSceneText = ref('')
+  const illustrationScenes = ref<string[]>([])
+  const illustrationDetailText = ref('')
+  const illustrationDetailPrompts = ref<string[]>([])
 
   // 运行时阶段与任务：仅以 computed 对外暴露，避免刷新后停留在「生成中」
   const phase = ref<Phase>('idle')
@@ -113,7 +155,7 @@ export const useImageStore = defineStore('image', () => {
     },
   })
 
-  // 流式接收模型输出，实时更新提示词区，结束后保留最终提示词
+  // 流式接收模型输出，实时更新对应的中间产物区域，结束后保留最终文本
   watch(
     () => [...(chat.lastMessage?.parts ?? [])],
     (parts) => {
@@ -123,7 +165,10 @@ export const useImageStore = defineStore('image', () => {
         .map((part) => part.text)
         .join('')
       if (activeTask.value === 'face') facePromptText.value = text
-      if (activeTask.value === 'illustration') illustrationPromptText.value = text
+      if (activeTask.value === 'illustration') {
+        if (phase.value === 'scene') illustrationSceneText.value = text
+        if (phase.value === 'prompt') illustrationDetailText.value = text
+      }
     },
   )
 
@@ -149,16 +194,20 @@ export const useImageStore = defineStore('image', () => {
     facePrompts.value = []
     illustrationPrompts.value = []
     facePromptText.value = ''
-    illustrationPromptText.value = ''
+    illustrationSceneText.value = ''
+    illustrationScenes.value = []
+    illustrationDetailText.value = ''
+    illustrationDetailPrompts.value = []
     finish()
   }
 
-  // 流式生成图像提示词：内容框可实时看到模型输出，请求结束后返回完整文本
-  async function streamPrompt(task: 'face' | 'illustration'): Promise<string> {
+  // 流式生成文本：按 type/task 选择对应提示词模板，extra 注入本次专属输入，结束后返回完整文本
+  async function streamPrompt(options: StreamPromptOptions): Promise<string> {
     const context = await buildGenerationContext({
-      type: task,
-      task: 'generate',
+      type: options.type,
+      task: options.task,
       target: 'image',
+      extra: options.extra,
     })
     const model = useModelStore().activeModels.chat
     if (chat.status === 'error') chat.clearError()
@@ -169,10 +218,10 @@ export const useImageStore = defineStore('image', () => {
       { text: context.text },
       {
         body: {
-          type: task,
-          task: 'generate',
+          type: options.type,
+          task: options.task,
           model,
-          instructions: task === 'face' ? buildFaceInstructions(context.instructions) : context.instructions,
+          instructions: options.type === 'face' ? buildFaceInstructions(context.instructions) : context.instructions,
           providerOptions: useProviderStore().getProviderOptions(model.provider, false),
           template: getChatTemplate(model),
         },
@@ -185,8 +234,9 @@ export const useImageStore = defineStore('image', () => {
       .map((part) => part.text)
       .join('')
       .trim()
-    if (task === 'face') facePromptText.value = text
-    else illustrationPromptText.value = text
+    if (options.type === 'face') facePromptText.value = text
+    if (options.type === 'illustration' && options.task === 'generate') illustrationSceneText.value = text
+    if (options.type === 'illustration' && options.task === 'prompt') illustrationDetailText.value = text
     return text
   }
 
@@ -224,7 +274,7 @@ export const useImageStore = defineStore('image', () => {
     activeTask.value = 'face'
     facePromptText.value = ''
     try {
-      const facePrompt = await streamPrompt('face')
+      const facePrompt = await streamPrompt({ type: 'face', task: 'generate' })
       if (!facePrompt) return
       phase.value = 'image'
       const result = await imageApi.generate(facePrompt, {
@@ -269,26 +319,58 @@ export const useImageStore = defineStore('image', () => {
     }
   }
 
-  // 基于当前已有内容生成故事插图
+  // 基于当前已有内容生成故事插图：头像硬前置 → 4 段关键情节描述 → 4 条详细提示词 → 4 张图
   async function illustration() {
-    phase.value = 'prompt'
-    activeTask.value = 'illustration'
-    illustrationPromptText.value = ''
-    try {
-      const refinedPrompt = await streamPrompt('illustration')
-      // 以已生成的患者头像作为参考图，保持插图中人物与头像一致；未生成头像时省略参考图
-      const faceImage = faceOriginalUrls.value[0] || undefined
-      // 将故事拆分为 4 段提示词，逐段分别生成插图（每张生成后即时写入，便于前端渐进显示）
-      const scenePrompts = parseIllustrationPrompts(refinedPrompt)
-      if (!scenePrompts.length) return
-      phase.value = 'image'
+    // 每张插图都必须以患者头像为参考图以保持人物一致；无头像时不启动任何阶段
+    const faceImage = faceOriginalUrls.value[0]
+    if (!faceImage) {
+      useStateStore().toast.add({
+        title: translateImage('image.needAvatarTitle', '请先生成患者头像'),
+        description: translateImage(
+          'image.needAvatarDescription',
+          '插图需以患者头像为参考保持人物一致，请先在「患者头像」中生成头像后重试。',
+        ),
+        color: 'warning',
+        icon: 'i-lucide-alert-triangle',
+      })
+      return
+    }
 
+    phase.value = 'scene'
+    activeTask.value = 'illustration'
+    illustrationSceneText.value = ''
+    illustrationScenes.value = []
+    illustrationDetailText.value = ''
+    illustrationDetailPrompts.value = []
+    illustrationOriginalUrls.value = []
+    illustrationPrompts.value = []
+    try {
+      // 第一步：参考已有故事生成 4 段关键情节描述文字
+      const sceneText = await streamPrompt({ type: 'illustration', task: 'generate' })
+      const scenes = parseIllustrationScenes(sceneText)
+      if (!scenes.length) return
+      illustrationScenes.value = scenes
+
+      // 第二步：逐段单独调用，每段生成一条详尽文生图提示词；为空时回退为原描述
+      phase.value = 'prompt'
+      const detailPrompts: string[] = []
+      for (const scene of scenes) {
+        illustrationDetailText.value = ''
+        const detail = await streamPrompt({
+          type: 'illustration',
+          task: 'prompt',
+          extra: [{ title: '当前关键情节描述', content: scene }],
+        })
+        detailPrompts.push(detail.trim() || scene)
+        illustrationDetailPrompts.value = [...detailPrompts]
+      }
+      illustrationDetailText.value = ''
+
+      // 第三步：逐张生图，每次都传头像作参考图；每生成一张立即写入以便渐进显示
+      phase.value = 'image'
       const originalUrls: string[] = []
       const usedPrompts: string[] = []
-      // 重新生成时先清空旧结果，避免新旧插图与提示词交错
-      illustrationOriginalUrls.value = []
-      illustrationPrompts.value = []
-      for (const p of scenePrompts) {
+      for (const p of detailPrompts) {
         const r = await imageApi.generate(p, {
           task: 'illustration',
           model: useModelStore().activeModels.image,
@@ -297,7 +379,6 @@ export const useImageStore = defineStore('image', () => {
         if (r) {
           originalUrls.push(...r.originalUrls)
           usedPrompts.push(...r.originalUrls.map(() => p))
-          // 每生成一张立即更新，前端即可即时显示该图及其对应的场景提示词
           illustrationOriginalUrls.value = [...originalUrls]
           illustrationPrompts.value = [...usedPrompts]
         }
@@ -317,7 +398,12 @@ export const useImageStore = defineStore('image', () => {
     facePrompts,
     illustrationPrompts,
     facePromptText,
-    illustrationPromptText,
+    illustrationSceneText,
+    illustrationScenes,
+    illustrationDetailText,
+    illustrationDetailPrompts,
+    // 兼容原有引用：插图原始提示词文本即第一步的关键情节描述原文
+    illustrationPromptText: illustrationSceneText,
     generateImages,
     faceImages,
     illustrationImages,

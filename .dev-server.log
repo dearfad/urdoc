@@ -1,0 +1,15 @@
+$ nuxt dev --host
+■ 
+  Another Nuxt dev server is already running:
+  
+    URL:     http://localhost:3000
+    PID:     620
+    Dir:     D:/Projects/GitHub/urdoc
+    Started: 2026/11/24 15:18:14 (in a terminal)
+  
+  It was started interactively, so it is not stopped automatically.
+  Pass `--takeover` to stop it and start this server in its place, or `NUXT_IGNORE_LOCK=1` to run a second server (unsupported).
+  
+[ELIFECYCLE] Command failed with exit code 1.
+
+d:\Projects\GitHub\urdoc>
