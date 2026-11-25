@@ -1,10 +1,7 @@
 <template>
-  <UDashboardPanel
-    id="pages-project-clinical-simulation"
-    class="bg-linear-to-br from-amber-50/40 via-rose-50/40 to-cyan-50/40"
-  >
+  <UDashboardPanel :id="id">
     <template #header>
-      <UDashboardNavbar :title="t('sidebar.clinicalSimulation')">
+      <UDashboardNavbar :title="title">
         <template #leading>
           <UTooltip :text="t('common.sidebar')">
             <UDashboardSidebarCollapse />
@@ -15,15 +12,25 @@
         </template>
       </UDashboardNavbar>
     </template>
+
+    <template #body>
+      <div v-if="!flush" class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+        <slot />
+      </div>
+      <slot v-else />
+    </template>
   </UDashboardPanel>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  title: '临床实战',
-})
+withDefaults(
+  defineProps<{
+    id: string
+    title: string
+    flush?: boolean
+  }>(),
+  { flush: false }
+)
 
 const { t } = useI18n()
 </script>
-
-<style></style>

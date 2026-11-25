@@ -36,6 +36,70 @@
     "login": "Sign in",
     "settings": "Settings"
   },
+  "projectPage": {
+    "overview": {
+      "title": "Project Overview",
+      "description": "Start from a project to explore its subprojects and research directions. Each project brings together independent tools and learning modules.",
+      "listTitle": "All Projects",
+      "listDescription": "Choose a project to view its subproject entries and availability."
+    },
+    "common": {
+      "subprojectList": "Subprojects",
+      "subprojectListDescription": "Choose a subproject to continue. Modules still in progress are marked as coming soon.",
+      "enter": "Open",
+      "available": "Available",
+      "comingSoon": "Coming soon",
+      "comingSoonTitle": "This subproject is under construction",
+      "comingSoonDesc": "We are integrating this module into the platform. For now, return to the project home and try another available subproject.",
+      "backToOverview": "Back to projects",
+      "backToProject": "Back to project"
+    },
+    "narrativeMedicine": {
+      "title": "Narrative Medicine",
+      "description": "Center on disease narratives, generating complete narrative sheets with cases, stories, conversations, avatars and illustrations from a single disease name.",
+      "narrativeGeneration": {
+        "title": "Narrative Generation",
+        "description": "Enter a disease name to generate a complete narrative sheet with cases, stories, conversations, avatars and illustrations."
+      }
+    },
+    "clinicalSimulation": {
+      "title": "Clinical Simulation",
+      "description": "A simulation space for clinical competence, hosting reform research and practice for the higher education teaching reform project.",
+      "higherEducationReformResearch": {
+        "title": "Higher Education Teaching Reform Research Project",
+        "description": "Grant No. JLJY202714886133, focusing on reform research and practice in clinical simulation teaching."
+      }
+    },
+    "pedagogicalResearch": {
+      "title": "Pedagogical Research",
+      "description": "Explore CSTAR teaching practice and reflection, with a focus on model selection for pedagogical research.",
+      "modelSelection": {
+        "title": "Model Selection",
+        "description": "Compare and choose LLMs suited to pedagogical research scenarios, building reusable model configurations for different tasks.",
+        "tabHint": "Choose a model for each task type. Changes are saved immediately and applied to the matching scenario.",
+        "currentProvider": "Current provider",
+        "currentModel": "Current model",
+        "compareTitle": "Model comparison",
+        "providerLabel": "Provider",
+        "modelLabel": "Model",
+        "localModelLabel": "Local model (ComfyUI)",
+        "localModelHint": "Choose a workflow model when using local ComfyUI.",
+        "localModelPlaceholder": "Select local model",
+        "compareCount": "Number of models to compare",
+        "compareCountHint": "Choose how many models to compare. Each slot can be configured independently.",
+        "compareSlot": "Model {index}",
+        "configure": "Configure custom models in settings",
+        "chatDescription": "For text tasks such as case generation, story writing and research dialogues.",
+        "imageDescription": "For image generation tasks such as patient avatars and teaching illustrations.",
+        "videoDescription": "For dynamic visual tasks such as scenario reenactments and teaching videos.",
+        "audioDescription": "For speech synthesis tasks such as narration and teaching audio.",
+        "chatPlaceholder": "Generated dialogue will appear here",
+        "imagePlaceholder": "Generated images will appear here",
+        "videoPlaceholder": "Generated videos will appear here",
+        "audioPlaceholder": "Generated audio will appear here"
+      }
+    }
+  },
   "common": {
     "sidebar": "Sidebar",
     "showSettings": "Show settings",

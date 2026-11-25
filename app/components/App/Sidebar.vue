@@ -8,7 +8,14 @@
     </template>
 
     <template #default="{ collapsed }">
-      <UNavigationMenu :collapsed="collapsed" :items="items" orientation="vertical" tooltip popover />
+      <UNavigationMenu
+        :collapsed="collapsed"
+        :items="items"
+        trailing-icon="i-lucide-chevrons-down"
+        orientation="vertical"
+        tooltip
+        popover
+      />
     </template>
 
     <template #footer="{ collapsed }">
@@ -35,6 +42,7 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { generateDocSidebarItems } from '~/utils/docs'
+import { generateProjectSidebarItems } from '~/utils/project'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
@@ -45,31 +53,7 @@ const items = computed<NavigationMenuItem[]>(() => [
     icon: 'i-lucide-layout-dashboard',
     to: localePath('/dashboard'),
   },
-  {
-    label: t('sidebar.projects'),
-    icon: 'i-lucide-book',
-    defaultOpen: true,
-    children: [
-      {
-        label: t('sidebar.narrativeMedicine'),
-        icon: 'i-lucide-book-plus',
-        to: localePath('/project/narrative-medicine'),
-        class: 'font-bold text-base',
-      },
-      {
-        label: t('sidebar.clinicalSimulation'),
-        icon: 'i-lucide-stethoscope',
-        to: localePath('/project/clinical-simulation'),
-        class: 'font-bold text-base',
-      },
-      {
-        label: t('sidebar.pedagogicalResearch'),
-        icon: 'i-lucide-graduation-cap',
-        to: localePath('/project/pedagogical-research'),
-        class: 'font-bold text-base',
-      },
-    ],
-  },
+  ...generateProjectSidebarItems(t, localePath),
   {
     label: t('sidebar.cstar'),
     icon: 'i-lucide-circle-star',

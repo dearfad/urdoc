@@ -4,3 +4,12 @@ allowBuilds:
   unrs-resolver: true
   vue-demi: true
 minimumReleaseAge: 1440
+permissions:
+  '@zumer/snapdom':
+    skills: true
+  ai:
+    skills: true
+skills:
+  dirs:
+    - .agents/skills
+    - .codebuddy/skills

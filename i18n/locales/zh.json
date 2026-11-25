@@ -36,6 +36,70 @@
     "login": "登录",
     "settings": "设置"
   },
+  "projectPage": {
+    "overview": {
+      "title": "项目总览",
+      "description": "从项目出发，进入对应的子项目与研究方向。每个项目下汇集了可独立使用的工具与学习模块。",
+      "listTitle": "全部项目",
+      "listDescription": "选择一个项目，查看其子项目入口与建设状态。"
+    },
+    "common": {
+      "subprojectList": "子项目",
+      "subprojectListDescription": "选择一个子项目进入，未上线的模块将以建设中状态展示。",
+      "enter": "进入",
+      "available": "已上线",
+      "comingSoon": "建设中",
+      "comingSoonTitle": "该子项目正在建设中",
+      "comingSoonDesc": "我们正在把这个模块接入平台。你可以先返回项目首页，选择其他可用的子项目体验。",
+      "backToOverview": "返回项目总览",
+      "backToProject": "返回项目"
+    },
+    "narrativeMedicine": {
+      "title": "叙事医学",
+      "description": "以疾病叙事为主线，生成包含病例、故事、对话、头像与插图的完整叙事单页。",
+      "narrativeGeneration": {
+        "title": "叙事生成",
+        "description": "输入疾病名称，生成包含病例、故事、对话、头像与插图的完整叙事单页。"
+      }
+    },
+    "clinicalSimulation": {
+      "title": "临床实战",
+      "description": "面向临床能力的模拟训练空间，承载高等教育教学改革研究课题的改革探索与实践。",
+      "higherEducationReformResearch": {
+        "title": "高等教育教学改革研究课题",
+        "description": "课题编号 JLJY202714886133，围绕临床实战教学开展改革研究与实践探索。"
+      }
+    },
+    "pedagogicalResearch": {
+      "title": "教法研究",
+      "description": "围绕 CSTAR 教学法的实践与反思，探索模型选择在教法研究中的应用。",
+      "modelSelection": {
+        "title": "模型选择",
+        "description": "对比与选择适合教学研究场景的大模型，沉淀不同任务的模型配置方案。",
+        "tabHint": "按任务类型选择模型，切换后会立即保存并应用于对应场景。",
+        "currentProvider": "当前提供商",
+        "currentModel": "当前模型",
+        "compareTitle": "模型对比",
+        "providerLabel": "提供商",
+        "modelLabel": "模型",
+        "localModelLabel": "本地模型（ComfyUI）",
+        "localModelHint": "选择本地 ComfyUI 时需要指定工作流模型。",
+        "localModelPlaceholder": "选择本地模型",
+        "compareCount": "对比模型数量",
+        "compareCountHint": "选择要同时对比的模型数量，每个槽位可独立选择提供商与模型。",
+        "compareSlot": "模型 {index}",
+        "configure": "前往设置配置自定义模型",
+        "chatDescription": "适用于病例生成、故事编写与教研对话等文本任务。",
+        "imageDescription": "适用于患者头像、教学插图等图像生成任务。",
+        "videoDescription": "适用于情景演绎、教学视频等动态影像任务。",
+        "audioDescription": "适用于讲解配音、教学音频等语音合成任务。",
+        "chatPlaceholder": "对话内容将在这里展示",
+        "imagePlaceholder": "生成的图像将在这里展示",
+        "videoPlaceholder": "生成的视频将在这里展示",
+        "audioPlaceholder": "生成的音频将在这里展示"
+      }
+    }
+  },
   "common": {
     "sidebar": "侧边栏",
     "showSettings": "显示设置",

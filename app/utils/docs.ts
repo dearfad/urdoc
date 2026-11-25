@@ -118,6 +118,8 @@ export function generateDocSidebarItems(): NavigationMenuItem[] {
         label: item.label,
         icon: item.icon,
         defaultOpen: false,
+        trailingIcon: 'i-lucide-plus',
+        ui: { linkTrailingIcon: 'group-data-[state=open]:rotate-45' },
         children: item.children.map((child) => ({
           label: child.label,
           icon: child.icon,
