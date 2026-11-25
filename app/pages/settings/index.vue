@@ -345,6 +345,8 @@ const sceneTemplates = computed<Record<CustomScene, ModelTemplate[]>>(() => {
       { label: 'OpenRouter', baseURL: 'https://openrouter.ai/api/v1', modelName: 'openrouter/free' },
       { label: 'Ollama Cloud', baseURL: 'https://ollama.com/v1', modelName: '' },
       { label: 'Ollama Local', baseURL: 'http://localhost:11434/v1', modelName: '' },
+      // 本地 LocModel 服务：预设接口地址与默认模型名称
+      { label: 'LocModel', baseURL: 'http://127.0.0.1:8686/v1', modelName: 'locmodel' },
     ],
     image: [blankTemplate, comfyuiTemplate],
     audio: [blankTemplate, comfyuiTemplate],
